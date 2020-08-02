@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: com.pth
+---
+testFramework: junit
+sourceLanguage: java
