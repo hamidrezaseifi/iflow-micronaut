@@ -1,4 +1,4 @@
-package com.pth.credentials;
+package com.pth.common.credentials;
 
 public interface IPasswordHashGenerator {
 

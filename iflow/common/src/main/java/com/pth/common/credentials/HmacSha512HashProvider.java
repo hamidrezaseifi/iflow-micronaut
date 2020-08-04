@@ -1,4 +1,4 @@
-package com.pth.credentials;
+package com.pth.common.credentials;
 
 import org.apache.commons.lang3.ArrayUtils;
 

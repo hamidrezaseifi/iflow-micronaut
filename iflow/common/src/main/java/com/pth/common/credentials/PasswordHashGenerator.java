@@ -1,4 +1,4 @@
-package com.pth.credentials;
+package com.pth.common.credentials;
 
 import javax.inject.Singleton;
 

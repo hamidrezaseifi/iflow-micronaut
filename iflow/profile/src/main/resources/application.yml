@@ -1,0 +1,10 @@
+micronaut:
+  application:
+    name: profile
+  server:
+    port: 1020
+
+
+  extensions:
+    securities:
+      passwordpepper: passwordpepper

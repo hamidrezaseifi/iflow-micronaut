@@ -1,18 +1,19 @@
-package com.pth.controllers;
+package com.pth.profile.controllers;
 
-import com.pth.credentials.IPasswordHashGenerator;
-import com.pth.models.UserAuthenticationRequestEdo;
-import com.pth.models.UserPasswordGenerationResponseEdo;
-import io.micronaut.http.HttpRequest;
+import com.pth.common.credentials.IPasswordHashGenerator;
+import com.pth.common.edo.UserAuthenticationRequestEdo;
+import com.pth.common.edo.UserPasswordGenerationResponseEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.validation.Validated;
+import io.micronaut.security.annotation.Secured;
 
 import javax.validation.Valid;
 
 @Validated
-//@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured(SecurityRule.IS_ANONYMOUS)
 @Controller("/")
 public class MainController {
 
@@ -24,7 +25,7 @@ public class MainController {
     }
 
     @Produces(MediaType.APPLICATION_JSON)
-    //@Secured(SecurityRule.IS_ANONYMOUS)
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Get(value = "/test")
     public HttpResponse<UserPasswordGenerationResponseEdo> getTasks() {
 
@@ -40,7 +41,7 @@ public class MainController {
 
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Secured(SecurityRule.IS_ANONYMOUS)
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Post(value = "/createpassword")
     public HttpResponse<UserPasswordGenerationResponseEdo> createPassword(@Body @Valid UserAuthenticationRequestEdo request) {
 

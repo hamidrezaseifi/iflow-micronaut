@@ -1,4 +1,4 @@
-package com.pth.models;
+package com.pth.core.edo;
 
 import javax.validation.constraints.NotNull;
 
