@@ -8,3 +8,21 @@ micronaut:
   extensions:
     securities:
       passwordpepper: passwordpepper
+
+jpa:
+  default:
+    packages-to-scan:
+      - 'com.pth.profile.entities'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: true
+        format_sql: true
+
+datasources:
+  default:
+    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/profile`}?ApplicationName=profile-pool
+    driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
+    username: ${JDBC_USER:iflow}
+    password: ${JDBC_PASSWORD:iflow}

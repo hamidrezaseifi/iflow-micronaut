@@ -1,60 +1,41 @@
 package com.pth.profile.controllers;
 
-import com.pth.common.contants.TestDataConstants;
+import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.credentials.IPasswordHashGenerator;
 import com.pth.common.edo.UserAuthenticationRequestEdo;
 import com.pth.common.edo.UserPasswordGenerationResponseEdo;
-import com.pth.common.enums.EUserRoles;
-import com.pth.profile.entities.UserEntity;
-import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.validation.Validated;
-import io.micronaut.security.annotation.Secured;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Validated
 @Secured(SecurityRule.IS_ANONYMOUS)
-@Controller("/")
-public class MainController {
+@Controller(ApiUrlConstants.ProfileUrlConstants.API001_PROFILE001_AUTHENTICATION)
+public class AuthenticationController {
 
     private final IPasswordHashGenerator passwordHashGenerator;
-    private final IUserRepository userRepository;
 
 
-    public MainController(IPasswordHashGenerator passwordHashGenerator,
-                          IUserRepository userRepository){
+    public AuthenticationController(IPasswordHashGenerator passwordHashGenerator){
         this.passwordHashGenerator = passwordHashGenerator;
-        this.userRepository = userRepository;
     }
 
     @Produces(MediaType.APPLICATION_JSON)
-    @Secured(SecurityRule.IS_ANONYMOUS)
-    @Get(value = "/test")
-    public HttpResponse<UserEntity> test() {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Post(value = "/signIn")
+    public HttpResponse<UserPasswordGenerationResponseEdo> userSignIn(@Body @Valid UserAuthenticationRequestEdo request) {
 
-        String salt = passwordHashGenerator.produceSalt();
+        UserPasswordGenerationResponseEdo response = new UserPasswordGenerationResponseEdo();
+        response.setCompanyIdentity("cccc");
+        response.setUserIdentity("uuuuu");
+        response.setPasswordHash("pppp");
+        response.setPasswordSalt("sssss");
 
-        UserEntity response = new UserEntity();
-        response.setCompanyId(TestDataConstants.TEST_COMPANY_ID);
-        response.setIdentity("test-iflow-1");
-        response.setUsername("test@iflow.de");
-        response.setPasswordHash(passwordHashGenerator.produceHash("test", salt));
-        response.setPasswordSalt(salt);
-        Set<String> roles = new HashSet<>();
-        roles.add(EUserRoles.ADMIN.getId());
-        roles.add(EUserRoles.DATAENTRY.getId());
-        roles.add(EUserRoles.VIEW.getId());
-        response.setRoles(roles);
-        response.setStatus(1);
-
-        this.userRepository.save(response);
 
         return HttpResponse.ok(response);
     }

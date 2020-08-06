@@ -1,8 +1,6 @@
 micronaut:
   application:
     name: iflow
-  server:
-    port: 1020
 
 
   extensions:
