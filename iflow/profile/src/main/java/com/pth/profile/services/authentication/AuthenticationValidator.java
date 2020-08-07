@@ -7,8 +7,10 @@ import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 
+import javax.inject.Singleton;
 import java.util.Optional;
 
+@Singleton
 public class AuthenticationValidator implements IAuthenticationValidator {
 
     private final IPasswordHashGenerator passwordHashGenerator;
@@ -30,7 +32,7 @@ public class AuthenticationValidator implements IAuthenticationValidator {
         if(userOptional.isPresent()){
             UserEntity user = userOptional.get();
 
-            String passwordHash = this.passwordHashGenerator.produceHash(username, user.getPasswordSalt());
+            String passwordHash = this.passwordHashGenerator.produceHash(password, user.getPasswordSalt());
 
             if(passwordHash.equals(user.getPasswordHash())){
                 return userOptional;

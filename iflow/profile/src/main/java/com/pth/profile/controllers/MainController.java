@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Validated
-@Secured(SecurityRule.IS_ANONYMOUS)
-@Controller("/")
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller("/test")
 public class MainController {
 
     private final IPasswordHashGenerator passwordHashGenerator;
@@ -32,12 +32,6 @@ public class MainController {
                           IUserRepository userRepository){
         this.passwordHashGenerator = passwordHashGenerator;
         this.userRepository = userRepository;
-    }
-
-    @Produces(MediaType.TEXT_PLAIN)
-    @Get("/")
-    public String index(Principal principal) {  // <4>
-        return principal.getName();
     }
 
     @Produces(MediaType.APPLICATION_JSON)

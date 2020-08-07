@@ -3,8 +3,18 @@ micronaut:
     name: profile
   server:
     port: 1020
-
-
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              #jws-algorithm: HS256
+              secret: ${JWT_GENERATOR_SECRET:pthifloepth}
+        generator:
+          refresh-token:
+            secret: ${JWT_GENERATOR_SECRET:pthifloepth}
   extensions:
     securities:
       passwordpepper: passwordpepper
@@ -26,3 +36,10 @@ datasources:
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
     username: ${JDBC_USER:iflow}
     password: ${JDBC_PASSWORD:iflow}
+  h2:
+    url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+    schema-generate: CREATE_DROP
+    dialect: H2

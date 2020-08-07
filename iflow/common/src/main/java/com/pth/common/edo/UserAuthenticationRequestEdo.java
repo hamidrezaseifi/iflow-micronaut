@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 
 public class UserAuthenticationRequestEdo {
 
-    @NotNull(message = "UserIdentity must not be null")
+    @NotNull(message = "username must not be null")
     private String username;
 
     @NotNull(message = "Password must not be null")

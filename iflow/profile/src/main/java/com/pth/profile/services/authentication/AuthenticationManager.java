@@ -6,9 +6,11 @@ import com.pth.profile.models.TokenProfileRequest;
 import com.pth.profile.models.UserAuthenticationRequest;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 
+import javax.inject.Singleton;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Singleton
 public class AuthenticationManager implements IAuthenticationManager {
 
     private final IPasswordHashGenerator passwordHashGenerator;
