@@ -1,20 +1,14 @@
-package com.pth.common.edo;
-
-import javax.validation.constraints.NotNull;
+package com.pth.profile.models;
 
 
-public class UserAuthenticationRequestEdo {
+public class UserAuthenticationRequest {
 
-    @NotNull(message = "UserIdentity must not be null")
     private String username;
 
-    @NotNull(message = "Password must not be null")
     private String password;
 
-    @NotNull(message = "CompanyIdentity must not be null")
      private String companyIdentity;
 
-    @NotNull(message = "AppId must not be null")
     private String appId;
 
     public String getUsername() {

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 public class TokenProfileRequestEdo {
 
-  @NotNull
+  @NotNull(message = "Token must not be null")
   private String token;
 
   @AEnumNameValidator(enumClazz = EApplication.class)

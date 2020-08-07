@@ -22,7 +22,7 @@ public enum EApplication implements IEnumNameValidator {
   }
 
   @JsonCreator
-  public static EApplication valueFromName(final String nameString) {
+  public static EApplication valueFromId(final String nameString) {
 
     for (final EApplication item : values()) {
       if (item.enumName.equals(nameString)) {

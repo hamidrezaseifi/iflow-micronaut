@@ -15,9 +15,9 @@ import io.micronaut.validation.Validated;
 import io.micronaut.security.annotation.Secured;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Validated
 @Secured(SecurityRule.IS_ANONYMOUS)
@@ -32,6 +32,12 @@ public class MainController {
                           IUserRepository userRepository){
         this.passwordHashGenerator = passwordHashGenerator;
         this.userRepository = userRepository;
+    }
+
+    @Produces(MediaType.TEXT_PLAIN)
+    @Get("/")
+    public String index(Principal principal) {  // <4>
+        return principal.getName();
     }
 
     @Produces(MediaType.APPLICATION_JSON)
@@ -69,7 +75,7 @@ public class MainController {
 
         UserPasswordGenerationResponseEdo response = new UserPasswordGenerationResponseEdo();
         response.setCompanyIdentity(request.getCompanyIdentity());
-        response.setUserIdentity(request.getUserIdentity());
+        response.setUserIdentity(request.getUsername());
         response.setPasswordHash(passwordHashGenerator.produceHash(request.getPassword(), salt));
         response.setPasswordSalt(salt);
 

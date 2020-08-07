@@ -1,31 +1,22 @@
-package com.pth.common.edo;
+package com.pth.profile.models;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
+public class UserAuthenticationResponse {
 
-public class UserAuthenticationResponseEdo {
-
-  @NotNull
   private String username;
 
-  @NotNull
   private String companyIdentity;
 
-  @NotNull
   private String token;
 
-  @NotNull
   private String sessionid;
 
-  @NotNull(message = "RoleList must not be null")
   private final Set<String> roles = new HashSet<>();
 
-  @NotNull
   private Long created;
 
-  @NotNull
   private Long lastAccess;
 
   public String getUsername() {
