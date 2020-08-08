@@ -8,7 +8,7 @@ micronaut:
     endpoints:
       login:
         enabled: true
-        path: /users/signIn
+        path: /api001/profile001/authentication/login
       oauth:
         enabled: true
         path: /api001/iam001/users/refreshToken
