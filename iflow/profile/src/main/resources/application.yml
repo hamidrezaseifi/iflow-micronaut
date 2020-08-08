@@ -4,17 +4,26 @@ micronaut:
   server:
     port: 1020
   security:
-    authentication: bearer
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+        path: /users/signIn
+      oauth:
+        enabled: true
+        path: /api001/iam001/users/refreshToken
     token:
       jwt:
+        enabled: true
+        generator:
+          access-token-expiration: 3600
+          refresh-token-expiration: 172800
         signatures:
           secret:
             generator:
               #jws-algorithm: HS256
-              secret: ${JWT_GENERATOR_SECRET:pthifloepth}
-        generator:
-          refresh-token:
-            secret: ${JWT_GENERATOR_SECRET:pthifloepth}
+              secret: ${JWT_GENERATOR_SECRET:pleaseChangeThisSecretForANewOne}
+
   extensions:
     securities:
       passwordpepper: passwordpepper

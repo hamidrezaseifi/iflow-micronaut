@@ -1,15 +1,21 @@
-package com.pth.profile.config;
+//tag::clazzwithoutsettersandgetters[]
+package com.pth.profile.entities;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.GeneratedValue;
-import io.micronaut.data.annotation.Id;
+import javax.persistence.Id;
 import io.micronaut.data.annotation.MappedEntity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
+@Entity
+@Table(name = "tokens")
 @MappedEntity
 public class RefreshTokenEntity {
     @Id
@@ -29,13 +35,24 @@ public class RefreshTokenEntity {
     @NotNull
     private Boolean revoked;
 
-    @DateCreated
+    @DateCreated // <4>
     @NonNull
     @NotNull
     private Instant dateCreated;
 
     public RefreshTokenEntity() {
     }
+
+    public RefreshTokenEntity(@NonNull @NotBlank String username,
+                              @NonNull @NotBlank String refreshToken,
+                              @NonNull @NotNull Boolean revoked) {
+        super();
+        this.username = username;
+        this.refreshToken = refreshToken;
+        this.revoked = revoked;
+    }
+
+    //end::clazzwithoutsettersandgetters[]
 
     @NonNull
     public Long getId() {

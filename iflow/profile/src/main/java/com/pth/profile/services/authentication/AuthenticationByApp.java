@@ -1,8 +1,6 @@
 package com.pth.profile.services.authentication;
 
-import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
-import org.checkerframework.checker.index.qual.SearchIndexBottom;
 
 import javax.inject.Singleton;
 import java.util.HashMap;
