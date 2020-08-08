@@ -1,55 +1,41 @@
 //tag::clazzwithoutsettersandgetters[]
-package com.pth.profile.entities;
+package com.pth.profile.authentication;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import io.micronaut.data.annotation.DateCreated;
 import io.micronaut.data.annotation.GeneratedValue;
 import javax.persistence.Id;
 import io.micronaut.data.annotation.MappedEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "tokens")
-@MappedEntity
+//@MappedEntity
 public class RefreshTokenEntity {
     @Id
     @GeneratedValue
-    @NonNull
     private Long id;
 
-    @NonNull
-    @NotBlank
     private String username;
 
-    @NonNull
-    @NotBlank
     private String refreshToken;
 
-    @NonNull
-    @NotNull
-    private Boolean revoked;
-
-    @DateCreated // <4>
-    @NonNull
-    @NotNull
-    private Instant dateCreated;
+    private Date issuedAt;
 
     public RefreshTokenEntity() {
     }
 
     public RefreshTokenEntity(@NonNull @NotBlank String username,
                               @NonNull @NotBlank String refreshToken,
-                              @NonNull @NotNull Boolean revoked) {
+                              @NonNull @NotNull Date issuedAt) {
         super();
         this.username = username;
         this.refreshToken = refreshToken;
-        this.revoked = revoked;
+        this.issuedAt = issuedAt;
     }
 
     //end::clazzwithoutsettersandgetters[]
@@ -82,20 +68,11 @@ public class RefreshTokenEntity {
     }
 
     @NonNull
-    public Boolean getRevoked() {
-        return revoked;
+    public Date getIssuedAt() {
+        return issuedAt;
     }
 
-    public void setRevoked(@NonNull Boolean revoked) {
-        this.revoked = revoked;
-    }
-
-    @NonNull
-    public Instant getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(@NonNull Instant dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setIssuedAt(@NonNull Date issuedAt) {
+        this.issuedAt = issuedAt;
     }
 }

@@ -6,6 +6,7 @@ import com.pth.common.exceptions.LostUpdateException;
 import com.pth.common.repositories.HibernatePredicateQueryAdapter.OrderBuilder;
 import com.pth.common.repositories.HibernatePredicateQueryAdapter.PredicateBuilder;
 import io.micronaut.spring.tx.annotation.Transactional;
+import io.micronaut.transaction.annotation.ReadOnly;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Repository;
 
@@ -38,13 +39,13 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @ReadOnly
     public List<TEntity> getAll() {
         return queryCollection();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @ReadOnly
     public Optional<TEntity> getById(UUID id) {
         return Optional.ofNullable(entityManager.find(entityType, id));
     }

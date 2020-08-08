@@ -11,7 +11,7 @@ micronaut:
         path: /api001/profile001/authentication/login
       oauth:
         enabled: true
-        path: /api001/iam001/users/refreshToken
+        path: /api001/profile001/authentication/refreshToken
     token:
       jwt:
         enabled: true
@@ -36,6 +36,15 @@ jpa:
       hibernate:
         hbm2ddl:
           auto: none
+        show_sql: true
+        format_sql: true
+  h2:
+    packages-to-scan:
+      - 'com.pth.profile.authentication'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
         show_sql: true
         format_sql: true
 

@@ -1,4 +1,4 @@
-package com.pth.profile.config;
+package com.pth.profile.authentication;
 
 //import de.mediqon.generic.iamcommons.credentials.IPasswordHashGenerator;
 //import de.mediqon.generic.iamservice.views.authentifications.AuthenticationView;
@@ -12,9 +12,6 @@ import io.micronaut.security.authentication.UserDetails;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Singleton
 public class AuthenticationValidatorDb implements IAuthenticationValidator {
