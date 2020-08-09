@@ -1,8 +1,10 @@
 //tag::clazzwithoutsettersandgetters[]
-package com.pth.profile.authentication;
+package com.pth.profile.authentication.entities;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.annotation.GeneratedValue;
+
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import io.micronaut.data.annotation.MappedEntity;
 
@@ -11,14 +13,15 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
-@Table(name = "tokens")
+@Table
 //@MappedEntity
 public class RefreshTokenEntity {
     @Id
     @GeneratedValue
-    private Long id;
+    private UUID id;
 
     private String username;
 
@@ -27,52 +30,50 @@ public class RefreshTokenEntity {
     private Date issuedAt;
 
     public RefreshTokenEntity() {
+        super();
+        this.id = UUID.randomUUID();
     }
 
-    public RefreshTokenEntity(@NonNull @NotBlank String username,
-                              @NonNull @NotBlank String refreshToken,
-                              @NonNull @NotNull Date issuedAt) {
-        super();
+    public RefreshTokenEntity(String username,
+                              String refreshToken,
+                              Date issuedAt) {
+        this();
         this.username = username;
         this.refreshToken = refreshToken;
         this.issuedAt = issuedAt;
     }
 
-    //end::clazzwithoutsettersandgetters[]
 
-    @NonNull
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(@NonNull Long id) {
+    public void setId( UUID id) {
         this.id = id;
     }
 
-    @NonNull
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(@NonNull String username) {
+    public void setUsername( String username) {
         this.username = username;
     }
 
-    @NonNull
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    public void setRefreshToken(@NonNull String refreshToken) {
+    public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
-    @NonNull
+
     public Date getIssuedAt() {
         return issuedAt;
     }
 
-    public void setIssuedAt(@NonNull Date issuedAt) {
+    public void setIssuedAt( Date issuedAt) {
         this.issuedAt = issuedAt;
     }
 }

@@ -2,6 +2,8 @@ package com.pth.profile.authentication;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.SignedJWT;
+import com.pth.profile.authentication.entities.RefreshTokenEntity;
+import com.pth.profile.repositories.IRefreshTokenRepository;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.token.jwt.encryption.EncryptionConfiguration;
@@ -20,13 +22,13 @@ import java.util.Optional;
 @Replaces(JwtTokenValidator.class)
 public class CustomeJwtTokenValidator extends JwtTokenValidator {
 
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final IRefreshTokenRepository refreshTokenRepository;
 
     public CustomeJwtTokenValidator(Collection<SignatureConfiguration> signatureConfigurations,
                                     Collection<EncryptionConfiguration> encryptionConfigurations,
                                     Collection<GenericJwtClaimsValidator> genericJwtClaimsValidators,
                                     JwtAuthenticationFactory jwtAuthenticationFactory,
-                                    RefreshTokenRepository refreshTokenRepository) {
+                                    IRefreshTokenRepository refreshTokenRepository) {
         super(signatureConfigurations, encryptionConfigurations, genericJwtClaimsValidators, jwtAuthenticationFactory);
 
         this.refreshTokenRepository = refreshTokenRepository;
@@ -52,8 +54,8 @@ public class CustomeJwtTokenValidator extends JwtTokenValidator {
             Date issuedAt = (Date)authentication.getAttributes().get("iat");
 
             Optional<RefreshTokenEntity> refreshTokenEntityOptional =
-                    this.refreshTokenRepository.getByUsername(username);
-            if(refreshTokenEntityOptional.isPresent() == false){
+                    this.refreshTokenRepository.findByUsername(username);
+            if(refreshTokenEntityOptional.isPresent()){
 
                 RefreshTokenEntity refreshTokenEntity = refreshTokenEntityOptional.get();
                 if(refreshTokenEntity.getIssuedAt().after(issuedAt)){
@@ -64,7 +66,7 @@ public class CustomeJwtTokenValidator extends JwtTokenValidator {
             }
             else{
                 RefreshTokenEntity tokenEntity = new RefreshTokenEntity(username, token, issuedAt);
-                this.refreshTokenRepository.save(tokenEntity);
+                this.refreshTokenRepository.save(username, token, issuedAt);
             }
             return Flowable.just(authentication);
         }
