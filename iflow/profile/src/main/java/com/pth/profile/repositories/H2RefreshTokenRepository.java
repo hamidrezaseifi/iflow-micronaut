@@ -25,12 +25,12 @@ import java.util.Optional;
 @Repository("h2")
 @Transactional("h2")
 //@Requires(property = "micronaut.extensions.repositories.type", value = "RdbmsHibernate")
-public class MyRefreshTokenRepository implements IRefreshTokenRepository {
+public class H2RefreshTokenRepository implements IRefreshTokenRepository {
 
     @PersistenceContext (name="h2", unitName = "h2")
     private final EntityManager entityManager;
 
-    public MyRefreshTokenRepository(@Named("h2") EntityManager entityManager) {
+    public H2RefreshTokenRepository(@Named("h2") EntityManager entityManager) {
         this.entityManager = entityManager;
 
     }
@@ -132,8 +132,31 @@ public class MyRefreshTokenRepository implements IRefreshTokenRepository {
 
     @Transactional(readOnly = false)
     public void delete(RefreshTokenEntity entity) {
-        entityManager.remove(entity);
-        entityManager.flush();
+        try{
+            entityManager.remove(entity);
+            entityManager.flush();
+        }
+        catch (OptimisticLockException exception){
+            throw new LostUpdateException("The Entity you trying to Delete is Outdated please refresh and try it again", exception);
+        }
+    }
+
+    @Transactional(readOnly = false)
+    public void updateOrCreate(String username,
+                               String refreshToken,
+                               Date issuedAt) {
+
+        Optional<RefreshTokenEntity> entityOptional = findByUsername(username);
+        if(entityOptional.isPresent()){
+            RefreshTokenEntity entity = entityOptional.get();
+            entity.setIssuedAt(issuedAt);
+            entity.setRefreshToken(refreshToken);
+            update(entity);
+        }
+        else{
+            save(username, refreshToken, issuedAt);
+        }
+
     }
 
 }

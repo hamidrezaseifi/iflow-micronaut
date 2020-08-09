@@ -4,12 +4,10 @@ package com.pth.profile.authentication.entities;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import io.micronaut.data.annotation.GeneratedValue;
 
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import io.micronaut.data.annotation.MappedEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -25,6 +23,7 @@ public class RefreshTokenEntity {
 
     private String username;
 
+    @Column(length = 1000)
     private String refreshToken;
 
     private Date issuedAt;

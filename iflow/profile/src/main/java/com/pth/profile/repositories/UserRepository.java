@@ -4,15 +4,16 @@ import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.entities.UserEntity_;
 import io.micronaut.data.annotation.Repository;
+import io.micronaut.spring.tx.annotation.Transactional;
 import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Singleton
 @Repository
+@Transactional
 //@Requires(property = "micronaut.extensions.repositories.type", value = "RdbmsHibernate")
 public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
         implements IUserRepository {
@@ -21,7 +22,7 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
     }
 
     @Override
-    @ReadOnly
+    @Transactional(readOnly = true)
     public Optional<UserEntity> getByUsername(String username) {
 
         return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.username), username)));

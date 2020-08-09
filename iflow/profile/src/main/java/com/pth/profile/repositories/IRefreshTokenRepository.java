@@ -17,4 +17,8 @@ public interface IRefreshTokenRepository {
 
     void update(RefreshTokenEntity entity);
 
+    void updateOrCreate(String username,
+                        String refreshToken,
+                        Date issuedAt);
+
 }
