@@ -10,6 +10,7 @@ import java.util.UUID;
 public abstract class BaseEntity {
 
     @Id
+    @Column(name = "id")
     protected UUID id;
 
     @Version

@@ -3,7 +3,8 @@ package com.pth.common.edo.enums;
 public enum EUserStatus implements IEnumValueValidator {
   ACTIVE(1),
   DISABLED(10),
-  DELETED(20);
+  LOCKED(20),
+  DELETED(30);
 
   private final Integer id;
 

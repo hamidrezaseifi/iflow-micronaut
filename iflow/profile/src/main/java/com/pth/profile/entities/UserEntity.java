@@ -1,7 +1,7 @@
 package com.pth.profile.entities;
 
+import com.pth.common.edo.enums.EUserStatus;
 import com.pth.common.entities.BaseEntity;
-import com.pth.profile.enums.EUserStatus;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -86,11 +86,11 @@ public class UserEntity extends BaseEntity {
     }
 
     public boolean isLocked(){
-        return this.status == EUserStatus.LOCKED.getId();
+        return this.status == EUserStatus.LOCKED.getValue();
     }
 
     public boolean isActive(){
-        return this.status == EUserStatus.ACTIVE.getId();
+        return this.status == EUserStatus.ACTIVE.getValue();
     }
 
     public Date getCreatedAt() {
