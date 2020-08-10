@@ -1,57 +1,87 @@
 package com.pth.profile.services.authentication;
 
 import com.pth.common.credentials.IPasswordHashGenerator;
+import com.pth.profile.authentication.AuthenticationValidatorDb;
+import com.pth.profile.authentication.entities.RefreshTokenEntity;
 import com.pth.profile.entities.UserEntity;
-import com.pth.profile.models.TokenProfileRequest;
+import com.pth.profile.models.TokenValidationRequest;
 import com.pth.profile.models.UserAuthenticationRequest;
+import com.pth.profile.repositories.IRefreshTokenRepository;
+import com.pth.profile.repositories.IUserRepository;
+import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.token.jwt.generator.JwtGeneratorConfigurationProperties;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
+import io.reactivex.Flowable;
 
 import javax.inject.Singleton;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Singleton
 public class AuthenticationManager implements IAuthenticationManager {
 
     private final IPasswordHashGenerator passwordHashGenerator;
-    private final AuthenticationByApp authenticationByApp;
     private final IAuthenticationValidator  authenticationValidator;
-
+    private final IRefreshTokenRepository refreshTokenRepository;
+    private final JwtGeneratorConfigurationProperties jwtConfigurationProperties;
 
     public AuthenticationManager(IPasswordHashGenerator passwordHashGenerator,
                                  IAuthenticationValidator  authenticationValidator,
-                                 AuthenticationByApp authenticationByApp){
+                                 IRefreshTokenRepository refreshTokenRepository,
+                                 JwtGeneratorConfigurationProperties jwtConfigurationProperties){
         this.passwordHashGenerator = passwordHashGenerator;
         this.authenticationValidator = authenticationValidator;
-        this.authenticationByApp = authenticationByApp;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.jwtConfigurationProperties = jwtConfigurationProperties;
     }
 
 
     @Override
-    public BearerAccessRefreshToken authenticate(UserAuthenticationRequest request) {
-
-        Optional<UserEntity> userOptional = this.authenticationValidator.validate(request);
+    public Optional<BearerAccessRefreshToken> authenticate(UserAuthenticationRequest request) {
 
 
-        if(userOptional.isPresent()){
 
-            UserEntity user = userOptional.get();
+        return Optional.empty();
+    }
 
-            BearerAccessRefreshToken token = new BearerAccessRefreshToken();
-            token.setUsername(userOptional.get().getUsername());
-            token.setRoles(user.getRoles().stream().collect(Collectors.toList()));
-
-            this.authenticationByApp.addUser(request.getAppId(), user.getCompanyId(), user.getId(), token);
+    @Override
+    public Optional<BearerAccessRefreshToken> validateAuthentication(TokenValidationRequest tokenProfileRequest) {
 
 
-            return token;
+        Authentication authentication = tokenProfileRequest.getAuthentication();
+        String username =authentication.getAttributes().get("sub").toString();
+        Date issuedAt = new Date((long)authentication.getAttributes().get("iat"));  ;
+        List<String> roles = (List<String>)authentication.getAttributes().get("roles");
+
+
+        Optional<RefreshTokenEntity> refreshTokenEntityOptional =
+                this.refreshTokenRepository.findByUsername(username);
+        if(refreshTokenEntityOptional.isPresent()){
+
+            RefreshTokenEntity refreshTokenEntity = refreshTokenEntityOptional.get();
+
+            if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken()) ||
+               tokenProfileRequest.getToken().equals(refreshTokenEntity.getRefreshToken())){
+
+                if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken())){
+                    refreshTokenEntity.setIssuedAt(issuedAt);
+                    refreshTokenEntity.setRefreshToken(tokenProfileRequest.getToken());
+                    this.refreshTokenRepository.update(refreshTokenEntity);
+                }
+
+                return Optional.of(new BearerAccessRefreshToken(username,
+                                                                roles,
+                                                    jwtConfigurationProperties.getRefreshTokenExpiration(),
+                                                    refreshTokenEntity.getRefreshToken(),
+                                                    refreshTokenEntity.getRefreshToken(),
+                                                    "bearer"));
+
+             }
         }
-
-        return null;
-    }
-
-    @Override
-    public void validateAuthentication(TokenProfileRequest authentication) {
-
+        return Optional.empty();
     }
 }

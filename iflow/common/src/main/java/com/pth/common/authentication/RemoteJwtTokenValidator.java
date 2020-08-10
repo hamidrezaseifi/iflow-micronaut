@@ -2,10 +2,16 @@ package com.pth.common.authentication;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.SignedJWT;
+import com.pth.common.declaratives.IAuthenticationV001DeclarativeClient;
+import com.pth.common.edo.TokenValidationRequestEdo;
+import com.pth.common.edo.enums.EApplication;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.token.jwt.encryption.EncryptionConfiguration;
+import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.security.token.jwt.signature.SignatureConfiguration;
 import io.micronaut.security.token.jwt.validator.*;
 import io.reactivex.Flowable;
@@ -22,13 +28,16 @@ import java.util.Optional;
 @Requires(property = "micronaut.extensions.project", notEquals = "profile")
 public class RemoteJwtTokenValidator extends JwtTokenValidator {
 
+    private final IAuthenticationV001DeclarativeClient authenticationV001DeclarativeClient;
 
     public RemoteJwtTokenValidator(Collection<SignatureConfiguration> signatureConfigurations,
                                    Collection<EncryptionConfiguration> encryptionConfigurations,
                                    Collection<GenericJwtClaimsValidator> genericJwtClaimsValidators,
-                                   JwtAuthenticationFactory jwtAuthenticationFactory) {
+                                   JwtAuthenticationFactory jwtAuthenticationFactory,
+                                   IAuthenticationV001DeclarativeClient authenticationV001DeclarativeClient) {
         super(signatureConfigurations, encryptionConfigurations, genericJwtClaimsValidators, jwtAuthenticationFactory);
 
+        this.authenticationV001DeclarativeClient = authenticationV001DeclarativeClient;
     }
 
     public Optional<JWT> validatePlainJWTSignature(JWT jwt) {
@@ -41,16 +50,27 @@ public class RemoteJwtTokenValidator extends JwtTokenValidator {
 
 
     public Publisher<Authentication> validateToken(String token) {
-        Optional<Authentication> authenticationOptional = this.authenticationIfValidJwtSignatureAndClaims(token, this.genericJwtClaimsValidators);
+        Optional<Authentication> authenticationOptional =
+                this.authenticationIfValidJwtSignatureAndClaims(token, this.genericJwtClaimsValidators);
 
         if(authenticationOptional.isPresent()){
 
             Authentication authentication = authenticationOptional.get();
 
-            String username = authentication.getAttributes().get("sub").toString();
-            Date issuedAt = (Date)authentication.getAttributes().get("iat");
+            TokenValidationRequestEdo requestEdo = new TokenValidationRequestEdo();
+            requestEdo.setAppId(EApplication.IFLOW.getIdentity());
+            requestEdo.setAuthentication(authentication);
+            requestEdo.setToken(token);
 
-            return Flowable.just(authentication);
+            HttpResponse<BearerAccessRefreshToken> response =
+                    this.authenticationV001DeclarativeClient.validateToken(token, requestEdo);
+            if(response.status() == HttpStatus.OK){
+                if(response.getBody().isPresent()){
+                    return Flowable.just(authentication);
+                }
+            }
+
+
         }
 
         return Flowable.empty();

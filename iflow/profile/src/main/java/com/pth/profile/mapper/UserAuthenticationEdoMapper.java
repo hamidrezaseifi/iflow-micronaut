@@ -1,11 +1,11 @@
 package com.pth.profile.mapper;
 
-import com.pth.common.edo.TokenProfileRequestEdo;
+import com.pth.common.edo.TokenValidationRequestEdo;
 import com.pth.common.edo.UserAuthenticationRequestEdo;
 import com.pth.common.edo.UserAuthenticationResponseEdo;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.common.utils.MappingUtils;
-import com.pth.profile.models.TokenProfileRequest;
+import com.pth.profile.models.TokenValidationRequest;
 import com.pth.profile.models.UserAuthenticationRequest;
 import com.pth.profile.models.UserAuthenticationResponse;
 
@@ -43,17 +43,17 @@ public class UserAuthenticationEdoMapper {
         return request;
     }
 
-    public TokenProfileRequestEdo toEdo(TokenProfileRequest request){
-        TokenProfileRequestEdo edo =
-                MappingUtils.copyProperties(request, new TokenProfileRequestEdo());
+    public TokenValidationRequestEdo toEdo(TokenValidationRequest request){
+        TokenValidationRequestEdo edo =
+                MappingUtils.copyProperties(request, new TokenValidationRequestEdo());
 
         return edo;
 
     }
 
-    public TokenProfileRequest fromEdo(TokenProfileRequestEdo edo){
-        TokenProfileRequest request =
-                MappingUtils.copyProperties(edo, new TokenProfileRequest());
+    public TokenValidationRequest fromEdo(TokenValidationRequestEdo edo){
+        TokenValidationRequest request =
+                MappingUtils.copyProperties(edo, new TokenValidationRequest());
 
         request.setApp(EApplication.valueFromId(edo.getAppId()));
         return request;

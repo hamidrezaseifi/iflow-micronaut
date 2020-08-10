@@ -3,15 +3,12 @@ package com.pth.profile.authentication;
 //import de.mediqon.generic.iamcommons.credentials.IPasswordHashGenerator;
 //import de.mediqon.generic.iamservice.views.authentifications.AuthenticationView;
 //import de.mediqon.generic.iamservice.views.authentifications.IAuthenticationViewSource;
-import com.pth.common.authentication.IAuthenticationValidator;
 import com.pth.common.credentials.IPasswordHashGenerator;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.repositories.IRefreshTokenRepository;
 import com.pth.profile.repositories.IUserRepository;
-import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.security.authentication.*;
-import io.micronaut.security.token.jwt.config.JwtConfigurationProperties;
 import io.micronaut.security.token.jwt.generator.JwtGeneratorConfigurationProperties;
 
 import javax.inject.Singleton;
@@ -20,7 +17,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Singleton
-@ConfigurationProperties("team")
 @Requires(property = "micronaut.extensions.project", value = "profile")
 public class AuthenticationValidatorDb implements IAuthenticationValidator {
 

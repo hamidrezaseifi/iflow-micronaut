@@ -1,4 +1,4 @@
-package com.pth.common.authentication;
+package com.pth.profile.authentication;
 
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;

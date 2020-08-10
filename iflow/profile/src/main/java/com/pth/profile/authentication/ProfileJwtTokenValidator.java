@@ -22,15 +22,15 @@ import java.util.Optional;
 @Singleton
 @Replaces(JwtTokenValidator.class)
 @Requires(property = "micronaut.extensions.project", value = "profile")
-public class CustomJwtTokenValidator extends JwtTokenValidator {
+public class ProfileJwtTokenValidator extends JwtTokenValidator {
 
     private final IRefreshTokenRepository refreshTokenRepository;
 
-    public CustomJwtTokenValidator(Collection<SignatureConfiguration> signatureConfigurations,
-                                   Collection<EncryptionConfiguration> encryptionConfigurations,
-                                   Collection<GenericJwtClaimsValidator> genericJwtClaimsValidators,
-                                   JwtAuthenticationFactory jwtAuthenticationFactory,
-                                   IRefreshTokenRepository refreshTokenRepository) {
+    public ProfileJwtTokenValidator(Collection<SignatureConfiguration> signatureConfigurations,
+                                    Collection<EncryptionConfiguration> encryptionConfigurations,
+                                    Collection<GenericJwtClaimsValidator> genericJwtClaimsValidators,
+                                    JwtAuthenticationFactory jwtAuthenticationFactory,
+                                    IRefreshTokenRepository refreshTokenRepository) {
         super(signatureConfigurations, encryptionConfigurations, genericJwtClaimsValidators, jwtAuthenticationFactory);
 
         this.refreshTokenRepository = refreshTokenRepository;
@@ -69,6 +69,7 @@ public class CustomJwtTokenValidator extends JwtTokenValidator {
                         refreshTokenEntity.setRefreshToken(token);
                         this.refreshTokenRepository.update(refreshTokenEntity);
                     }
+                    
                     return Flowable.just(authentication);
                 }
             }
