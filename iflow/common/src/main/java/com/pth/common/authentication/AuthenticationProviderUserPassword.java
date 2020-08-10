@@ -1,4 +1,4 @@
-package com.pth.profile.authentication;
+package com.pth.common.authentication;
 
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
@@ -6,7 +6,6 @@ import io.micronaut.security.authentication.AuthenticationResponse;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
-import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -14,8 +13,7 @@ public class AuthenticationProviderUserPassword implements AuthenticationProvide
 
     private final IAuthenticationValidator authenticationValidator;
 
-    public AuthenticationProviderUserPassword(@Named("authenticationValidatorDb")
-                                                IAuthenticationValidator authenticationValidator) {
+    public AuthenticationProviderUserPassword(IAuthenticationValidator authenticationValidator) {
         super();
 
         this.authenticationValidator = authenticationValidator;

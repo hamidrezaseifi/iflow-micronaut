@@ -25,6 +25,7 @@ micronaut:
               secret: ${JWT_GENERATOR_SECRET:pleaseChangeThisSecretForANewOne}
 
   extensions:
+    project: profile
     securities:
       passwordpepper: passwordpepper
 
