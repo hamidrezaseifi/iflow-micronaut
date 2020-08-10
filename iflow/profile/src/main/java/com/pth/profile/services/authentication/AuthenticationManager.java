@@ -64,14 +64,7 @@ public class AuthenticationManager implements IAuthenticationManager {
 
             RefreshTokenEntity refreshTokenEntity = refreshTokenEntityOptional.get();
 
-            if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken()) ||
-               tokenProfileRequest.getToken().equals(refreshTokenEntity.getRefreshToken())){
-
-                if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken())){
-                    refreshTokenEntity.setIssuedAt(issuedAt);
-                    refreshTokenEntity.setRefreshToken(tokenProfileRequest.getToken());
-                    this.refreshTokenRepository.update(refreshTokenEntity);
-                }
+            if(tokenProfileRequest.getToken().equals(refreshTokenEntity.getRefreshToken())){
 
                 return Optional.of(new BearerAccessRefreshToken(username,
                                                                 roles,
@@ -79,7 +72,6 @@ public class AuthenticationManager implements IAuthenticationManager {
                                                     refreshTokenEntity.getRefreshToken(),
                                                     refreshTokenEntity.getRefreshToken(),
                                                     "bearer"));
-
              }
         }
         return Optional.empty();

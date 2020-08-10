@@ -8,8 +8,9 @@ import java.util.Optional;
 public interface IRefreshTokenRepository {
 
     Optional<RefreshTokenEntity> save(String username,
-                            String refreshToken,
-                            Date issuedAt);
+                                      String accessToken,
+                                      String refreshToken,
+                                      Date issuedAt);
 
     Optional<RefreshTokenEntity> findByRefreshToken(String refreshToken);
 
@@ -18,6 +19,7 @@ public interface IRefreshTokenRepository {
     void update(RefreshTokenEntity entity);
 
     void updateOrCreate(String username,
+                        String accessToken,
                         String refreshToken,
                         Date issuedAt);
 

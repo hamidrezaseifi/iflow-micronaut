@@ -1,15 +1,15 @@
 package com.pth.profile.authentication;
 
-//import de.mediqon.generic.iamcommons.credentials.IPasswordHashGenerator;
-//import de.mediqon.generic.iamservice.views.authentifications.AuthenticationView;
-//import de.mediqon.generic.iamservice.views.authentifications.IAuthenticationViewSource;
 import com.pth.common.credentials.IPasswordHashGenerator;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.repositories.IRefreshTokenRepository;
 import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.security.authentication.*;
+import io.micronaut.security.token.generator.TokenGenerator;
+import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator;
 import io.micronaut.security.token.jwt.generator.JwtGeneratorConfigurationProperties;
+import io.micronaut.security.token.jwt.render.AccessRefreshToken;
 
 import javax.inject.Singleton;
 import java.time.LocalDateTime;
@@ -20,22 +20,24 @@ import java.util.stream.Collectors;
 @Requires(property = "micronaut.extensions.project", value = "profile")
 public class AuthenticationValidatorDb implements IAuthenticationValidator {
 
-    public static final String LOGEDIN_INITIAL_TOKEN = "logedin";
     private final IUserRepository userRepository;
     private final JwtGeneratorConfigurationProperties jwtConfigurationProperties;
     private final IPasswordHashGenerator passwordHashGenerator;
     private final IRefreshTokenRepository refreshTokenRepository;
+    private final AccessRefreshTokenGenerator accessRefreshTokenGenerator;
 
     public AuthenticationValidatorDb(IPasswordHashGenerator passwordHashGenerator,
                                      JwtGeneratorConfigurationProperties jwtConfigurationProperties,
                                      IUserRepository userRepository,
-                                     IRefreshTokenRepository refreshTokenRepository) {
+                                     IRefreshTokenRepository refreshTokenRepository,
+                                     AccessRefreshTokenGenerator accessRefreshTokenGenerator) {
         super();
 
         this.passwordHashGenerator = passwordHashGenerator;
         this.jwtConfigurationProperties = jwtConfigurationProperties;
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.accessRefreshTokenGenerator = accessRefreshTokenGenerator;
     }
 
     @Override
@@ -90,8 +92,18 @@ public class AuthenticationValidatorDb implements IAuthenticationValidator {
                             attr.put("issued", issued);
                             attr.put("expire", expire);
 
-                            this.refreshTokenRepository.updateOrCreate(userEntity.getUsername(), LOGEDIN_INITIAL_TOKEN, issued);
-                            return new UserDetails(userEntity.getUsername(), roles, attr);
+                            UserDetails userDetails = new UserDetails(userEntity.getUsername(), roles, attr);
+                            Optional<AccessRefreshToken> tokenOptional = this.accessRefreshTokenGenerator.generate(userDetails);
+
+                            if(tokenOptional.isPresent()){
+                                this.refreshTokenRepository.updateOrCreate(userEntity.getUsername(),
+                                                                           tokenOptional.get().getAccessToken(),
+                                                                           tokenOptional.get().getRefreshToken(),
+                                                                           issued);
+                                return userDetails;
+                            }
+                            else
+                                return new AuthenticationFailed(AuthenticationFailureReason.UNKNOWN);
                         }
                         else
                             return new AuthenticationFailed(AuthenticationFailureReason.CREDENTIALS_DO_NOT_MATCH);

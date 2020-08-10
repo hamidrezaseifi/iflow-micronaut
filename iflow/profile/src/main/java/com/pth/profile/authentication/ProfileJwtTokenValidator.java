@@ -61,15 +61,14 @@ public class ProfileJwtTokenValidator extends JwtTokenValidator {
 
                 RefreshTokenEntity refreshTokenEntity = refreshTokenEntityOptional.get();
 
-                if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken()) ||
-                   token.equals(refreshTokenEntity.getRefreshToken())){
+                if(token.equals(refreshTokenEntity.getRefreshToken())){
 
-                    if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken())){
+                    /*if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken())){
                         refreshTokenEntity.setIssuedAt(issuedAt);
                         refreshTokenEntity.setRefreshToken(token);
                         this.refreshTokenRepository.update(refreshTokenEntity);
-                    }
-                    
+                    }*/
+
                     return Flowable.just(authentication);
                 }
             }

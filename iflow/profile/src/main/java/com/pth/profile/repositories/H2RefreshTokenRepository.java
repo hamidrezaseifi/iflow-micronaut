@@ -39,9 +39,10 @@ public class H2RefreshTokenRepository implements IRefreshTokenRepository {
     @Override
     @Transactional(readOnly = false)
     public Optional<RefreshTokenEntity> save(String username,
+                                             String accessToken,
                                              String refreshToken,
                                              Date issuedAt) {
-        RefreshTokenEntity tokenEntity = new RefreshTokenEntity(username, refreshToken, issuedAt);
+        RefreshTokenEntity tokenEntity = new RefreshTokenEntity(username, accessToken, refreshToken, issuedAt);
         this.save(tokenEntity);
         return Optional.of(tokenEntity);
     }
@@ -143,6 +144,7 @@ public class H2RefreshTokenRepository implements IRefreshTokenRepository {
 
     @Transactional(readOnly = false)
     public void updateOrCreate(String username,
+                               String accessToken,
                                String refreshToken,
                                Date issuedAt) {
 
@@ -151,10 +153,11 @@ public class H2RefreshTokenRepository implements IRefreshTokenRepository {
             RefreshTokenEntity entity = entityOptional.get();
             entity.setIssuedAt(issuedAt);
             entity.setRefreshToken(refreshToken);
+            entity.setAccessToken(accessToken);
             update(entity);
         }
         else{
-            save(username, refreshToken, issuedAt);
+            save(username, accessToken, refreshToken, issuedAt);
         }
 
     }

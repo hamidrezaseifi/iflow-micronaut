@@ -1,74 +1,71 @@
 package com.pth.common.discovery;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pth.common.enums.RoutingLifecycle;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
+import io.micronaut.core.io.ResourceLoader;
+import io.micronaut.core.io.scan.DefaultClassPathResourceLoader;
 import io.micronaut.discovery.DiscoveryClient;
 import io.micronaut.discovery.ServiceInstance;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Singleton
 @Requires(notEnv = Environment.TEST)
+@Requires(resources="classpath:services.json")
 public class RoutingServiceDiscoveryClient implements DiscoveryClient {
 
     private static final RoutingLifecycle LIFECYCLE = RoutingLifecycle.PRODUCTION;
 
     private Map<String, ServiceInstance> services = new HashMap<>();
 
-    public RoutingServiceDiscoveryClient() {
+    public RoutingServiceDiscoveryClient(ResourceLoader resourceLoader) {
         super();
 
-        services.put("profile",new ServiceInstance() {
-            @Override
-            public String getId() {
-                return "profile";
-            }
+        try {
+            Stream<URL> currencyStream = resourceLoader.getResources("classpath:services.json");
+            List<URL> urlList = currencyStream.collect(Collectors.toList());
 
-            @Override
-            public URI getURI() {
-                return URI.create("http://localhost:1020");
-            }
-        });
-        services.put("core",new ServiceInstance() {
-            @Override
-            public String getId() {
-                return "core";
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            List<RoutingServiceItem> routingItemList =
+                    mapper.readValue(urlList.get(0), new TypeReference<List<RoutingServiceItem>>() {});
 
-            @Override
-            public URI getURI() {
-                return URI.create("http://localhost:1010");
-            }
-        });
+            services = routingItemList.stream().collect(Collectors.toMap(r -> r.getId(), r -> r.toServiceInstance()));
+        }
+        catch (Exception ex){
 
+        }
 
     }
 
     public Publisher<List<ServiceInstance>> getInstances(String serviceId) {
 
-        List<ServiceInstance> list = new ArrayList<>();
+        if(services.containsKey(serviceId)){
+            List<ServiceInstance> list = new ArrayList<>();
 
+            list.add(services.get(serviceId));
 
-        list.add(services.get(serviceId));
-
-        return Flowable.just(list);
+            return Flowable.just(list);
+        }
+        return Flowable.empty();
     }
 
     public Publisher<List<String>> getServiceIds() {
 
-        List<String> serviceInfoDTOs =
-                Arrays.asList("profile", "core");
-
-        return Flowable.just(serviceInfoDTOs);
+        return Flowable.just(services.keySet().stream().collect(Collectors.toList()));
     }
 
     @Override
