@@ -1,0 +1,70 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" ng-app="iflowApp" >
+    <head>
+    	<th:block th:include="layout/mainLayout :: pageheader" />
+		<script th:src="@{/js/workflow-list.js}"></script>
+		<link th:href="@{/css/table.css}" rel="stylesheet" />
+    </head>
+    <body ng-controller="BodyController">
+        <header th:replace="layout/mainLayout :: header" ></header>
+        <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+		<div class="content-container" ng-controller="WorkflowTypesController">
+			<div class="page-toolbar">
+				<div class="page-title" th:text="#{menu-workflow-list}"></div>
+				<button class="toolbar-button" ng-click="reload();"><i class="material-icons">refresh</i></button>
+				<a class="toolbar-link" href="/workflow/create"><i class="material-icons">playlist_add</i></a>
+				
+				<span class="toolbar-separator w100"></span>
+				
+				<span class="form-check abc-checkbox abc-checkbox">
+					<input type="checkbox" class="toggle-checkbox form-check-input" ng-model="searchFilter.meAssigned" ng-checked="searchFilter.meAssigned" id="me-assigned-check">
+					<label class="form-check-label" for="me-assigned-check" th:text="#{workflow-assigned-me}"></label>
+				</span>
+				
+				<span class="form-check abc-checkbox abc-checkbox">
+					<input type="checkbox" class="toggle-checkbox form-check-input" ng-checked="hasNoArhiveStatus()" id="no-archive-check" ng-click="toggleIsArchive()">
+					<label class="form-check-label" for="no-archive-check" th:text="#{workflow-not-archive}"></label>
+				</span>
+				
+			</div>
+		
+		    <table class="table table-bordered table-responsive iflow-table">
+		    	<thead class="thead-dark">
+		    		<tr>
+		    			<th scope="col" th:text="#{workflow-type}"></th>
+		    			<th scope="col" th:text="#{workflow-current-step}"></th>
+		    			<th scope="col" th:text="#{workflow-status}"></th>
+		    			<th scope="col" th:text="#{workflow-assignto}"></th>
+		    			<th scope="col"></th>
+		    		</tr>
+		    	</thead>
+		    	<tbody>
+		     		<tr ng-repeat="item in items">
+		    			<td scope="row">{{item.workflowType.title}}</td>
+		    			<td>{{item.currentStep.title}}</td>
+		    			<td>{{item.status}}</td>
+		    			<td>{{item.assignToUserFullName}}</td>
+		    			<td><a class="tool-link" ng-href="/workflow/edit/{{item.workflowType.identity}}/{{item.identity}}/{{item.currentStep.identity}}"><i class="material-icons">edit</i></a></td>
+		    		</tr>
+		     		
+		    	
+		    	</tbody>
+		    </table>
+		    
+		    <div style="min-height: 20px; border: 1px solid gray; ">
+		    {{searchFilter}}
+		    </div>
+		    
+		    <script type="text/javascript">
+				var loadInitialUrl = "/workflow/general/data/initsearch";
+				var loadUrl = "/workflow/general/data/search";
+		    </script>
+		
+		
+		</div>
+		
+        <div th:replace="layout/message_panel :: message_panel" ></div>
+		
+        <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

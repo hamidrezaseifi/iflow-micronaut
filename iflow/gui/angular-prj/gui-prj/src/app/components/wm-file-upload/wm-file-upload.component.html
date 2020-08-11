@@ -1,0 +1,38 @@
+
+								<div class="panel-heading uploaded-file-header" [ngClass]="{'noDisplay' : showHeaderTitle === false}">{{ 'common.attachments' | translate }}</div>
+								
+				    			<div class="uploaded-file-item-container" [ngClass]="{'uploaded-file-item-container-border' : drawBorder}">
+									<div class="upload-file-container">
+										<input type="file" class="hide-file-input" id="inlineuploadfile" (change)="uploadFile($event)" 
+				    						accept=".pdf,.jpg, .png, .tiff, .bmp">
+				    				 	<label class="hide-file-label" for="inlineuploadfile"></label>
+										<div class="clear"></div>
+				    				</div>
+				    				<div *ngFor="let uploaded of uploadedFiles" class="uploaded-file-item list-group-item" >
+				    					<span class="filename">{{uploaded.fileName}}</span>
+				    					
+				    					
+										<button class="btn btn-light upload-button" style="float: right;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<i class="material-icons">more_horiz</i>
+										</button>
+										<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					    					<a target="_blank" class="btn btn-primary upload-button" 
+					    						href="/general/data/file/view/{{uploaded.scanedPdfPath}}"><i class="material-icons">cloud_download</i></a>
+					    					<button class="btn btn-primary upload-button" 
+					    						(click)="showFilePreview(uploaded);"><i class="material-icons">pageview</i></button>
+					    					<button *ngIf="canshowOcrUploadButton(uploaded) && ocrScanningEnabled" class="btn btn-primary upload-button" 
+					    						(click)="ocrUploadedFile(uploaded);"><i class="material-icons">play_for_work</i></button>
+					    					<button *ngIf="canShowScanResultsButton(uploaded) && ocrScanningEnabled" class="btn btn-success upload-button" 
+					    						(click)="showScanResults(uploaded);"><i class="material-icons">details</i></button>
+					    					<button class="btn btn-dark upload-button" 
+					    						(click)="removeUploadedFile(uploaded);"><i class="material-icons">delete</i></button>
+										</div>
+  				    					
+				    					
+				    				</div>
+				    			</div>
+
+		<app-file-preview [showDialog]="showFilePreviewDialog" (dialogClosed)="onFilePreviewDialogClosed($event)" [fileUrl]="previewFile.scanedPdfPath" 
+			[fileIsPdf]="previewFile.fileIsPdf" [fileIsImage]="previewFile.fileIsImage" [imageSizeX]="previewFile.imageSizeX" 
+			[imageSizeY]="previewFile.imageSizeY"></app-file-preview>
+				    			

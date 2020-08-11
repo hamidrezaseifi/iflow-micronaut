@@ -1,0 +1,55 @@
+		<div class="content-container">
+			<div class="page-toolbar">
+				<div class="page-title">{{ 'menu-workflow-create' | translate }}</div>
+				<a class="toolbar-link" [routerLink]="['/workflow/list']"><i class="material-icons">list</i></a>
+			</div>
+		
+			<div class="workflow-content">
+				<div class="item-row">
+					<div class="item-label">{{ 'common.expiredays' | translate }}</div>
+					<div class="item-content"><input type="number" max="999" min="1" maxlength="3" [(ngModel)]="expireDays" /></div>
+					<div class="clear"></div>
+				</div>
+				<div class="item-row">
+					<div class="item-label">{{ 'workflow-assignto' | translate }}</div>
+					<div class="item-content">
+						<app-wm-assign-list [users]="(generalDataObs | async)?.company.users" 
+							[departments]="(generalDataObs | async)?.company.departments" [assignedUsers]="assignedUsers" 
+							(onSelectedAssignChanged)="onUsersSelected($event)">
+							</app-wm-assign-list>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="item-row">
+					<div class="item-label">{{ 'workflow-comments' | translate }}</div>
+					<div class="item-content">
+						<textarea [(ngModel)]="comments" class="wm-comments-textarea"></textarea>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="item-row">
+					<div class="item-label">{{ 'common.attachments' | translate }}</div>
+					<div class="item-content">
+						<app-wm-file-upload [ocrScanningEnabled]="false" [editService]="editService" [showHeaderTitle]="false" 
+						(onUploadedFilesChanged)="onUploadedFilesChanged($event)" [drawBorder]="true" > </app-wm-file-upload>
+					</div>
+					<div class="clear"></div>
+				</div>
+				<div class="item-row">
+					
+				<div class="workflow-step-button-bar">
+					<button (click)="save()" class="button-bar-button step-button button-save">
+						<span>{{ 'common.save' | translate }}</span>
+						<i class="material-icons">save</i>
+					</button>
+					<div class="clear"></div>
+				</div>
+					
+				</div>
+				        				
+				<div class="item-row" [innerHTML]="debugData">
+				</div>
+
+			</div>
+		    	    		 		
+		</div>

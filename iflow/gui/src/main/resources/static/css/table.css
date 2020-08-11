@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+.iflow-table{
+	border: 1px solid lightgray;
+	width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: 60px;
+}
+
+
+.iflow-table tbody tr:nth-child(odd) {
+
+	background-color: #f1f1f1;
+}
+
+.iflow-table tbody tr:nth-child(even) {
+
+	background-color: #ffffff;
+}
+
+.iflow-table tbody tr:hover{
+	background-color: #ddeeff !important;
+}
+
+.iflow-table thead {
+
+	background-color: #aaaaaa;
+}
+
+.iflow-table td,.iflow-table th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+.iflow-table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #ddd;
+}
+
+.iflow-table > thead > tr > th,
+.iflow-table > tbody > tr > th,
+.iflow-table > tfoot > tr > th, 
+.iflow-table > thead > tr > td, 
+.iflow-table > tbody > tr > td, 
+.iflow-table > tfoot > tr > td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+
+
+.iflow-table .tool-button{
+	border: none;
+    color: #f7fbc4;
+    background: transparent;
+	float: right;
+	height: 28px;
+    
+}
+
+
+.iflow-table .tool-link{
+	border: none;
+    background-color: gray;
+    color: #f7fbc4;
+    padding: 5px;
+    border-radius: 13px;
+    display: inline-block;
+}
+
+
+.iflow-table .tool-button i.material-icons, .iflow-table .tool-link i.material-icons{
+	font-size: 18px;
+}
+
+

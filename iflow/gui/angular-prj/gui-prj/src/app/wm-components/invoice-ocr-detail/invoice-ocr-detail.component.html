@@ -1,0 +1,64 @@
+
+<div class="row scanned-result-container">
+	<div class="scanned-item-list-container">
+		<div class="list-group" id="list-tab" role="tablist">
+			<div class="list-group-item">			
+				<select class="custom-select" (ngModelChange)="setSelectedPresetIdentity($event)" [ngModel]="getSelectedPresetIdentity()">
+					<option *ngFor="let preset of ocrPresetList;" value="{{preset.identity}}">{{preset.presetName}}</option>
+				</select>			
+			</div>
+			<div class="list-group-item disabled">{{ 'invoice-scanned-properties' | translate }}</div>
+			<div *ngFor="let key of keys;" class="list-group-item list-group-item-action" [ngClass]="{'active': selectedKey === key}">
+				<a class="scanned-item" [ngClass]="{'active': selectedKey === key}" (click)="selectDetailItem(key)" >{{ propertyLabels[key] }}</a>
+				<div class="item-value-container" [ngClass]="{'active': selectedKey === key}">
+					<input type="text" (blur)="isEditing[key] = false;" (keyup.enter)="isEditing[key] = false;" [(ngModel)]="editedValues[key]" 
+						id="valueeditbox{{key}}" autofocus [readonly]="isEditing[key] === false" value="" class="item-value ">
+					<button class="inline-edit-button-edit" *ngIf="isEditing[key] === false" (click)="startEditKey(key)">
+						<i class="material-icons edit-value-icon">edit</i>
+					</button>
+					<button class="inline-edit-button-apply" *ngIf="isEditing[key] === true" (click)="this.isEditing[key] = false;">
+						<i class="material-icons edit-value-icon">done</i>
+					</button>
+					<div class="clear"></div>
+				</div>
+				
+				<div class="clear"></div>
+			</div>
+			
+		</div>
+  		<div >{{debugData}}</div>
+	</div>
+	<div class="scanned-item-detail-container">
+		
+		<div *ngFor="let wordKey of keys;" class="tab-pane word-list-item fade" [ngClass]="{'show': selectedKey === wordKey}">
+			
+			<h3>{{ propertyLabels[wordKey] }}</h3>
+			
+			<div>
+				<div *ngFor="let foundWord of foundWords[wordKey];" class="list-group-item list-group-item-action scanned-item-detail-item" 
+					[ngClass]="{'active': isWordSelected(foundWord)}">
+					<a class="scanned-item found-item" (click)="selectFoundWord(foundWord)" >{{ foundWord.text }} : {{ foundWord.value.text }}</a>
+					<button class="inline-edit-button-use" (click)="useFoundWord(foundWord)">
+						<i class="material-icons">arrow_back_ios</i>
+					</button>
+					<div class="clear"></div>				
+				</div>
+				
+			</div>
+			
+		</div>
+	</div>  
+	<div class="scanned-item-preview-container" #scannedItemPreviewContainer>
+		
+		<pdf-viewer *ngIf="fileIsPdf" [src]="fileViewUrl" useBrowserLocale="true" [zoom]="pdfZoom" [show-all]="showAllPages" 
+			[page]="pdfPageIndex" height="99%"></pdf-viewer>
+
+		<div *ngIf="fileIsImage" class="scanned-item-preview-image" [style.width.px]="previewWidth"
+			 [style.backgroundImage]="imageFileViewUrl" ></div>
+		 
+		<div class="selected-word-area" *ngIf="showSelectedArea" [style.width.px]="selectedAreaWidth" [style.height.px]="selectedAreaHeight" 
+		 [style.left.px]="selectedAreaLeft" [style.top.px]="selectedAreaTop"></div> 
+	</div>  
+
+</div>  
+

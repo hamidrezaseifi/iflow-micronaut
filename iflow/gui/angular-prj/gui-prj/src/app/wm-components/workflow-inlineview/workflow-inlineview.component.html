@@ -1,0 +1,69 @@
+			
+			
+				<div class="workflow-inline-content-container" *ngIf="viewWorkflowModel != null">
+				
+					<div class="workflowview-dialog-content-container">
+						<div class="item-row">
+							<div class="item-row">
+								<div class="item-label">{{ 'workflow-title' | translate }}</div>
+								<div class="item-content">{{viewWorkflowModel.workflowType.title}}</div>
+								<div class="clear"></div>
+							</div>
+							<div class="item-row">
+								<div class="item-label">{{ 'workflow-comments' | translate }}</div>
+								<div class="item-content">{{viewWorkflowModel.comments}}</div>	
+								<div class="clear"></div>
+							</div>
+							<div class="item-row">
+								<div class="item-label">{{ 'workflow-current-step' | translate }}</div>
+								<div class="item-content">
+									{{viewWorkflowModel.currentStep.title}}
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="item-row">
+								<div class="item-label">{{ 'workflow-status' | translate }}</div>
+								<div class="item-content">
+									{{viewWorkflowModel.status}}
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+								<div style="text-align: center; font-weight: bold;">Files</div>
+								<div class="item-row" *ngFor="let file of viewWorkflowModel.files;" style="border-bottom: 1px #9a9a9a dashed">
+									<div>
+										<a (click)="showFilePreview(file);" class="workflow-file-view-link">
+											<strong>{{file.title}}</strong> (Ver: {{file.activeFileVersion}})
+										</a>
+										<a href="/general/data/file/download/{{file.activeFilePathHash}}?filename={{file.title}}" class="workflow-file-view-link" target="_blank">
+											<i class="material-icons">save_alt</i>
+										</a>
+									</div> 
+								</div>
+							</div>
+							<div style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+								<div style="text-align: center; font-weight: bold;">Actions</div>
+								<div class="item-row" *ngFor="let action of viewWorkflowModel.actions;" style="border-bottom: 1px #9a9a9a dashed">
+									<div class="item-row">
+										<div class="action-content">
+											<div><strong>{{action.currentStep.title}}</strong>:</div> 
+											<div>({{action.status}}) ({{action.assignToUserName}})</div> 
+											<div style="">{{action.comments}}</div>
+										</div>	
+										<div class="clear"></div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					
+				
+				</div>
+				
+			
+			
+		<app-file-preview [showDialog]="showFilePreviewDialog" (dialogClosed)="onFilePreviewDialogClosed($event)" [fileUrl]="previewFile.scanedPdfPath" 
+			[fileIsPdf]="previewFile.fileIsPdf" [fileIsImage]="previewFile.fileIsImage" [imageSizeX]="previewFile.imageSizeX" 
+			[imageSizeY]="previewFile.imageSizeY"></app-file-preview>
+				

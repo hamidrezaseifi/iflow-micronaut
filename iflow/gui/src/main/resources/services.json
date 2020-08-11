@@ -1,0 +1,15 @@
+[
+  {
+    "id": "profile",
+    "baseUrl": "http://localhost:1020"
+  },
+  {
+    "id": "core",
+    "baseUrl": "http://localhost:1010"
+  },
+  {
+    "id": "workflow",
+    "baseUrl": "http://localhost:1030"
+  }
+]
+

@@ -1,0 +1,71 @@
+@charset "ISO-8859-1";
+
+.message-panel-container {
+    height: 170px;
+    margin-top: 10px;
+    border: 1px solid gray;
+    background-color: #fbfbfb;
+    position: fixed !important;
+    width: 100vw;
+    bottom: 30px;
+}
+
+.message-panel-toolbar{
+	height: 30px;
+	background-color: #dddddd;	
+	padding-top: 2px;
+	padding-right: 10px;
+}
+
+.message-panel-toolbar span.title{
+	padding-left: 20px;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.message-panel-toolbar .toolbar-button{
+	float: right;	
+}
+
+.message-panel-items-container{
+	height: calc(100% - 30px);
+	padding: 4px 4px;
+	overflow: auto;
+}
+
+.message-panel-items-container .message-panel-item{
+	height: 33px;
+	line-height: 22px;
+	margin: 3px 0;
+	background-color: #dceefa;
+	padding: 5px;
+	padding-left: 15px;
+	border: 1px solid #d0cfcf;
+}
+
+.message-panel-items-container .message-panel-item:hover{
+	background-color: #dbfbf0;
+}
+
+.message-panel-items-container .message-panel-item a{
+	color: gray;
+}
+
+.message-panel-items-container .message-panel-item a:hover{
+	color: #946b73;
+}
+
+.toolbar-image {
+    border: none;
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+    float: right;
+}
+
+div.workflowview-dialog-content-container div.item-row {
+    padding: 5px 0;
+}
+
+
+

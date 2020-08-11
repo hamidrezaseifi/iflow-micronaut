@@ -1,0 +1,29 @@
+micronaut:
+  application:
+    name: gui
+  server:
+    port: 1200
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: false
+      oauth:
+        enabled: false
+    token:
+      jwt:
+        enabled: true
+        generator:
+          access-token-expiration: 3600
+          refresh-token-expiration: 172800
+        signatures:
+          secret:
+            generator:
+              jws-algorithm: HS256
+              secret: ${JWT_GENERATOR_SECRET:pleaseChangeThisSecretForANewOne}
+
+  extensions:
+    project: gui
+    securities:
+      passwordpepper: passwordpepper
+

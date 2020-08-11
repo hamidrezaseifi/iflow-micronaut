@@ -1,0 +1,36 @@
+
+.fade:not(.show) {
+    opacity: 0;
+    display: none;
+}
+
+.fade.show {
+    opacity: 1;
+    display: block;
+}
+
+.data-form-group {
+    border: 2px solid #f4f1f1;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 7px;
+}
+
+.editing-form-group{
+	border-color: #c1c1c1;
+}
+
+.editing-form-group .form-control{
+	border-color: #aaaaab;
+}
+
+
+.data-form-group .form-control {
+    width: calc(100% - 165px);
+    display: inline-block;
+}
+
+.data-form-group label {
+    width: 150px;
+    margin-right: 10px;
+}

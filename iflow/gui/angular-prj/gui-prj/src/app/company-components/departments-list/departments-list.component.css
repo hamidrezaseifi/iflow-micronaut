@@ -1,0 +1,265 @@
+
+table {
+  width: 100%;
+  background: #ffffff;
+  margin-top: 30px;
+}
+
+table a.tool-link {
+    color: #828282;
+    cursor: pointer;
+}
+
+.mat-header-cell {
+    color: white;
+    font-size: 16px;
+    font-weight: notmal;
+}
+
+.mat-cell, .mat-footer-cell {
+    color: #0f0f0f;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    border: 1px solid #d7d5d5;
+    text-align: center;
+}
+
+th.mat-header-cell {
+    border: 1px solid #acaaaa;
+    text-align: center;
+}
+
+.mat-header-row{
+	background-color: #374373;
+}
+
+.mat-row{
+	height: 40px;
+}
+
+.mat-row:nth-child(odd){	
+	background-color: #fff;
+}
+
+.mat-row:nth-child(even){	
+	background-color: #f2f2f2;
+}
+
+.mat-row:hover{	
+	background-color: #feffec;
+}
+
+
+.search-toolbar {
+    width: calc(100% - 350px);
+    float: right;
+    padding-top: 8px;
+}
+
+.search-toolbar .nav-item{
+    margin-right: 30px;
+    
+}
+
+.search-toolbar .nav-item input.form-check-input[type=checkbox]{
+    width: 16px;
+    height: 16px;
+    
+}
+
+.search-toolbar .nav-item .form-check-label{
+	margin-bottom: 0;
+    padding-left: 10px;
+    line-height: 20px;
+}
+
+.search-toolbar-item{
+	height: 100%;
+    padding-top: 9px;
+    margin-left: 20px;
+}
+
+.search-toolbar .nav-item {
+    background-color: transparent !important;
+}
+
+.search-toolbar .nav-link.active, .search-toolbar .show>.nav-link {
+    color: #fff !important;
+    background-color: #c7c9cb !important;
+}
+
+.table-striped{
+	
+}
+
+.table-striped thead{
+	background-color: #c1c4c4;
+}
+
+.table-striped thead tr th, .table-striped thead tr td{	
+	border: 2px solid #dee2e6;
+	padding: 4px 6px;
+}
+
+.table-striped th, .table-striped td{	
+	border: 2px solid #dee2e6;
+	padding: 4px 6px;
+}
+
+.table-striped tbody tr{	
+	border: 2px solid #dee2e6;
+}
+
+.table-striped tbody tr:hove{	
+	background-color: #dff7ff;
+}
+
+.form-group label{
+	margin-right: 5px;
+    width: 110px;
+}
+
+.form-group input[type=text], 
+.form-group input[type=email],  
+.form-group input[type=password], 
+.form-group select, 
+.form-group textarea,
+#viewdepartmentdialog .form-group .datacontent {
+	display: inline-block !important;
+    width: calc(100% - 140px) !important;
+}
+
+.tab-content {
+    padding: 10px;
+    border: 1px solid #e6e6e6;
+    border-top: none;
+    height: calc(100vh - 300px);
+}
+
+.modal-dialog-centered-departmentedit{
+	width: calc(100vw - 300px) !important;
+    max-width: 700px;
+    margin: auto;
+}
+
+.department-edit-modal-content {
+	width: 100%;
+}
+
+
+input.select-date{
+	width: calc(100% - 140px) !important;
+	height: 26px;
+}
+
+.invalid-message {
+    font-size: 12px;
+    color: red;
+    padding-left: 120px;
+}
+
+.department-item-label, .department-grp-item-label, select.dep-membertype, .dep-member{
+	float: left !important;
+	margin: 5px 10px;	
+	display: inline-block !important;	
+}
+
+.department-item-label, .department-grp-item-label{
+	display: inline-block;	
+	margin-left: 0;
+}
+
+.department-item-label{
+	width: 150px;
+}
+
+.department-grp-item-label{
+	width: 135px;
+}
+
+
+.dep-list{
+	padding-left: 15px;	
+}
+
+.dep-membertype.custom-checkbox label{
+	margin-top: 3px;
+}
+
+.dep-membertype.custom-checkbox .custom-control-label::before{
+	width: 20px !important;
+	height: 20px !important;
+}
+
+.dep-membertype.custom-checkbox .custom-control-label::after {
+    top: 3px !important;
+    left: -30px !important;
+    width: 30px !important;
+    height: 25px !important;
+}
+
+#viewdepartmentdialog .form-group .datacontent {
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.view-department-membertype-item{
+	height: 34px;
+	line-height: 28px;
+	margin: 5px 0;
+	background: #e4e4e4;
+	padding: 2px 10px;
+	border: 1px solid lightgray;
+}
+
+.view-department-membertype-item .department-item-label{
+	float: none !important;
+	margin: 0 !important;
+}
+
+.modal-dialog.resetpassword-dialog, .modal-dialog.department-delete-dialog{
+	max-width: calc(100vw - 100px) !important;
+    width: 800px !important;
+}
+
+.department-position-row{
+	padding: 4px 10px;
+	margin: 3px 0;
+	text-align: left;
+    float: left;
+}
+
+.department-position-row label{
+	font-weight: bold;
+	padding-right: 5px;
+}
+
+th.mat-column-actions{
+	width: 100px;
+}
+
+th.mat-column-department-status{
+	width: 100px;
+}
+
+th.mat-column-department-title{
+	width: calc(50% - 110px);
+}
+
+th.mat-column-department-manager{
+	width: calc(50% - 110px);
+}
+
+.modal-dialog form label{
+	font-weight: bold;	
+}
+

@@ -1,0 +1,86 @@
+
+		    <div th:fragment="viewWorkflow" class="modal fade" tabindex="-1" id="viewworkflowdialog" role="dialog" aria-labelledby="viewworkflowdialogCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title dialog-title" id="viewworkflowdialogTitle" th:text="#{common.view-workflow}"></h5>
+				        <button class="dialog-toolbar-button close"  data-dismiss="modal" aria-label="Close">
+				        	<i class="material-icons">close</i>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				      
+						<div class="content-container">
+						
+							<div class="workflowview-dialog-content-container">
+								<div class="item-row" ng-show="true">
+									<div class="item-row">
+										<div class="item-label" th:text="#{workflow-title}"></div>
+										<div class="item-content">{{viewWorkflow.workflowType.title}}</div>
+										<div class="clear"></div>
+									</div>
+									<div class="item-row">
+										<div class="item-label" th:text="#{workflow-comments}"></div>
+										<div class="item-content">{{viewWorkflow.comments}}</div>	
+										<div class="clear"></div>
+									</div>
+									<div class="item-row" ng-show="true">
+										<div class="item-label" th:text="#{workflow-current-step}"></div>
+										<div class="item-content">
+											{{viewWorkflow.currentStep.title}}
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div class="item-row" ng-show="true">
+										<div class="item-label" th:text="#{workflow-status}"></div>
+										<div class="item-content">
+											{{viewWorkflow.status}}
+										</div>
+										<div class="clear"></div>
+									</div>
+									<div style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+										<div style="text-align: center; font-weight: bold;">Files</div>
+										<div class="item-row" ng-repeat="file in viewWorkflow.files" style="border-bottom: 1px #9a9a9a dashed">
+											<div>
+												<a href="/workflow/file/view/{{viewWorkflow.identity}}/{{file.identity}}" class="workflow-file-view-link" target="_blank">
+													<strong>{{file.title}}</strong> (Ver: {{file.activeFileVersion}})
+												</a>
+												<a href="/workflow/file/download/{{viewWorkflow.identity}}/{{file.identity}}" class="workflow-file-view-link" target="_blank">
+													<i class="material-icons">save_alt</i>
+												</a>
+											</div> 
+										</div>
+									</div>
+									<div style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+										<div style="text-align: center; font-weight: bold;">Actions</div>
+										<div class="item-row" ng-repeat="action in viewWorkflow.actions" style="border-bottom: 1px #9a9a9a dashed">
+											<div class="item-row">
+												<div class="action-content">
+													<div><strong>{{action.currentStep.title}}</strong>:</div> 
+													<div>({{action.status}}) ({{action.assignToUserName}})</div> 
+													<div style="">{{action.action}}</div>
+												</div>	
+												<div class="clear"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						
+						</div>
+		    				
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button>
+				        <button type="button" class="btn btn-primary" ng-if="viewWorkflow.notAssigned" ng-click="assignWorkflowMe(viewWorkflow.identity);"><i class="material-icons">assignment_ind</i></button>
+				        <a type="button" class="btn btn-primary" ng-if="viewWorkflow.meAssigned" href="/workflow/edit/{{viewWorkflow.identity}}"><i class="material-icons">pageview</i></a>
+				      </div>
+				    </div>
+				  </div>		    
+		    	
+		    </div>
+
+
+
+		

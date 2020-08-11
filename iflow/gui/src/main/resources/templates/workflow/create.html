@@ -1,0 +1,34 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" ng-app="iflowApp" >
+    <head>
+    	<th:block th:include="layout/mainLayout :: pageheader" />
+		<link th:href="@{/css/table.css}" rel="stylesheet" />
+		<link th:href="@{/css/workflow-create.css}" rel="stylesheet" />
+    </head>
+    <body ng-controller="BodyController">
+        <header th:replace="layout/mainLayout :: header" ></header>
+        <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+		<div class="content-container" ng-controller="WorkflowCreateController">
+			<div class="page-toolbar">
+				<div class="page-title" th:text="#{menu-workflow-create}"></div>
+				<a class="toolbar-link" href="/workflow/list"><i class="material-icons">list</i></a>
+			</div>
+		
+			<div class="workflow-content">
+				<div class="item-row">
+					<div class="list-group">
+					  <a class="list-group-item list-group-item-action list-group-item-title" th:text="#{workflow-type}"></a>
+					  <a th:each="type: ${WorkflowTyoeList}" th:href="@{'/workflow/' + ${type.getControllerPreffix()} + '/create'}" class="list-group-item list-group-item-action link-out" th:text="${type.title}"></a>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		
+		</div>
+		
+        <div th:replace="layout/message_panel :: message_panel" ></div>
+		
+        <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

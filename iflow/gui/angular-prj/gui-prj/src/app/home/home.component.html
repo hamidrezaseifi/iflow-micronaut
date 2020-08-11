@@ -1,0 +1,65 @@
+﻿<h1>Home!</h1>
+<h3>{{ isPresent ? "is Present" : "is not Present"}}</h3>
+
+<div class="cubes-container-parent">
+
+	<div class="cubes-container">
+		<div class="cubes-container-toolbar">
+			<i class="material-icons cubes-container-toolbar-button" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }" (click)="startEditCubes()">build</i>
+			
+			<i class="material-icons cubes-container-toolbar-button apply-button" *ngIf="menusIsChanged" (click)="applyEditCubes()">done</i>
+		</div>
+		<div *ngFor="let cubeRow of cubes; let row = index">
+		
+			<a *ngFor="let cube of cubeRow; let col = index" class="cube" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }" 
+				(click)="selectMenuItem(cube)" [style.background-color] = "cube.backColor" [style.color] = "cube.foreColor" >
+				<img class="menu-icon" src="{{ cube.image }}">
+				<span class="cube-text">
+					{{ cube.text }}
+				</span>
+			
+			</a>
+		
+		</div>
+		
+	</div>
+
+</div>
+
+		<div class="modal fade show" tabindex="-1" *ngIf="showSelectMenuDialog" role="dialog" id="selectmenudialog">
+			<div class="modal-dialog menuitem-dialog" role="document">
+				<div class="modal-header">
+			 		<h5 class="modal-title">{{ 'common.select-menu-item' | translate }}</h5>
+					<button type="button" class="close" (click)="hideMenuDialog()" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>			
+				<div class="modal-body">
+					
+					<div id="menuitemtree" class="menuitemtree">
+						<ul class="list-group">
+							<li *ngFor="let menu of menus;">
+								<div class="list-group-item node-treeview1 menu-item">
+									<i *ngIf="menu.children.length > 0" class="material-icons" (click)="toggleSubMenuShowed(menu.id)">add</i>
+									<i *ngIf="menu.children.length === 0" class="space-icon"></i>
+									<span class="menu-item-text" (click)="selectMenuItemForCube(menu)">{{ menu.label }}</span>
+									<div class="clear"></div>
+								</div>
+								<ul class="list-group child-item" *ngIf="isSubMenuShowed(menu.id)">
+									<li *ngFor="let childmenu of menu.children;" >
+										<div class="list-group-item node-treeview1 menu-item">
+											<span class="menu-item-text" (click)="selectMenuItemForCube(childmenu)">{{ childmenu.label }}</span>
+										</div>
+										
+									</li>
+								
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>	
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" (click)="hideMenuDialog()">{{ 'common.close' | translate }}</button>
+				</div>						
+			</div>
+		</div>

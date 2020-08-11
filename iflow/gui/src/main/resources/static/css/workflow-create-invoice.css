@@ -1,0 +1,271 @@
+@charset "UTF-8";
+
+div.workflow-content-container{
+	border: 1px solid lightgray;
+    margin: 10px 0px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+}
+
+div.workflow-content{
+	float: left;
+    background-color: #dad9d9;
+    padding: 15px;
+    border-radius: 5px;
+    width: calc(75% - 15px);
+}
+
+div.workflow-content-record{
+    padding: 15px;
+}
+
+div.workflow-record{
+	float: right;
+    background-color: #dad9d9;
+    padding: 8px;
+    border-radius: 5px;
+    width: 25%;
+    min-height: 500px;
+}
+
+.workflow-content .panel{
+	background-color: white !important;
+}
+
+.twopannel .panel{
+	
+	height: 230px;
+}
+
+.twopannel .panel.panel-vendor{
+	width: calc(100% - 310px);
+	float: left;
+}
+
+.twopannel .panel.panel-discount{
+	width: 300px;
+	float: right;
+}
+
+.twopannel .panel.panel-discount input[type=text]{
+	width: 100px;
+}
+
+.small-content{
+	width: 120px;
+}
+
+.item-content select{
+	height: 26px;
+} 
+
+.item-content select, .item-content input[type=text] {
+	height: 26px;
+	width: calc(100% - 20px);
+} 
+
+.item-content.larg-content{
+	width: calc(100% - 450px);
+}
+
+.workflow-content .panel .panel-heading{
+	font-weight: bold;
+}
+
+div.workflow-content div.item-row, div.workflow-content-record div.item-row {
+    margin: 5px 0 10px;
+}
+
+div.workflow-content div.workflow-step-button-bar, div.workflow-content-record div.workflow-step-button-bar{
+    background-color: white;
+    padding: 6px;
+    padding-right: 20px;
+   
+}
+
+div.workflow-content div.item-row div.item-label, 
+div.workflow-content-record div.item-row div.item-label{
+    float: left;
+    padding-right: 10px;
+    padding-left: 2px;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+div.workflow-content div.item-row .label-large, 
+div.workflow-content-record div.item-row .label-large{
+    width: 150px;
+}
+
+.large-content{
+	width: calc(100% - 420px);
+}
+
+.large-content input[type=text], .large-content select, .large-content areatext{
+	width: calc(100% - 30px);
+}
+
+
+div.workflow-content div.item-row .small-label, 
+div.workflow-content-record div.item-row .small-label{
+    width: 122px;
+}
+
+div.workflow-content div.item-row div.item-content, div.workflow-content-record div.item-row div.item-content {
+    padding-left: 0px;
+    float: left;
+}
+
+.item-content input[type=checkbox]{
+	width: 20px;
+	height: 20px;	
+}
+
+div.fullrowfromlabel{
+	width: calc(100% - 150px);	
+}
+
+div.fullrowfromlabel input[type=text]{
+	width: calc(100% - 10px);	
+}
+
+div.fullrowfromlabel textarea{
+	width: calc(100% );	
+	height: 100px;	
+}
+
+textarea.comments-fullrow{
+	width: calc(100% - 100px);	
+}
+
+div.workflow-content div.item-row div.item-content input.file-title
+{
+    width: calc(50% - 170px);
+    height: 26px;
+}
+
+div.workflow-content div.item-row div.item-content input.file-file
+{
+    width: 50%;
+    height: 26px;
+    display: inline-block;;
+}
+
+.assign-list{
+	border: 1px solid lightgray;
+    padding: 6px;
+    border-radius: 4px;
+    width: 100%;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 24px;
+}
+
+div.assign-list div.user-item-box {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 2px 4px;
+    float: left;
+    background: #e6e6e6;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+div.assign-list div.user-item-box button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    padding-top: 3px;
+    float: right;
+    margin-left: 5px;
+}
+
+div.assign-list div.user-item-box button i.material-icons{
+	font-size: 16px;
+}
+
+div.assign-list div.user-item-box span {
+    height: 20px;
+    display: inline-block;
+    float: left;
+}
+
+button.show-select-dialog {
+    float: right;
+    margin-right: -22px;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+}
+
+button.file-action {
+    float: right;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+    margin-top: 4px;
+    background: transparent;
+}
+
+.step-button, .step-button:active{
+	float: right;
+    margin-left: 10px;
+    border: outset 2px #d4d4d1;
+    padding: 4px 20px;
+}
+
+.step-button:hover:not(:disbaled){
+    background-color: #9e9e9e;
+    color: #fbcbc4;
+    border: outset 2px #b7b7b3;
+    
+}
+
+.step-button:not(:disbaled), 
+.step-button:active:not(:disbaled){
+    background-color: gray;
+    color: #f7fbc4;
+}
+
+.step-button:disabled{
+    background-color: gray;
+    color: #bdbcbc !important;
+}
+
+.file-container{
+	border:gray 1px solid; 
+	padding: 6px;
+}
+
+.file-container .file-row{
+	border:gray 1px solid; 
+	padding: 2px 2px;
+	margin: 4px 6px;
+	margin-right: 0;
+}
+
+.file-container .file-row:nth-child(even){
+	background: #dbf1fb;
+}
+
+.file-container .file-row:nth-child(odd){
+	background: #f3f3e1;
+}
+
+.workflow-file-view-link, .workflow-file-view-link:active, .workflow-file-view-link:visited{
+	color: #333;
+}
+
+.workflow-file-view-link:hover{
+	color: #551113;
+}
+
+.workflow-file-view-link i.material-icons{
+	width: 24px;
+}
+

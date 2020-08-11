@@ -1,0 +1,115 @@
+
+.navbar-item {
+    float: right;
+    margin-right: 30px;
+}
+
+button.user-toggle-button {
+    border: none;
+    width: 170px;
+    text-align: left;
+    height: 34px;
+    color: white;
+    position: relative;
+}   
+    
+
+button.user-toggle-button i.material-icons {
+    font-size: 22px;
+    margin-right: 5px;
+    float: left;
+}
+    
+.navbar-nav a.nav-link{
+	color: white;
+	font-size: 14px;
+}    
+    
+.iflow-navbar .dropdown-menu{
+	background: #0169be;
+    color: white;
+}
+    
+.iflow-navbar .dropdown-menu:hover{
+	background: #0169be;
+    color: #ffffd7;
+}
+
+.iflow-navbar .dropdown-item{
+	color: white;
+	width: 220px !important;	
+}
+
+.iflow-navbar .dropdown-item:hover{
+	background: #0169be;
+	color: #ffffd7;
+}
+
+.navbar-nav a.nav-link:hover{
+	color: #ffffd7;
+}    
+
+.navbar {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+ul.navbar-nav{
+	display: block !important;
+	float: left;
+	width: calc(100% - 380px);
+	padding-left: 10px;
+}
+
+ul.navbar-nav li.nav-item {
+    display: block !important;
+    float: left;
+    margin: 0 10px;
+}
+
+div.iflow-navbar-bar{
+	background: #0169be;
+	color: white;
+}
+
+
+.navbar-logo
+{
+  height: 36px;
+  float: left;
+  margin-left: 20px;
+}
+
+a.navbar-brand{
+	color: black;
+}
+
+a.navbar-brand:hover{
+	color: black;
+}
+
+span.logo-title{
+	font-size: 22px;
+	float: left;
+	margin-left: 20px;
+	
+}
+
+.dropdown-menu{
+	top: auto;
+    right: auto;
+}
+
+.navbar-image{
+	height: 20px;
+	margin-left: 5px;
+	float: right;
+}
+
+.navbar-item-text{
+	float: left;
+}
+

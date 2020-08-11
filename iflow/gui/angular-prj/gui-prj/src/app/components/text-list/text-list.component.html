@@ -1,0 +1,23 @@
+
+	<div class="content-container">
+		<div class="page-toolbar">
+			<div class="page-title">{{ 'text.text-list' | translate }}</div>
+		</div>
+	
+		<div class="workflow-content">
+			<div class="item-row">
+				<div class="list-group">
+				  <div class="list-group-item list-group-item-action" >
+				  	<input type="text" class="adding-text" (ngModelChange)="addTextChanged($event)" [ngModel]="textToAdd"/>
+				  	<a (click)="addText()" class="toolbar-link delete-button" ><i class="material-icons">playlist_add</i></a>
+				  </div>
+				  <div *ngFor="let txt of textList;" class="list-group-item list-group-item-action" >
+				  	<span>{{txt}}</span>
+				  	<a (click)="deleteText(txt)" class="toolbar-link delete-button" ><i class="material-icons">delete</i></a>
+				  </div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+
+	</div>

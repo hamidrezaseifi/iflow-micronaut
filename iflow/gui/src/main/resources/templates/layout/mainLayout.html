@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head th:fragment="pageheader">
+    <title tiles:fragment="title" th:text="#{site.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    
+    <link rel="shortcut icon" th:href="@{/images/icon.png}">
+    
+    <link th:href="@{/css/app.css}" rel="stylesheet" />
+    <link th:href="@{/css/message-panel.css}" rel="stylesheet" />
+    <link th:href="@{/angular/angular-material.min.css}" rel="stylesheet" />
+    <link th:href="@{/angular/angular-resizable.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/workflow-view-dialog.css}" rel="stylesheet">
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    
+    <script th:src="@{/js/moment.js}"></script>
+    
+    <script th:src="@{/angular/angular.min.js}"></script>		
+    <script th:src="@{/angular/angular-animate.min.js}"></script>
+    <script th:src="@{/angular/angular-aria.min.js}"></script>
+    <script th:src="@{/angular/angular-messages.min.js}"></script>
+    <script th:src="@{/angular/angular-material.min.js}"></script>
+    <script th:src="@{/angular/angular-sanitize.js}"></script>
+    <script th:src="@{/angular/angular-resizable.js}"></script>
+    
+    
+    <link rel="stylesheet" th:href="@{/css/ng-table.min.css}">
+    <script th:src="@{/js/ng-table.js}"></script>
+    
+    <link rel="stylesheet" type="text/css" th:href="@{/css/angular-material-accordion.css}">
+    <script type="text/javascript" th:src="@{/js/angular-material-accordion.js}"></script>
+        
+    <script th:if="${isLogged == false}" th:src="@{/js/login-app.js}"></script>
+    
+    <link th:href="@{/css/icon.css}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
+    
+    
+    <script th:src="@{/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/js/datepicker-de.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
+    <link rel="stylesheet" th:href="@{/css/build.css}">
+    
+    <script th:if="${isLogged}" th:src="@{/js/app.js}"></script>
+    <script th:if="${isLogged}" th:src="@{/js/workflow-message.js}"></script>
+    
+  </head>
+    <body ng-controller="BodyController">
+        
+      <header th:fragment="header">
+
+		<nav class="navbar navbar-expand-lg navbar-toggleable-md navbar-light bg-light navbar-fixed-top" th:fragment="navbar">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/"><img class="logo" th:src="@{/images/fbim2.png}" /></a>
+				</div>
+				<ul class="navbar-nav" th:if="${isLogged}">
+					<li th:each="menu: ${pageMenuList}" th:if="${menu.isEnabled()}" th:class="${menu.hasChildren()}? 'dropdown nav-item' : 'nav-item'">
+						<a class="nav-link" th:if="${!menu.hasChildren()}" th:href="${menu.getUrl()}" >
+							<span th:if="${menu.hasImage()}" th:class="${menu.getCssClass('menu-image')}"></span>
+							<span th:text="${menu.getLabel()}"></span>
+						</a>
+						<a class="nav-link dropdown-toggle" th:if="${menu.hasChildren()}" href="#"  data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span th:if="${menu.hasImage()}" th:class="${menu.getCssClass('menu-image')}"></span>
+							<span th:text="${menu.getLabel()}"></span>
+							<span class="caret" th:if="${menu.hasChildren()}"></span>
+						</a>
+						<div class="dropdown-menu" th:if="${menu.hasChildren()}">
+							<a th:each="submenu: ${menu.getChildren()}" th:if="${submenu.isEnabled()}" th:href="${submenu.getUrl()}" >
+								<span th:if="${submenu.hasImage()}" th:class="${submenu.getCssClass('menu-image')}"></span>
+								<span th:text="${submenu.getLabel()}"></span>
+							</a>
+						</div>
+					</li>
+				</ul>
+							
+				<div class="navbar-user-detail" th:if="${isLogged}">
+					<div class="user-detail dropdown"> 
+						<button class="user-meu-button" type="button" ng-transclude="" (click)="toggleRight()">
+							<span th:text="${loggedUser.getUserTitle()}">User, User</span>
+						</button>
+					</div>
+				</div>
+						
+			</div>
+		</nav>    			    
+		<md-sidenav md-component-id="rightSidenav" class="md-sidenav-right" th:if="false">
+			<md-list ng-cloak>
+				<md-subheader class="md-no-sticky" th:text="#{common.useractins}"></md-subheader>
+				<md-divider></md-divider>					
+				<md-list-item class="secondary-button-padding">
+						<a href="/logout"><span class="glyphicon glyphicon-log-out"></span> <span th:text="#{common.logout}"></span></a>
+				</md-list-item>
+			</md-list>	
+			
+			<md-button class="md-raised md-primary close-right-menu" ng-click="closeSideRight()"> <span th:text="#{common.close}"></span></md-button>
+		</md-sidenav>
+	        
+      </header>
+      
+	<div th:fragment="breadcrumb" style="background-color: #eeeeee;">
+		<ul class="breadcrumb" >
+			<li th:each="entry : ${breadCrumb}">
+				<a th:href="${entry.getUrl()}" th:if="${entry.isLink()}" th:text="${entry.getLabel()}"></a>
+				<span th:if="${!entry.isLink()}" th:text="${entry.getLabel()}"></span>
+			</li>
+		</ul>			
+	</div>
+ 
+			<div th:fragment="errorMessageDialog" class="modal fade" tabindex="-1" id="errormessagedialog" role="dialog" aria-labelledby="errorMessagedialogCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title dialog-title" id="errorMessagedialogTitle" th:text="#{common.errormessagetitle}"></h5>
+								<button class="dialog-toolbar-button close"  data-dismiss="modal" aria-label="Close">
+									<i class="material-icons">close</i>
+								</button>
+						</div>
+							<div class="modal-body">
+							
+						<div class="content-container alert bg-danger alert-danger" style="margin-bottom:0;">
+						
+							<div class="errorcontent-message" ng-bind-html="errorMessage"></div>
+							<div ng-show="hasErrorDetail()">
+								<input style="float:right" type="checkbox" id="showerrordetailcheck" ng-model="showErrorDetail" >
+								<label style="float:right; margin-right: 10px;" class="form-check-label" for="showerrordetailcheck" th:text="#{common.details}"></label>
+							</div>
+							<div class="clear"></div>
+							<div id="errorcontent-detail" style="padding: 10px; background-color:#d9e3ea; " ng-show="showErrorDetail">
+								<div style="height: 300px; width: 100%; overflow: auto;">
+									<pre ng-bind-html="errorDetails"></pre> 
+								</div>
+							</div>
+							
+						
+						</div>
+								
+							</div>
+							<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button>
+							</div>
+						</div>
+				</div>
+						
+			</div>
+ 		
+      <div ng-show="showloading == true" class="loading md-dialog-container"  th:fragment="loadingFragment"></div>
+		
+      <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

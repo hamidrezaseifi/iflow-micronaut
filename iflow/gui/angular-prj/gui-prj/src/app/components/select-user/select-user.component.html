@@ -1,0 +1,44 @@
+		    <div class="modal fade" [ngClass]="{'show' : showAssignModal}" tabindex="-1" id="assignlistdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+				    <div class="modal-content user-select-modal-content" >
+				      <div class="modal-header">
+				        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ 'workflow-select-assign' | translate }}</h5>
+				        <button class="dialog-toolbar-button close" (click)="hideAssignSelect()">
+				        	<i class="material-icons">close</i>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+							<ul class="nav nav-tabs">
+							  <li class="active"><a data-toggle="tab" class="nav-link active" href="#tabusers">{{ 'common.users' | translate }}</a></li>
+							  <li><a data-toggle="tab" class="nav-link" href="#tabdepartments">{{ 'common.departments' | translate }}</a></li>
+							</ul>
+							<div class="tab-content tab-body user-select-tab-content">
+								<div id="tabusers" class="tab-pane fade in active show">
+									<ul class="list-item-container">
+										<li class="list-item" *ngFor="let item of users;">
+											<input [attr.data-assigntitle]="item.fullName" type="checkbox" #inputEl class="assign-checkbox" [checked]="isItemAssigned(item.identity, assignTypeUser)" (change)="toggleAssign(item.identity, assignTypeUser, inputEl.checked)"  value="{{item.identity}}"/> 
+											<span class="user-select-item-label">{{item.fullName}}</span>										
+										</li>
+									</ul>
+								</div>
+								<div id="tabdepartments" class="tab-pane fade">
+									<ul class="list-item-container">
+										<li *ngFor="let dep of departments;" class="list-item">
+											<input type="checkbox" [attr.data-assigntitle]="dep.title" #inputEl class="assign-checkbox" [checked]="isItemAssigned(dep.identity, assignTypeDepartment)" (change)="toggleAssign(dep.identity, assignTypeDepartment, inputEl.checked)" value="{{dep.identity}}"/> 
+											<span class="user-select-item-label">{{dep.title}}</span>
+										</li>
+									</ul>
+								
+								</div>
+							</div>
+				      
+		    				
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" (click)="hideAssignSelect()"><i class="material-icons">close</i></button>
+				        <button type="button" class="btn btn-primary" (click)="applyUserSelect();"><i class="material-icons">check</i></button>
+				      </div>
+				    </div>
+				  </div>		    
+		    	
+		    </div>

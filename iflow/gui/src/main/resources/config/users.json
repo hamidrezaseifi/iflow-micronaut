@@ -1,0 +1,29 @@
+[ {
+  "username" : "user",
+  "password" : "user",
+  "firstName" : "User",
+  "lastName" : "User",
+  "isEnabled" : "true",  
+  "roles" : ["VIEWER"]
+}, {
+  "username" : "admin",
+  "password" : "admin",
+  "firstName" : "Admin",
+  "lastName" : "Administrator",
+  "isEnabled" : "true",
+  "roles" : ["ADMIN"]
+}, {
+  "username" : "ds",
+  "password" : "ds",
+  "firstName" : "ds_fname",
+  "lastName" : "ds_lastname",
+  "isEnabled" : "true",
+  "roles" : ["DATA_STEWARD"]
+}, {
+  "username" : "norole",
+  "password" : "norole",
+  "firstName" : "norole_fname",
+  "lastName" : "norole_lastname",
+  "isEnabled" : "true",
+  "roles" : []
+} ]

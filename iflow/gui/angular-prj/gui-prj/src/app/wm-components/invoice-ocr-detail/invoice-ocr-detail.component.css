@@ -1,0 +1,151 @@
+
+.scanned-result-container{
+	background-color: white;	
+	width: 100%;
+	margin: 0;
+}
+
+.scanned-item-container{
+	background: #fff;	
+}
+
+.scanned-item:not(:disabled){
+	cursor: pointer;
+}
+
+.scanned-item-list-container .scanned-item:not(:disabled){
+	width: calc(50% - 10px);
+	float: left;	
+	border: none;
+    border-radius: 0;
+    display: block;
+    color: #495057;
+    height: 28px;
+}
+
+.scanned-item-list-container .scanned-item.active:not(:disabled){
+    color: #fff;
+}
+
+.item-value-container{
+	width: calc(50% + 8px);
+	float: left;
+	border: none;
+    border-radius: 0;
+}
+
+.item-value {
+    border: 1px solid gray;
+    background: #ffffff;
+    box-shadow: none;
+    float: left;
+    width: 195px;
+}
+
+.item-value:read-only {
+    border-color: #bebebe;
+	background: #eeeeee;
+}
+
+.edit-value-icon{
+	font-size: 18px; 
+}
+
+.inline-edit-button-edit, .inline-edit-button-apply {
+    border: none;
+    background-color: transparent;
+    color: #5f5f5f;
+    padding: 0 3px;
+    padding-top: 3px;
+    height: 30px;
+    width: 24px;
+    float: left;
+}
+
+.inline-edit-button-apply i {
+    color: #008200;
+}
+
+
+.scanned-item-list-container, 
+.scanned-item-detail-container,
+.scanned-item-preview-container {
+	padding: 10px;
+	margin: 5px;
+	border-radius: 5px;
+	height: 80vh;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background-color: #e0e0e0;
+}
+
+.scanned-item-list-container {
+	max-width: calc(50% - 325px);
+    flex: 0 0 calc(50% - 325px);
+}
+
+.scanned-item-detail-container {
+	max-width: calc(50% - 325px);
+    flex: 0 0 calc(50% - 325px);
+}
+
+.scanned-item-preview-container {
+	max-width: 620px;
+	flex: 0 0 620px;
+}
+
+.found-item {
+    
+}
+
+.word-list-item.fade:not(.show) {
+    display: none;
+}
+
+.scanned-item-preview-image{
+	background-color: white;
+	background-image: none;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 100%;
+	height: 100%;
+	
+}
+
+.selected-word-area{
+	position: absolute;
+	background-color: #add5ef3d;
+	border: 1px dashed #5873bae0;	
+	width: 300px;
+	height: 100px;
+}
+
+
+.scanned-item-detail-container .scanned-item:not(:disabled){
+	width: calc(100% - 40px);
+	float: left;	
+}
+
+.edit-value-icon{
+	font-size: 18px; 
+}
+
+.inline-edit-button-use {
+    border: none;
+    background-color: transparent;
+    color: #5f5f5f;
+    padding: 0 3px;
+    padding-top: 3px;
+    height: 30px;
+    width: 24px;
+    float: left;
+    width: 24px;
+    float: right;
+}
+
+.inline-edit-button-use i {
+	font-size: 30px;
+}
+
+

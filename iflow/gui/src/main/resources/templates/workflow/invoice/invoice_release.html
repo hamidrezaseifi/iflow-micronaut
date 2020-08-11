@@ -1,0 +1,171 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" ng-app="iflowApp" >
+    <head>
+    	<th:block th:include="layout/mainLayout :: pageheader" />
+		<script th:src="@{/js/workflow/invoice/workflow-edit.js}"></script>
+		<link th:href="@{/css/table.css}" rel="stylesheet" />
+		<link th:href="@{/css/workflow-create.css}" rel="stylesheet" />
+		
+		
+    </head>
+    <body ng-controller="BodyController">
+        <header th:replace="layout/mainLayout :: header" ></header>
+        <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+		<div class="content-container" ng-controller="WorkflowCreateController">
+			<div class="page-toolbar">
+				<div class="page-title" th:text="#{invoice-releaseview-title}"></div>
+				<a class="toolbar-link" href="/workflow/list"><i class="material-icons">list</i></a>
+				<button class="toolbar-button" ng-click="reload();"><i class="material-icons">refresh</i></button>
+			</div>
+		
+			<div class="workflow-content-container">
+				<div class="workflow-content">
+					<div class="item-row" ng-show="true">
+						<div class="item-label" th:text="#{workflow-current-step}"></div>
+						<div class="item-content">
+							{{workflow.currentStep.title}}
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row" ng-if="workflow.workflowType.isAssignTypeOffering">
+						<div class="item-label" th:text="#{workflow-assignto}"></div>
+						<div class="item-content">
+							<div class="assign-list" >
+								<button class="show-select-dialog" data-toggle="modal" data-target="#assignlistdialog"><i class="material-icons">playlist_add</i></button>
+								<span ng-if="hasNoAssigns()" th:text="#{workflow-select-assign}"></span>
+								<div class="user-item-box" ng-repeat="item in workflowCreateRequest.assigns">
+									<span>{{item.title}} </span>
+									<button ng-click="removeAssign(item.itemIdentity, item.itemType)"><i class="material-icons">close</i></button>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row" ng-if="workflow.workflowType.isAssignTypeManual">
+						<div class="item-label" th:text="#{workflow-select-assign}"></div>
+						<div class="item-content">
+							<select type="text" ng-model="workflowCreateRequest.workflow.controller">
+								<option th:text="#{workflow-select-controller}" value="0"></option>
+								<option ng-repeat="item in users" ng-value="item.identity">{{item.fullName}}</option>
+							</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row">
+						<div class="item-label" th:text="#{workflow-comments}"></div>
+						<div class="item-content">
+							<textarea ng-model="workflow.activeAction.comments"></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row">
+						
+						<div class="item-content workflow-step-button-bar">
+							<button ng-click="saveWorkflow()" class="button-bar-button step-button button-save">
+								<span th:text="#{common.save}"></span>
+								<i class="material-icons">save</i>
+							</button>
+							<button ng-click="makeActionDone()" class="button-bar-button step-button button-save">
+								<span th:text="#{common.savedone}"></span>
+								<i class="material-icons">save</i>
+							</button>
+							<button ng-click="arhiveWorkflow()" class="button-bar-button step-button button-archive">
+								<span th:text="#{workflow-archive}"></span>
+								<i class="material-icons">archive</i>
+							</button>
+							<div class="clear"></div>
+						</div>
+						
+						
+					</div>
+				
+				</div>
+				<div class="workflow-record">
+					<div th:replace="workflow/layout/workflow_actions_panel :: panelItemWorkflow" ></div>
+				
+				</div>
+				<div class="clear"></div>
+				<hr>
+				<div >
+					{{workflowCreateRequest.assigns}}
+				</div>
+				<hr>
+			</div>
+		    		 
+		    <div class="modal fade" tabindex="-1" id="assignlistdialog" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title dialog-title" id="exampleModalLongTitle" th:text="#{workflow-select-assign}"></h5>
+				        <button class="dialog-toolbar-button close"  data-dismiss="modal" aria-label="Close">
+				        	<i class="material-icons">close</i>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+							<ul class="nav nav-tabs">
+							  <li class="active"><a data-toggle="tab" class="nav-link active" href="#tabusers" th:text="#{common.users}"></a></li>
+							  <li><a data-toggle="tab" class="nav-link" href="#tabdepartments" th:text="#{common.departments}"></a></li>
+							</ul>
+							<div class="tab-content tab-body">
+								<div id="tabusers" class="tab-pane fade in active">
+									<ul class="list-item-container">
+										<li ng-repeat="item in users" class="list-item">
+											<input data-assigntitle="{{item.fullName}}" type="checkbox" class="assign-checkbox" ng-checked="isItemAssigned(item.identity, 'user')" data-assigntype="user" ng-value="item.identity"/> 
+											&nbsp; &nbsp; 
+											{{item.fullName}}										
+										</li>
+									</ul>
+								</div>
+								<div id="tabdepartments" class="tab-pane fade">
+									<ul class="list-item-container">
+										<li ng-repeat="dep in departments" class="list-item">
+											<input type="checkbox" data-assigntitle="{{dep.title}}" class="assign-checkbox" ng-checked="isItemAssigned(dep.identity, 'department')" data-assigntype="department" ng-value="dep.identity"/> 
+											&nbsp; &nbsp; 
+											{{dep.title}}	
+											<ul class="list-item-container">
+												<li ng-repeat="depgrp in dep.departmentGroups" class="list-item">
+													<input type="checkbox" class="assign-checkbox" data-assigntitle="{{depgrp.title}}" ng-checked="isItemAssigned(depgrp.identity, 'departmentgroup')" data-assigntype="departmentgroup" ng-value="depgrp.identity"/> 
+													&nbsp; &nbsp; 
+													{{depgrp.title}}										
+												</li>
+											</ul>									
+										</li>
+									</ul>
+								
+								</div>
+							</div>
+				      
+		    				
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="material-icons">close</i></button>
+				        <button type="button" class="btn btn-primary" ng-click="applyUserSelect();"><i class="material-icons">check</i></button>
+				      </div>
+				    </div>
+				  </div>		    
+		    	
+		    </div>
+		
+		    		    
+		    <script th:inline="javascript">
+				var loadUrl = "/workflow/data/workflow/edit/[[${workflowId}]]";
+				var saveUrl = "/workflow/data/workflow/save";
+				var archiveUrl = "/workflow/data/workflow/archive";
+				var doneUrl = "/workflow/data/workflow/done";
+				var listUrl = "/workflow/list";
+				
+				var userAssignType = /*[[${UserAssign}]]*/ '';
+				var departmentAssignType = /*[[${DepartmentAssign}]]*/ '';
+				var departmentGroupAssignType = /*[[${DepartmentGroupAssign}]]*/ '';
+				
+		    </script>
+		
+		</div>
+		
+        <div th:replace="layout/message_panel :: message_panel" ></div>
+		
+        <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

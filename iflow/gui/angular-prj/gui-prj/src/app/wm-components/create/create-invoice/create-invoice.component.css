@@ -1,0 +1,252 @@
+
+.workflow-content .panel{
+	background-color: #f2f1f1 !important;
+	padding: 8px;
+    margin-bottom: 10px;
+}
+
+.twopannel .panel-1{
+	
+	height: 190px;
+}
+
+.twopannel .panel-2{
+	
+	height: 300px;
+}
+
+.twopannel .panel-twopannelleft{
+	width: calc(100% - 310px);
+	float: left;
+}
+
+.twopannel .panel-twopannelright{
+	width: 300px;
+	float: right;
+}
+
+.twopannel .panel-twopannelright input[type=text]{
+	width: 100px;
+}
+
+.small-content{
+	width: 120px;
+}
+
+.item-content select{
+	height: 26px;
+} 
+
+.item-content select:not(.fullrow), .item-content input[type=text] {
+	height: 26px;
+	width: calc(100%);
+} 
+
+.item-content select.fullrow {
+	height: 26px;
+	width: calc(100%);
+} 
+
+.item-content.larg-content{
+	width: calc(100% - 450px);
+}
+
+.workflow-content .panel .panel-heading{
+	font-weight: bold;
+}
+
+div.workflow-content div.item-row, div.workflow-content-record div.item-row {
+    margin: 5px 0 10px;
+}
+
+div.workflow-content div.item-row div.item-label, 
+div.workflow-content-record div.item-row div.item-label{
+    float: left;
+    padding-right: 10px;
+    padding-left: 2px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    height: 25px;
+}
+
+div.workflow-content div.item-row .label-large, 
+div.workflow-content-record div.item-row .label-large{
+    width: 150px;
+}
+
+.large-content{
+	width: calc(100% - 420px);
+}
+
+.large-content input[type=text],
+.large-content input[type=number],
+.large-content select, 
+.large-content areatext{
+	width: calc(100% - 30px);
+}
+
+
+div.workflow-content div.item-row .small-label, 
+div.workflow-content-record div.item-row .small-label{
+    width: 122px;
+}
+
+div.workflow-content div.item-row div.item-content, div.workflow-content-record div.item-row div.item-content {
+    padding-left: 0px;
+    float: left;
+}
+
+.item-content input[type=checkbox]{
+	width: 20px;
+	height: 20px;	
+	margin-top: 3px;
+}
+
+div.fullrowfromlabel{
+	width: calc(100% - 150px);	
+}
+
+div.fullrowfromlabel input[type=text]{
+	width: calc(100% - 10px);	
+}
+
+div.workflow-content div.item-row div.item-content input.file-title
+{
+    width: calc(50% - 170px);
+    height: 26px;
+}
+
+div.workflow-content div.item-row div.item-content input.file-file
+{
+    width: 50%;
+    height: 26px;
+    display: inline-block;;
+}
+
+button.file-action {
+    float: right;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+    margin-top: 4px;
+    background: transparent;
+}
+
+.invalid-request-container{
+	width: 60vw;
+    min-height: 100px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10vh;
+    padding: 10px;
+	
+}
+
+.workflow-file-view-link, .workflow-file-view-link:active, .workflow-file-view-link:visited{
+	color: #333;
+}
+
+.workflow-file-view-link:hover{
+	color: #551113;
+}
+
+.workflow-file-view-link i.material-icons{
+	width: 24px;
+}
+
+button.show-select-dialog {
+    float: right;
+    margin-right: -20px;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+}
+
+input.select-date{
+	width: 100px;
+	height: 26px;
+}
+
+input.short-input{
+	width: 100px;
+	height: 26px;
+}
+
+.ocrscan-container {
+    width: 500px;
+    float: right;
+    padding-top: 5px;
+    margin-right: 10px;
+}
+
+.ocrscan-container .custom-file-input{
+    width: calc(100% - 50px);
+}
+
+.ocrscan-container .custom-file-label{
+    width: calc(100% - 50px);
+}
+
+.ocrscan-container .upload-button{
+    padding: 2px 7px;
+    margin-left: 5px;
+}
+
+.uploading-dialog {
+    min-height: 100px;
+    max-height: 100px;
+    padding-top: 0;
+    margin-top: 20%;
+    background-color: white;
+}
+
+.scanned-details-dialog{
+	width: 90vw;
+    max-width: 90vw;
+    min-width: 90vw;
+    background-color: white;
+    pointer-events: all;
+}
+
+.uploading-progress {
+    height: 30px;
+    margin: 0px 10px;
+}
+
+.uploading-progress-label {
+    width: 100%;
+    display: block;
+    position: absolute;
+    text-align: center;
+}
+
+.uploaded-file-item {
+	padding: 5px 4px 0 10px;
+	margin-bottom: 3px;
+}
+
+.uploaded-file-item:hover {
+	background-color: #feffea;
+}
+
+.uploaded-file-item .filename {
+	width: 230px;
+    display: inline-block;
+    overflow: hidden;
+    overflow-y: hidden;
+    height: 30px;
+}
+
+.uploaded-file-item .upload-button{
+    padding: 0px 4px;
+    margin-left: 5px;
+}
+
+.uploaded-file-item .upload-button .material-icons{
+    font-size: 16px;
+}
+

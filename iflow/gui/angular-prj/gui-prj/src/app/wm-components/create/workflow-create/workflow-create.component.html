@@ -1,0 +1,20 @@
+		<div class="content-container">
+			<div class="page-toolbar">
+				<div class="page-title">{{ 'menu-workflow-create' | translate }}</div>
+				<a class="toolbar-link" [routerLink]="['/workflow/list']"><i class="material-icons">list</i></a>
+			</div>
+		
+			<div class="workflow-content">
+				<div class="item-row">
+					<div class="list-group">
+					  <a class="list-group-item list-group-item-action list-group-item-title">{{ 'workflow-type' | translate }}</a>
+					  <a *ngFor="let type of worlflowTypes;" [routerLink]="['/workflow/create/' , type.controllerPreffix ]" class="list-group-item list-group-item-action link-out" >{{type.title}}</a>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		
+		</div>
+
+
+

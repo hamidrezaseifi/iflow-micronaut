@@ -1,0 +1,12 @@
+
+build:
+ng build --deployUrl=/scripts/
+ 
+build for prod: 
+ng build --deployUrl=/scripts/  --prod
+
+
+ start serve
+ 
+ng serve --open=true --port=4200 --configuration=serve
+ 

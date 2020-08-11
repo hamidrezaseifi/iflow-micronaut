@@ -1,0 +1,18 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" ng-app="iflowApp" >
+    <head>
+    
+    	<th:block th:include="layout/mainLayout :: pageheader" />
+		<script th:src="@{/js/index.js}"></script>
+    </head>
+    <body ng-controller="BodyController">
+        <header th:replace="layout/mainLayout :: header" ></header>
+        <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+		<div style="height: 100px; width: 30%; font-size:16px%; background: #ffaeae; color: black; margin: 100px auto; text-align: center; line-height: 90px;">
+			<span th:text="#{common.invalid-workflow-message}"></span> 
+		</div>
+        <div th:replace="layout/message_panel :: message_panel" ></div>
+		
+        <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

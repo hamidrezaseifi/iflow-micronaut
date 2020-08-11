@@ -1,0 +1,195 @@
+@charset "UTF-8";
+
+div.workflow-content-container{
+	border: 1px solid lightgray;
+    margin: 10px 0px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+}
+
+div.workflow-content{
+	float: left;
+    background-color: #dad9d9;
+    padding: 15px;
+    border-radius: 5px;
+    width: calc(75% - 15px);
+}
+
+div.workflow-content-record{
+    padding: 15px;
+}
+
+div.workflow-record{
+	float: right;
+    background-color: #dad9d9;
+    padding: 8px;
+    border-radius: 5px;
+    width: 25%;
+    min-height: 500px;
+}
+
+div.workflow-content div.item-row, div.workflow-content-record div.item-row {
+    margin: 5px 0 10px;
+}
+
+div.workflow-content div.workflow-step-button-bar, div.workflow-content-record div.workflow-step-button-bar{
+    margin-right: 20px;
+    background-color: white;
+    padding: 6px;
+    margin-left: 130px;
+}
+
+div.workflow-content div.item-row div.item-label, div.workflow-content-record div.item-row div.item-label{
+    float: left;
+    padding-right: 10px;
+    padding-left: 2px;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    width: 130px;
+}
+
+div.workflow-content div.item-row div.item-content, div.workflow-content-record div.item-row div.item-content {
+    float: left;
+    
+    padding-left: 0px;
+    width: calc(100% - 135px);
+}
+
+div.workflow-content div.item-row div.item-content input:not(.file-item), 
+div.workflow-content div.item-row div.item-content select,
+div.workflow-content-record div.item-row div.item-content input, 
+div.workflow-content-record div.item-row div.item-content select
+{
+    width: 100%;
+    height: 26px;
+}
+
+div.workflow-content div.item-row div.item-content input.file-title
+{
+    width: calc(50% - 170px);
+    height: 26px;
+}
+
+div.workflow-content div.item-row div.item-content input.file-file
+{
+    width: 50%;
+    height: 26px;
+    display: inline-block;;
+}
+
+div.workflow-content div.item-row div.item-content textarea,
+div.workflow-content-record div.item-row div.item-content textarea
+{
+    width: 100%;
+    height: 200px;
+}
+
+.assign-list{
+	border: 1px solid lightgray;
+    padding: 6px;
+    border-radius: 4px;
+    width: 100%;
+    min-height: 100px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 24px;
+}
+
+div.assign-list div.user-item-box {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 2px 4px;
+    float: left;
+    background: #e6e6e6;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+div.assign-list div.user-item-box button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    padding-top: 3px;
+    float: right;
+    margin-left: 5px;
+}
+
+div.assign-list div.user-item-box button i.material-icons{
+	font-size: 16px;
+}
+
+div.assign-list div.user-item-box span {
+    height: 20px;
+    display: inline-block;
+    float: left;
+}
+
+button.show-select-dialog {
+    float: right;
+    margin-right: -22px;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+}
+
+button.file-action {
+    float: right;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+    margin-top: 4px;
+    background: transparent;
+}
+
+.step-button, .step-button:active{
+	float: right;
+    margin-left: 10px;
+    background-color: gray;
+    color: #f7fbc4;
+    border: outset 2px #d4d4d1;
+    padding: 4px 20px;
+}
+
+.step-button:hover{
+    background-color: #9e9e9e;
+    color: #fbcbc4;
+    border: outset 2px #b7b7b3;
+    
+}
+
+.file-container{
+	border:gray 1px solid; 
+	padding: 6px;
+}
+
+.file-container .file-row{
+	border:gray 1px solid; 
+	padding: 2px 2px;
+	margin: 4px 6px;
+	margin-right: 0;
+}
+
+.file-container .file-row:nth-child(even){
+	background: #dbf1fb;
+}
+
+.file-container .file-row:nth-child(odd){
+	background: #f3f3e1;
+}
+
+.workflow-file-view-link, .workflow-file-view-link:active, .workflow-file-view-link:visited{
+	color: #333;
+}
+
+.workflow-file-view-link:hover{
+	color: #551113;
+}
+
+.workflow-file-view-link i.material-icons{
+	width: 24px;
+}
+

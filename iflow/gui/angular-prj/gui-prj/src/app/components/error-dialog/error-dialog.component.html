@@ -1,0 +1,37 @@
+
+<div class="modal fade" [ngClass]="{'show' : showError}" tabindex="-1" *ngIf="showError" id="errormessagedialog" role="dialog" aria-labelledby="errorMessagedialogCenterTitle">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title dialog-title" id="errorMessagedialogTitle">{{ 'common.errormessagetitle' | translate }}</h5>
+					<button class="dialog-toolbar-button close" (click)="hideModal()" aria-label="Close">
+						<i class="material-icons">close</i>
+					</button>
+			</div>
+				<div class="modal-body">
+				
+			<div class="content-container alert alert alert-danger" style="margin-bottom:0;">
+			
+				<div class="errorcontent-message" [innerHTML]="errorMessage"></div>
+				<div [hidden]="hasErrorDetail === false">
+					<input style="float:right" type="checkbox" id="showerrordetailcheck" [(ngModel)]="showErrorDetail" >
+					<label style="float:right; margin-right: 10px;" class="form-check-label" for="showerrordetailcheck">{{ 'common.details' | translate }}</label>
+				</div>
+				<div class="clear"></div>
+				<div id="errorcontent-detail" style="padding: 10px; background-color:#d9e3ea; " [hidden]="showErrorDetail === false">
+					<div style="height: 300px; width: 100%; overflow: auto;">
+						<pre [innerHTML]="errorDetails"></pre> 
+					</div>
+				</div>
+				
+			
+			</div>
+					
+				</div>
+				<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" (click)="hideModal()"><i class="material-icons">close</i></button>
+				</div>
+			</div>
+	</div>
+			
+</div>

@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" ng-app="iflowApp" >
+    <head>
+    
+    	<th:block th:include="layout/mainLayout :: pageheader" />
+		<script th:src="@{/js/index.js}"></script>
+    </head>
+    <body ng-controller="BodyController">
+        <header th:replace="layout/mainLayout :: header" ></header>
+        <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+		<div>
+			<h2>Companies ...</h2>
+			<hr>
+		
+		</div>
+		
+        <div th:replace="layout/message_panel :: message_panel" ></div>
+		
+        <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+		<div class="content-container">
+			<div class="page-toolbar">
+				<div class="page-title">{{ 'menu-workflow-list' | translate }}</div>
+				<button class="toolbar-button" (click)="reload()"><i class="material-icons">refresh</i></button>
+				<a class="toolbar-link" [routerLink]="['/workflow/create']"><i class="material-icons">playlist_add</i></a>
+				
+				<ul class="nav nav-pills search-toolbar">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Status</a>
+						<div class="dropdown-menu">
+							<div *ngFor="let wstatus of statusList;" class="dropdown-item">
+								<input type="checkbox" class="form-check-input" [checked]="isStatusSelected(wstatus)" (click)="toggleStatusSelected(wstatus)"  id="status-check-{{wstatus}}">
+								<label class="form-check-label" for="status-check-{{wstatus}}">{{wstatus}}</label>
+							</div>
+						</div>
+					</li>
+				  	<li class="nav-item">
+				  		<div class="search-toolbar-item">
+							<input type="checkbox" class="toggle-checkbox form-check-input" [checked]="isMeAssigned" [(ngModel)]="isMeAssigned"  id="me-assigned-check">
+							<label class="form-check-label" for="me-assigned-check">{{ 'workflow-assigned-me' | translate }}</label>
+						</div>
+				  	</li>
+				</ul>				
+								
+			</div>
+			<div *ngIf="showDebug" style="border: 1px solid gray; padding: 5px; background-color: #f1f1f1;">{{debugSearchFilter}}</div>
+			
+			<table mat-table [dataSource]="resultWorlflows">
+			
+				<ng-container matColumnDef="workflow-type">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'workflow-type' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.workflowType.title}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="workflow-current-step">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'workflow-current-step' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.currentStep.title}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="workflow-status">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'workflow-status' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.status}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="workflow-assignto">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'workflow-assignto' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.assignToUserFullName}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="workflow-updated">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'workflow-updated' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{'not impelemented!!'}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="actions">
+			    	<th mat-header-cell *matHeaderCellDef> ... </th>
+			    	<td mat-cell *matCellDef="let element; let idx = index" >  
+			    		<a class="tool-link" *ngIf="element.canEdit" (click)="editWorkflow(element)"><i class="material-icons">edit</i></a>
+		    			<a class="tool-link" (click)="showWorkflow(idx)"><i class="material-icons">pageview</i></a>
+			    	</td>
+			    </ng-container>
+			    
+				<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+			    
+			</table>
+		
+		
+		</div>
+
+
+<div class="modal fade show" tabindex="-1" *ngIf="viewWorkflowModal" id="viewworkflowedialog" role="dialog">
+
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title dialog-title" id="errorMessagedialogTitle">{{ 'common.view-workflow' | translate }}</h5>
+				<button class="dialog-toolbar-button close" (click)="hideViewModal()" aria-label="Close">
+					<i class="material-icons">close</i>
+				</button>
+			</div>
+			
+		      <div class="modal-body">
+		      
+				<app-workflow-inlineview [workflow]="viewWorkflowModel"></app-workflow-inlineview>
+	   				
+		      </div>
+	      <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" (click)="hideViewModal()"><i class="material-icons">close</i></button>
+
+	        <button type="button" class="btn btn-primary" *ngIf="viewWorkflowModel.meAssigned || viewWorkflowModel.loggedUserControllerAndDone" (click)="editWorkflow(viewWorkflowModel)" ><i class="material-icons">pageview</i></button>
+	      </div>
+	    </div>
+	  </div>		    
+			
+</div>
+

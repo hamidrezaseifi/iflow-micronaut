@@ -1,0 +1,143 @@
+
+
+		<div class="content-container">
+			<div class="page-toolbar">
+				<div class="page-title">{{ 'ocr-preset.title' | translate }}</div>
+				<button class="toolbar-button" (click)="reload()"><i class="material-icons">refresh</i></button>
+				<button class="toolbar-button" (click)="showAddPreset()"><i class="material-icons">add</i></button>
+											
+			</div>
+			
+			<table mat-table [dataSource]="ocrSettingPresets">
+			
+				<ng-container matColumnDef="preset-name">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'ocr-preset.name' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.presetName}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="workflow-type">
+			    	<th class="wt-header" mat-header-cell *matHeaderCellDef> {{ 'workflow-type' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{ getWorkflowTypeTitle(element.workflowTypeIdentity) }} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="preset-status">
+			    	<th class="status-header" mat-header-cell *matHeaderCellDef> {{ 'user-status' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{ element.status == 1 ? ('common.active' | translate) : ('common.deactive' | translate) }}</td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="actions">
+			    	<th class="action-header" mat-header-cell *matHeaderCellDef> ... </th>
+			    	<td mat-cell *matCellDef="let element; let idx = index" >  
+			    		<a class="tool-link" (click)="showEditPreset(element)"><i class="material-icons">edit</i></a>
+		    			<a class="tool-link" (click)="showPreset(element)"><i class="material-icons">pageview</i></a>
+		    			<a class="tool-link" (click)="showDeletePreset(element)"><i class="material-icons">delete</i></a>
+			    	</td>
+			    </ng-container>
+			    
+				<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+			    
+			</table>
+		
+		
+		</div>
+
+
+	    <div class="modal fade" [ngClass]="{'show' : showEditDialog}" tabindex="-1" id="editpresetdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-centered-presetedit" role="document">
+			    <div class="modal-content preset-edit-modal-content" >
+			      <div class="modal-header">
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ createNewPreset ? ('ocr-preset-create-modal-title' | translate) : ('ocr-preset-edit-modal-title' | translate) }}</h5>
+			        <button class="dialog-toolbar-button close" (click)="hideEditPresetDialog()">
+			        	<i class="material-icons">close</i>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+
+					<div class="row-item">
+						<label class="property-label">{{ 'workflow-type' | translate }}</label>
+						<select class="property-value" (ngModelChange)="setPresetWorkflowIdentity($event)" [ngModel]="selectedPreset.workflowTypeIdentity">
+							<option *ngFor="let worlflowType of worlflowTypes;" value="{{worlflowType.identity}}">{{worlflowType.title}}</option>
+						</select>
+					</div>
+					<div class="row-item">
+						<label class="property-label">{{ 'ocr-preset.name' | translate }}</label>
+						<input type="text" class="property-value" (ngModelChange)="setPresetName($event)" [ngModel]="selectedPreset.presetName"/>
+					</div>
+					<div class="row-item padd-top-40">
+						<h3>{{ 'ocr-preset.items' | translate }}</h3>
+					</div>
+					<div class="preset-items-container">
+					  	<div *ngFor="let prop of selectedPresetItems;" class="row-item" >
+					  		<label class="property-label">{{ prop.propertyName | translate  }}</label>
+						  	<select (ngModelChange)="setPresetItemOcrType(prop.propertyName, $event)" [ngModel]="prop.ocrType" class="property-ocrtype">
+						  		<option *ngFor="let ocrType of ocrTypeList;" value="{{ocrType.value}}">{{ocrType.title}}</option>
+						  	</select>
+					  		<input type="text" class="property-value" readonly *ngIf="prop.ocrType !== 0"
+						  		(ngModelChange)="setPresetItemValue(prop.propertyName, $event)" 
+						  		[ngModel]="prop.value"/>
+					  		<a (click)="selectValueList(prop)" *ngIf="prop.ocrType !== 0" class="toolbar-link selectlist-button" ><i class="material-icons">list</i></a>
+					  	</div>
+					  	<div *ngIf="selectedPresetItems.length === 0" class="row-item" >
+					  		<span>{{ 'ocr-preset.no-items' | translate  }}</span>
+					  	</div>
+					
+					</div>
+
+
+
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" (click)="hideEditPresetDialog()"><i class="material-icons">close</i></button>
+			        <button type="button" class="btn btn-primary" (click)="savePreset()"[disabled]="isSelectedPresetValid() === false"><i class="material-icons">save</i></button>
+			      </div>
+			    </div>
+			  </div>		    
+	    	
+	    </div>
+
+
+
+	    <div class="modal fade" [ngClass]="{'show' : showDeleteDialog}" tabindex="-1" id="deletepresetdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered preset-delete-dialog" role="document">
+			    <div class="modal-content" >
+			      <div class="modal-header">
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ 'ocr-preset-delete-modal-title' | translate }}</h5>
+			        <button class="dialog-toolbar-button close" (click)="hideDeletePresetDialog()">
+			        	<i class="material-icons">close</i>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+						
+					<div class="alert alert-danger custome-ander-text" role="alert">{{deleteMessage}}</div>	      	
+	    				
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" (click)="hideDeletePresetDialog()"><i class="material-icons">close</i></button>
+			        <button type="button" class="btn btn-danger" (click)="deletePreset()" ><i class="material-icons">delete</i></button>
+			      </div>
+			    </div>
+			  </div>		    
+	    	
+	    </div>		
+
+
+		<div class="modal fade show" tabindex="-1" *ngIf="showTextListDialog" role="dialog">
+			<div class="modal-dialog text-list-dialog" role="document">
+				<div class="modal-header">
+			 		<h5 class="modal-title">{{ 'text.text-list' | translate }}</h5>
+					<button type="button" class="close" (click)="hideTextListDialog()" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>			
+				<div class="modal-body">
+					<app-text-list [separator]="textSeparator" [text]="selectedTextToMakeList" (textChanged)="selectedTextChanged($event)"></app-text-list>
+				</div>	
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" (click)="applySelectexTextChanged()">{{ 'common.apply' | translate }}</button>
+					<button type="button" class="btn btn-secondary" (click)="hideTextListDialog()">{{ 'common.close' | translate }}</button>
+				</div>						
+			</div>
+		</div>
+
+

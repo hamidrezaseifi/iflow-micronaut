@@ -1,0 +1,51 @@
+
+	<div class="page-toolbar">
+		<div class="page-title">{{ 'comapny-page-title' | translate }}</div>
+		<button class="toolbar-button" (click)="reload();"><i class="material-icons">refresh</i></button>
+		<button class="toolbar-button" *ngIf="isEditing === false" (click)="startEditing();"><i class="material-icons">edit</i></button>
+		<button class="toolbar-button" *ngIf="isEditing" (click)="save();"><i class="material-icons">save</i></button>
+		<button class="toolbar-button" *ngIf="isEditing" (click)="isEditing = false;"><i class="material-icons">cancel</i></button>
+	</div>
+	<div class="fade data-form-group" [ngClass]="{'show' : isEditing === false}">
+		  <div class="form-group">
+		    <label for="companyNameView">{{ 'company-name' | translate }}</label>
+		    <input class="form-control" value="{{ companyInfo.companyName }}" readonly id="companyNameView">
+		  </div>
+		  <div class="form-group">
+		    <label for="companyTypeView">{{ 'company-type' | translate }}</label>
+		    <input class="form-control" value="{{ getTitleForCompanyType(companyInfo.companyType) }}" readonly id="companyTypeView">
+		  </div>
+		  <div class="form-group" *ngIf="companyInfo.companyType === 'CUSTOME'">
+		    <label for="companyTypeCustomeView">{{ 'company-type-custome' | translate }}</label>
+		    <input class="form-control" value="{{ companyInfo.companyTypeCustome }}" readonly id="companyTypeCustomeView">
+		  </div>
+	
+	</div>
+	<div class="fade data-form-group editing-form-group" [ngClass]="{'show' : isEditing}">
+		<form id="company-form" name="companyEditForm" [formGroup]="companyEditForm">
+		  <div class="form-group">
+		    <label for="companyName">{{ 'company-name' | translate }}</label>
+		    <input type="text" name="companyName" formControlName="companyName" required class="form-control" id="companyName">
+		    <div class="invalid-message" *ngIf="companyEditForm.controls.companyName.touched && companyEditForm.controls.companyName.hasError('required')">{{ 'company-name-error-message' | translate }}</div>
+		  </div>
+		  <div class="form-group">
+		    <label>{{ 'company-type' | translate }}</label>
+			<select required name="companyType" formControlName="companyType" class="form-control" [ngClass]="{'ng-invalid' : companyEditForm.controls.companyType.errors}" >
+				<option *ngFor="let type of companyTypeList" value="{{ type }}">{{ getTitleForCompanyType(type) }}</option>
+			</select>
+		    <div class="invalid-message" *ngIf="companyEditForm.controls.companyType.touched && companyEditForm.controls.companyType.hasError('required')">{{ 'company-type-error-message' | translate }}</div>
+		    
+		  </div>
+		  <div class="form-group" *ngIf="companyEditForm.controls.companyType.value === 'CUSTOME'">
+		    <label for="companyTypeCustome">{{ 'company-type-custome' | translate }}</label>
+		    <input type="text" name="companyTypeCustome" formControlName="companyTypeCustome" class="form-control" id="companyTypeCustome">
+		  </div>
+		  
+		</form>			
+	</div>
+
+					
+	<div style="padding: 5px; border: solid gray 1px; margin-top: 10px;">{{ debug() | json}}</div>
+							
+							
+							

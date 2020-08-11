@@ -1,0 +1,166 @@
+
+table {
+  width: 100%;
+  background: #ffffff;
+  margin-top: 30px;
+}
+
+table a.tool-link {
+    color: #828282;
+    cursor: pointer;
+}
+
+.mat-header-cell {
+    color: white;
+    font-size: 16px;
+    font-weight: notmal;
+}
+
+.mat-cell, .mat-footer-cell {
+    color: #0f0f0f;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    border: 1px solid #d7d5d5;
+    text-align: center;
+}
+
+th.mat-header-cell {
+    border: 1px solid #acaaaa;
+    text-align: center;
+}
+
+.mat-header-row{
+	background-color: #374373;
+}
+
+.mat-row{
+	height: 40px;
+}
+
+.mat-row:nth-child(odd){	
+	background-color: #fff;
+}
+
+.mat-row:nth-child(even){	
+	background-color: #f2f2f2;
+}
+
+.mat-row:hover{	
+	background-color: #feffec;
+}
+
+th.action-header{
+	width: 100px;
+}
+
+th.status-header{
+	width: 120px;
+}
+
+th.wt-header{
+	width: 250px;
+}
+
+
+
+.modal-dialog-centered-presetedit{
+	width: calc(100vw - 300px) !important;
+    max-width: calc(100vw - 300px);
+    margin: auto;
+    height: 100vh;
+    max-height: 100vh;
+    margin-top: 0;
+}
+
+.preset-edit-modal-content {
+	width: 100%;
+	height: calc(100vh - 40px);
+}
+
+
+a.toolbar-link, a.list-group-item-action{
+	cursor: pointer;
+}
+
+label.property-label{
+	width: 200px;
+	font-weight: bold;
+}
+
+.row-item {
+    position: relative;
+    display: block;
+    padding: .25rem 1.25rem;
+    background-color: #fff;
+}
+
+.padd-top-40{
+	padding-top: 40px;	
+}
+
+.preset-items-container{
+	padding: 5px 0;
+    padding-left: 20px;
+    border: 1px solid #cdcdcd;
+    border-radius: 5px;
+    height: calc(100% - 220px);
+    overflow: auto;
+}
+
+.property-value{
+	width: calc(100% - 440px);
+	height: 28px;
+    padding: 0 5px;
+}
+
+select.property-ocrtype{
+	width: 190px;
+	height: 28px;
+    padding: 0 5px;
+    margin: 0 5px;
+}
+
+.toolbar-link.selectlist-button {
+    background: lightgrey;
+    height: 29px;
+    margin-left: 3px;
+    width: 25px;
+}
+
+.toolbar-link.selectlist-button {
+    background: lightgrey;
+    height: 29px;
+    margin-left: 3px;
+    width: 25px;
+}
+
+.toolbar-link.selectlist-button i.material-icons {
+    font-size: 18px;
+}
+
+.text-list-dialog{
+	pointer-events: all;	
+    background-color: white;
+	width: 500px;
+    max-width: 500px;
+    min-width: 500px;
+    min-height: 90vh;
+    max-height: 90vh;
+}
+
+.modal-footer{
+	bottom: 0;
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.modal-dialog.preset-delete-dialog{
+	max-width: calc(100vw - 100px) !important;
+    width: 800px !important;
+}
+
+.modal-dialog.preset-delete-dialog .modal-body{
+	height: 170px;
+}

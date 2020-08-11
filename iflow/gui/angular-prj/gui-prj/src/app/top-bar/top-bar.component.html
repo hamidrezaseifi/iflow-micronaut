@@ -1,0 +1,64 @@
+<header>
+
+		<nav class="iflow-navbar">
+			
+				<div class="navbar-header">
+					<a class="navbar-brand" [routerLink]="['/']">
+						<img class="navbar-logo" src="/assets/images/logo2.png">
+						<span class="logo-title">Business Edition</span>
+					</a>
+				</div>
+				
+				<div class="iflow-navbar-bar">
+					<ul class="navbar-nav" *ngIf="isLogged">
+						<li class="nav-item" *ngFor="let menu of menus;" [ngClass]="{'dropdown' : menu.children.length > 0}">
+							<a class="nav-link" [routerLink]="[menu.url]" *ngIf="menu.children.length == 0">
+								<span class="navbar-item-text">{{menu.label}}</span>
+								<img src="{{menu.image}}" class="navbar-image" />
+							</a>
+							<a class="nav-link dropdown-toggle" *ngIf="menu.children.length > 0" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="navbar-item-text">{{menu.label}}</span>
+								<img src="{{menu.image}}" class="navbar-image" />
+								<span class="navbar-item-text" class="caret"></span>
+							</a>
+							<div class="dropdown-menu" *ngIf="menu.children.length > 0">
+								<a [routerLink]="[submenu.url]" *ngFor="let submenu of menu.children;" class="dropdown-item">
+									<span class="navbar-item-text">{{submenu.label}}</span>
+									<img src="{{submenu.image}}" class="navbar-image" />
+									<div class="clear"></div>
+								</a>
+							</div>
+						</li>
+					</ul>	
+							
+					<div class="navbar-item" *ngIf="isLogged" >
+					  <button type="button" class="btn user-toggle-button" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+					  	<i class="material-icons">account_circle</i>
+					    <span>{{currentUser.fullName}}</span>
+					  </button>
+					  <div class="dropdown-menu dropdown-menu-lg-right">
+					    <button (click)="showProfile()" class="dropdown-item" type="button">Profile</button>
+					    <div class="dropdown-divider"></div>
+					    <button (click)="logout()"  class="dropdown-item" type="button">Logout</button>
+					  </div>
+					</div>
+							
+					<div class="navbar-item padding-top-7" *ngIf="isLogged" >
+						<label class="iflow-switch">
+							<input type="checkbox" (change)="togglePresens()" [checked]="isPresent">
+							<span class="iflow-slider iflow-round"></span>
+							
+						</label>
+						<label>{{ 'common.present' | translate }}</label>
+					</div>
+
+					
+					<div class="clear"></div>
+				</div>
+						
+			
+		</nav>    			    
+		
+	        
+</header>
+	

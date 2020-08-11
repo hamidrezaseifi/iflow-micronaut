@@ -1,0 +1,54 @@
+
+					<div th:fragment="panelItemWorkflow" class="workflow-content-record">
+						<div class="item-row">
+							<div class="item-label" th:text="#{workflow-title}"></div>
+							<div class="item-content">{{workflow.title}}</div>
+							<div class="clear"></div>
+						</div>
+						<div class="item-row">
+							<div class="item-label" th:text="#{workflow-comments}"></div>
+							<div class="item-content">{{workflow.comments}}</div>	
+							<div class="clear"></div>
+						</div>
+						<div class="item-row" ng-show="true">
+							<div class="item-label" th:text="#{workflow-current-step}"></div>
+							<div class="item-content">
+								{{workflow.currentStep.title}}
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="item-row" ng-show="true">
+							<div class="item-label" th:text="#{workflow-current-step}"></div>
+							<div class="item-content">
+								{{workflow.status}}
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div th:fragment="panelItemWorkflowFile" style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+							<div style="text-align: center; font-weight: bold;">Files</div>
+							<div class="item-row" ng-repeat="file in workflow.files" style="border-bottom: 1px #9a9a9a dashed">
+								<div>
+									<a href="/workflow/file/view/{{workflow.identity}}/{{file.identity}}" class="workflow-file-view-link" target="_blank">
+										<strong>{{file.title}}</strong> (Ver: {{file.activeFileVersion}})
+									</a>
+									<a href="/workflow/file/download/{{workflow.identity}}/{{file.identity}}" class="workflow-file-view-link" target="_blank">
+										<i class="material-icons">save_alt</i>
+									</a>
+								</div> 
+							</div>
+						</div>
+						<div th:fragment="panelItemWorkflowAction" style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+							<div style="text-align: center; font-weight: bold;">Actions</div>
+							<div class="item-row" ng-repeat="action in workflow.actions" style="border-bottom: 1px #9a9a9a dashed">
+								<div class="item-row">
+									<div class="action-content">
+										<div><strong>{{action.currentStep.title}}</strong>:</div> 
+										<div>({{action.status}}) ({{action.assignToUserName}})</div> 
+										<div style="">{{action.action}}</div>
+									</div>	
+									<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+						

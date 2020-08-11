@@ -1,0 +1,116 @@
+
+div.workflow-content-container{
+	border: 1px solid lightgray;
+    margin: 10px 0px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    position: relative;
+}
+
+div.workflow-content{
+    background-color: #dad9d9;
+    padding: 15px;
+    border-radius: 5px;    
+    min-height: 480px;
+    padding-bottom: 50px;
+    position: relative;
+}
+
+div.workflow-record{
+    background-color: #dad9d9;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 10px;
+    top: 10px;
+    right: 10px;
+}
+
+
+.workflow-content-container.expanded div.workflow-content{
+    width: calc(100% - 310px);
+}
+
+.workflow-content-container.expanded div.workflow-record{
+	width: 300px;
+}
+
+
+
+.workflow-content-container.collapsed div.workflow-content{
+    width: calc(100% - 60px);
+}
+
+.workflow-content-container.collapsed div.workflow-record{
+	width: 50px;
+}
+
+
+div.workflow-content div.workflow-step-button-bar, 
+div.workflow-content-record div.workflow-step-button-bar{
+    background-color: white;
+    padding: 6px;
+    position: absolute;
+    bottom: 5px;
+    left: 15px;
+    right: 15px;
+    margin: 5px 0;
+}
+
+div.workflow-content-record{
+    padding: 15px;
+}
+
+.workflow-record-toolbar{
+	background-color: white;
+	padding: 0;	
+	margin-bottom: 3px;
+	height: 20px;
+}
+
+.workflow-record-toolbar button{
+	border: none;
+	background-color: transparent;	
+	padding: 0;
+    margin: 0;
+    height: 20px;
+}
+
+.workflow-record-toolbar button i{
+	font-size: 28px;
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+}
+
+.workflow-content-container.expanded .workflow-pannel-collapse-button{
+	display: inline-block;
+}
+
+
+.workflow-content-container.collapsed .workflow-pannel-collapse-button{
+	display: none;
+}
+
+.workflow-content-container.expanded .workflow-pannel-expand-button{
+	display: none;
+}
+
+
+.workflow-content-container.collapsed .workflow-pannel-expand-button{
+	display: inline-block;
+}
+
+
+
+
+.workflow-content-container.expanded .workflow-inline-content-container{
+	display: block;
+}
+
+
+.workflow-content-container.collapsed .workflow-inline-content-container{
+	display: none;
+}
+

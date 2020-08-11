@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" ng-app="iflowApp" >
+    <head>
+    	<th:block th:include="layout/mainLayout :: pageheader" />
+		<script th:src="@{/js/workflow-edit.js}"></script>
+		<link th:href="@{/css/table.css}" rel="stylesheet" />
+		<link th:href="@{/css/workflow-create.css}" rel="stylesheet" />
+    </head>
+    <body ng-controller="BodyController">
+        <header th:replace="layout/mainLayout :: header" ></header>
+        <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+		<div class="content-container" ng-controller="WorkflowViewController">
+			<div class="page-toolbar">
+				<div class="page-title" th:text="#{menu-workflow-create}"></div>
+				<button class="toolbar-button" ng-click="save();"><i class="material-icons">save</i></button>
+				<a class="toolbar-link" href="/workflow/list"><i class="material-icons">list</i></a>
+				<button class="toolbar-button" ng-click="reload();"><i class="material-icons">refresh</i></button>
+			</div>
+		
+			<div class="workflow-content-container">
+				<div class="workflow-content">
+					<div class="item-row" ng-show="true">
+						<div class="item-label" th:text="#{workflow-current-step}"></div>
+						<div class="item-content">
+							{{workflow.currentStep.title}}
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row" ng-if="workflow.hasActiveAction">
+						<div class="item-label" th:text="#{workflow-action-title}"></div>
+						<div class="item-content">
+							<textarea ng-model="activeAction.action"></textarea>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row" ng-if="workflowType.allowAssign && workflow.nextAssign && workflow.hasActiveAction">
+						<div class="item-label" th:text="#{workflow-assignto}"></div>
+						<div class="item-content">
+						<select type="text" ng-model="activeAction.nextAssign">
+							<option th:text="#{workflow-select-next-assign}" value="0"></option>
+							<option ng-repeat="item in users" ng-value="item.identity">{{item.fullName}}</option>
+						</select>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="item-row">
+						
+						<div class="item-content workflow-step-button-bar">
+							<button ng-click="makeWorkflowDone(item.identity)" class="button-bar-button step-button" ng-repeat="item in listAvaileableSteps()">{{item.title}}</button>
+							<button ng-click="saveWorkflow()" class="button-bar-button step-button button-save">
+								<span th:text="#{common.save}"></span>
+								<i class="material-icons">save</i>
+							</button>
+							<button ng-click="arhiveWorkflow()" class="button-bar-button step-button button-archive">
+								<span th:text="#{workflow-archive}"></span>
+								<i class="material-icons">archive</i>
+							</button>
+							<div class="clear"></div>
+						</div>
+						
+						
+					</div>
+				
+				</div>
+				<div class="workflow-record">
+					<div class="workflow-content-record">
+						<div class="item-row">
+							<div class="item-label" th:text="#{workflow-title}"></div>
+							<div class="item-content">{{workflow.title}}</div>
+							<div class="clear"></div>
+						</div>
+						<div class="item-row">
+							<div class="item-label" th:text="#{workflow-comments}"></div>
+							<div class="item-content">{{workflow.comments}}</div>	
+							<div class="clear"></div>
+						</div>
+						<div class="item-row" ng-show="true">
+							<div class="item-label" th:text="#{workflow-current-step}"></div>
+							<div class="item-content">
+								{{workflow.currentStep.title}}
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="item-row" ng-show="true">
+							<div class="item-label" th:text="#{workflow-current-step}"></div>
+							<div class="item-content">
+								{{workflow.status}}
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+							<div style="text-align: center; font-weight: bold;">Files</div>
+							<div class="item-row" ng-repeat="file in workflow.files" style="border-bottom: 1px #9a9a9a dashed">
+								<div>
+									<a href="/workflow/file/view/{{workflow.identity}}/{{file.identity}}" class="workflow-file-view-link" target="_blank">
+										<strong>{{file.title}}</strong> (Ver: {{file.activeFileVersion}})
+									</a>
+									<a href="/workflow/file/download/{{workflow.identity}}/{{file.identity}}" class="workflow-file-view-link" target="_blank">
+										<i class="material-icons">save_alt</i>
+									</a>
+								</div> 
+							</div>
+						</div>
+						<div style="padding-top: 10px; padding-left: 10px; border-top: 1px solid gray; margin-top: 10px;">
+							<div style="text-align: center; font-weight: bold;">Actions</div>
+							<div class="item-row" ng-repeat="action in workflow.actions | filter: { isActive: false }" style="border-bottom: 1px #9a9a9a dashed">
+								<div class="item-row">
+									<div class="action-content">
+										<div><strong>{{action.oldStepObject.title}} --> {{action.newStepObject.title}}</strong>:</div> 
+										<div>({{action.createdByUser.fullName}}) ({{action.status}})</div> 
+										<div style="">{{action.action}}</div>
+									</div>	
+									<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+				<div class="clear"></div>
+				<hr>
+				<div >
+					{{getWorkFlowTest()}}
+				</div>
+				<hr>
+				<div >
+					{{activeAction}}
+				</div>
+			</div>
+		    		    
+		    <script type="text/javascript">
+			var loadUrl = "/workflow/data/workflow/edit/[[${workflowId}]]";
+			var saveUrl = "/workflow/data/workflow/save";
+			var archiveUrl = "/workflow/data/workflow/archive";
+			var doneUrl = "/workflow/data/workflow/done";
+			var listUrl = "/workflow/list";
+				
+		    </script>
+		
+		
+		</div>
+		
+        <div th:replace="layout/message_panel :: message_panel" ></div>
+		
+        <footer th:replace="layout/footer :: footer" ></footer>
+    </body>
+</html>

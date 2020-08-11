@@ -1,0 +1,22 @@
+
+.toolbar-link.delete-button {
+    background: transparent;
+    height: 29px;
+    margin-left: 3px;
+    width: 25px;
+    float: right;
+    cursor: pointer;
+}
+
+.toolbar-link.delete-button i.material-icons {
+    font-size: 24px;
+}
+
+input.adding-text{
+	width: calc(100% - 50px);
+    padding: 0 5px;
+}
+
+.content-container{
+	padding: 0 5px;
+}

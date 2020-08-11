@@ -1,0 +1,286 @@
+		<div class="content-container">
+			<div class="page-toolbar">
+				<div class="page-title">{{ 'menu-userlist' | translate }}</div>
+				<button class="toolbar-button" (click)="reload()"><i class="material-icons">refresh</i></button>
+				<button class="toolbar-button" (click)="showCreateUser()"><i class="material-icons">add</i></button>
+											
+			</div>
+			
+			<table mat-table [dataSource]="users">
+			
+				<ng-container matColumnDef="user-fullname">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'user-fullname' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="user-email">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'user-email' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{element.email}} </td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="user-access">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'user-access' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{ element.userAccessLabel | translate }}</td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="user-status">
+			    	<th mat-header-cell *matHeaderCellDef> {{ 'user-status' | translate }} </th>
+			    	<td mat-cell *matCellDef="let element"> {{ element.status == 1 ? ('common.active' | translate) : ('common.deactive' | translate) }}</td>
+			    </ng-container>
+			
+				<ng-container matColumnDef="actions">
+			    	<th mat-header-cell *matHeaderCellDef> ... </th>
+			    	<td mat-cell *matCellDef="let element; let idx = index" >  
+			    		<a class="tool-link" (click)="showEditUser(element)"><i class="material-icons">edit</i></a>
+		    			<a class="tool-link" (click)="showViewUser(element)"><i class="material-icons">pageview</i></a>
+		    			<a class="tool-link" (click)="showDeleteUser(element)"><i class="material-icons">delete</i></a>
+		    			<a class="tool-link" (click)="showUserResetPassword(element)"><i class="material-icons">lock_open</i></a>
+			    	</td>
+			    </ng-container>
+			    
+				<tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+			    
+			</table>
+		
+		
+		</div>
+		
+		
+	    <div class="modal fade" [ngClass]="{'show' : showEditModal}" tabindex="-1" id="edituserdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-centered-useredit" role="document">
+			    <div class="modal-content user-edit-modal-content" >
+			      <div class="modal-header">
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ isCreating ? ('user-create-modal-title' | translate) : ('user-edit-modal-title' | translate) }}</h5>
+			        <button class="dialog-toolbar-button close" (click)="hideEditUserDialog()">
+			        	<i class="material-icons">close</i>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+						
+					<ul class="nav nav-tabs" id="tablinkcontainer" role="tablist">
+					  <li class="nav-item">
+					    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'info'}" (click)="activeTab = 'info'" id="general-info-tab-link" data-toggle="tab" href="#general-info-tab" role="tab" aria-selected="true">{{ 'user-personal-info' | translate }}</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'department'}" (click)="activeTab = 'department'" id="department-ino-tab-link" data-toggle="tab" href="#department-ino-tab" role="tab" aria-selected="false">{{ 'user-department-info' | translate }}</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'access'}" (click)="activeTab = 'access'" id="access-ino-tab-link" data-toggle="tab" href="#access-ino-tab" role="tab" aria-selected="false">{{ 'user-access-info' | translate }}</a>
+					  </li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+					  	<div class="tab-pane fade" [ngClass]="{ 'active show': activeTab === 'info'}" id="general-info-tab" role="tabpanel" aria-labelledby="general-info-tab-link">
+							
+							<form id="user-form" name="userForm" [formGroup]="userEditForm">
+							  <div class="form-group">
+							    <label for="userfirstname">{{ 'user-first-name' | translate }}</label>
+							    <input type="text" name="firstName" formControlName="firstName" required class="form-control" id="userfirstname" aria-describedby="emailHelp" placeholder="Enter email">
+							    <div class="invalid-message" *ngIf="userEditForm.controls.firstName.touched && userEditForm.controls.firstName.hasError('required')">{{ 'user-first-name-error-message' | translate }}</div>
+							  </div>
+							  <div class="form-group">
+							    <label for="userlastname">{{ 'user-last-name' | translate }}</label>
+							    <input type="text" name="lastName" formControlName="lastName" required class="form-control" id="userlastname" aria-describedby="emailHelp" placeholder="Enter email">
+							    <div class="invalid-message" *ngIf="userEditForm.controls.lastName.touched && userEditForm.controls.lastName.hasError('required')">{{ 'user-last-name-error-message' | translate }}</div>
+							  </div>
+							  <div class="form-group">
+							    <label for="useremail">{{ 'user-email' | translate }}</label>
+							    <input type="email" name="email" formControlName="email" required class="form-control" id="useremail" aria-describedby="emailHelp" placeholder="Enter email">
+							    <div class="invalid-message" *ngIf="userEditForm.controls.email.touched && userEditForm.controls.email.hasError('email')">{{ 'user-email-error-message-invalid' | translate }}</div>
+							    <div class="invalid-message" *ngIf="userEditForm.controls.email.touched && userEditForm.controls.email.hasError('required')">{{ 'user-email-error-message-required' | translate }}</div>
+							  </div>
+							  <div class="form-group">
+							    <label for="userbirthdate">{{ 'user-birthdate' | translate }}</label>
+							    <input type="text" required class="form-control" matInput [matDatepicker]="birthDateDatepicker" placeholder="{{ 'user-birthdate-placeholder' | translate }}" formControlName="birthDate" >
+								<mat-datepicker-toggle matSuffix [for]="birthDateDatepicker"></mat-datepicker-toggle>
+								<mat-datepicker #birthDateDatepicker startView="month" [startAt]="userEditForm.controls.birthDate.value"></mat-datepicker>										
+							    <div class="invalid-message" *ngIf="userEditForm.controls.birthDate.touched && userEditForm.controls.birthDate.hasError('required')">{{ 'user-birthdate-error-message' | translate }}</div>
+							    
+							  </div>
+							  <div class="form-group">
+							    <label>{{ 'user-status' | translate }}</label>
+							    
+								<div class="custom-control custom-radio custom-control-inline">
+								  <input type="radio" id="radiostatusactive" name="status" formControlName="status" class="custom-control-input" value="1">
+								  <label class="custom-control-label" for="radiostatusactive">{{ 'common.active' | translate }}</label>
+								</div>
+								<div class="custom-control custom-radio custom-control-inline">
+								  <input type="radio" id="radiostatusdeactive" name="status" formControlName="status" class="custom-control-input" value="0">
+								  <label class="custom-control-label" for="radiostatusdeactive">{{ 'common.deactive' | translate }}</label>
+								</div>							    
+							  </div>
+							  <div class="form-group">
+							    <label>{{ 'user-access' | translate }}</label>
+								<select required name="userAccess" formControlName="userAccess" class="form-control" [ngClass]="{'ng-invalid' : userEditForm.controls.userAccess.errors}" >
+									<option value="NONE">{{ 'user-access-none' | translate }}</option>
+									<option value="ADMIN">{{ 'user-access-admin' | translate }}</option>
+									<option value="AGENT">{{ 'user-access-agent' | translate }}</option>
+									<option value="VIEW">{{ 'user-access-view' | translate }}</option>
+								</select>
+							    <div class="invalid-message" *ngIf="userEditForm.controls.userAccess.touched && userEditForm.controls.userAccess.hasError('required')">{{ 'user-access-error-message' | translate }}</div>
+							    
+							  </div>
+							  
+							</form>							
+							<div style="padding: 5px; border: solid gray 1px; margin-top: 10px;">{{ debug() | json}}</div>
+						</div>
+					  	<div class="tab-pane fade" [ngClass]="{ 'active show': activeTab === 'department'}" id="department-ino-tab" role="tabpanel" aria-labelledby="department-ino-tab-link">
+							
+							<div *ngFor="let dep of departments" class="list-item">
+								
+								<span class="department-item-label">{{dep.title}}</span>
+								
+								<div class="custom-control custom-checkbox custom-control-inline dep-member">
+								  <input type="checkbox" [checked]="isMemberOfDepartment(dep.identity)" (change)="toggleMemberOfDepartment(dep.identity)" class="custom-control-input" id="dep{{dep.identity}}">
+								  <label class="custom-control-label" for="dep{{dep.identity}}"></label>
+								</div>
+								
+								<select #select [ngModel]="meberTypeOfDepartment(dep.identity)" name="meberTypeOfDepartment" (change)="onMeberTypeOfDepartmentChange($event, dep.identity, select.value)" class="dep-membertype" *ngIf="isMemberOfDepartment(dep.identity)">
+									<option *ngFor="let item of userDepartmentAccessType | keyvalue" value="{{item.key}}">{{ item.value }}</option>
+								</select>
+								<div class="clear"></div> 								
+							</div>
+							
+					  	
+						</div>
+					  	<div class="tab-pane fade" [ngClass]="{ 'active show': activeTab === 'access'}" id="access-ino-tab" role="tabpanel" aria-labelledby="access-ino-tab-link">
+					  	
+						</div>
+					</div>			      	
+	    				
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" (click)="hideEditUserDialog()"><i class="material-icons">close</i></button>
+			        <button type="button" class="btn btn-primary" (click)="saveUser()"[disabled]="userEditForm.invalid"><i class="material-icons">save</i></button>
+			      </div>
+			    </div>
+			  </div>		    
+	    	
+	    </div>
+		
+		
+		
+	    <div class="modal fade" [ngClass]="{'show' : showDeleteModal}" tabindex="-1" id="deleteuserdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered user-delete-dialog" role="document">
+			    <div class="modal-content" >
+			      <div class="modal-header">
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ 'user-delete-modal-title' | translate }}</h5>
+			        <button class="dialog-toolbar-button close" (click)="hideDeleteUserDialog()">
+			        	<i class="material-icons">close</i>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+						
+					<div class="alert alert-danger custome-ander-text" role="alert">{{deleteMessage}}</div>	      	
+	    				
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" (click)="hideDeleteUserDialog()"><i class="material-icons">close</i></button>
+			        <button type="button" class="btn btn-danger" (click)="deleteUser()" ><i class="material-icons">delete</i></button>
+			      </div>
+			    </div>
+			  </div>		    
+	    	
+	    </div>		
+	    
+	    
+		
+		
+	    <div class="modal fade" [ngClass]="{'show' : showViewModal}" tabindex="-1" id="viewuserdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-centered-useredit" role="document">
+			    <div class="modal-content user-edit-modal-content" >
+			      <div class="modal-header">
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ 'user-view-modal-title' | translate }}</h5>
+			        <button class="dialog-toolbar-button close" (click)="hideViewUserDialog()">
+			        	<i class="material-icons">close</i>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+						
+					<ul class="nav nav-tabs" id="tablinkcontainer" role="tablist">
+					  <li class="nav-item">
+					    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'info'}" (click)="activeTab = 'info'" id="general-info-tab-link-view" data-toggle="tab" href="#general-info-tab-view" role="tab" aria-selected="true">{{ 'user-personal-info' | translate }}</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'department'}" (click)="activeTab = 'department'" id="department-ino-tab-link-view" data-toggle="tab" href="#department-ino-tab-view" role="tab" aria-selected="false">{{ 'user-department-info' | translate }}</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link" [ngClass]="{ 'active': activeTab === 'access'}" (click)="activeTab = 'access'" id="access-ino-tab-link-view" data-toggle="tab" href="#access-ino-tab-view" role="tab" aria-selected="false">{{ 'user-access-info' | translate }}</a>
+					  </li>
+					</ul>
+					<div class="tab-content" id="myTabContent-view">
+					  	<div class="tab-pane fade" [ngClass]="{ 'active show': activeTab === 'info'}" id="general-info-tab-view" role="tabpanel" aria-labelledby="general-info-tab-link-view">
+							
+							  <div class="form-group">
+							    <label for="userfirstname">{{ 'user-first-name' | translate }}</label>
+							    <div class="datacontent">{{viewingUser.firstName}}</div>
+							  </div>
+							  <div class="form-group">
+							    <label for="userlastname">{{ 'user-last-name' | translate }}</label>
+							    <div class="datacontent">{{viewingUser.lastName}}</div>
+							  </div>
+							  <div class="form-group">
+							    <label for="useremail">{{ 'user-email' | translate }}</label>
+							    <div class="datacontent">{{viewingUser.email}}</div>
+							  </div>
+							  <div class="form-group">
+							    <label for="userbirthdate">{{ 'user-birthdate' | translate }}</label>
+							    <div class="datacontent">{{viewingUser.birthDate}}</div>							    
+							  </div>
+							  <div class="form-group">
+							    <label>{{ 'user-status' | translate }}</label>
+							    <div class="datacontent">{{ viewingUser.status == 1 ? ('common.active' | translate) : ('common.deactive' | translate) }}</div>							    							    
+							  </div>
+							  <div class="form-group">
+							    <label>{{ 'user-access' | translate }}</label>
+							    <div class="datacontent">{{viewingUser.userAccess}}</div>							    							    
+							  </div>							  
+						</div>
+					  	<div class="tab-pane fade" [ngClass]="{ 'active show': activeTab === 'department'}" id="department-ino-tab-view" role="tabpanel" aria-labelledby="department-ino-tab-link-view">
+							<div *ngFor="let dep of viewingDepartmentMember" class="list-item view-department-membertype-item">
+								
+								<span class="department-item-label">{{dep.title}}</span>
+								<span class="department-item-label">{{dep.type}}</span>
+								<div class="clear"></div>
+							</div>
+					  	
+						</div>
+					  	<div class="tab-pane fade" [ngClass]="{ 'active show': activeTab === 'access'}" id="access-ino-tab-view" role="tabpanel" aria-labelledby="access-ino-tab-link-view">
+					  	
+						</div>
+					</div>			      	
+	    				
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" (click)="hideViewUserDialog()"><i class="material-icons">close</i></button>
+			      </div>
+			    </div>
+			  </div>		    
+	    	
+	    </div>
+		
+		
+	    <div class="modal fade" [ngClass]="{'show' : showResetPasswordModal}" tabindex="-1" id="resetpassworduserdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+			<div class="modal-dialog modal-dialog-centered resetpassword-dialog" role="document">
+			    <div class="modal-content" >
+			      <div class="modal-header">
+			        <h5 class="modal-title dialog-title">{{ 'user-resetpassword-modal-title' | translate }}</h5>
+			        <button class="dialog-toolbar-button close" (click)="hideResetPasswordUserDialog()">
+			        	<i class="material-icons">close</i>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+						
+					<div class="alert alert-success custome-ander-text" role="alert">{{resetPasswordMessage}}</div>	      	
+					<div class="alert alert-info custome-ander-text reset-result" role="alert" *ngIf="resetPasswordResultMessage != ''" [innerHTML]="resetPasswordResultMessage"></div>	      	
+	    				
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" (click)="hideResetPasswordUserDialog()"><i class="material-icons">close</i></button>
+			        <button type="button" class="btn btn-success" (click)="resetUserPassword()" ><i class="material-icons">lock_open</i></button>
+			      </div>
+			    </div>
+			  </div>		    
+	    	
+	    </div>		
+		    

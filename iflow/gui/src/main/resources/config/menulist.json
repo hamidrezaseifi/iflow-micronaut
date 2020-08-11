@@ -1,0 +1,216 @@
+[
+  {
+    "id": "menu-dashboard",
+    "label": "menu-dashboard",
+    "url": "/",
+    "image": "/assets/images/dashboard.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  },
+  {
+    "id": "menu-tasks",
+    "label": "menu-tasks",
+    "url": "/",
+    "image": "/assets/images/email.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  },
+  {
+    "id": "menu-documents",
+    "label": "menu-documents",
+    "url": "/",
+    "image": "/assets/images/folder_open.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  },
+  {
+    "id": "menu-company",
+    "label": "menu-company",
+    "url": "#",
+    "image": "/assets/images/location_city.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": [
+      {
+        "id": "menu-company-info",
+        "label": "menu-company-info",
+        "url": "/company/info",
+        "image": "/assets/images/account_balance.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      },
+      {
+        "id": "menu-userlist",
+        "label": "menu-userlist",
+        "url": "/users/list",
+        "image": "/assets/images/people.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      },
+      {
+        "id": "menu-department",
+        "label": "menu-department",
+        "url": "/departments/list",
+        "image": "/assets/images/domain.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      },
+      {
+        "id": "menu-ocr-preset",
+        "label": "menu-ocr-preset",
+        "url": "/company/ocrpresets",
+        "image": "/assets/images/scanner.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "menu-workflow",
+    "label": "menu-workflow",
+    "url": "#",
+    "image": "/assets/images/workflow.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": [
+      {
+        "id": "menu-workflow-list",
+        "label": "menu-workflow-list",
+        "url": "/workflow/list",
+        "image": "/assets/images/list.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      },
+      {
+        "id": "menu-workflow-create",
+        "label": "menu-workflowtype-list",
+        "url": "/workflow/create",
+        "image": "/assets/images/create.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "menu-user",
+    "label": "menu-user",
+    "url": "#",
+    "image": "/assets/images/person.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": [
+      {
+        "id": "menu-changepassword",
+        "label": "menu-changepassword",
+        "url": "/user/changepassword",
+        "image": "/assets/images/lock.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "menu-planing",
+    "label": "menu-planing",
+    "url": "/",
+    "image": "/assets/images/create.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  },
+  {
+    "id": "menu-reports",
+    "label": "menu-reports",
+    "url": "/",
+    "image": "/assets/images/show_chart.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  },
+  {
+    "id": "menu-contacts",
+    "label": "menu-contacts",
+    "url": "/",
+    "image": "/assets/images/import_contacts.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  },
+  {
+    "id": "menu-options",
+    "label": "menu-options",
+    "url": "#",
+    "image": "/assets/images/settings.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": [
+      {
+        "id": "menu-urlsettings",
+        "label": "menu-urlsettings",
+        "url": "/",
+        "image": "/assets/images/settings.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      },
+      {
+        "id": "menu-urlsettings-test1",
+        "label": "menu-urlsettings-test1",
+        "url": "/",
+        "image": "/assets/images/settings.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      },
+      {
+        "id": "menu-urlsettings-test2",
+        "label": "menu-urlsettings-test2",
+        "url": "/",
+        "image": "/assets/images/settings.png",
+        "status": 1,
+        "backColor": "#0169be",
+        "foreColor": "#ffffff",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": "menu-about",
+    "label": "menu-about",
+    "url": "/about",
+    "image": "/assets/images/info.png",
+    "status": 1,
+    "backColor": "#0169be",
+    "foreColor": "#ffffff",
+    "children": []
+  }
+]

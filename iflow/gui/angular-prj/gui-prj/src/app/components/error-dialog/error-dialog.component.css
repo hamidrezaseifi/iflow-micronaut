@@ -1,0 +1,13 @@
+
+[hidden] {
+  display: none !important;
+}
+
+
+#errormessagedialog .modal-dialog{
+	min-width: 50vw;
+    max-width: 50vw;
+    
+}
+
+

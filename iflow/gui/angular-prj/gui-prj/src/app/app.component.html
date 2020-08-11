@@ -1,0 +1,17 @@
+<app-top-bar [menus]="(generalDataObs | async)?.app.menus" [currentUser]="(generalDataObs | async)?.user.currentUser" 
+	[isLogged]="(generalDataObs | async)?.isLogged" [isPresent]="isPresent" (loggingOut)="onLoggingOut($event)" 
+	(togglingPresens)="onTogglingPresens($event)" ></app-top-bar>
+
+<div class="container">
+    
+	<router-outlet></router-outlet>
+	
+</div>
+
+<app-message-bar [currentUser]="(generalDataObs | async)?.user.currentUser" [isLogged]="(generalDataObs | async)?.isLogged" *ngIf="(generalDataObs | async)?.isLogged"></app-message-bar>
+
+<app-error-dialog></app-error-dialog>
+
+<app-loading-dialog></app-loading-dialog>
+
+<app-footer></app-footer>

@@ -1,0 +1,51 @@
+
+.assign-list{
+	border: 1px solid lightgray;
+    padding: 6px;
+    border-radius: 4px;
+    width: 100%;
+    min-height: 50px;
+    max-height: 100px;
+    overflow-y: auto;
+    padding-right: 24px;
+}
+
+div.assign-list div.user-item-box {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 2px 4px;
+    float: left;
+    background: #e6e6e6;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+div.assign-list div.user-item-box button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    float: right;
+    margin-left: 5px;
+    height: 20px;
+}
+
+div.assign-list div.user-item-box button i.material-icons{
+	font-size: 16px;
+}
+
+div.assign-list div.user-item-box span {
+    height: 16px;
+    display: inline-block;
+    float: left;
+    font-size: 12px;
+}
+
+button.show-select-dialog {
+    float: right;
+    margin-right: -20px;
+    width: 22px;
+    border: none;
+    padding: 0;
+    padding-left: 2px;
+    background-color: transparent;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title tiles:fragment="title" th:text="#{site.title}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    
+    <link rel="shortcut icon" th:href="@{/images/icon.png}">
+    
+    <link th:href="@{/css/message-panel.css}" rel="stylesheet" />
+    <link th:href="@{/css/workflow-view-dialog.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">
+    <link rel="stylesheet" th:href="@{/css/build.css}">
+    
+	<base href="/" />
+
+    
+</head>
+  <body>
+    <div th:replace="layout/mainLayout :: breadcrumb" ></div>
+		
+    <app-root></app-root>
+
+    <div th:if="${isLogged}" th:replace="layout/message_panel :: message_panel" ></div>
+
+    <app-message-bar></app-message-bar>
+
+    <app-footer></app-footer>
+
+  <script src="/scripts/runtime-es2015.js" type="module"></script><script src="/scripts/runtime-es5.js" nomodule defer></script><script src="/scripts/polyfills-es5.js" nomodule defer></script><script src="/scripts/polyfills-es2015.js" type="module"></script><script src="/scripts/styles-es2015.js" type="module"></script><script src="/scripts/styles-es5.js" nomodule defer></script><script src="/scripts/scripts.js" defer></script><script src="/scripts/vendor-es2015.js" type="module"></script><script src="/scripts/vendor-es5.js" nomodule defer></script><script src="/scripts/main-es2015.js" type="module"></script><script src="/scripts/main-es5.js" nomodule defer></script></body>
+   <script th:src="@{/js/moment.js}"></script>
+   <script th:if="${isLogged == false}" th:src="@{/js/login-app.js}"></script>
+   <script th:src="@{/js/jquery-ui.min.js}"></script>
+   <script th:src="@{/js/datepicker-de.js}"></script>
+   <script th:if="${isLogged}" th:src="@{/js/workflow-message.js}"></script>
+</html>
+
+
+<!-- 
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+-->
