@@ -10,7 +10,6 @@ CREATE TABLE user_dashboard_menus
     status smallint NOT NULL DEFAULT 1,
     version integer NOT NULL DEFAULT 1,
     created_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
-    CONSTRAINT user_dashboard_menus_pkey PRIMARY KEY (id),
     CONSTRAINT "FK_USER_DASHBOARD_MENUS_USERS" FOREIGN KEY (user_id)
         REFERENCES users (id) MATCH SIMPLE
         ON UPDATE CASCADE
