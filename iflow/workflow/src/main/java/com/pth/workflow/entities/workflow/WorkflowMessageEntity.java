@@ -1,14 +1,10 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -17,7 +13,6 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.pth.common.edo.enums.EWorkflowMessageStatus;
 import com.pth.common.edo.enums.EWorkflowMessageType;
 import com.pth.common.entities.BaseEntity;
-import com.pth.core.entities.UserEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -26,10 +21,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class WorkflowMessageEntity extends BaseEntity {
 
   private static final long serialVersionUID = -3112387006573750725L;
-
-  public static volatile SingularAttribute<WorkflowEntity, Long> workflowAttr;
-  public static volatile SingularAttribute<WorkflowTypeStepEntity, Long> stepAttr;
-  public static volatile SingularAttribute<UserEntity, Long> userAttr;
 
   @Column(name = "workflow_id")
   private Long workflowId;
@@ -70,10 +61,6 @@ public class WorkflowMessageEntity extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "step_id", nullable = false, insertable = false, updatable = false)
   private WorkflowTypeStepEntity step;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
-  private UserEntity user;
 
   public WorkflowMessageEntity() {
 

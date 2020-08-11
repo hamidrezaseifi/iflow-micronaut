@@ -29,6 +29,21 @@ public class UserEntity extends BaseEntity {
     @Column(name = "password_salt", length = 255, nullable = false)
     private String passwordSalt;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "birthdate")
+    private java.sql.Date birthDate;
+
+    @Column(name = "firstname")
+    private String firstName;
+
+    @Column(name = "lastname")
+    private String lastName;
+
+    @Column(name = "permission")
+    private Integer permission;
+
     @Column(name = "status")
     protected Integer status;
 
@@ -38,11 +53,36 @@ public class UserEntity extends BaseEntity {
     @Column(name = "updated_at", insertable = false, updatable = false)
     private Date updatedAt;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", insertable = false, updatable = false)
+    private CompanyEntity company;
+
     @ElementCollection
     @CollectionTable(name="users_roles", joinColumns=@JoinColumn(name="user_id"))
     @Column(name="role")
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<String> roles;
+
+    @ElementCollection
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_usergroup", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "user_group") }
+    )
+    private Set<UserGroupEntity> groups;
+
+    @ElementCollection
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_deputy", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "deputy_id") }
+    )
+    private Set<UserEntity> deputies;
+
+    @ElementCollection
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "user_departments", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "department_id") }
+    )
+    private Set<UserDepartmentEntity> userDepartments;
 
     public UserEntity() {
         super();

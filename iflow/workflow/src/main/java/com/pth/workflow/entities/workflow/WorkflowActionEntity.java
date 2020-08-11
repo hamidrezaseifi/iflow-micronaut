@@ -1,6 +1,7 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.pth.common.entities.BaseEntity;
-import com.pth.core.entities.UserEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -32,6 +32,9 @@ public class WorkflowActionEntity extends BaseEntity {
   @Column(name = "status")
   private Integer status;
 
+  @Column(name = "assign_to")
+  private UUID assignTo;
+
   @CreationTimestamp
   @Column(name = "created_at", insertable = false, updatable = false)
   private Date createdAt;
@@ -43,11 +46,6 @@ public class WorkflowActionEntity extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "workflow_id", nullable = false)
   private WorkflowEntity workflowEntity;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "assign_to", nullable = true, insertable = false, updatable = false)
-  @NotFound(action = NotFoundAction.IGNORE)
-  private UserEntity assignToUser;
 
   public WorkflowActionEntity() {
 
@@ -73,6 +71,14 @@ public class WorkflowActionEntity extends BaseEntity {
   public void setStatus(final Integer status) {
 
     this.status = status;
+  }
+
+  public UUID getAssignTo() {
+    return assignTo;
+  }
+
+  public void setAssignTo(UUID assignTo) {
+    this.assignTo = assignTo;
   }
 
   public Date getCreatedAt() {

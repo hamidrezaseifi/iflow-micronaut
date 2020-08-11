@@ -1,4 +1,4 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
 
@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.pth.common.edo.enums.EInvoiceType;
-import com.pth.core.entities.workflow.base.IWorkflowContainerEntity;
+import com.pth.workflow.entities.workflow.base.IWorkflowContainerEntity;
 import org.hibernate.annotations.Type;
 
 @Entity

@@ -1,4 +1,4 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import javax.persistence.Table;
 
 import com.pth.common.edo.enums.EIdentity;
 import com.pth.common.entities.BaseEntity;
-import com.pth.core.entities.CompanyEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -74,11 +73,6 @@ public class WorkflowEntity extends BaseEntity {
   @JoinColumn(name = "workflow_type_id", insertable = false, updatable = false)
   @Fetch(FetchMode.JOIN)
   private WorkflowTypeEntity workflowType;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "company_id", insertable = false, updatable = false)
-  @Fetch(FetchMode.JOIN)
-  private CompanyEntity company;
 
   public WorkflowEntity() {
 
@@ -232,16 +226,6 @@ public class WorkflowEntity extends BaseEntity {
   public WorkflowTypeEntity getWorkflowType() {
 
     return workflowType;
-  }
-
-  public CompanyEntity getCompany() {
-
-    return company;
-  }
-
-  public void setCompany(final CompanyEntity company) {
-
-    this.company = company;
   }
 
   public Long getCompanyId() {

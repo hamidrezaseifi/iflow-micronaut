@@ -5,30 +5,6 @@ public class ApiUrlConstants {
     public static class CoreUrlConstants{
         public static final String API001_CORE001_ROOT = "/api001/core001";
 
-        public static final String API001_CORE001_COMPANY = API001_CORE001_ROOT + "/companies";
-        public static final String API001_CORE001_DEPARTMENT = API001_CORE001_ROOT + "/department";
-
-
-        public static final String USER_READ_BY_IDENTITY = "/users/readbyidentity/{identity}";
-        public static final String USER_USERGROUPS_LIST_BY_IDENTITY = "/users/user/groups/{identity}";
-        public static final String USER_DEPARTMENTS_LIST_BY_IDENTITY = "/users/user/departments/{identity}";
-        public static final String USER_DEPUTIES_LIST_BY_IDENTITY = "/users/user/deputies/{identity}";
-        public static final String USER_USER_LIST_BY_COMPANYIDENTITY = "/users/company/users/{companyidentity}";
-        public static final String USER_USER_LIST_BY_DEPARTMENTIDENTITY = "/users/department/users/{identity}";
-        public static final String USERPROFILE_READ_BY_EMAIL = "/users/readprofile/email/{appIdentity}/{email}";
-        public static final String USERPROFILE_READ_BY_USERIDENTITY = "/users/readprofile/identity/{appIdentity}/{identity}";
-        public static final String USERDASHBOARDMENU_READ_BY_USERIDENTITY = "/users/dashboardmenu/read/{appIdentity}/{userIdentity}";
-        public static final String USERDASHBOARDMENU_SAVE_BY_USERIDENTITY = "/users/dashboardmenu/svae/{appIdentity}/{userIdentity}";
-
-
-        public static final String DEPARTMENT_READ_BY_IDENTITY = "/readbyid/{identity}";
-        public static final String DEPARTMENT_SAVE = "/save";
-        public static final String DEPARTMENT_DELETE = "/delete";
-        public static final String DEPARTMENT_READ_LIST = "/list";
-        public static final String DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY = "/company/list/{companyidentity}";
-        public static final String DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY = "/alluser/list/{identity}";
-        public static final String DEPARTMENT_GET_MANAGER = "/manager/read/{identity}";
-        public static final String DEPARTMENT_GET_DEPUTY = "/deputy/read/{identity}";
 
         public static final String WORKFLOWTYPE_READ_BY_IDENTITY = "/workflowtype/readbyid/{identity}";
         public static final String WORKFLOWTYPE_READ_LIST = "/workflowtype/list";
@@ -37,11 +13,6 @@ public class ApiUrlConstants {
         public static final String WORKFLOWTYPESTEP_READ_BY_IDENTITY = "/workflowtypestep/readbyid/{identity}";
         public static final String WORKFLOWTYPESTEP_READ_LIST_BY_WORKFLOWIDENTITY = "/workflowtypestep/workflowtype/list/{identity}";
         public static final String WORKFLOWTYPESTEP_READ_LIST = "/workflowtypestep/list";
-
-        public static final String USERGROUP_READ_BY_IDENTITY = "/usergroup/readbyid/{identity}";
-        public static final String USERGROUP_READ_LIST = "/usergroup/list";
-        public static final String USERGROUP_READ_LIST_BY_COMPANYIDENTITY = "/usergroup/company/list/{companyidentity}";
-
         public static final String WORKFLOW_SEARCH = "/workflow/search";
         public static final String WORKFLOW_READ_BY_IDENTITY = "/workflow/read/{identity}";
         public static final String WORKFLOW_READLIST = "/workflow/readlist";
@@ -73,6 +44,41 @@ public class ApiUrlConstants {
         public static final String API001_PROFILE001_ROOT = "/api001/profile001";
         public static final String API001_PROFILE001_AUTHENTICATION = API001_PROFILE001_ROOT + "/authentication";
         public static final String API001_PROFILE001_AUTHENTICATION_SIGNIN = API001_PROFILE001_AUTHENTICATION + "/signIn";
+
+
+        public static final String API001_CORE001_COMPANY = API001_PROFILE001_ROOT + "/companies";
+        public static final String API001_CORE001_DEPARTMENT = API001_PROFILE001_ROOT + "/department";
+        public static final String API001_CORE001_USERS = API001_PROFILE001_ROOT + "/users";
+        public static final String API001_CORE001_USERGROUP = API001_PROFILE001_ROOT + "/usergroup";
+
+
+        public static final String USER_SAVE = "/users/save";
+        public static final String USER_DELETE = "/users/delete";
+        public static final String USER_READ_BY_IDENTITY = "/readbyidentity/{identity}";
+        public static final String USER_USERGROUPS_LIST_BY_IDENTITY = "/user/groups/{identity}";
+        public static final String USER_DEPARTMENTS_LIST_BY_IDENTITY = "/user/departments/{identity}";
+        public static final String USER_DEPUTIES_LIST_BY_IDENTITY = "/user/deputies/{identity}";
+        public static final String USER_USER_LIST_BY_COMPANYIDENTITY = "/company/users/{companyidentity}";
+        public static final String USER_USER_LIST_BY_DEPARTMENTIDENTITY = "/department/users/{identity}";
+        public static final String USERPROFILE_READ_BY_EMAIL = "/readprofile/email/{appIdentity}/{email}";
+        public static final String USERPROFILE_READ_BY_USERIDENTITY = "/readprofile/identity/{appIdentity}/{identity}";
+        public static final String USERDASHBOARDMENU_READ_BY_USERIDENTITY = "/dashboardmenu/read/{appIdentity}/{userIdentity}";
+        public static final String USERDASHBOARDMENU_SAVE_BY_USERIDENTITY = "/dashboardmenu/svae/{appIdentity}/{userIdentity}";
+
+
+        public static final String DEPARTMENT_READ_BY_IDENTITY = "/readbyid/{identity}";
+        public static final String DEPARTMENT_SAVE = "/save";
+        public static final String DEPARTMENT_DELETE = "/delete";
+        public static final String DEPARTMENT_READ_LIST = "/list";
+        public static final String DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY = "/company/list/{companyidentity}";
+        public static final String DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY = "/alluser/list/{identity}";
+        public static final String DEPARTMENT_GET_MANAGER = "/manager/read/{identity}";
+        public static final String DEPARTMENT_GET_DEPUTY = "/deputy/read/{identity}";
+
+        public static final String USERGROUP_READ_BY_IDENTITY = "/readbyid/{identity}";
+        public static final String USERGROUP_READ_LIST = "/list";
+        public static final String USERGROUP_READ_LIST_BY_COMPANYIDENTITY = "/company/list/{companyidentity}";
+
 
     }
 }

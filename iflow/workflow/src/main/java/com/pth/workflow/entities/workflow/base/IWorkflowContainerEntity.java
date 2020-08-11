@@ -1,7 +1,7 @@
-package com.pth.core.entities.workflow.base;
+package com.pth.workflow.entities.workflow.base;
 
 
-import com.pth.core.entities.workflow.WorkflowEntity;
+import com.pth.workflow.entities.workflow.WorkflowEntity;
 
 public interface IWorkflowContainerEntity {
 

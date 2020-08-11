@@ -1,26 +1,20 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.pth.common.edo.enums.EWorkflowTypeAssignType;
 import com.pth.common.entities.BaseEntity;
-import com.pth.core.entities.CompanyEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -29,6 +23,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class WorkflowTypeEntity extends BaseEntity {
 
   private static final long serialVersionUID = -8971151977689234657L;
+
+  @Column(name = "company_id")
+  private UUID companyId;
 
   @Column(name = "identity")
   private String identity;
@@ -66,11 +63,14 @@ public class WorkflowTypeEntity extends BaseEntity {
   @JoinColumn(name = "workflow_type_id")
   private final List<WorkflowTypeStepEntity> steps = new ArrayList<>();
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(
-             name = "company_workflow_type", joinColumns = { @JoinColumn(name = "workflow_type_id") }, inverseJoinColumns = { @JoinColumn(name = "company_id") }
-  )
-  private CompanyEntity company;
+
+  public UUID getCompanyId() {
+    return companyId;
+  }
+
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
+  }
 
   public String getIdentity() {
 
@@ -205,11 +205,6 @@ public class WorkflowTypeEntity extends BaseEntity {
   public void addStep(final WorkflowTypeStepEntity stepId) {
 
     this.steps.add(stepId);
-  }
-
-  public CompanyEntity getCompany() {
-
-    return company;
   }
 
   public String getIdentityPreffix() {

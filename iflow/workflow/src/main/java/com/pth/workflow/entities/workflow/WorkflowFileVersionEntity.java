@@ -1,4 +1,4 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
 import java.util.UUID;

@@ -1,6 +1,6 @@
-package com.pth.core.entities.workflow;
+package com.pth.workflow.entities.workflow;
 
-import com.pth.core.entities.workflow.base.IWorkflowContainerEntity;
+import com.pth.workflow.entities.workflow.base.IWorkflowContainerEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
