@@ -6,10 +6,8 @@ public class ApiUrlConstants {
         public static final String API001_CORE001_ROOT = "/api001/core001";
 
         public static final String API001_CORE001_COMPANY = API001_CORE001_ROOT + "/companies";
+        public static final String API001_CORE001_DEPARTMENT = API001_CORE001_ROOT + "/department";
 
-        public static final String USER_SAVE = "/users/save";
-
-        public static final String USER_DELETE = "/users/delete";
 
         public static final String USER_READ_BY_IDENTITY = "/users/readbyidentity/{identity}";
         public static final String USER_USERGROUPS_LIST_BY_IDENTITY = "/users/user/groups/{identity}";
@@ -22,20 +20,15 @@ public class ApiUrlConstants {
         public static final String USERDASHBOARDMENU_READ_BY_USERIDENTITY = "/users/dashboardmenu/read/{appIdentity}/{userIdentity}";
         public static final String USERDASHBOARDMENU_SAVE_BY_USERIDENTITY = "/users/dashboardmenu/svae/{appIdentity}/{userIdentity}";
 
-        public static final String COMPANY_READ_BY_IDENTITY = "/companies/readbyidentity/{companyidentity}";
-        public static final String COMPANY_SAVE = "/companies/save";
-        public static final String COMPANY_READ_WORKFLOWTYPE_ITEMS_OCR_SETTINGS_BY_IDENTITY = "/companies/readwtoctsettings/{companyidentity}";
-        public static final String COMPANY_SAVE_WORKFLOWTYPE_ITEMS_OCR_SETTINGS = "/companies/savewtoctsettings";
-        public static final String COMPANY_DELETE_WORKFLOWTYPE_ITEMS_OCR_SETTINGS = "/companies/deletewtoctsettings";
 
-        public static final String DEPARTMENT_READ_BY_IDENTITY = "/department/readbyid/{identity}";
-        public static final String DEPARTMENT_SAVE = "/department/save";
-        public static final String DEPARTMENT_DELETE = "/department/delete";
-        public static final String DEPARTMENT_READ_LIST = "/department/list";
-        public static final String DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY = "/department/company/list/{companyidentity}";
-        public static final String DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY = "/department/alluser/list/{identity}";
-        public static final String DEPARTMENT_GET_MANAGER = "/department/manager/read/{identity}";
-        public static final String DEPARTMENT_GET_DEPUTY = "/department/deputy/read/{identity}";
+        public static final String DEPARTMENT_READ_BY_IDENTITY = "/readbyid/{identity}";
+        public static final String DEPARTMENT_SAVE = "/save";
+        public static final String DEPARTMENT_DELETE = "/delete";
+        public static final String DEPARTMENT_READ_LIST = "/list";
+        public static final String DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY = "/company/list/{companyidentity}";
+        public static final String DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY = "/alluser/list/{identity}";
+        public static final String DEPARTMENT_GET_MANAGER = "/manager/read/{identity}";
+        public static final String DEPARTMENT_GET_DEPUTY = "/deputy/read/{identity}";
 
         public static final String WORKFLOWTYPE_READ_BY_IDENTITY = "/workflowtype/readbyid/{identity}";
         public static final String WORKFLOWTYPE_READ_LIST = "/workflowtype/list";

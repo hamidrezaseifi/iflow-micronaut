@@ -3,126 +3,105 @@ package com.pth.core.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import com.pth.common.contants.ApiUrlConstants;
+import com.pth.common.edo.*;
+import com.pth.core.entities.DepartmentEntity;
+import com.pth.core.entities.UserEntity;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.validation.Validated;
 
-import com.pth.iflow.common.annotations.IflowGetRequestMapping;
-import com.pth.iflow.common.annotations.IflowPostRequestMapping;
-import com.pth.iflow.common.controllers.helper.ControllerHelper;
-import com.pth.iflow.common.models.edo.DepartmentEdo;
-import com.pth.iflow.common.models.edo.DepartmentListEdo;
-import com.pth.iflow.common.models.edo.IdentityListEdo;
-import com.pth.iflow.common.models.edo.UserEdo;
-import com.pth.iflow.common.models.edo.UserListEdo;
-import com.pth.iflow.common.rest.IflowRestPaths;
-import com.pth.iflow.core.model.entity.DepartmentEntity;
-import com.pth.iflow.core.model.entity.UserEntity;
-import com.pth.iflow.core.service.interfaces.IDepartmentService;
-import com.pth.iflow.core.service.interfaces.IUsersService;
 
-@RestController
-@RequestMapping
+@Validated
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller(ApiUrlConstants.CoreUrlConstants.API001_CORE001_DEPARTMENT)
 public class DepartmentController {
 
   final IDepartmentService departmentService;
   final IUsersService userService;
 
-  public DepartmentController(@Autowired final IDepartmentService departmentService, @Autowired final IUsersService userService) {
+  public DepartmentController(final IDepartmentService departmentService, final IUsersService userService) {
 
     this.departmentService = departmentService;
     this.userService = userService;
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_READ_BY_IDENTITY)
-  public ResponseEntity<DepartmentEdo> readDepartment(@PathVariable(name = "identity") final String identity,
-      final HttpServletRequest request) throws Exception {
+  
+  @Get(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_READ_BY_IDENTITY)
+  public HttpResponse<DepartmentEdo> readDepartment(final String identity) throws Exception {
 
     final DepartmentEntity model = this.departmentService.getByIdentity(identity);
 
-    return ControllerHelper.createResponseEntity(request, this.departmentService.toEdo(model), HttpStatus.OK);
+    return HttpResponse.ok(this.departmentService.toEdo(model));
   }
 
-  @ResponseStatus(HttpStatus.CREATED)
-  @IflowPostRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_SAVE)
-  public ResponseEntity<DepartmentEdo> saveDepartment(@RequestBody final DepartmentEdo edo,
-      final HttpServletRequest request) throws Exception {
+  @Post(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_SAVE)
+  public HttpResponse<DepartmentEdo> saveDepartment(@Body @Valid final DepartmentEdo edo) throws Exception {
 
     final DepartmentEntity model = this.departmentService.save(this.departmentService.fromEdo(edo));
 
-    return ControllerHelper.createResponseEntity(request, this.departmentService.toEdo(model), HttpStatus.CREATED);
+    return HttpResponse.created(this.departmentService.toEdo(model));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowPostRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_DELETE)
-  public void deleteDepartment(@RequestBody final DepartmentEdo edo,
-      final HttpServletRequest request) throws Exception {
+  
+  @Post(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_DELETE)
+  public void deleteDepartment(@Body @Valid final DepartmentEdo edo) throws Exception {
 
     this.departmentService.delete(this.departmentService.fromEdo(edo));
 
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowPostRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_READ_LIST)
-  public ResponseEntity<DepartmentListEdo> readDepartmentList(@RequestBody final IdentityListEdo idList,
-      final HttpServletRequest request) throws Exception {
+  
+  @Post(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_READ_LIST)
+  public HttpResponse<DepartmentListEdo> readDepartmentList(@Body @Valid final IdentityListEdo idList) throws Exception {
 
     final List<DepartmentEntity> modelList = idList.getIdentityList().isEmpty() ? new ArrayList<>()
         : this.departmentService.getListByIdentityList(idList.getIdentityList());
 
-    return ControllerHelper
-        .createResponseEntity(request, new DepartmentListEdo(this.departmentService.toEdoList(modelList)),
-            HttpStatus.OK);
+    return HttpResponse.ok(new DepartmentListEdo(this.departmentService.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY)
-  public ResponseEntity<DepartmentListEdo> readDepartmentListByCompany(
-      @PathVariable(name = "companyidentity") final String companyidentity, final HttpServletRequest request) throws Exception {
+  
+  @Get(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY)
+  public HttpResponse<DepartmentListEdo> readDepartmentListByCompany(final String companyidentity) throws Exception {
 
     final List<DepartmentEntity> modelList = this.departmentService.getListByIdCompanyIdentity(companyidentity);
 
-    return ControllerHelper
-        .createResponseEntity(request, new DepartmentListEdo(this.departmentService.toEdoList(modelList)),
-            HttpStatus.OK);
+    return HttpResponse.ok(new DepartmentListEdo(this.departmentService.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY)
-  public ResponseEntity<UserListEdo> readAllUserListByDepartmentGroup(@PathVariable(name = "identity") final String identity,
-      final HttpServletRequest request) throws Exception {
+  
+  @Get(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY)
+  public HttpResponse<UserListEdo> readAllUserListByDepartmentGroup(final String identity) throws Exception {
 
     final List<UserEntity> modelList = this.userService.getAllUserIdentityListByDepartmentIdentity(identity);
 
-    return ControllerHelper.createResponseEntity(request, new UserListEdo(this.userService.toEdoList(modelList)), HttpStatus.OK);
+    return HttpResponse.ok(new UserListEdo(this.userService.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_GET_MANAGER)
-  public ResponseEntity<UserEdo> getDepartmentGroupManager(@PathVariable(name = "identity") final String identity,
-      final HttpServletRequest request) throws Exception {
+  
+  @Get(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_GET_MANAGER)
+  public HttpResponse<UserEdo> getDepartmentGroupManager(final String identity) throws Exception {
 
     final UserEntity model = this.departmentService.getDepartmentManager(identity);
 
-    return ControllerHelper.createResponseEntity(request, this.userService.toEdo(model), HttpStatus.OK);
+    return HttpResponse.ok(this.userService.toEdo(model));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.CoreModule.DEPARTMENT_GET_DEPUTY)
-  public ResponseEntity<UserEdo> getDepartmentGroupDeputy(@PathVariable(name = "identity") final String identity,
-      final HttpServletRequest request) throws Exception {
+  
+  @Get(value = ApiUrlConstants.CoreUrlConstants.DEPARTMENT_GET_DEPUTY)
+  public HttpResponse<UserEdo> getDepartmentGroupDeputy(final String identity) throws Exception {
 
     final UserEntity model = this.departmentService.getDepartmentDeputy(identity);
 
-    return ControllerHelper.createResponseEntity(request, this.userService.toEdo(model), HttpStatus.OK);
+    return HttpResponse.ok(this.userService.toEdo(model));
   }
 
 }
