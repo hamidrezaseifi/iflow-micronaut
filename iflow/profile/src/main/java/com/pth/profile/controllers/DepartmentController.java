@@ -4,6 +4,8 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.*;
 import com.pth.profile.entities.DepartmentEntity;
 import com.pth.profile.entities.UserEntity;
+import com.pth.profile.mapper.IDepartmentMapper;
+import com.pth.profile.mapper.IUserMapper;
 import com.pth.profile.services.data.IDepartmentService;
 import com.pth.profile.services.data.IUsersService;
 import io.micronaut.http.HttpResponse;
@@ -25,13 +27,20 @@ import java.util.List;
 @Controller(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_DEPARTMENT)
 public class DepartmentController {
 
-  final IDepartmentService departmentService;
-  final IUsersService userService;
+  private final IDepartmentService departmentService;
+  private final IUsersService userService;
+  private final IDepartmentMapper departmentMapper;
+  private final IUserMapper userMapper;
 
-  public DepartmentController(final IDepartmentService departmentService, final IUsersService userService) {
+  public DepartmentController(final IDepartmentService departmentService,
+                              final IUsersService userService,
+                              IDepartmentMapper departmentMapper,
+                              IUserMapper userMapper) {
 
     this.departmentService = departmentService;
     this.userService = userService;
+    this.departmentMapper = departmentMapper;
+    this.userMapper = userMapper;
   }
 
   
@@ -40,22 +49,22 @@ public class DepartmentController {
 
     final DepartmentEntity model = this.departmentService.getByIdentity(identity);
 
-    return HttpResponse.ok(this.departmentService.toEdo(model));
+    return HttpResponse.ok(this.departmentMapper.toEdo(model));
   }
 
   @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_SAVE)
   public HttpResponse<DepartmentEdo> saveDepartment(@Body @Valid final DepartmentEdo edo) throws Exception {
 
-    final DepartmentEntity model = this.departmentService.save(this.departmentService.fromEdo(edo));
+    final DepartmentEntity model = this.departmentService.save(this.departmentMapper.fromEdo(edo));
 
-    return HttpResponse.created(this.departmentService.toEdo(model));
+    return HttpResponse.created(this.departmentMapper.toEdo(model));
   }
 
   
   @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_DELETE)
   public void deleteDepartment(@Body @Valid final DepartmentEdo edo) throws Exception {
 
-    this.departmentService.delete(this.departmentService.fromEdo(edo));
+    this.departmentService.delete(this.departmentMapper.fromEdo(edo));
 
   }
 
@@ -66,7 +75,7 @@ public class DepartmentController {
     final List<DepartmentEntity> modelList = idList.getIdentityList().isEmpty() ? new ArrayList<>()
         : this.departmentService.getListByIdentityList(idList.getIdentityList());
 
-    return HttpResponse.ok(new DepartmentListEdo(this.departmentService.toEdoList(modelList)));
+    return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(modelList)));
   }
 
   
@@ -75,7 +84,7 @@ public class DepartmentController {
 
     final List<DepartmentEntity> modelList = this.departmentService.getListByIdCompanyIdentity(companyidentity);
 
-    return HttpResponse.ok(new DepartmentListEdo(this.departmentService.toEdoList(modelList)));
+    return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(modelList)));
   }
 
   
@@ -84,7 +93,7 @@ public class DepartmentController {
 
     final List<UserEntity> modelList = this.userService.getAllUserIdentityListByDepartmentIdentity(identity);
 
-    return HttpResponse.ok(new UserListEdo(this.userService.toEdoList(modelList)));
+    return HttpResponse.ok(new UserListEdo(this.userMapper.toEdoList(modelList)));
   }
 
   
@@ -93,7 +102,7 @@ public class DepartmentController {
 
     final UserEntity model = this.departmentService.getDepartmentManager(identity);
 
-    return HttpResponse.ok(this.userService.toEdo(model));
+    return HttpResponse.ok(this.userMapper.toEdo(model));
   }
 
   
@@ -102,7 +111,7 @@ public class DepartmentController {
 
     final UserEntity model = this.departmentService.getDepartmentDeputy(identity);
 
-    return HttpResponse.ok(this.userService.toEdo(model));
+    return HttpResponse.ok(this.userMapper.toEdo(model));
   }
 
 }

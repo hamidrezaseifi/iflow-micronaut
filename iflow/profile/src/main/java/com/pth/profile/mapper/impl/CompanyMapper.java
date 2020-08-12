@@ -1,4 +1,4 @@
-package com.pth.profile.mapper;
+package com.pth.profile.mapper.impl;
 
 import com.pth.common.edo.CompanyEdo;
 import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo;
@@ -7,6 +7,7 @@ import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
 import com.pth.profile.entities.CompanyEntity;
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
+import com.pth.profile.mapper.ICompanyMapper;
 
 import javax.inject.Singleton;
 

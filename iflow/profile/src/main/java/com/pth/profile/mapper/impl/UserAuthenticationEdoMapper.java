@@ -1,10 +1,11 @@
-package com.pth.profile.mapper;
+package com.pth.profile.mapper.impl;
 
 import com.pth.common.edo.TokenValidationRequestEdo;
 import com.pth.common.edo.UserAuthenticationRequestEdo;
 import com.pth.common.edo.UserAuthenticationResponseEdo;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.common.utils.MappingUtils;
+import com.pth.profile.mapper.IUserAuthenticationEdoMapper;
 import com.pth.profile.models.TokenValidationRequest;
 import com.pth.profile.models.UserAuthenticationRequest;
 import com.pth.profile.models.UserAuthenticationResponse;
@@ -12,8 +13,9 @@ import com.pth.profile.models.UserAuthenticationResponse;
 import javax.inject.Singleton;
 
 @Singleton
-public class UserAuthenticationEdoMapper {
+public class UserAuthenticationEdoMapper implements IUserAuthenticationEdoMapper {
 
+    @Override
     public UserAuthenticationResponseEdo toEdo(UserAuthenticationResponse response){
         UserAuthenticationResponseEdo edo =
                 MappingUtils.copyProperties(response, new UserAuthenticationResponseEdo());
@@ -21,6 +23,7 @@ public class UserAuthenticationEdoMapper {
         return edo;
     }
 
+    @Override
     public UserAuthenticationResponse fromEdo(UserAuthenticationResponseEdo edo){
         UserAuthenticationResponse response =
                 MappingUtils.copyProperties(edo, new UserAuthenticationResponse());
@@ -28,6 +31,7 @@ public class UserAuthenticationEdoMapper {
         return response;
     }
 
+    @Override
     public UserAuthenticationRequestEdo toEdo(UserAuthenticationRequest request){
         UserAuthenticationRequestEdo edo =
                 MappingUtils.copyProperties(request, new UserAuthenticationRequestEdo());
@@ -36,6 +40,7 @@ public class UserAuthenticationEdoMapper {
 
     }
 
+    @Override
     public UserAuthenticationRequest fromEdo(UserAuthenticationRequestEdo edo){
         UserAuthenticationRequest request =
                 MappingUtils.copyProperties(edo, new UserAuthenticationRequest());
@@ -43,6 +48,7 @@ public class UserAuthenticationEdoMapper {
         return request;
     }
 
+    @Override
     public TokenValidationRequestEdo toEdo(TokenValidationRequest request){
         TokenValidationRequestEdo edo =
                 MappingUtils.copyProperties(request, new TokenValidationRequestEdo());
@@ -51,6 +57,7 @@ public class UserAuthenticationEdoMapper {
 
     }
 
+    @Override
     public TokenValidationRequest fromEdo(TokenValidationRequestEdo edo){
         TokenValidationRequest request =
                 MappingUtils.copyProperties(edo, new TokenValidationRequest());

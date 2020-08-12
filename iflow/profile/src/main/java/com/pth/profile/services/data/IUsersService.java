@@ -12,18 +12,19 @@ import com.pth.profile.models.ProfileResponse;
 import com.pth.common.mapping.IModelEdoMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
-public interface IUsersService extends IModelEdoMapper<UserEntity, UserEdo> {
+public interface IUsersService {
 
-  UserEntity save(UserEntity model);
+  Optional<UserEntity> save(UserEntity model);
 
   void delete(UserEntity model);
 
-  UserEntity getUserByIdentity(String identity);
+  Optional<UserEntity> getUserByIdentity(String identity);
 
-  UserEntity getUserByEmail(String email);
+  Optional<UserEntity> getUserByEmail(String email);
 
   ProfileResponse getProfileResponseByEmail(String appIdentity,
                                             String email);

@@ -28,4 +28,14 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
         return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.username), username)));
         //ServerFilterPhase s;
     }
+
+    @Override
+    public Optional<UserEntity> getByIdentity(String identity) {
+        return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.identity), identity)));
+    }
+
+    @Override
+    public Optional<UserEntity> getUserByEmail(String email) {
+        return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.email), email)));
+    }
 }
