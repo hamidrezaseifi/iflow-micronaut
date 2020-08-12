@@ -2,10 +2,8 @@ package com.pth.profile.repositories.impl;
 
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
 import com.pth.profile.entities.CompanyEntity;
-import com.pth.profile.entities.UserEntity;
-import com.pth.profile.entities.UserEntity_;
+import com.pth.profile.entities.CompanyEntity_;
 import com.pth.profile.repositories.ICompanyRepository;
-import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.spring.tx.annotation.Transactional;
 
@@ -25,7 +23,8 @@ public class CompanyRepository extends AEntityRdbmsHibernateRepository<CompanyEn
 
 
     @Override
-    public CompanyEntity getByIdentity(String identity) {
+    @Transactional(readOnly = true)
+    public Optional<CompanyEntity> getByIdentity(String identity) {
         return queryScala((cb, root) -> (cb.equal(root.get(CompanyEntity_.identity), identity)));
     }
 }

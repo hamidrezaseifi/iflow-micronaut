@@ -19,9 +19,8 @@ public class CompanyWorkflowTypeOcrSettingPresetEntity extends BaseEntity {
 
   private static final long serialVersionUID = 2937568589389217869L;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "company_id", nullable = false)
-  private CompanyEntity company;
+  @Column(name = "company_id")
+  private UUID companyId;
 
   @Column(name = "workflow_type_id")
   private UUID workflowTypeId;
@@ -50,14 +49,12 @@ public class CompanyWorkflowTypeOcrSettingPresetEntity extends BaseEntity {
   @Fetch(value = FetchMode.SUBSELECT)
   private final List<CompanyWorkflowTypeOcrSettingPresetItemEntity> items = new ArrayList<>();
 
-  public CompanyEntity getCompany() {
-
-    return company;
+  public UUID getCompanyId() {
+    return companyId;
   }
 
-  public void setCompany(final CompanyEntity company) {
-
-    this.company = company;
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
   public UUID getWorkflowTypeId() {

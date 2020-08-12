@@ -6,86 +6,62 @@ import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.profile.entities.CompanyEntity;
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
 import com.pth.profile.repositories.ICompanyRepository;
+import com.pth.profile.repositories.ICompanyWorkflowTypeOcrSettingPresetRepository;
 import com.pth.profile.services.data.ICompanyService;
 
+import javax.inject.Singleton;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+@Singleton
 public class CompanyService implements ICompanyService {
 
     private final ICompanyRepository companyRepository;
+    private final ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository;
 
-    public CompanyService(ICompanyRepository companyRepository) {
+    public CompanyService(ICompanyRepository companyRepository,
+                          ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository) {
         this.companyRepository = companyRepository;
+        this.workflowTypeOcrSettingPresetRepository = workflowTypeOcrSettingPresetRepository;
     }
 
     @Override
-    public CompanyEntity save(CompanyEntity model) {
-        return null;
+    public Optional<CompanyEntity> save(CompanyEntity model) {
+        companyRepository.save(model);
+        return companyRepository.getById(model.getId());
     }
 
     @Override
-    public CompanyEntity getByIdentity(String identifyId) {
-        return null;
+    public Optional<CompanyEntity> getByIdentity(String identity) {
+        return companyRepository.getByIdentity(identity);
     }
 
     @Override
-    public List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettings(Long id) {
-        return null;
+    public List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettings(UUID companyId) {
+        return this.workflowTypeOcrSettingPresetRepository.getByCompanyId(companyId);
     }
 
     @Override
     public List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(String identity) {
+
+        Optional<CompanyEntity> companyEntityOptional = getByIdentity(identity);
+        if(companyEntityOptional.isPresent()){
+            CompanyEntity companyEntity = companyEntityOptional.get();
+            return readCompanyWorkflowtypeItemOcrSettings(companyEntity.getId());
+        }
         return null;
     }
 
     @Override
-    public CompanyWorkflowTypeOcrSettingPresetEntity saveCompanyWorkflowtypeItemOcrSetting(CompanyWorkflowTypeOcrSettingPresetEntity preset) {
-        return null;
+    public Optional<CompanyWorkflowTypeOcrSettingPresetEntity> saveCompanyWorkflowtypeItemOcrSetting(CompanyWorkflowTypeOcrSettingPresetEntity preset) {
+        this.workflowTypeOcrSettingPresetRepository.save(preset);
+        return this.workflowTypeOcrSettingPresetRepository.getById(preset.getId());
     }
 
     @Override
     public void deleteCompanyWorkflowtypeItemOcrSetting(CompanyWorkflowTypeOcrSettingPresetEntity preset) {
-
+        this.workflowTypeOcrSettingPresetRepository.delete(preset);
     }
 
-    @Override
-    public CompanyWorkflowTypeOcrSettingPresetEntity fromCompanyWorkflowtypeItemOcrSettingPresetEdo(CompanyWorkflowtypeItemOcrSettingPresetEdo edo) {
-        return null;
-    }
-
-    @Override
-    public List<CompanyWorkflowTypeOcrSettingPresetEntity> fromCompanyWorkflowtypeItemOcrSettingPresetEdoList(List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList) {
-        return null;
-    }
-
-    @Override
-    public List<CompanyWorkflowtypeItemOcrSettingPresetEdo> toCompanyWorkflowtypeItemOcrSettingPresetEdoList(List<CompanyWorkflowTypeOcrSettingPresetEntity> modelList) {
-        return null;
-    }
-
-    @Override
-    public CompanyWorkflowtypeItemOcrSettingPresetEdo toCompanyWorkflowtypeItemOcrSettingPresetEdo(CompanyWorkflowTypeOcrSettingPresetEntity modelSaved) {
-        return null;
-    }
-
-    @Override
-    public CompanyEntity fromEdo(CompanyEdo edo) throws IFlowMessageConversionFailureException {
-        return null;
-    }
-
-    @Override
-    public CompanyEdo toEdo(CompanyEntity model) {
-        return null;
-    }
-
-    @Override
-    public List<CompanyEdo> toEdoList(List<CompanyEntity> modelList) {
-        return null;
-    }
-
-    @Override
-    public List<CompanyEntity> fromEdoList(List<CompanyEdo> edoList) throws
-                                                                     IFlowMessageConversionFailureException {
-        return null;
-    }
 }

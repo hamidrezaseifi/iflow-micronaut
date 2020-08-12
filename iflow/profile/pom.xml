@@ -225,7 +225,7 @@
               <path>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jpamodelgen</artifactId>
-                <version>5.4.5.Final</version>
+                <version>5.4.20.Final</version>
               </path>
               <path>
                 <groupId>javax.persistence</groupId>
@@ -259,7 +259,7 @@
                   <path>
                     <groupId>org.hibernate</groupId>
                     <artifactId>hibernate-jpamodelgen</artifactId>
-                    <version>5.4.5.Final</version>
+                    <version>5.4.20.Final</version>
                   </path>
                   <path>
                     <groupId>javax.persistence</groupId>

@@ -3,13 +3,13 @@ package com.pth.profile.services.data;
 import com.pth.common.edo.DepartmentEdo;
 import com.pth.profile.entities.DepartmentEntity;
 import com.pth.profile.entities.UserEntity;
-import com.pth.profile.services.base.ICoreModelEdoMapperService;
+import com.pth.common.mapping.IModelEdoMapper;
 
 import java.util.Collection;
 import java.util.List;
 
 
-public interface IDepartmentService extends ICoreModelEdoMapperService<DepartmentEntity, DepartmentEdo> {
+public interface IDepartmentService extends IModelEdoMapper<DepartmentEntity, DepartmentEdo> {
 
   DepartmentEntity save(DepartmentEntity model);
 

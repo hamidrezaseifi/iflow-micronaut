@@ -7,6 +7,9 @@ import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo;
 import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetListEdo;
 import com.pth.profile.entities.CompanyEntity;
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
+import com.pth.common.mapping.IModelEdoMapper;
+import com.pth.profile.mapper.ICompanyMapper;
+import com.pth.profile.mapper.ICompanyWorkflowTypeOcrSettingPresetMapper;
 import com.pth.profile.services.data.ICompanyService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -17,27 +20,40 @@ import io.micronaut.validation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Validated
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY)
 public class CompanyController {
 
-  final ICompanyService companyService;
+  private final ICompanyService companyService;
+  private final ICompanyMapper companyModelEdoMapper;
+  private final ICompanyWorkflowTypeOcrSettingPresetMapper presetModelEdoMapper;
 
-  public CompanyController(final ICompanyService companyService) {
+  public CompanyController(final ICompanyService companyService,
+                           ICompanyMapper companyModelEdoMapper,
+                           ICompanyWorkflowTypeOcrSettingPresetMapper presetModelEdoMapper) {
 
     this.companyService = companyService;
+    this.companyModelEdoMapper = companyModelEdoMapper;
+    this.presetModelEdoMapper = presetModelEdoMapper;
   }
 
   @Produces(MediaType.APPLICATION_JSON)
   @Secured(SecurityRule.IS_AUTHENTICATED)
-  @Get(value = "/readbyidentity/{companyidentity}")
-  public HttpResponse<CompanyEdo> readCompany(final String companyidentity) throws Exception {
+  @Get(value = "/readbyidentity/{companyIdentity}")
+  public HttpResponse<CompanyEdo> readCompany(final String companyIdentity) throws Exception {
 
-    final CompanyEntity company = this.companyService.getByIdentity(companyidentity);
+    final Optional<CompanyEntity> companyEntityOptional = this.companyService.getByIdentity(companyIdentity);
 
-    return HttpResponse.ok( this.companyService.toEdo(company));
+    if(companyEntityOptional.isPresent()){
+
+      CompanyEdo companyEdo = this.companyModelEdoMapper.toEdo(companyEntityOptional.get());
+
+      return HttpResponse.ok(companyEdo);
+    }
+    return HttpResponse.notFound();
   }
 
   @Produces(MediaType.APPLICATION_JSON)
@@ -46,22 +62,28 @@ public class CompanyController {
   public HttpResponse<CompanyEdo> saveCompany(@Body @Valid final CompanyEdo requestCompany)
       throws Exception {
 
-    final CompanyEntity savedCompany = this.companyService.save(companyService.fromEdo(requestCompany));
+    final Optional<CompanyEntity> savedCompanyEntityOptional = this.companyService.save(companyModelEdoMapper.fromEdo(requestCompany));
 
-    return HttpResponse.created(this.companyService.toEdo(savedCompany));
+    if(savedCompanyEntityOptional.isPresent()){
+
+      CompanyEdo companyEdo = this.companyModelEdoMapper.toEdo(savedCompanyEntityOptional.get());
+
+      return HttpResponse.created(companyEdo);
+    }
+    return HttpResponse.badRequest();
+
   }
 
   @Produces(MediaType.APPLICATION_JSON)
   @Secured(SecurityRule.IS_AUTHENTICATED)
-  @Get(value = "/readwtoctsettings/{companyidentity}")
+  @Get(value = "/readwtoctsettings/{companyIdentity}")
   public HttpResponse<CompanyWorkflowtypeItemOcrSettingPresetListEdo>
-      readCompanyWorkflowtypeItemOcrSettings(final String companyidentity) throws Exception {
+      readCompanyWorkflowtypeItemOcrSettings(final String companyIdentity) throws Exception {
 
     final List<CompanyWorkflowTypeOcrSettingPresetEntity> modelList = this.companyService
-        .readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(companyidentity);
+        .readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(companyIdentity);
 
-    final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList = this.companyService
-        .toCompanyWorkflowtypeItemOcrSettingPresetEdoList(modelList);
+    final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList = this.presetModelEdoMapper.toEdoList(modelList);
 
     return HttpResponse.ok( new CompanyWorkflowtypeItemOcrSettingPresetListEdo(edoList));
   }
@@ -73,16 +95,20 @@ public class CompanyController {
       saveCompanyWorkflowtypeItemOcrSettings(
           @Body @Valid final CompanyWorkflowtypeItemOcrSettingPresetEdo presetEdo) throws Exception {
 
-    final CompanyWorkflowTypeOcrSettingPresetEntity modelInput = this.companyService
-        .fromCompanyWorkflowtypeItemOcrSettingPresetEdo(presetEdo);
+    final CompanyWorkflowTypeOcrSettingPresetEntity modelInput = this.presetModelEdoMapper.fromEdo(presetEdo);
 
-    final CompanyWorkflowTypeOcrSettingPresetEntity modelSaved = this.companyService
+    final Optional<CompanyWorkflowTypeOcrSettingPresetEntity> modelSavedOptional = this.companyService
         .saveCompanyWorkflowtypeItemOcrSetting(modelInput);
 
-    final CompanyWorkflowtypeItemOcrSettingPresetEdo savedEdo = this.companyService
-        .toCompanyWorkflowtypeItemOcrSettingPresetEdo(modelSaved);
+    if(modelSavedOptional.isPresent()){
 
-    return HttpResponse.created( savedEdo);
+      CompanyWorkflowTypeOcrSettingPresetEntity modelSaved = modelSavedOptional.get();
+      final CompanyWorkflowtypeItemOcrSettingPresetEdo savedEdo = this.presetModelEdoMapper.toEdo(modelSaved);
+
+      return HttpResponse.created( savedEdo);
+    }
+
+    return HttpResponse.badRequest();
   }
 
   @Produces(MediaType.APPLICATION_JSON)
@@ -92,8 +118,7 @@ public class CompanyController {
   deleteCompanyWorkflowtypeItemOcrSettings(@Body @Valid final CompanyWorkflowtypeItemOcrSettingPresetEdo presetEdo)
           throws Exception {
 
-    final CompanyWorkflowTypeOcrSettingPresetEntity modelInput = this.companyService
-        .fromCompanyWorkflowtypeItemOcrSettingPresetEdo(presetEdo);
+    final CompanyWorkflowTypeOcrSettingPresetEntity modelInput = this.presetModelEdoMapper.fromEdo(presetEdo);
 
     this.companyService.deleteCompanyWorkflowtypeItemOcrSetting(modelInput);
 

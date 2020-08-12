@@ -2,10 +2,10 @@ package com.pth.profile.repositories.impl;
 
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
 import com.pth.profile.entities.UserEntity;
+import com.pth.profile.entities.UserEntity_;
 import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.spring.tx.annotation.Transactional;
-import io.micronaut.transaction.annotation.ReadOnly;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;

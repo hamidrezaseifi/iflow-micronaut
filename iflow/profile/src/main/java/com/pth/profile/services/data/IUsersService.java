@@ -9,13 +9,13 @@ import com.pth.profile.entities.UserDashboardMenuEntity;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.entities.UserGroupEntity;
 import com.pth.profile.models.ProfileResponse;
-import com.pth.profile.services.base.ICoreModelEdoMapperService;
+import com.pth.common.mapping.IModelEdoMapper;
 
 import java.util.List;
 import java.util.Set;
 
 
-public interface IUsersService extends ICoreModelEdoMapperService<UserEntity, UserEdo> {
+public interface IUsersService extends IModelEdoMapper<UserEntity, UserEdo> {
 
   UserEntity save(UserEntity model);
 

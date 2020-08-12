@@ -1,38 +1,26 @@
 package com.pth.profile.services.data;
 
-import com.pth.common.edo.CompanyEdo;
 import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo;
 import com.pth.profile.entities.CompanyEntity;
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
-import com.pth.profile.services.base.ICoreModelEdoMapperService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
-public interface ICompanyService extends ICoreModelEdoMapperService<CompanyEntity, CompanyEdo> {
+public interface ICompanyService {
 
-  CompanyEntity save(CompanyEntity model);
+    Optional<CompanyEntity> save(CompanyEntity model);
 
-  CompanyEntity getByIdentity(final String identifyId);
+    Optional<CompanyEntity> getByIdentity(final String identity);
 
-  List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettings(Long id);
+    List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettings(UUID companyId);
 
-  List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(String identity);
+    List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(String identity);
 
-  CompanyWorkflowTypeOcrSettingPresetEntity saveCompanyWorkflowtypeItemOcrSetting(
+    Optional<CompanyWorkflowTypeOcrSettingPresetEntity> saveCompanyWorkflowtypeItemOcrSetting(
           final CompanyWorkflowTypeOcrSettingPresetEntity preset);
 
-  void deleteCompanyWorkflowtypeItemOcrSetting(final CompanyWorkflowTypeOcrSettingPresetEntity preset);
-
-  CompanyWorkflowTypeOcrSettingPresetEntity
-      fromCompanyWorkflowtypeItemOcrSettingPresetEdo(final CompanyWorkflowtypeItemOcrSettingPresetEdo edo);
-
-  List<CompanyWorkflowTypeOcrSettingPresetEntity>
-      fromCompanyWorkflowtypeItemOcrSettingPresetEdoList(List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList);
-
-  List<CompanyWorkflowtypeItemOcrSettingPresetEdo>
-      toCompanyWorkflowtypeItemOcrSettingPresetEdoList(List<CompanyWorkflowTypeOcrSettingPresetEntity> modelList);
-
-  CompanyWorkflowtypeItemOcrSettingPresetEdo
-      toCompanyWorkflowtypeItemOcrSettingPresetEdo(CompanyWorkflowTypeOcrSettingPresetEntity modelSaved);
+    void deleteCompanyWorkflowtypeItemOcrSetting(final CompanyWorkflowTypeOcrSettingPresetEntity preset);
 }
