@@ -31,7 +31,7 @@ public class CompanyController {
   private final ICompanyMapper companyModelEdoMapper;
   private final ICompanyWorkflowTypeOcrSettingPresetMapper presetModelEdoMapper;
 
-  public CompanyController(final ICompanyService companyService,
+  public CompanyController(ICompanyService companyService,
                            ICompanyMapper companyModelEdoMapper,
                            ICompanyWorkflowTypeOcrSettingPresetMapper presetModelEdoMapper) {
 

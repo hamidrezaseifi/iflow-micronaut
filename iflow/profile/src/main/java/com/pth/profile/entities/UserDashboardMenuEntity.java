@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_dashboard_menus")
@@ -13,7 +14,7 @@ public class UserDashboardMenuEntity extends BaseEntity {
   private static final long serialVersionUID = 2937568589389217869L;
 
   @Column(name = "user_id")
-  private Long userId;
+  private UUID userId;
 
   @Column(name = "menu_id")
   private String menuId;
@@ -39,12 +40,12 @@ public class UserDashboardMenuEntity extends BaseEntity {
   private UserEntity user;
 
 
-  public Long getUserId() {
+  public UUID getUserId() {
 
     return userId;
   }
 
-  public void setUserId(final Long userId) {
+  public void setUserId(final UUID userId) {
 
     this.userId = userId;
   }

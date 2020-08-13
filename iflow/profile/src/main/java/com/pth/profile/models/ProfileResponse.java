@@ -10,31 +10,31 @@ public class ProfileResponse {
 
   private UserEntity user;
   private CompanyProfile companyProfile;
-  private String sessionid;
+  private String token;
   private final List<UserDashboardMenuEntity> userDashboardMenus = new ArrayList<>();
 
   public ProfileResponse() {
 
     this.user = null;
     this.companyProfile = null;
-    this.sessionid = "";
+    this.token = "";
   }
 
-  public ProfileResponse(final UserEntity user, final CompanyProfile companyProfile, final String sessionid) {
+  public ProfileResponse(final UserEntity user, final CompanyProfile companyProfile, final String token) {
 
     this.user = user;
     this.companyProfile = companyProfile;
-    this.sessionid = sessionid;
+    this.token = token;
   }
 
   public ProfileResponse(final UserEntity user, final CompanyEntity company, final List<DepartmentEntity> departments,
                          final List<UserGroupEntity> userGroups, final List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings,
                          final List<UserDashboardMenuEntity> userDashboardMenus,
-                         final String sessionid) {
+                         final String token) {
 
     this.user = user;
     this.companyProfile = new CompanyProfile(company, departments, userGroups, ocrPresetSettings);
-    this.sessionid = sessionid;
+    this.token = token;
     setUserDashboardMenus(userDashboardMenus);
   }
 
@@ -58,14 +58,12 @@ public class ProfileResponse {
     this.companyProfile = companyProfile;
   }
 
-  public String getSessionid() {
-
-    return this.sessionid;
+  public String getToken() {
+    return token;
   }
 
-  public void setSessionid(final String sessionid) {
-
-    this.sessionid = sessionid;
+  public void setToken(String token) {
+    this.token = token;
   }
 
   public List<UserDashboardMenuEntity> getUserDashboardMenus() {

@@ -6,6 +6,10 @@ import com.pth.profile.entities.DepartmentEntity;
 import com.pth.profile.entities.UserDashboardMenuEntity;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.entities.UserGroupEntity;
+import com.pth.profile.mapper.IDepartmentMapper;
+import com.pth.profile.mapper.IProfileResponseMapper;
+import com.pth.profile.mapper.IUserDashboardMenuMapper;
+import com.pth.profile.mapper.IUserMapper;
 import com.pth.profile.models.ProfileResponse;
 import com.pth.profile.services.data.IDepartmentService;
 import com.pth.profile.services.data.IUserGroupService;
@@ -21,36 +25,53 @@ import io.micronaut.validation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Validated
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS)
 public class UserController {
 
-  final IUsersService usersService;
-  final IUserGroupService userGroupService;
-  final IDepartmentService departmentService;
+  private final IUsersService usersService;
+  private final IUserGroupService userGroupService;
+  private final IDepartmentService departmentService;
+  private final IUserMapper userMapper;
+  private final IDepartmentMapper departmentMapper;
+  private final IProfileResponseMapper profileResponseMapper;
+  private final IUserDashboardMenuMapper userDashboardMenuMapper;
 
-  public UserController(final IUsersService usersService, final IUserGroupService userGroupService,
-      final IDepartmentService departmentService) {
+  public UserController(IUsersService usersService,
+                        IUserGroupService userGroupService,
+                        IDepartmentService departmentService,
+                        IUserMapper userMapper,
+                        IDepartmentMapper departmentMapper,
+                        IProfileResponseMapper profileResponseMapper,
+                        IUserDashboardMenuMapper userDashboardMenuMapper) {
 
     this.usersService = usersService;
     this.userGroupService = userGroupService;
     this.departmentService = departmentService;
+    this.userMapper = userMapper;
+    this.departmentMapper = departmentMapper;
+    this.profileResponseMapper = profileResponseMapper;
+    this.userDashboardMenuMapper = userDashboardMenuMapper;
   }
 
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_SAVE)
   public HttpResponse<UserEdo> saveUser(@Body @Valid final UserEdo userEdo) throws Exception {
 
-    final UserEntity user = this.usersService.save(this.usersService.fromEdo(userEdo));
+    final Optional<UserEntity> userOptional = this.usersService.save(this.userMapper.fromEdo(userEdo));
 
-    return HttpResponse.created(this.usersService.toEdo(user));
+    if(userOptional.isPresent()){
+      return HttpResponse.created(this.userMapper.toEdo(userOptional.get()));
+    }
+    return HttpResponse.badRequest();
   }
   
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_DELETE)
   public HttpResponse<?> deleteUser(@Body @Valid final UserEdo userEdo) throws Exception {
 
-    this.usersService.delete(this.usersService.fromEdo(userEdo));
+    this.usersService.delete(this.userMapper.fromEdo(userEdo));
 
     return HttpResponse.accepted();
   }
@@ -61,9 +82,12 @@ public class UserController {
       readUserByIdentity(final String identity)
           throws Exception {
 
-    final UserEntity user = this.usersService.getUserByIdentity(identity);
+    final Optional<UserEntity> userOptional = this.usersService.getUserByIdentity(identity);
 
-    return HttpResponse.ok(this.usersService.toEdo(user));
+    if(userOptional.isPresent()){
+      return HttpResponse.ok(this.userMapper.toEdo(userOptional.get()));
+    }
+    return HttpResponse.badRequest();
   }
 
   
@@ -81,7 +105,7 @@ public class UserController {
 
     final List<DepartmentEntity> list = this.usersService.getUserDepartments(identity);
 
-    return HttpResponse.ok(new DepartmentListEdo(this.departmentService.toEdoList(list)));
+    return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(list)));
   }
 
   
@@ -90,7 +114,7 @@ public class UserController {
 
     final List<UserEntity> list = this.usersService.getUserDeputies(identity);
     final UserListEdo edo = new UserListEdo();
-    edo.setUsers(this.usersService.toEdoList(list));
+    edo.setUsers(this.userMapper.toEdoList(list));
     return HttpResponse.ok(edo);
   }
 
@@ -100,7 +124,7 @@ public class UserController {
 
     final List<UserEntity> list = this.usersService.getCompanyUsers(companyidentity);
     final UserListEdo edo = new UserListEdo();
-    edo.setUsers(this.usersService.toEdoList(list));
+    edo.setUsers(this.userMapper.toEdoList(list));
     return HttpResponse.ok(edo);
   }
 
@@ -110,7 +134,7 @@ public class UserController {
 
     final List<UserEntity> list = this.usersService.getAllUserIdentityListByDepartmentIdentity(identity);
     final UserListEdo edo = new UserListEdo();
-    edo.setUsers(this.usersService.toEdoList(list));
+    edo.setUsers(this.userMapper.toEdoList(list));
     return HttpResponse.ok(edo);
   }
 
@@ -119,20 +143,25 @@ public class UserController {
   public HttpResponse<ProfileResponseEdo> readUserProfileByEmail(final String appIdentity,
                                                                  final String email) throws Exception {
 
-    final ProfileResponse profile = this.usersService.getProfileResponseByEmail(appIdentity, email);
+    final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseByEmail(appIdentity, email);
 
-    return HttpResponse.ok(this.usersService.toProfileResponseEdo(profile));
+    if(profileResponseOptional.isPresent()){
+      return HttpResponse.ok(this.profileResponseMapper.toEdo(profileResponseOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERIDENTITY)
-  public HttpResponse<ProfileResponseEdo>
-  readUserProfileByIdentity(final String appIdentity,
-                            final String identity) throws Exception {
+  public HttpResponse<ProfileResponseEdo> readUserProfileByIdentity(final String appIdentity,
+                                                                    final String identity) throws Exception {
 
-    final ProfileResponse profile = this.usersService.getProfileResponseByIdentity(appIdentity, identity);
+    final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseByIdentity(appIdentity, identity);
 
-    return HttpResponse.ok(this.usersService.toProfileResponseEdo(profile));
+    if(profileResponseOptional.isPresent()){
+      return HttpResponse.ok(this.profileResponseMapper.toEdo(profileResponseOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
   
@@ -143,7 +172,7 @@ public class UserController {
     final List<UserDashboardMenuEntity> list =
             this.usersService.getUserDashboardMenuListByUserIdentity(appIdentity, userIdentity);
 
-    final List<UserDashboardMenuEdo> edoList = this.usersService.toUserDashboardMenuEdoList(list);
+    final List<UserDashboardMenuEdo> edoList = this.userDashboardMenuMapper.toEdoList(list);
 
     return HttpResponse.ok(new UserDashboardMenuListEdo(edoList));
   }
@@ -155,13 +184,13 @@ public class UserController {
                                       final String userIdentity)
           throws Exception {
 
-    final List<UserDashboardMenuEntity> requestedModelList = this.usersService
-        .fromUserDashboardMenuEdoList(requestedEdoList.getUserDashboardMenus());
+    final List<UserDashboardMenuEntity> requestedModelList = this.userDashboardMenuMapper
+        .fromEdoList(requestedEdoList.getUserDashboardMenus());
 
     final List<UserDashboardMenuEntity> list = this.usersService
         .saveUserDashboardMenuListByUserIdentity(appIdentity, userIdentity, requestedModelList);
 
-    final List<UserDashboardMenuEdo> edoList = this.usersService.toUserDashboardMenuEdoList(list);
+    final List<UserDashboardMenuEdo> edoList = this.userDashboardMenuMapper.toEdoList(list);
 
     return HttpResponse.created(new UserDashboardMenuListEdo(edoList));
   }

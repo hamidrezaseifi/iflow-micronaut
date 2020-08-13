@@ -1,22 +1,16 @@
 package com.pth.profile.services.data.impl;
 
-import com.pth.common.edo.ProfileResponseEdo;
-import com.pth.common.edo.UserDashboardMenuEdo;
-import com.pth.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.profile.entities.DepartmentEntity;
-import com.pth.profile.entities.UserDashboardMenuEntity;
-import com.pth.profile.entities.UserEntity;
-import com.pth.profile.entities.UserGroupEntity;
+import com.pth.profile.authentication.entities.RefreshTokenEntity;
+import com.pth.profile.entities.*;
 import com.pth.profile.models.ProfileResponse;
-import com.pth.profile.repositories.ICompanyRepository;
-import com.pth.profile.repositories.IDepartmentRepository;
-import com.pth.profile.repositories.IUserGroupRepository;
-import com.pth.profile.repositories.IUserRepository;
+import com.pth.profile.repositories.*;
 import com.pth.profile.services.data.IUsersService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UsersService implements IUsersService {
 
@@ -24,14 +18,24 @@ public class UsersService implements IUsersService {
   private final ICompanyRepository companyRepository;
   private final IUserGroupRepository userGroupRepository;
   private final IDepartmentRepository departmentDao;
-  //private final IWorkflowTypeDao workflowTypeDao;
+  private final ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository;
+  private final IRefreshTokenRepository refreshTokenRepository;
+  private final IUserDashboardMenuRepository userDashboardMenuRepository;
 
-
-  public UsersService(IUserRepository userRepository, ICompanyRepository companyRepository, IUserGroupRepository userGroupRepository, IDepartmentRepository departmentDao) {
+  public UsersService(IUserRepository userRepository,
+                      ICompanyRepository companyRepository,
+                      IUserGroupRepository userGroupRepository,
+                      IDepartmentRepository departmentDao,
+                      ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository,
+                      IRefreshTokenRepository refreshTokenRepository,
+                      final IUserDashboardMenuRepository userDashboardMenuRepository) {
     this.userRepository = userRepository;
     this.companyRepository = companyRepository;
     this.userGroupRepository = userGroupRepository;
     this.departmentDao = departmentDao;
+    this.workflowTypeOcrSettingPresetRepository = workflowTypeOcrSettingPresetRepository;
+    this.refreshTokenRepository = refreshTokenRepository;
+    this.userDashboardMenuRepository = userDashboardMenuRepository;
   }
 
   @Override
@@ -56,67 +60,138 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public ProfileResponse getProfileResponseByEmail(String appIdentity, String email) {
-    return null;
+  public Optional<ProfileResponse> getProfileResponseByEmail(String appIdentity, String email) {
+
+    Optional<UserEntity> userEntityOptional = getUserByEmail(email);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      Optional<ProfileResponse> profileResponseOptional = generateProfileResponse(userEntity, appIdentity);
+      return profileResponseOptional;
+    }
+
+    return Optional.empty();
   }
 
   @Override
-  public ProfileResponse getProfileResponseByIdentity(String appIdentity, String identity) {
-    return null;
+  public Optional<ProfileResponse> getProfileResponseByIdentity(String appIdentity, String identity) {
+    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      Optional<ProfileResponse> profileResponseOptional = generateProfileResponse(userEntity, appIdentity);
+      return profileResponseOptional;
+    }
+
+    return Optional.empty();
   }
 
   @Override
   public List<UserGroupEntity> getUserGroups(String identity) {
-    return null;
+    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      return userEntity.getGroups().stream().collect(Collectors.toList());
+    }
+
+    return new ArrayList<>();
   }
 
   @Override
   public List<DepartmentEntity> getUserDepartments(String identity) {
-    return null;
+    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      return userEntity.getUserDepartments().stream().map(ud -> ud.getDepartment()).collect(Collectors.toList());
+    }
+
+    return new ArrayList<>();
   }
 
   @Override
   public List<UserEntity> getUserDeputies(String identity) {
-    return null;
+    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      return userEntity.getDeputies().stream().collect(Collectors.toList());
+    }
+
+    return new ArrayList<>();
   }
 
   @Override
   public List<UserEntity> getCompanyUsers(String companyIdentity) {
-    return null;
+    Optional<CompanyEntity> companyEntityOptional = this.companyRepository.getByIdentity(companyIdentity);
+    if(companyEntityOptional.isPresent()){
+      CompanyEntity companyEntity = companyEntityOptional.get();
+      return this.userRepository.getUserListByCompanyId(companyEntity.getId());
+    }
+    return new ArrayList<>();
   }
 
   @Override
   public List<UserEntity> getAllUserIdentityListByDepartmentIdentity(String identity) {
-    return null;
+    return this.userRepository.getAllUserIdentityListByDepartmentIdentity(identity);
   }
 
   @Override
   public List<UserEntity> getUserListByIdentityList(Set<String> identityList) {
-    return null;
-  }
-
-  @Override
-  public ProfileResponseEdo toProfileResponseEdo(ProfileResponse model) {
-    return null;
+    return this.userRepository.getUserListByIdentityList(identityList);
   }
 
   @Override
   public List<UserDashboardMenuEntity> getUserDashboardMenuListByUserIdentity(String appIdentity, String userIdentity) {
-    return null;
+    Optional<UserEntity> userEntityOptional = getUserByIdentity(userIdentity);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+       return this.userDashboardMenuRepository.getByUserId(userEntity.getId(), appIdentity);
+    }
+    return new ArrayList<>();
   }
 
   @Override
   public List<UserDashboardMenuEntity> saveUserDashboardMenuListByUserIdentity(String appIdentity, String userIdentity, List<UserDashboardMenuEntity> list) {
-    return null;
+    Optional<UserEntity> userEntityOptional = getUserByIdentity(userIdentity);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      for(UserDashboardMenuEntity userDashboardMenuEntity: list){
+        userDashboardMenuEntity.setUserId(userEntity.getId());
+        userDashboardMenuEntity.setAppId(appIdentity);
+        userDashboardMenuRepository.save(userDashboardMenuEntity);
+      }
+      return this.userDashboardMenuRepository.getByUserId(userEntity.getId(), appIdentity);
+    }
+    return new ArrayList<>();
   }
 
-  @Override
-  public List<UserDashboardMenuEdo> toUserDashboardMenuEdoList(List<UserDashboardMenuEntity> modelList) {
-    return null;
+
+  private Optional<ProfileResponse> generateProfileResponse(UserEntity userEntity, String appId){
+
+    Optional<RefreshTokenEntity> refreshTokenEntityOptional = this.refreshTokenRepository.findByUsername(userEntity.getUsername());
+    if(refreshTokenEntityOptional.isPresent()){
+      RefreshTokenEntity tokenEntity = refreshTokenEntityOptional.get();
+      CompanyEntity companyEntity = userEntity.getCompany();
+      List<DepartmentEntity> departments = userEntity.getUserDepartments().stream().map(ud -> ud.getDepartment()).collect(Collectors.toList());
+      List<UserGroupEntity> userGroups = userEntity.getGroups().stream().collect(Collectors.toList());
+      List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings = this.workflowTypeOcrSettingPresetRepository.getByCompanyId(userEntity.getCompanyId());
+      List<UserDashboardMenuEntity> userDashboardMenus = this.userDashboardMenuRepository.getByUserId(userEntity.getId(), appId);
+
+      ProfileResponse profileResponse = new ProfileResponse(userEntity,
+              companyEntity,
+              departments,
+              userGroups,
+              ocrPresetSettings,
+              userDashboardMenus,
+              tokenEntity.getRefreshToken());
+
+      return Optional.of(profileResponse);
+    }
+    return Optional.empty();
   }
 
-  @Override
-  public List<UserDashboardMenuEntity> fromUserDashboardMenuEdoList(List<UserDashboardMenuEdo> edoList) throws IFlowMessageConversionFailureException {
-    return null;
-  }
 }

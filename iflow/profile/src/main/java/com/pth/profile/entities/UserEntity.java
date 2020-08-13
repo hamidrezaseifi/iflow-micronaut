@@ -176,4 +176,75 @@ public class UserEntity extends BaseEntity {
         this.roles = roles;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public java.sql.Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(java.sql.Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Integer getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Integer permission) {
+        this.permission = permission;
+    }
+
+    public CompanyEntity getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyEntity company) {
+        this.company = company;
+    }
+
+    public Set<UserGroupEntity> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<UserGroupEntity> groups) {
+        this.groups = groups;
+    }
+
+    public Set<UserEntity> getDeputies() {
+        return deputies;
+    }
+
+    public void setDeputies(Set<UserEntity> deputies) {
+        this.deputies = deputies;
+    }
+
+    public Set<UserDepartmentEntity> getUserDepartments() {
+        return userDepartments;
+    }
+
+    public void setUserDepartments(Set<UserDepartmentEntity> userDepartments) {
+        this.userDepartments = userDepartments;
+    }
 }
