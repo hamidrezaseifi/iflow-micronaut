@@ -4,8 +4,7 @@ import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
 import com.pth.profile.entities.DepartmentEntity;
 import com.pth.profile.entities.UserGroupEntity;
 import com.pth.profile.repositories.IDepartmentRepository;
-import com.pth.profile.repositories.IUserGroupRepository;
-import io.micronaut.data.annotation.Repository;
+import org.springframework.stereotype.Repository;
 import io.micronaut.spring.tx.annotation.Transactional;
 
 import javax.inject.Singleton;

@@ -3,8 +3,8 @@ package com.pth.profile.repositories.impl;
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
 import com.pth.profile.entities.*;
 import com.pth.profile.repositories.IUserRepository;
-import io.micronaut.data.annotation.Repository;
 import io.micronaut.spring.tx.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
@@ -42,22 +42,26 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UserEntity> getByIdentity(String identity) {
         return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.identity), identity)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UserEntity> getUserByEmail(String email) {
         return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.email), email)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserEntity> getUserListByCompanyId(UUID companyId) {
 
         return queryCollection((cb, root) -> (cb.equal(root.get(UserEntity_.companyId), companyId)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserEntity> getAllUserIdentityListByDepartmentIdentity(String departmentId) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -76,6 +80,7 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserEntity> getUserListByIdentityList(Set<String> identityList) {
         return queryCollection((cb, root) -> ( root.get(UserEntity_.identity).in(identityList)));
 

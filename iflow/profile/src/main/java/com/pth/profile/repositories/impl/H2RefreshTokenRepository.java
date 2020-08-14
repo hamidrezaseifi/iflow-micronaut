@@ -7,8 +7,8 @@ import com.pth.common.repositories.HibernatePredicateQueryAdapter;
 import com.pth.profile.authentication.entities.RefreshTokenEntity;
 import com.pth.profile.authentication.entities.RefreshTokenEntity_;
 import com.pth.profile.repositories.IRefreshTokenRepository;
-import edu.umd.cs.findbugs.annotations.NonNull;
-import io.micronaut.data.annotation.Repository;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Repository;
 import io.micronaut.spring.tx.annotation.Transactional;
 import org.hibernate.exception.ConstraintViolationException;
 

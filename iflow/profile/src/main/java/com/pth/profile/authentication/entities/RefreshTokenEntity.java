@@ -1,15 +1,8 @@
 //tag::clazzwithoutsettersandgetters[]
 package com.pth.profile.authentication.entities;
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import io.micronaut.data.annotation.GeneratedValue;
-
 import javax.persistence.*;
 
-import io.micronaut.data.annotation.MappedEntity;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.UUID;
 

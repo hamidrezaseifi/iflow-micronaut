@@ -1,13 +1,10 @@
 package com.pth.profile.repositories.impl;
 
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
-import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
-import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity_;
 import com.pth.profile.entities.UserDashboardMenuEntity;
 import com.pth.profile.entities.UserDashboardMenuEntity_;
-import com.pth.profile.repositories.ICompanyWorkflowTypeOcrSettingPresetRepository;
 import com.pth.profile.repositories.IUserDashboardMenuRepository;
-import io.micronaut.data.annotation.Repository;
+import org.springframework.stereotype.Repository;
 import io.micronaut.spring.tx.annotation.Transactional;
 
 import javax.inject.Singleton;

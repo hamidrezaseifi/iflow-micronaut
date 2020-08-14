@@ -1,5 +1,9 @@
+import com.pth.common.edo.enums.ECompanyType
+import com.pth.profile.entities.CompanyEntity
 import com.pth.profile.entities.UserEntity
+import com.pth.profile.repositories.ICompanyRepository
 import com.pth.profile.repositories.IUserRepository
+import com.pth.profile.repositories.impl.CompanyRepository
 import com.pth.profile.repositories.impl.UserRepository
 import com.pth.profile.test.ProfileTestDataProvider
 import io.micronaut.context.ApplicationContext
@@ -19,10 +23,15 @@ class UserRepositorySpec extends ProfileTestDataProvider {
 
     private IUserRepository userRepository
 
+    private ICompanyRepository companyRepository
+
     private List<UserEntity> searchTestList = new ArrayList<>()
 
     void setup() {
         userRepository = embeddedServer.applicationContext.createBean(UserRepository)
+        companyRepository = embeddedServer.applicationContext.createBean(CompanyRepository)
+
+        createTestCompany(companyRepository)
     }
 
     void cleanup() {
@@ -39,23 +48,39 @@ class UserRepositorySpec extends ProfileTestDataProvider {
 
         given: "is a single document"
         def userEntity = new UserEntity()
-        userEntity.setPasswordSalt("passwordSalt")
-        userEntity.setPasswordHash("passwordHash")
-        userEntity.setBirthDate(new Date())
-        userEntity.setUsername("username")
-        userEntity.setCompanyId(testCompanyId)
-        userEntity.setFirstName("fname")
+        userEntity.passwordSalt = "passwordSalt"
+        userEntity.passwordHash = "passwordHash"
+        userEntity.birthDate = new Date()
+        userEntity.username = "username"
+        userEntity.companyId = testCompanyId
+        userEntity.firstName = "fname"
         def identity = generateRandomString(15)
-        userEntity.setIdentity(identity)
-        userEntity.setLastName("lname")
-        userEntity.setPermission(1)
+        userEntity.identity = identity
+        userEntity.lastName = "lname"
+        userEntity.permission = 1
 
         when: "new document is saved"
-            def userOptional = userRepository.save(userEntity)
+            userRepository.save(userEntity)
+            def userOptional = userRepository.getById(userEntity.id)
 
         then: "document should be accessible via id and be equal"
             userOptional.isPresent()
-            userOptional.get() == userEntity
+
+            verifyUser(userOptional.get(), userEntity)
+
+    }
+
+    private void verifyUser(UserEntity testUserEntity,
+                            UserEntity userEntity) {
+        testUserEntity.passwordSalt == userEntity.passwordSalt
+        testUserEntity.passwordHash == userEntity.passwordHash
+        testUserEntity.birthDate == userEntity.birthDate
+        testUserEntity.username == userEntity.username
+        testUserEntity.companyId == userEntity.companyId
+        testUserEntity.firstName == userEntity.firstName
+        testUserEntity.identity == userEntity.identity
+        testUserEntity.lastName == userEntity.lastName
+        testUserEntity.permission == userEntity.permission
     }
 
 }
