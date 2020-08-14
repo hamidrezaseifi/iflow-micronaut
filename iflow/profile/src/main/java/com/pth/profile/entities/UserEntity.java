@@ -33,7 +33,7 @@ public class UserEntity extends BaseEntity {
     private String email;
 
     @Column(name = "birthdate")
-    private java.sql.Date birthDate;
+    private Date birthDate;
 
     @Column(name = "firstname")
     private String firstName;
@@ -184,11 +184,11 @@ public class UserEntity extends BaseEntity {
         this.email = email;
     }
 
-    public java.sql.Date getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(java.sql.Date birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

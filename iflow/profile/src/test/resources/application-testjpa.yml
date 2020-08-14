@@ -1,0 +1,59 @@
+micronaut:
+  application:
+    name: profile
+  server:
+    port: 1020
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+        path: /api001/profile001/authentication/login
+      oauth:
+        enabled: true
+        path: /api001/profile001/authentication/refreshToken
+  extensions:
+    project: profile
+
+jpa:
+  default:
+    name: 'default'
+    packages-to-scan:
+      - 'com.pth.profile.entities'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        show_sql: true
+        format_sql: true
+  h2:
+    name: 'h2'
+    packages-to-scan:
+      - 'com.pth.profile.entities'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+        show_sql: true
+        format_sql: true
+
+datasources:
+  default:
+    name: 'default'
+    url: ${JDBC_URL:`jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL`}
+    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+    username: ${JDBC_USER:sa}
+    password: ${JDBC_PASSWORD:""}
+    pool-name: profile-pool
+  h2:
+    name: 'h2'
+    schema-generate: CREATE_DROP
+    dialect: H2
+    url: ${JDBC_URL:`jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL`}
+    driverClassName: ${JDBC_DRIVER:org.h2.Driver}
+    username: ${JDBC_USER:sa}
+    password: ${JDBC_PASSWORD:""}
+    pool-name: authentication-pool
+
+jackson:
+  bean-introspection-module: false

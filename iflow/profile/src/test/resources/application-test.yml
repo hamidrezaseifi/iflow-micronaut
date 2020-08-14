@@ -1,0 +1,19 @@
+micronaut:
+  application:
+    name: profile
+  server:
+    port: 1020
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+        path: /api001/profile001/authentication/login
+      oauth:
+        enabled: true
+        path: /api001/profile001/authentication/refreshToken
+  extensions:
+    project: profile
+
+jackson:
+  bean-introspection-module: false
