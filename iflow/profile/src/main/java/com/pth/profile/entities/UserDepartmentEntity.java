@@ -1,5 +1,6 @@
 package com.pth.profile.entities;
 
+import com.pth.common.entities.BaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,15 +8,8 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "user_departments")
-public class UserDepartmentEntity {
+public class UserDepartmentEntity extends BaseEntity {
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_department_id_seq")
-  @SequenceGenerator(
-                     name = "user_department_id_seq", allocationSize = 1, initialValue = 1, sequenceName = "user_department_id_seq"
-  )
-  private Long id;
 
   @Column(name = "member_type")
   private int memberType;
@@ -34,16 +28,6 @@ public class UserDepartmentEntity {
 
   public UserDepartmentEntity() {
 
-  }
-
-  public Long getId() {
-
-    return id;
-  }
-
-  public void setId(final Long id) {
-
-    this.id = id;
   }
 
   public int getMemberType() {

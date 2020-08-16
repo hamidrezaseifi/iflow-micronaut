@@ -13,8 +13,6 @@ import java.sql.Date;
 @Table(name = "companies")
 public class CompanyEntity extends BaseEntity {
 
-  private static final long serialVersionUID = 2937568589389217869L;
-
   @Column(name = "identity")
   private String identity;
 
@@ -29,9 +27,6 @@ public class CompanyEntity extends BaseEntity {
 
   @Column(name = "status")
   private Integer status;
-
-  @Column(name = "version")
-  private Integer version;
 
   @CreationTimestamp
   @Column(name = "created_at", insertable = false, updatable = false)

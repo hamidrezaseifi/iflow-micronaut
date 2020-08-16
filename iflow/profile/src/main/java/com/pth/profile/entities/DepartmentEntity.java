@@ -11,14 +11,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-@NamedQueries(
-  {
-      @NamedQuery(
-                  name = "findDepartmentMember", query = "select ud.user from UserDepartmentEntity ud where ud.department.identity = :identity and ud.memberType = :memtype", fetchSize = 1, readOnly = true
-      )
-  }
-)
+import java.util.UUID;
 
 @Entity
 @Table(name = "departments")
@@ -27,7 +20,7 @@ public class DepartmentEntity extends BaseEntity {
   private static final long serialVersionUID = 5330442911402791281L;
 
   @Column(name = "company_id")
-  private Long companyId;
+  private UUID companyId;
 
   @Column(name = "identity")
   private String identity;
@@ -74,12 +67,12 @@ public class DepartmentEntity extends BaseEntity {
     this.identity = identity;
   }
 
-  public Long getCompanyId() {
+  public UUID getCompanyId() {
 
     return this.companyId;
   }
 
-  public void setCompanyId(final Long companyId) {
+  public void setCompanyId(final UUID companyId) {
 
     this.companyId = companyId;
   }
