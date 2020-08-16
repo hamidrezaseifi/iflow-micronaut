@@ -25,6 +25,10 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
     }
 
     void cleanup() {
+        def companyList = companyRepository.getAll()
+        for(def entity: companyList){
+            companyRepository.delete(entity)
+        }
     }
 
     void "verify new created company can be queried by id and equals original company"() {
@@ -79,7 +83,6 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
 
     }
 
-
     void "verify deleted company can not be queried by id"() {
 
         given:
@@ -103,6 +106,62 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
 
 
     }
+
+
+    void "verify list new created company can be queried by get-all and equals original company"() {
+
+        given:
+
+            Map<UUID, CompanyEntity> map = new HashMap<>();
+            for(int i=1; i<11; i++){
+                def companyEntity = new CompanyEntity()
+                companyEntity.companyName = "Test-Company-" + i + "-" + generateRandomString(5)
+                companyEntity.identity = generateRandomString(15)
+                companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
+                companyEntity.companyTypeCustome = "Test-Company-" + i
+                companyEntity.status = 1
+                companyRepository.save(companyEntity)
+                map.put(companyEntity.id, companyEntity)
+            }
+
+        when:
+
+            def companyList = companyRepository.getAll()
+
+
+        then:
+            companyList.isEmpty() == false
+            companyList.size() == 10
+            for(CompanyEntity entity: companyList){
+                verifyCompany(entity, map.get(entity.id))
+            }
+
+
+
+    }
+
+    void "verify new created company can be queried by identity and equals original company"() {
+
+        given:
+
+            def companyEntity = new CompanyEntity()
+            companyEntity.companyName = "Test-Company" + generateRandomString(5)
+            companyEntity.identity = generateRandomString(15)
+            companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
+            companyEntity.companyTypeCustome = "Test-Company"
+            companyEntity.status = 1
+
+        when:
+            companyRepository.save(companyEntity)
+            def companyOptional = companyRepository.getByIdentity(companyEntity.identity)
+
+        then:
+            companyOptional.isPresent()
+
+            verifyCompany(companyOptional.get(), companyEntity)
+
+    }
+
 
     private void verifyCompany(CompanyEntity testCompanyEntity,
                                CompanyEntity CompanyEntity) {

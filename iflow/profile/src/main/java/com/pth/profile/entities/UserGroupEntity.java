@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_group")
@@ -21,7 +22,7 @@ public class UserGroupEntity extends BaseEntity {
   private String identity;
 
   @Column(name = "company_id")
-  private Long companyId;
+  private UUID companyId;
 
   @Column(name = "title")
   private String title;
@@ -60,12 +61,12 @@ public class UserGroupEntity extends BaseEntity {
     this.identity = identity;
   }
 
-  public Long getCompanyId() {
+  public UUID getCompanyId() {
 
     return this.companyId;
   }
 
-  public void setCompanyId(final Long companyId) {
+  public void setCompanyId(final UUID companyId) {
 
     this.companyId = companyId;
   }
