@@ -88,6 +88,9 @@ public class UserEntity extends BaseEntity {
         super();
 
         this.roles = new HashSet<>();
+        this.userDepartments = new HashSet<>();
+        this.deputies = new HashSet<>();
+        this.groups = new HashSet<>();
 
     }
 
@@ -242,6 +245,12 @@ public class UserEntity extends BaseEntity {
 
     public Set<UserDepartmentEntity> getUserDepartments() {
         return userDepartments;
+    }
+
+    public void addUserDepartment(DepartmentEntity departmentEntity, int memberType) {
+        UserDepartmentEntity userDepartmentEntity = new UserDepartmentEntity(this, departmentEntity);
+        userDepartmentEntity.setMemberType(memberType);
+        userDepartments.add(userDepartmentEntity);
     }
 
     public void setUserDepartments(Set<UserDepartmentEntity> userDepartments) {

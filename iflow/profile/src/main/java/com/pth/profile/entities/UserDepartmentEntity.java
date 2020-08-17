@@ -10,7 +10,6 @@ import java.sql.Date;
 @Table(name = "user_departments")
 public class UserDepartmentEntity extends BaseEntity {
 
-
   @Column(name = "member_type")
   private int memberType;
 
@@ -27,7 +26,13 @@ public class UserDepartmentEntity extends BaseEntity {
   private UserEntity user;
 
   public UserDepartmentEntity() {
+    super();
+  }
 
+  public UserDepartmentEntity(UserEntity userEntity, DepartmentEntity departmentEntity) {
+    this();
+    this.setDepartment(departmentEntity);
+    this.setUser(userEntity);
   }
 
   public int getMemberType() {

@@ -134,7 +134,7 @@ public class UsersService implements IUsersService {
 
   @Override
   public List<UserEntity> getAllUserIdentityListByDepartmentIdentity(String identity) {
-    return this.userRepository.getAllUserIdentityListByDepartmentIdentity(identity);
+    return this.userRepository.getUserListDepartmentIdentity(identity);
   }
 
   @Override

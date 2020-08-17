@@ -13,7 +13,7 @@ public interface IUserRepository extends IEntityRepository<UserEntity> {
     Optional<UserEntity> getByIdentity(String identity);
     Optional<UserEntity> getUserByEmail(String email);
     List<UserEntity> getUserListByCompanyId(UUID companyId);
-    List<UserEntity> getAllUserIdentityListByDepartmentIdentity(String departmentId);
+    List<UserEntity> getUserListDepartmentIdentity(String departmentId);
     List<UserEntity> getUserListByIdentityList(Set<String> identityList);
 
 }
