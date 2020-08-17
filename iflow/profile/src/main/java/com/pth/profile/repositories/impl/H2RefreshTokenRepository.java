@@ -20,6 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Singleton
@@ -132,6 +133,7 @@ public class H2RefreshTokenRepository implements IRefreshTokenRepository {
         }
     }
 
+    @Override
     @Transactional(readOnly = false)
     public void delete(RefreshTokenEntity entity) {
         try{
@@ -161,6 +163,20 @@ public class H2RefreshTokenRepository implements IRefreshTokenRepository {
             save(username, accessToken, refreshToken, issuedAt);
         }
 
+    }
+
+    @Override
+    public List<RefreshTokenEntity> getAll() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<RefreshTokenEntity> criteriaQuery = criteriaBuilder.createQuery(RefreshTokenEntity.class);
+
+        Root<RefreshTokenEntity> root = criteriaQuery.from(RefreshTokenEntity.class);
+        CriteriaQuery<RefreshTokenEntity> criteriaRootQuery = criteriaQuery.select(root);
+
+
+        TypedQuery<RefreshTokenEntity> typedQuery = entityManager.createQuery(criteriaRootQuery);
+
+        return typedQuery.getResultList();
     }
 
 }

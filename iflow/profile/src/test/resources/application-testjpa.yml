@@ -29,7 +29,7 @@ jpa:
   h2:
     name: 'h2'
     packages-to-scan:
-      - 'com.pth.profile.entities'
+      - 'com.pth.profile.authentication.entities'
     properties:
       hibernate:
         hbm2ddl:

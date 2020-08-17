@@ -7,11 +7,9 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table
-//@MappedEntity
+@Table(name = "refresh_token_table")
 public class RefreshTokenEntity {
     @Id
-    @GeneratedValue
     private UUID id;
 
     private String username;
