@@ -5,10 +5,17 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_departments")
 public class UserDepartmentEntity extends BaseEntity {
+
+  @Column(name = "department_id")
+  private UUID departmentId;
+
+  @Column(name = "user_id")
+  private UUID userId;
 
   @Column(name = "member_type")
   private int memberType;
@@ -17,12 +24,12 @@ public class UserDepartmentEntity extends BaseEntity {
   @Column(name = "created_at", insertable = false, updatable = false)
   private Date createdAt;
 
-  @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REFRESH })
-  @JoinColumn(name = "department_id", nullable = false)
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "department_id", nullable = false, insertable = false, updatable = false)
   private DepartmentEntity department;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false)
+  @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
   private UserEntity user;
 
   public UserDepartmentEntity() {
@@ -33,6 +40,22 @@ public class UserDepartmentEntity extends BaseEntity {
     this();
     this.setDepartment(departmentEntity);
     this.setUser(userEntity);
+  }
+
+  public UUID getDepartmentId() {
+    return departmentId;
+  }
+
+  public void setDepartmentId(UUID departmentId) {
+    this.departmentId = departmentId;
+  }
+
+  public UUID getUserId() {
+    return userId;
+  }
+
+  public void setUserId(UUID userId) {
+    this.userId = userId;
   }
 
   public int getMemberType() {
@@ -61,7 +84,7 @@ public class UserDepartmentEntity extends BaseEntity {
   }
 
   public void setDepartment(final DepartmentEntity department) {
-
+    this.departmentId = department.getId();
     this.department = department;
   }
 
@@ -71,7 +94,7 @@ public class UserDepartmentEntity extends BaseEntity {
   }
 
   public void setUser(final UserEntity user) {
-
+    this.userId = user.getId();
     this.user = user;
   }
 

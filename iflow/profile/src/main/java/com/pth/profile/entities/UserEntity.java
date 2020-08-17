@@ -2,6 +2,8 @@ package com.pth.profile.entities;
 
 import com.pth.common.edo.enums.EUserStatus;
 import com.pth.common.entities.BaseEntity;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -63,14 +65,12 @@ public class UserEntity extends BaseEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<String> roles;
 
-    @ElementCollection
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_usergroup", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "user_group") }
     )
     private Set<UserGroupEntity> groups;
 
-    @ElementCollection
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_deputy", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "deputy_id") }
@@ -78,10 +78,8 @@ public class UserEntity extends BaseEntity {
     private Set<UserEntity> deputies;
 
     @ElementCollection
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(
-            name = "user_departments", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "department_id") }
-    )
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     private Set<UserDepartmentEntity> userDepartments;
 
     public UserEntity() {

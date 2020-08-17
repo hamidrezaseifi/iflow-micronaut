@@ -286,7 +286,6 @@ class UserRepositorySpec extends ProfileTestDataProvider {
 
     }
 
-
     void "verify user list can be queried by department-id and equals original users"() {
 
         given:
@@ -311,14 +310,47 @@ class UserRepositorySpec extends ProfileTestDataProvider {
 
         when:
 
-        def userList = userRepository.getUserListByCompanyId(testCompanyId)
-
+            def userList = userRepository.getUserListByCompanyId(testCompanyId)
+            userList.size() == map.size()
         then:
-        userList.isEmpty() == false
-        for(UserEntity entity: userList){
-            verifyUser(map.get(entity.id), entity)
+            userList.isEmpty() == false
+            for(UserEntity entity: userList){
+                verifyUser(map.get(entity.id), entity)
+            }
+
+    }
+
+    void "verify user list can be queried by getUserListByIdentityList and equals original users"() {
+
+        given:
+        Map<String, UserEntity> map = new HashMap<>()
+
+        for(int i=1; i<=10; i++){
+            def userEntity = new UserEntity()
+            userEntity.passwordSalt = "passwordSalt" + i
+            userEntity.passwordHash = "passwordHash" + i
+            userEntity.birthDate = new Date()
+            userEntity.username = "username" + i
+            userEntity.companyId = testCompanyId
+            userEntity.firstName = "fname" + i
+            def identity = generateRandomString(15)
+            userEntity.identity = identity
+            userEntity.lastName = "lname" + i
+            userEntity.permission = 1
+            userEntity.addUserDepartment(testDepartment1, 1)
+            userRepository.save(userEntity)
+            map.put(userEntity.identity, userEntity)
         }
 
+        when:
+
+            def userList = userRepository.getUserListByIdentityList(map.keySet())
+            userList.size() == map.size()
+        then:
+            userList.isEmpty() == false
+            for(UserEntity entity: userList){
+                verifyUser(map.get(entity.identity), entity)
+            }
 
     }
 
