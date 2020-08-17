@@ -15,9 +15,9 @@ public interface ICompanyService {
 
     Optional<CompanyEntity> getByIdentity(final String identity);
 
-    List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettings(UUID companyId);
+    List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingList(UUID companyId);
 
-    List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(String identity);
+    List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(String identity);
 
     Optional<CompanyWorkflowTypeOcrSettingPresetEntity> saveCompanyWorkflowtypeItemOcrSetting(
           final CompanyWorkflowTypeOcrSettingPresetEntity preset);

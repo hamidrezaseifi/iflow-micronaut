@@ -7,7 +7,6 @@ import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo;
 import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetListEdo;
 import com.pth.profile.entities.CompanyEntity;
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
-import com.pth.common.mapping.IModelEdoMapper;
 import com.pth.profile.mapper.ICompanyMapper;
 import com.pth.profile.mapper.ICompanyWorkflowTypeOcrSettingPresetMapper;
 import com.pth.profile.services.data.ICompanyService;
@@ -81,7 +80,7 @@ public class CompanyController {
       readCompanyWorkflowtypeItemOcrSettings(final String companyIdentity) throws Exception {
 
     final List<CompanyWorkflowTypeOcrSettingPresetEntity> modelList = this.companyService
-        .readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(companyIdentity);
+        .getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(companyIdentity);
 
     final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList = this.presetModelEdoMapper.toEdoList(modelList);
 

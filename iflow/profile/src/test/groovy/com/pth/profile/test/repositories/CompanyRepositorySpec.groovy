@@ -18,8 +18,6 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
 
     private ICompanyRepository companyRepository
 
-    private List<CompanyEntity> searchTestList = new ArrayList<>()
-
     void setup() {
         companyRepository = embeddedServer.applicationContext.createBean(CompanyRepository)
     }

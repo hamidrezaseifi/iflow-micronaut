@@ -2,7 +2,7 @@ micronaut:
   application:
     name: profile
   server:
-    port: 1020
+    port: -1
   security:
     enabled: true
     endpoints:

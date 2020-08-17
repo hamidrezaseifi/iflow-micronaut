@@ -2,6 +2,7 @@ package com.pth.profile.test
 
 import com.pth.common.edo.enums.ECompanyType
 import com.pth.profile.entities.CompanyEntity
+import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
 import com.pth.profile.entities.DepartmentEntity
 import com.pth.profile.entities.UserEntity
 import com.pth.profile.repositories.ICompanyRepository
@@ -61,7 +62,6 @@ class ProfileTestDataProvider extends Specification {
         return testCompany
     }
 
-
     protected UserEntity createTestUser(IUserRepository userRepository) {
 
         def userEntityOptional = userRepository.getById(testUserId1)
@@ -84,6 +84,23 @@ class ProfileTestDataProvider extends Specification {
         userRepository.save(testUser1)
 
         return testUser1
+    }
+
+    protected UserEntity createTestUser(int identifier) {
+
+        def userEntity = new UserEntity()
+        userEntity.passwordSalt = "passwordSalt" + identifier
+        userEntity.passwordHash = "passwordHash" + identifier
+        userEntity.birthDate = new Date()
+        userEntity.username = "username" + identifier
+        userEntity.companyId = testCompanyId
+        userEntity.firstName = "fname" + identifier
+        def identity = generateRandomString(15)
+        userEntity.identity = identity
+        userEntity.lastName = "lname" + identifier
+        userEntity.permission = 1
+
+        return userEntity
     }
 
     protected void createTestDepartments(IDepartmentRepository departmentRepository) {
@@ -126,6 +143,15 @@ class ProfileTestDataProvider extends Specification {
             testDepartment3.title = "Test Department 3"
             departmentRepository.save(testDepartment3)
         }
+    }
+
+    protected CompanyWorkflowTypeOcrSettingPresetEntity createTestCompanyWorkflowTypeOcrSettingPresetEntity(int identifier){
+        def setting = new CompanyWorkflowTypeOcrSettingPresetEntity()
+        setting.identity = "test-identity" + identifier
+        setting.companyId = testCompanyId
+        setting.workflowTypeId = UUID.randomUUID()
+        setting.presetName = "test-name" + identifier
+        return setting
     }
 
 }

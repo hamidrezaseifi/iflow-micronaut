@@ -1,8 +1,5 @@
 package com.pth.profile.services.data.impl;
 
-import com.pth.common.edo.CompanyEdo;
-import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo;
-import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.profile.entities.CompanyEntity;
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
 import com.pth.profile.repositories.ICompanyRepository;
@@ -38,17 +35,17 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettings(UUID companyId) {
+    public List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingList(UUID companyId) {
         return this.workflowTypeOcrSettingPresetRepository.getByCompanyId(companyId);
     }
 
     @Override
-    public List<CompanyWorkflowTypeOcrSettingPresetEntity> readCompanyWorkflowtypeItemOcrSettingsByCompanyIdentity(String identity) {
+    public List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(String identity) {
 
         Optional<CompanyEntity> companyEntityOptional = getByIdentity(identity);
         if(companyEntityOptional.isPresent()){
             CompanyEntity companyEntity = companyEntityOptional.get();
-            return readCompanyWorkflowtypeItemOcrSettings(companyEntity.getId());
+            return getCompanyWorkflowtypeItemOcrSettingList(companyEntity.getId());
         }
         return null;
     }

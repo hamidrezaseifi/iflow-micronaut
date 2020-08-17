@@ -17,7 +17,7 @@ public class UsersService implements IUsersService {
   private final IUserRepository userRepository;
   private final ICompanyRepository companyRepository;
   private final IUserGroupRepository userGroupRepository;
-  private final IDepartmentRepository departmentDao;
+  private final IDepartmentRepository departmentRepository;
   private final ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository;
   private final IRefreshTokenRepository refreshTokenRepository;
   private final IUserDashboardMenuRepository userDashboardMenuRepository;
@@ -25,14 +25,14 @@ public class UsersService implements IUsersService {
   public UsersService(IUserRepository userRepository,
                       ICompanyRepository companyRepository,
                       IUserGroupRepository userGroupRepository,
-                      IDepartmentRepository departmentDao,
+                      IDepartmentRepository departmentRepository,
                       ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository,
                       IRefreshTokenRepository refreshTokenRepository,
-                      final IUserDashboardMenuRepository userDashboardMenuRepository) {
+                      IUserDashboardMenuRepository userDashboardMenuRepository) {
     this.userRepository = userRepository;
     this.companyRepository = companyRepository;
     this.userGroupRepository = userGroupRepository;
-    this.departmentDao = departmentDao;
+    this.departmentRepository = departmentRepository;
     this.workflowTypeOcrSettingPresetRepository = workflowTypeOcrSettingPresetRepository;
     this.refreshTokenRepository = refreshTokenRepository;
     this.userDashboardMenuRepository = userDashboardMenuRepository;
