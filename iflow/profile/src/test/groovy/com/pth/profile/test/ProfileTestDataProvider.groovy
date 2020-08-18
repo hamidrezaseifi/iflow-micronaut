@@ -4,7 +4,10 @@ import com.pth.common.edo.enums.ECompanyType
 import com.pth.profile.entities.CompanyEntity
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
 import com.pth.profile.entities.DepartmentEntity
+import com.pth.profile.entities.UserDashboardMenuEntity
+import com.pth.profile.entities.UserDepartmentEntity
 import com.pth.profile.entities.UserEntity
+import com.pth.profile.entities.UserGroupEntity
 import com.pth.profile.repositories.ICompanyRepository
 import com.pth.profile.repositories.IDepartmentRepository
 import com.pth.profile.repositories.IUserRepository
@@ -60,6 +63,20 @@ class ProfileTestDataProvider extends Specification {
         companyRepository.save(testCompany)
 
         return testCompany
+    }
+
+    protected CompanyEntity createTestCompany(int identifier) {
+
+
+        def company = new CompanyEntity()
+        company.companyName = "Test-Company" + identifier
+        company.identity = "Test-Company" + identifier
+        company.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
+        company.companyTypeCustome = "Test-Company" + identifier
+        company.status = 1
+        company.id = testCompanyId
+
+        return company
     }
 
     protected UserEntity createTestUser(IUserRepository userRepository) {
@@ -143,6 +160,37 @@ class ProfileTestDataProvider extends Specification {
             testDepartment3.title = "Test Department 3"
             departmentRepository.save(testDepartment3)
         }
+    }
+
+
+    protected DepartmentEntity createTestDepartments(int identifier) {
+
+        def department = new DepartmentEntity()
+        department.id = UUID.randomUUID()
+        department.identity = "test-department-1"
+        department.companyId = testCompanyId
+        department.title = "Test Department 1"
+        return department
+    }
+
+    protected UserGroupEntity createTestUserGroupEntity(int identifier){
+        UserGroupEntity userGroupEntity = new UserGroupEntity()
+        userGroupEntity.identity = "test-identity" + identifier
+        userGroupEntity.companyId = testCompanyId
+        userGroupEntity.title = "group-" + identifier
+
+        return userGroupEntity
+    }
+
+    protected UserDashboardMenuEntity createTestUserDashboardMenuEntity(int identifier){
+        UserDashboardMenuEntity dashboardMenuEntity = new UserDashboardMenuEntity()
+        dashboardMenuEntity.userId = UUID.randomUUID()
+        dashboardMenuEntity.appId = "app-id"
+        dashboardMenuEntity.menuId = "menu-" + identifier
+        dashboardMenuEntity.rowIndex = identifier
+        dashboardMenuEntity.columnIndex = identifier
+
+        return dashboardMenuEntity
     }
 
     protected CompanyWorkflowTypeOcrSettingPresetEntity createTestCompanyWorkflowTypeOcrSettingPresetEntity(int identifier){

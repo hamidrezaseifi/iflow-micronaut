@@ -29,21 +29,12 @@ public class AuthenticationManager implements IAuthenticationManager {
         this.jwtConfigurationProperties = jwtConfigurationProperties;
     }
 
-
-    @Override
-    public Optional<BearerAccessRefreshToken> authenticate(UserAuthenticationRequest request) {
-
-
-
-        return Optional.empty();
-    }
-
     @Override
     public Optional<BearerAccessRefreshToken> validateAuthentication(TokenValidationRequest tokenProfileRequest) {
 
 
         Authentication authentication = tokenProfileRequest.getAuthentication();
-        String username =authentication.getAttributes().get("sub").toString();
+        String username = authentication.getAttributes().get("sub").toString();
         Date issuedAt = new Date((long)authentication.getAttributes().get("iat"));  ;
         List<String> roles = (List<String>)authentication.getAttributes().get("roles");
 

@@ -233,12 +233,20 @@ public class UserEntity extends BaseEntity {
         this.groups = groups;
     }
 
+    public void addUserGroup(UserGroupEntity userGroupEntity) {
+        groups.add(userGroupEntity);
+    }
+
     public Set<UserEntity> getDeputies() {
         return deputies;
     }
 
     public void setDeputies(Set<UserEntity> deputies) {
         this.deputies = deputies;
+    }
+
+    public void addDeputy(UserEntity deputy) {
+        this.deputies.add(deputy);
     }
 
     public Set<UserDepartmentEntity> getUserDepartments() {

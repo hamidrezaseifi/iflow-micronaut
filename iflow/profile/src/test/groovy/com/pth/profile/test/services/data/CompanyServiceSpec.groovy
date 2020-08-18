@@ -10,11 +10,13 @@ import com.pth.profile.services.data.impl.CompanyService
 import com.pth.profile.test.ProfileTestDataProvider
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
+import spock.lang.Shared
 
 import java.util.stream.Collectors
 
 class CompanyServiceSpec extends ProfileTestDataProvider {
 
+    @Shared
     private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
 
     private ICompanyRepository companyRepository
