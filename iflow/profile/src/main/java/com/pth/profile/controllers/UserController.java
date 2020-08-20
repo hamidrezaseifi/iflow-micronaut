@@ -6,10 +6,7 @@ import com.pth.profile.entities.DepartmentEntity;
 import com.pth.profile.entities.UserDashboardMenuEntity;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.entities.UserGroupEntity;
-import com.pth.profile.mapper.IDepartmentMapper;
-import com.pth.profile.mapper.IProfileResponseMapper;
-import com.pth.profile.mapper.IUserDashboardMenuMapper;
-import com.pth.profile.mapper.IUserMapper;
+import com.pth.profile.mapper.*;
 import com.pth.profile.models.ProfileResponse;
 import com.pth.profile.services.data.IDepartmentService;
 import com.pth.profile.services.data.IUserGroupService;
@@ -39,6 +36,7 @@ public class UserController {
   private final IDepartmentMapper departmentMapper;
   private final IProfileResponseMapper profileResponseMapper;
   private final IUserDashboardMenuMapper userDashboardMenuMapper;
+  private final IUserGroupMapper userGroupMapper;
 
   public UserController(IUsersService usersService,
                         IUserGroupService userGroupService,
@@ -46,7 +44,8 @@ public class UserController {
                         IUserMapper userMapper,
                         IDepartmentMapper departmentMapper,
                         IProfileResponseMapper profileResponseMapper,
-                        IUserDashboardMenuMapper userDashboardMenuMapper) {
+                        IUserDashboardMenuMapper userDashboardMenuMapper,
+                        IUserGroupMapper userGroupMapper) {
 
     this.usersService = usersService;
     this.userGroupService = userGroupService;
@@ -55,6 +54,7 @@ public class UserController {
     this.departmentMapper = departmentMapper;
     this.profileResponseMapper = profileResponseMapper;
     this.userDashboardMenuMapper = userDashboardMenuMapper;
+    this.userGroupMapper = userGroupMapper;
   }
 
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_SAVE)
@@ -96,7 +96,7 @@ public class UserController {
 
     final List<UserGroupEntity> groups = this.usersService.getUserGroups(identity);
 
-    return HttpResponse.ok(new UserGroupListEdo(this.userGroupService.toEdoList(groups)));
+    return HttpResponse.ok(new UserGroupListEdo(this.userGroupMapper.toEdoList(groups)));
   }
 
   

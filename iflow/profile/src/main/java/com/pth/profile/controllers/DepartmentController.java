@@ -20,6 +20,7 @@ import io.micronaut.validation.Validated;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Validated
@@ -47,17 +48,23 @@ public class DepartmentController {
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_BY_IDENTITY)
   public HttpResponse<DepartmentEdo> readDepartment(final String identity) throws Exception {
 
-    final DepartmentEntity model = this.departmentService.getByIdentity(identity);
+    final Optional<DepartmentEntity> modelOptional = this.departmentService.getByIdentity(identity);
 
-    return HttpResponse.ok(this.departmentMapper.toEdo(model));
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(this.departmentMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
   @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_SAVE)
   public HttpResponse<DepartmentEdo> saveDepartment(@Body @Valid final DepartmentEdo edo) throws Exception {
 
-    final DepartmentEntity model = this.departmentService.save(this.departmentMapper.fromEdo(edo));
+    final Optional<DepartmentEntity> modelOptional = this.departmentService.save(this.departmentMapper.fromEdo(edo));
 
-    return HttpResponse.created(this.departmentMapper.toEdo(model));
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(this.departmentMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
   

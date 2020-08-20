@@ -6,12 +6,15 @@ import com.pth.common.mapping.IModelEdoMapper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-public interface IUserGroupService extends IModelEdoMapper<UserGroupEntity, UserGroupEdo> {
+public interface IUserGroupService {
 
-  UserGroupEntity save(UserGroupEntity model);
+  Optional<UserGroupEntity> save(UserGroupEntity model);
 
-  UserGroupEntity getByIdentity(final String identity);
+  Optional<UserGroupEntity> getByIdentity(final String identity);
+
+  void delete(UserGroupEntity model);
 
   List<UserGroupEntity> getListByIdentityList(final Collection<String> idList);
 

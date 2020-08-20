@@ -1,13 +1,16 @@
 package com.pth.profile.test.services.data
 
 import com.pth.common.edo.enums.ECompanyType
-import com.pth.profile.entities.CompanyEntity
+import com.pth.profile.entities.DepartmentEntity
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
 import com.pth.profile.repositories.ICompanyRepository
 import com.pth.profile.repositories.ICompanyWorkflowTypeOcrSettingPresetRepository
+import com.pth.profile.repositories.IDepartmentRepository
+import com.pth.profile.repositories.IUserRepository
 import com.pth.profile.services.data.ICompanyService
 import com.pth.profile.services.data.IDepartmentService
 import com.pth.profile.services.data.impl.CompanyService
+import com.pth.profile.services.data.impl.DepartmentService
 import com.pth.profile.test.ProfileTestDataProvider
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
@@ -20,19 +23,19 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
     @Shared
     private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
 
-    private ICompanyRepository companyRepository
-    private ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository
+    IDepartmentRepository departmentRepository
+    IUserRepository userRepository
 
     private IDepartmentService departmentService
 
     void setup() {
-        companyRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(companyRepository)
+        departmentRepository = Mock()
+        embeddedServer.applicationContext.registerSingleton(departmentRepository)
 
-        workflowTypeOcrSettingPresetRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(workflowTypeOcrSettingPresetRepository)
+        userRepository = Mock()
+        embeddedServer.applicationContext.registerSingleton(userRepository)
 
-        departmentService = new CompanyService(companyRepository, workflowTypeOcrSettingPresetRepository)
+        departmentService = new DepartmentService(departmentRepository, userRepository)
     }
 
     void cleanup() {
@@ -43,22 +46,21 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
         given:
 
-            def companyEntity = new CompanyEntity()
-            companyEntity.companyName = "Test-Company" + generateRandomString(5)
-            companyEntity.identity = generateRandomString(15)
-            companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
-            companyEntity.companyTypeCustome = "Test-Company"
-            companyEntity.status = 1
+            def departmentEntity = new DepartmentEntity()
+            departmentEntity.title = "Test-Department" + generateRandomString(5)
+            departmentEntity.identity = generateRandomString(15)
+            departmentEntity.companyId = testCompanyId
+            departmentEntity.status = 1
 
         when:
-            def companyOptional = companyService.save(companyEntity)
+            def departmentOptional = departmentService.save(departmentEntity)
 
         then:
-            companyOptional.isPresent()
-            verifyCompany(companyOptional.get(), companyEntity)
+            departmentOptional.isPresent()
+            verifyCompany(departmentOptional.get(), departmentEntity)
         and:
-            1 * companyRepository.save(_)
-            1 * companyRepository.getById(_) >> Optional.of(companyEntity)
+            1 * departmentRepository.save(_)
+            1 * departmentRepository.getById(_) >> Optional.of(departmentEntity)
 
     }
 
@@ -66,134 +68,30 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
         given:
 
-            def companyEntity = new CompanyEntity()
-            companyEntity.companyName = "Test-Company" + generateRandomString(5)
-            companyEntity.identity = generateRandomString(15)
-            companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
-            companyEntity.companyTypeCustome = "Test-Company"
-            companyEntity.status = 1
+            def departmentEntity = new DepartmentEntity()
+            departmentEntity.title = "Test-Department" + generateRandomString(5)
+            departmentEntity.identity = generateRandomString(15)
+            departmentEntity.companyId = testCompanyId
+            departmentEntity.status = 1
 
         when:
-            def companyOptional = companyService.getByIdentity("test identity")
+            def departmentOptional = departmentService.getByIdentity("test identity")
 
         then:
-            companyOptional.isPresent()
-            verifyCompany(companyOptional.get(), companyEntity)
+            departmentOptional.isPresent()
+            verifyCompany(departmentOptional.get(), departmentEntity)
         and:
-            1 * companyRepository.getByIdentity(_) >> Optional.of(companyEntity)
+            1 * departmentRepository.getByIdentity(_) >> Optional.of(departmentEntity)
 
     }
 
-    void "verify read company workflowtype-Item-OcrSettings can queried by company-id"() {
 
-        given:
-
-            Map<UUID, CompanyWorkflowTypeOcrSettingPresetEntity> settingInitialList = new HashMap<>()
-
-            for(int i=1; i<= 11; i++){
-                def setting = createTestCompanyWorkflowTypeOcrSettingPresetEntity(i)
-                settingInitialList.put(setting.id, setting)
-            }
-
-        when:
-            def settingList = companyService.getCompanyWorkflowtypeItemOcrSettingList(testCompanyId)
-
-        then:
-            settingList.size() == settingInitialList.size()
-            for(def setting: settingList){
-                def initSetting = settingInitialList.get(setting.id)
-                setting.identity == initSetting.identity
-                setting.companyId == initSetting.companyId
-                setting.workflowTypeId == initSetting.workflowTypeId
-                setting.presetName == initSetting.presetName
-            }
-
-        and:
-            1 * workflowTypeOcrSettingPresetRepository.getByCompanyId(_) >>
-            settingInitialList.values().stream().collect(Collectors.toList())
-
-    }
-
-    void "verify read company workflowtype-Item-OcrSettings can queried by company-identity"() {
-
-        given:
-            def companyEntity = new CompanyEntity()
-            companyEntity.companyName = "Test-Company" + generateRandomString(5)
-            companyEntity.identity = generateRandomString(15)
-            companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
-            companyEntity.companyTypeCustome = "Test-Company"
-            companyEntity.status = 1
-
-            Map<UUID, CompanyWorkflowTypeOcrSettingPresetEntity> settingInitialList = new HashMap<>()
-
-            for(int i=1; i<= 11; i++){
-                def setting = createTestCompanyWorkflowTypeOcrSettingPresetEntity(i)
-                settingInitialList.put(setting.id, setting)
-            }
-
-        when:
-            def settingList = companyService.getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity("test-identity")
-
-        then:
-            settingList.size() == settingInitialList.size()
-            for(def setting: settingList){
-                def initSetting = settingInitialList.get(setting.id)
-                setting.identity == initSetting.identity
-                setting.companyId == initSetting.companyId
-                setting.workflowTypeId == initSetting.workflowTypeId
-                setting.presetName == initSetting.presetName
-            }
-
-        and:
-            1 * companyRepository.getByIdentity(_) >> Optional.of(companyEntity)
-            1 * workflowTypeOcrSettingPresetRepository.getByCompanyId(_) >>
-            settingInitialList.values().stream().collect(Collectors.toList())
-
-    }
-
-    void "verify save company workflowtype-Item-OcrSettings"() {
-
-        given:
-
-            def setting = createTestCompanyWorkflowTypeOcrSettingPresetEntity(1)
-
-        when:
-            def settingOptional = companyService.saveCompanyWorkflowtypeItemOcrSetting(setting)
-
-        then:
-            settingOptional.isPresent()
-            setting.identity == settingOptional.get().identity
-            setting.companyId == settingOptional.get().companyId
-            setting.workflowTypeId == settingOptional.get().workflowTypeId
-            setting.presetName == settingOptional.get().presetName
-
-        and:
-            1 * workflowTypeOcrSettingPresetRepository.save(_)
-            1 * workflowTypeOcrSettingPresetRepository.getById(_) >> Optional.of(setting)
-
-    }
-
-    void "verify delete company workflowtype-Item-OcrSettings"() {
-
-        given:
-
-            def setting = createTestCompanyWorkflowTypeOcrSettingPresetEntity(1)
-
-        when:
-            companyService.deleteCompanyWorkflowtypeItemOcrSetting(setting)
-
-        then:
-            1 * workflowTypeOcrSettingPresetRepository.delete(_)
-
-    }
-
-    private void verifyCompany(CompanyEntity testCompanyEntity,
-                               CompanyEntity CompanyEntity) {
-        testCompanyEntity.companyName == CompanyEntity.companyName
-        testCompanyEntity.identity == CompanyEntity.identity
-        testCompanyEntity.companyType == CompanyEntity.companyType
-        testCompanyEntity.companyTypeCustome == CompanyEntity.companyTypeCustome
-        testCompanyEntity.status == CompanyEntity.status
+    private void verifyCompany(DepartmentEntity testDepartmentEntity,
+                               DepartmentEntity departmentEntity) {
+        testDepartmentEntity.title == departmentEntity.title
+        testDepartmentEntity.identity == departmentEntity.identity
+        testDepartmentEntity.companyId == departmentEntity.companyId
+        testDepartmentEntity.status == departmentEntity.status
 
     }
 
