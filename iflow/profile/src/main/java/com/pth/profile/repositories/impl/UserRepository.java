@@ -62,7 +62,7 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserEntity> getUserListDepartmentIdentity(String departmentId) {
+    public List<UserEntity> getUserListByDepartmentIdentity(String departmentId) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);

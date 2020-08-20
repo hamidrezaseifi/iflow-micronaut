@@ -287,7 +287,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
             userList.size() == 3
 
         and:
-            1 * userRepository.getUserListDepartmentIdentity(_) >> Arrays.asList(createTestUser(1),
+            1 * userRepository.getUserListByDepartmentIdentity(_) >> Arrays.asList(createTestUser(1),
                                                                                  createTestUser(2),
                                                                                  createTestUser(3))
     }

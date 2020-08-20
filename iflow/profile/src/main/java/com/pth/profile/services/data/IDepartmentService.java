@@ -5,15 +5,16 @@ import com.pth.profile.entities.UserEntity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface IDepartmentService {
 
-  DepartmentEntity save(DepartmentEntity model);
+  Optional<DepartmentEntity> save(DepartmentEntity model);
 
   void delete(DepartmentEntity model);
 
-  DepartmentEntity getByIdentity(final String identity);
+  Optional<DepartmentEntity> getByIdentity(final String identity);
 
   List<DepartmentEntity> getListByIdentityList(final Collection<String> idList);
 
