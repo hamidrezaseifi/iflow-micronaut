@@ -4,7 +4,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.TokenValidationRequestEdo;
 import com.pth.profile.mapper.IUserAuthenticationEdoMapper;
 import com.pth.profile.models.TokenValidationRequest;
-import com.pth.profile.services.authentication.IAuthenticationManager;
+import com.pth.profile.services.authentication.IProfileAuthenticationManager;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -21,10 +21,10 @@ import java.util.Optional;
 @Controller(ApiUrlConstants.ProfileUrlConstants.API001_PROFILE001_AUTHENTICATION)
 public class AuthenticationController {
 
-    private final IAuthenticationManager authenticationManager;
+    private final IProfileAuthenticationManager authenticationManager;
     private final IUserAuthenticationEdoMapper authenticationEdoMapper;
 
-    public AuthenticationController(IAuthenticationManager authenticationManager,
+    public AuthenticationController(IProfileAuthenticationManager authenticationManager,
                                     IUserAuthenticationEdoMapper authenticationEdoMapper){
         this.authenticationManager = authenticationManager;
         this.authenticationEdoMapper = authenticationEdoMapper;

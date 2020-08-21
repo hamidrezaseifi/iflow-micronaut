@@ -2,19 +2,11 @@ package com.pth.profile.test.services.authentication
 
 import com.pth.common.credentials.IPasswordHashGenerator
 import com.pth.common.edo.enums.EApplication
-import com.pth.common.edo.enums.ECompanyType
 import com.pth.profile.authentication.entities.RefreshTokenEntity
-import com.pth.profile.entities.CompanyEntity
-import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
 import com.pth.profile.models.TokenValidationRequest
-import com.pth.profile.models.UserAuthenticationRequest
-import com.pth.profile.repositories.ICompanyRepository
-import com.pth.profile.repositories.ICompanyWorkflowTypeOcrSettingPresetRepository
 import com.pth.profile.repositories.IRefreshTokenRepository
-import com.pth.profile.services.authentication.AuthenticationManager
-import com.pth.profile.services.authentication.IAuthenticationManager
-import com.pth.profile.services.data.ICompanyService
-import com.pth.profile.services.data.impl.CompanyService
+import com.pth.profile.services.authentication.ProfileAuthenticationManager
+import com.pth.profile.services.authentication.IProfileAuthenticationManager
 import com.pth.profile.test.ProfileTestDataProvider
 import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
@@ -22,9 +14,7 @@ import io.micronaut.security.authentication.DefaultAuthentication
 import io.micronaut.security.token.jwt.generator.JwtGeneratorConfigurationProperties
 import spock.lang.Shared
 
-import java.util.stream.Collectors
-
-class AuthenticationManagerSpec extends ProfileTestDataProvider {
+class ProfileAuthenticationManagerSpec extends ProfileTestDataProvider {
 
     @Shared
     private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
@@ -33,7 +23,7 @@ class AuthenticationManagerSpec extends ProfileTestDataProvider {
     private IRefreshTokenRepository refreshTokenRepository;
     private JwtGeneratorConfigurationProperties jwtConfigurationProperties;
 
-    private IAuthenticationManager authenticationManager
+    private IProfileAuthenticationManager authenticationManager
 
     void setup() {
         passwordHashGenerator = Mock()
@@ -45,7 +35,7 @@ class AuthenticationManagerSpec extends ProfileTestDataProvider {
         jwtConfigurationProperties = Mock()
         embeddedServer.applicationContext.registerSingleton(jwtConfigurationProperties)
 
-        authenticationManager = new AuthenticationManager(passwordHashGenerator, refreshTokenRepository, jwtConfigurationProperties)
+        authenticationManager = new ProfileAuthenticationManager(passwordHashGenerator, refreshTokenRepository, jwtConfigurationProperties)
     }
 
     void cleanup() {

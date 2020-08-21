@@ -6,7 +6,7 @@ import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 
 import java.util.Optional;
 
-public interface IAuthenticationManager {
+public interface IProfileAuthenticationManager {
 
     Optional<BearerAccessRefreshToken> validateAuthentication(TokenValidationRequest request);
 }
