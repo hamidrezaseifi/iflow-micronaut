@@ -53,6 +53,7 @@ public class DepartmentController {
     if(modelOptional.isPresent()){
       return HttpResponse.ok(this.departmentMapper.toEdo(modelOptional.get()));
     }
+
     return HttpResponse.notFound();
   }
 
@@ -64,6 +65,7 @@ public class DepartmentController {
     if(modelOptional.isPresent()){
       return HttpResponse.ok(this.departmentMapper.toEdo(modelOptional.get()));
     }
+
     return HttpResponse.notFound();
   }
 
@@ -107,18 +109,25 @@ public class DepartmentController {
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_GET_MANAGER)
   public HttpResponse<UserEdo> getDepartmentGroupManager(final String identity) throws Exception {
 
-    final UserEntity model = this.departmentService.getDepartmentManager(identity);
+    final Optional<UserEntity> modelOptional = this.departmentService.getDepartmentManager(identity);
 
-    return HttpResponse.ok(this.userMapper.toEdo(model));
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(this.userMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_GET_DEPUTY)
   public HttpResponse<UserEdo> getDepartmentGroupDeputy(final String identity) throws Exception {
 
-    final UserEntity model = this.departmentService.getDepartmentDeputy(identity);
+    final Optional<UserEntity> modelOptional = this.departmentService.getDepartmentDeputy(identity);
 
-    return HttpResponse.ok(this.userMapper.toEdo(model));
+
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(this.userMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
 }

@@ -33,7 +33,7 @@ public class DepartmentService implements IDepartmentService {
 
     @Override
     public void delete(DepartmentEntity model) {
-
+        departmentRepository.delete(model);
     }
 
     @Override
@@ -52,31 +52,31 @@ public class DepartmentService implements IDepartmentService {
     }
 
     @Override
-    public UserEntity getDepartmentManager(String identity) {
+    public Optional<UserEntity> getDepartmentManager(String identity) {
         return findDepartmentMemberByMemberType(identity, EUserDepartmentMemberType.MANAGER);
     }
 
     @Override
-    public UserEntity getDepartmentDeputy(String identity) {
+    public Optional<UserEntity> getDepartmentDeputy(String identity) {
 
         return findDepartmentMemberByMemberType(identity, EUserDepartmentMemberType.DEPUTY);
     }
 
 
-    private UserEntity findDepartmentMemberByMemberType(String identity, EUserDepartmentMemberType memberType) {
+    private Optional<UserEntity> findDepartmentMemberByMemberType(String identity, EUserDepartmentMemberType memberType) {
         List<UserEntity> userList = this.userRepository.getUserListByDepartmentIdentity(identity);
         for(UserEntity userEntity:userList){
             if(userEntity.getUserDepartments() != null){
                 for(UserDepartmentEntity userDepartmentEntity:userEntity.getUserDepartments()){
                     if(userDepartmentEntity.getDepartment().getIdentity().equals(identity) &&
                             userDepartmentEntity.getMemberType() == memberType.getValue()){
-                        return userEntity;
+                        return Optional.of(userEntity);
                     }
                 }
             }
         }
 
-        return null;
+        return Optional.empty();
     }
 
 

@@ -20,8 +20,8 @@ public interface IDepartmentService {
 
   List<DepartmentEntity> getListByIdCompanyIdentity(final String identity);
 
-  UserEntity getDepartmentManager(final String identity);
+  Optional<UserEntity> getDepartmentManager(final String identity);
 
-  UserEntity getDepartmentDeputy(final String identity);
+  Optional<UserEntity> getDepartmentDeputy(final String identity);
 
 }
