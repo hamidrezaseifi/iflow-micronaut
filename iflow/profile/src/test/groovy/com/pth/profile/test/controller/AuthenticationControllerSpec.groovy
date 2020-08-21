@@ -65,7 +65,6 @@ class AuthenticationControllerSpec extends ProfileTestDataProvider {
             1 * profileAuthenticationManager.validateAuthentication(_) >> Optional.empty()
     }
 
-
     void "verify validateToken is ok"() {
 
         given:
@@ -100,4 +99,32 @@ class AuthenticationControllerSpec extends ProfileTestDataProvider {
             1 * profileAuthenticationManager.validateAuthentication(_) >> Optional.of(token)
     }
 
+
+    void "verify by validateToken request is invalid"() {
+
+        given:
+            def request = new TokenValidationRequestEdo()
+            request.appId = EApplication.IFLOW.identity
+            request.token = "invalid-token"
+            request.authentication = null
+
+
+        when:
+
+            def documentUploadRequest = HttpRequest.
+                    POST(ApiUrlConstants.ProfileUrlConstants.API001_PROFILE001_AUTHENTICATION + "/validateToken", request)
+
+            def documentMetaDataResponse = lowLevelClient.toBlocking()
+                    .exchange(documentUploadRequest, BearerAccessRefreshToken)
+
+        then:
+
+            def documentMetaDataResponseException = thrown(HttpClientResponseException)
+
+            documentMetaDataResponseException.status == HttpStatus.BAD_REQUEST
+            documentMetaDataResponseException.response.body() == null
+            documentMetaDataResponse == null
+
+
+    }
 }

@@ -1,9 +1,7 @@
-package com.pth.profile.authentication;
+package com.pth.common.authentication;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.SignedJWT;
-import com.pth.profile.authentication.entities.RefreshTokenEntity;
-import com.pth.profile.repositories.IRefreshTokenRepository;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
@@ -16,26 +14,22 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Singleton
 @Replaces(JwtTokenValidator.class)
 @Requires(property = "micronaut.extensions.project", value = "profile")
-@Requires(notEnv = Environment.TEST)
-public class ProfileJwtTokenValidator extends JwtTokenValidator {
+@Requires(env = Environment.TEST)
+public class TestJwtTokenValidator extends JwtTokenValidator {
 
-    private final IRefreshTokenRepository refreshTokenRepository;
 
-    public ProfileJwtTokenValidator(Collection<SignatureConfiguration> signatureConfigurations,
-                                    Collection<EncryptionConfiguration> encryptionConfigurations,
-                                    Collection<GenericJwtClaimsValidator> genericJwtClaimsValidators,
-                                    JwtAuthenticationFactory jwtAuthenticationFactory,
-                                    IRefreshTokenRepository refreshTokenRepository) {
+    public TestJwtTokenValidator(Collection<SignatureConfiguration> signatureConfigurations,
+                                 Collection<EncryptionConfiguration> encryptionConfigurations,
+                                 Collection<GenericJwtClaimsValidator> genericJwtClaimsValidators,
+                                 JwtAuthenticationFactory jwtAuthenticationFactory) {
         super(signatureConfigurations, encryptionConfigurations, genericJwtClaimsValidators, jwtAuthenticationFactory);
 
-        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     public Optional<JWT> validatePlainJWTSignature(JWT jwt) {
@@ -51,29 +45,7 @@ public class ProfileJwtTokenValidator extends JwtTokenValidator {
         Optional<Authentication> authenticationOptional = this.authenticationIfValidJwtSignatureAndClaims(token, this.genericJwtClaimsValidators);
 
         if(authenticationOptional.isPresent()){
-
-            Authentication authentication = authenticationOptional.get();
-
-            String username = authentication.getAttributes().get("sub").toString();
-            Date issuedAt = (Date)authentication.getAttributes().get("iat");
-
-            Optional<RefreshTokenEntity> refreshTokenEntityOptional =
-                    this.refreshTokenRepository.findByUsername(username);
-            if(refreshTokenEntityOptional.isPresent()){
-
-                RefreshTokenEntity refreshTokenEntity = refreshTokenEntityOptional.get();
-
-                if(token.equals(refreshTokenEntity.getRefreshToken())){
-
-                    /*if(AuthenticationValidatorDb.LOGEDIN_INITIAL_TOKEN.equals(refreshTokenEntity.getRefreshToken())){
-                        refreshTokenEntity.setIssuedAt(issuedAt);
-                        refreshTokenEntity.setRefreshToken(token);
-                        this.refreshTokenRepository.update(refreshTokenEntity);
-                    }*/
-
-                    return Flowable.just(authentication);
-                }
-            }
+            return Flowable.just(authenticationOptional.get());
         }
 
         return Flowable.empty();

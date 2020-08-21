@@ -114,7 +114,7 @@ public class CompanyController {
   @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = "/deletewtoctsettings")
   public void
-  deleteCompanyWorkflowtypeItemOcrSettings(@Body @Valid final CompanyWorkflowtypeItemOcrSettingPresetEdo presetEdo)
+    deleteCompanyWorkflowtypeItemOcrSettings(@Body @Valid final CompanyWorkflowtypeItemOcrSettingPresetEdo presetEdo)
           throws Exception {
 
     final CompanyWorkflowTypeOcrSettingPresetEntity modelInput = this.presetModelEdoMapper.fromEdo(presetEdo);

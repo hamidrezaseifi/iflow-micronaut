@@ -1,5 +1,7 @@
 package com.pth.profile.authentication;
 
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.env.Environment;
 import io.micronaut.security.authentication.AuthenticationProvider;
 import io.micronaut.security.authentication.AuthenticationRequest;
 import io.micronaut.security.authentication.AuthenticationResponse;
@@ -9,6 +11,7 @@ import org.reactivestreams.Publisher;
 import javax.inject.Singleton;
 
 @Singleton
+@Requires(notEnv = Environment.TEST)
 public class AuthenticationProviderUserPassword implements AuthenticationProvider {
 
     private final IAuthenticationValidator authenticationValidator;

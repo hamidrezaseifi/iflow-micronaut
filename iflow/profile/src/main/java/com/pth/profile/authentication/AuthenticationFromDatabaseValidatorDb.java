@@ -5,6 +5,7 @@ import com.pth.profile.entities.UserEntity;
 import com.pth.profile.repositories.IRefreshTokenRepository;
 import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.env.Environment;
 import io.micronaut.security.authentication.*;
 import io.micronaut.security.token.generator.TokenGenerator;
 import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator;
@@ -18,7 +19,8 @@ import java.util.stream.Collectors;
 
 @Singleton
 @Requires(property = "micronaut.extensions.project", value = "profile")
-public class AuthenticationValidatorDb implements IAuthenticationValidator {
+@Requires(notEnv = Environment.TEST)
+public class AuthenticationFromDatabaseValidatorDb implements IAuthenticationValidator {
 
     private final IUserRepository userRepository;
     private final JwtGeneratorConfigurationProperties jwtConfigurationProperties;
@@ -26,11 +28,11 @@ public class AuthenticationValidatorDb implements IAuthenticationValidator {
     private final IRefreshTokenRepository refreshTokenRepository;
     private final AccessRefreshTokenGenerator accessRefreshTokenGenerator;
 
-    public AuthenticationValidatorDb(IPasswordHashGenerator passwordHashGenerator,
-                                     JwtGeneratorConfigurationProperties jwtConfigurationProperties,
-                                     IUserRepository userRepository,
-                                     IRefreshTokenRepository refreshTokenRepository,
-                                     AccessRefreshTokenGenerator accessRefreshTokenGenerator) {
+    public AuthenticationFromDatabaseValidatorDb(IPasswordHashGenerator passwordHashGenerator,
+                                                 JwtGeneratorConfigurationProperties jwtConfigurationProperties,
+                                                 IUserRepository userRepository,
+                                                 IRefreshTokenRepository refreshTokenRepository,
+                                                 AccessRefreshTokenGenerator accessRefreshTokenGenerator) {
         super();
 
         this.passwordHashGenerator = passwordHashGenerator;
