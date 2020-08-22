@@ -2,122 +2,119 @@ package com.pth.workflow.services.bl.impl.workflowservice.singletask;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import com.pth.common.exceptions.IFlowMessageConversionFailureException;
+import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.repositories.ISingleTaskWorkflowRepository;
+import com.pth.workflow.services.bl.IWorkflowPrepare;
+import com.pth.workflow.services.bl.IWorkflowProcessService;
+import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
+import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.IWorkflowDataService;
-import com.pth.iflow.workflow.bl.IWorkflowPrepare;
-import com.pth.iflow.workflow.bl.IWorkflowProcessService;
-import com.pth.iflow.workflow.bl.strategy.IWorkflowSaveStrategy;
-import com.pth.iflow.workflow.bl.strategy.IWorkflowSaveStrategyFactory;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
-import com.pth.iflow.workflow.models.workflow.singletask.SingleTaskWorkflow;
+import javax.inject.Singleton;
 
-@Service
-public class SingleTaskWorkflowProcessService implements IWorkflowProcessService<SingleTaskWorkflow> {
+@Singleton
+public class SingleTaskWorkflowProcessService implements IWorkflowProcessService<SingleTaskWorkflowEntity> {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
-  private final IWorkflowDataService<SingleTaskWorkflow> wrkflowDataService;
+  private final ISingleTaskWorkflowRepository singleTaskWorkflowRepository;
 
-  private final IWorkflowSaveStrategyFactory<SingleTaskWorkflow> workStrategyFactory;
+  private final IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory;
 
-  private final IWorkflowPrepare<SingleTaskWorkflow> workflowPrepare;
+  private final IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare;
 
-  public SingleTaskWorkflowProcessService(@Autowired final IWorkflowDataService<SingleTaskWorkflow> workflowDataService,
-      @Autowired final IWorkflowSaveStrategyFactory<SingleTaskWorkflow> workStrategyFactory,
-      @Autowired final IWorkflowPrepare<SingleTaskWorkflow> workflowPrepare) {
+  public SingleTaskWorkflowProcessService(ISingleTaskWorkflowRepository singleTaskWorkflowRepository,
+      IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
+      IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare) {
 
-    this.wrkflowDataService = workflowDataService;
+    this.singleTaskWorkflowRepository = singleTaskWorkflowRepository;
     this.workStrategyFactory = workStrategyFactory;
     this.workflowPrepare = workflowPrepare;
   }
 
   @Override
-  public List<SingleTaskWorkflow> create(final IWorkflowSaveRequest<SingleTaskWorkflow> request, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
-
-    validate(request, authentication);
-
-    final IWorkflowSaveStrategy<
-        SingleTaskWorkflow> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request, authentication);
-
-    workflowStrategy.process();
-
-    final List<SingleTaskWorkflow> result = workflowStrategy.getProceedWorkflowList();
-
-    return workflowPrepare.prepareWorkflowList(authentication, result);
-  }
-
-  @Override
-  public SingleTaskWorkflow save(final IWorkflowSaveRequest<SingleTaskWorkflow> request, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
-
-    logger.debug("Saving workflow with authentication {}", authentication);
-
-    validate(request, authentication);
+  public List<SingleTaskWorkflowEntity>
+    create(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request)
+          throws IFlowMessageConversionFailureException {
 
     final IWorkflowSaveStrategy<
-        SingleTaskWorkflow> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request, authentication);
+            SingleTaskWorkflowEntity>
+            workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request);
 
     workflowStrategy.process();
 
-    final SingleTaskWorkflow result = workflowStrategy.getSingleProceedWorkflow();
+    final List<SingleTaskWorkflowEntity> result = workflowStrategy.getProceedWorkflowList();
 
-    return result;
+    return workflowPrepare.prepareWorkflowList(result);
   }
 
   @Override
-  public void validate(final IWorkflowSaveRequest<SingleTaskWorkflow> request, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflowEntity>
+    save(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request) throws IFlowMessageConversionFailureException {
 
-    workflowPrepare.prepareWorkflow(authentication, request.getWorkflow());
+    logger.debug("Saving workflow");
 
-    final IWorkflowSaveStrategy<SingleTaskWorkflow> workflowStrategy = this.workStrategyFactory
-        .selectValidationWorkStrategy(request,
-            authentication);
+    final IWorkflowSaveStrategy<
+        SingleTaskWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request);
+
+    workflowStrategy.process();
+
+    final Optional<SingleTaskWorkflowEntity> resultOptional = workflowStrategy.getSingleProceedWorkflow();
+
+    return resultOptional;
+  }
+
+  @Override
+  public void
+    validate(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request)
+          throws IFlowMessageConversionFailureException {
+
+    workflowPrepare.prepareWorkflow(request.getWorkflow());
+
+    final IWorkflowSaveStrategy<SingleTaskWorkflowEntity> workflowStrategy =
+            this.workStrategyFactory.selectValidationWorkStrategy(request);
 
     workflowStrategy.process();
   }
 
   @Override
-  public SingleTaskWorkflow getByIdentity(final String identity, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflowEntity> getByIdentity(final String identity){
 
-    logger.debug("get workflow by id {} with authentication {}", identity, authentication);
+    logger.debug("get workflow by id {} with authentication {}", identity);
 
-    final SingleTaskWorkflow workflow = this.wrkflowDataService.getByIdentity(identity, authentication);
+    final Optional<SingleTaskWorkflowEntity> workflowOptional = this.singleTaskWorkflowRepository.getByIdentity(identity);
 
-    return workflowPrepare.prepareWorkflow(authentication, workflow);
+    if(workflowOptional.isPresent())
+    {
+      return workflowPrepare.prepareWorkflow(workflowOptional.get());
+    }
+    return Optional.empty();
   }
 
   @Override
-  public List<SingleTaskWorkflow> getListForUser(final String identity, final int status, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<SingleTaskWorkflowEntity> getListForUser(final String identity, final int status){
 
-    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status, authentication);
+    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status);
 
-    final List<SingleTaskWorkflow> list = this.wrkflowDataService.getListForUser(identity, status, authentication);
+    final List<SingleTaskWorkflowEntity> list = this.singleTaskWorkflowRepository.getListForUser(identity, status);
 
-    return workflowPrepare.prepareWorkflowList(authentication, list);
+    return workflowPrepare.prepareWorkflowList(list);
   }
 
   @Override
-  public List<SingleTaskWorkflow> getListByIdentityList(final Set<String> identityList, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<SingleTaskWorkflowEntity> getListByIdentityList(final Set<String> identityList){
 
-    logger.debug("get workflow list by id list with authentication {}", authentication);
+    logger.debug("get workflow list by id list with authentication {}");
 
-    final List<SingleTaskWorkflow> list = this.wrkflowDataService.getListByIdentityList(identityList, authentication);
+    final List<SingleTaskWorkflowEntity> list = this.singleTaskWorkflowRepository.getListByIdentityList(identityList);
 
-    return workflowPrepare.prepareWorkflowList(authentication, list);
+    return workflowPrepare.prepareWorkflowList(list);
   }
 
 }

@@ -1,123 +1,116 @@
 package com.pth.workflow.services.bl.impl.workflowservice.invoice;
 
-import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import com.pth.common.exceptions.IFlowMessageConversionFailureException;
+import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
+import com.pth.workflow.services.bl.IWorkflowPrepare;
+import com.pth.workflow.services.bl.IWorkflowProcessService;
+import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
+import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.IWorkflowDataService;
-import com.pth.iflow.workflow.bl.IWorkflowPrepare;
-import com.pth.iflow.workflow.bl.IWorkflowProcessService;
-import com.pth.iflow.workflow.bl.strategy.IWorkflowSaveStrategy;
-import com.pth.iflow.workflow.bl.strategy.IWorkflowSaveStrategyFactory;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
-import com.pth.iflow.workflow.models.workflow.invoice.InvoiceWorkflow;
+import javax.inject.Singleton;
 
-@Service
-public class InvoiceWorkflowProcessService implements IWorkflowProcessService<InvoiceWorkflow> {
+
+@Singleton
+public class InvoiceWorkflowProcessService implements IWorkflowProcessService<InvoiceWorkflowEntity> {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
-  private final IWorkflowDataService<InvoiceWorkflow> invoiceWorkflowDataService;
+  private final IInvoiceWorkflowRepository invoiceWorkflowRepository;
 
-  private final IWorkflowSaveStrategyFactory<InvoiceWorkflow> workStrategyFactory;
+  private final IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory;
 
-  private final IWorkflowPrepare<InvoiceWorkflow> workflowPrepare;
+  private final IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare;
 
-  public InvoiceWorkflowProcessService(@Autowired final IWorkflowDataService<InvoiceWorkflow> invoiceWorkflowDataService,
-      @Autowired final IWorkflowSaveStrategyFactory<InvoiceWorkflow> workStrategyFactory,
-      @Autowired final IWorkflowPrepare<InvoiceWorkflow> workflowPrepare) {
+  public InvoiceWorkflowProcessService(IInvoiceWorkflowRepository invoiceWorkflowRepository,
+      IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
+      IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare) {
 
-    this.invoiceWorkflowDataService = invoiceWorkflowDataService;
+    this.invoiceWorkflowRepository = invoiceWorkflowRepository;
     this.workStrategyFactory = workStrategyFactory;
     this.workflowPrepare = workflowPrepare;
   }
 
   @Override
-  public List<InvoiceWorkflow> create(final IWorkflowSaveRequest<InvoiceWorkflow> request, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<InvoiceWorkflowEntity>
+    create(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request) throws IFlowMessageConversionFailureException {
 
-    validate(request, authentication);
+    final IWorkflowSaveStrategy<InvoiceWorkflowEntity> workflowStrategy =
+            this.workStrategyFactory.selectSaveWorkStrategy(request);
+
+    workflowStrategy.process();
+
+    final List<InvoiceWorkflowEntity> result = workflowStrategy.getProceedWorkflowList();
+
+    return workflowPrepare.prepareWorkflowList(result);
+  }
+
+  @Override
+  public Optional<InvoiceWorkflowEntity>
+    save(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request) throws IFlowMessageConversionFailureException {
 
     final IWorkflowSaveStrategy<
-        InvoiceWorkflow> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request, authentication);
+        InvoiceWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request);
 
     workflowStrategy.process();
 
-    final List<InvoiceWorkflow> result = workflowStrategy.getProceedWorkflowList();
+    final Optional<InvoiceWorkflowEntity> resultOptional = workflowStrategy.getSingleProceedWorkflow();
 
-    return workflowPrepare.prepareWorkflowList(authentication, result);
+    return resultOptional;
   }
 
   @Override
-  public InvoiceWorkflow save(final IWorkflowSaveRequest<InvoiceWorkflow> request, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void
+    validate(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request)
+          throws IFlowMessageConversionFailureException {
 
-    logger.debug("Saving workflow with authentication {}", authentication);
+    workflowPrepare.prepareWorkflow(request.getWorkflow());
 
-    validate(request, authentication);
-
-    final IWorkflowSaveStrategy<
-        InvoiceWorkflow> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request, authentication);
-
-    workflowStrategy.process();
-
-    final InvoiceWorkflow result = workflowStrategy.getSingleProceedWorkflow();
-
-    return result;
-  }
-
-  @Override
-  public void validate(final IWorkflowSaveRequest<InvoiceWorkflow> request, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
-
-    workflowPrepare.prepareWorkflow(authentication, request.getWorkflow());
-
-    final IWorkflowSaveStrategy<InvoiceWorkflow> workflowStrategy = this.workStrategyFactory
-        .selectValidationWorkStrategy(request,
-            authentication);
+    final IWorkflowSaveStrategy<InvoiceWorkflowEntity> workflowStrategy =
+            this.workStrategyFactory.selectValidationWorkStrategy(request);
 
     workflowStrategy.process();
   }
 
   @Override
-  public InvoiceWorkflow getByIdentity(final String identity, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<InvoiceWorkflowEntity> getByIdentity(final String identity)
+       {
 
-    logger.debug("get workflow by id {} with authentication {}", identity, authentication);
+    final Optional<InvoiceWorkflowEntity> workflowEntityOptional = this.invoiceWorkflowRepository.getByIdentity(identity);
 
-    final InvoiceWorkflow workflow = this.invoiceWorkflowDataService.getByIdentity(identity, authentication);
-
-    return workflowPrepare.prepareWorkflow(authentication, workflow);
+    if(workflowEntityOptional.isPresent()){
+      return workflowPrepare.prepareWorkflow(workflowEntityOptional.get());
+    }
+    return Optional.empty();
   }
 
   @Override
-  public List<InvoiceWorkflow> getListForUser(final String identity, final int status, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<InvoiceWorkflowEntity> getListForUser(final String identity, final int status)
+       {
 
-    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status, authentication);
+    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status);
 
-    final List<InvoiceWorkflow> list = this.invoiceWorkflowDataService.getListForUser(identity, status, authentication);
+    final List<InvoiceWorkflowEntity> list = this.invoiceWorkflowRepository.getListForUser(identity, status);
 
-    return workflowPrepare.prepareWorkflowList(authentication, list);
+    return workflowPrepare.prepareWorkflowList(list);
   }
 
   @Override
-  public List<InvoiceWorkflow> getListByIdentityList(final Set<String> identityList, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<InvoiceWorkflowEntity> getListByIdentityList(final Set<String> identityList)
+       {
 
-    logger.debug("get workflow list by id list with authentication {}", authentication);
+    logger.debug("get workflow list by id list with authentication {}");
 
-    final List<InvoiceWorkflow> list = this.invoiceWorkflowDataService.getListByIdentityList(identityList, authentication);
+    final List<InvoiceWorkflowEntity> list = this.invoiceWorkflowRepository.getListByIdentityList(identityList);
 
-    return workflowPrepare.prepareWorkflowList(authentication, list);
+    return workflowPrepare.prepareWorkflowList(list);
   }
 
 }

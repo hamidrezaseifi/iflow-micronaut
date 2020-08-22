@@ -12,12 +12,8 @@ import java.util.Set;
 
 public interface IWorkflowSearchService {
 
-  public List<WorkflowEntity> search(final WorkflowSearchFilter workflowSearchFilter,
-                                     Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  public List<WorkflowEntity> search(final WorkflowSearchFilter workflowSearchFilter);
 
-  public List<WorkflowEntity> readWorkflowListByIdentityList(final Set<String> identityList,
-                                                       Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  public List<WorkflowEntity> readWorkflowListByIdentityList(final Set<String> identityList);
 
 }

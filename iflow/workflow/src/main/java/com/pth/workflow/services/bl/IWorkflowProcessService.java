@@ -6,33 +6,21 @@ import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import io.micronaut.security.authentication.Authentication;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
 public interface IWorkflowProcessService<W extends IWorkflowBaseEntity> {
 
-  public List<W> create(IWorkflowSaveRequest<W> model,
-                        Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  List<W> create(IWorkflowSaveRequest<W> model) throws IFlowMessageConversionFailureException;
 
-  public W save(IWorkflowSaveRequest<W> request,
-                Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  Optional<W> save(IWorkflowSaveRequest<W> request) throws IFlowMessageConversionFailureException;
 
-  public W getByIdentity(String identity,
-                         Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  Optional<W> getByIdentity(String identity);
 
-  public List<W> getListForUser(final String identity,
-                                int status,
-                                Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  List<W> getListForUser(final String identity, int status);
 
-  public List<W> getListByIdentityList(final Set<String> identityList,
-                                       Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  List<W> getListByIdentityList(final Set<String> identityList);
 
-  public void validate(IWorkflowSaveRequest<W> model,
-                       Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  void validate(IWorkflowSaveRequest<W> model) throws IFlowMessageConversionFailureException;
 }

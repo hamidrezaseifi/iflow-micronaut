@@ -6,15 +6,12 @@ import io.micronaut.security.authentication.Authentication;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface IWorkflowPrepare<W extends IWorkflowBaseEntity> {
 
-  W prepareWorkflow(final Authentication authentication,
-                    final W workflow)
-      throws MalformedURLException, IFlowMessageConversionFailureException;
+  Optional<W> prepareWorkflow(final W workflow);
 
-  List<W> prepareWorkflowList(Authentication authentication,
-                              List<W> workflowList)
-      throws MalformedURLException, IFlowMessageConversionFailureException;
+  List<W> prepareWorkflowList(List<W> workflowList);
 }

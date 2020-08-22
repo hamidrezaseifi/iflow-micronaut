@@ -18,7 +18,9 @@ import javax.persistence.Table;
 import com.pth.common.edo.enums.EIdentity;
 import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.edo.enums.EWorkflowStatus;
+import com.pth.common.edo.enums.EWorkflowType;
 import com.pth.common.entities.BaseEntity;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -27,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "workflow")
-public class WorkflowEntity extends BaseEntity {
+public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
 
   private static final long serialVersionUID = 6541443032441596046L;
 
@@ -86,6 +88,26 @@ public class WorkflowEntity extends BaseEntity {
 
   }
 
+  @Override
+  public UUID getWorkflowId() {
+    return id;
+  }
+
+  @Override
+  public void setWorkflowId(UUID workflowId) {
+    id = workflowId;
+  }
+
+  @Override
+  public WorkflowEntity getWorkflow() {
+    return this;
+  }
+
+  @Override
+  public void setWorkflow(WorkflowEntity workflow) {
+
+  }
+
   public String getIdentity() {
 
     return identity;
@@ -116,6 +138,17 @@ public class WorkflowEntity extends BaseEntity {
     return this.status;
   }
 
+  @Override
+  public EWorkflowStatus getStatusEnum() {
+
+    return EWorkflowStatus.ofValue(this.status);
+  }
+
+  @Override
+  public Integer getStatusInt() {
+    return this.status;
+  }
+
   public EWorkflowStatus getStatusAsEnum() {
 
     return EWorkflowStatus.ofValue(this.status);
@@ -124,6 +157,11 @@ public class WorkflowEntity extends BaseEntity {
   public void setStatus(final Integer status) {
 
     this.status = status;
+  }
+
+  @Override
+  public void setStatus(EWorkflowStatus status) {
+    this.status = status.getValue();
   }
 
 
@@ -141,6 +179,11 @@ public class WorkflowEntity extends BaseEntity {
 
   public void addAction(WorkflowActionEntity action) {
     actions.add(action);
+  }
+
+  @Override
+  public String getWorkflowTypeIdentity() {
+    return workflowType.getIdentity();
   }
 
   public Date getCreatedAt() {
@@ -240,6 +283,36 @@ public class WorkflowEntity extends BaseEntity {
     }
   }
 
+  @Override
+  public boolean isInitializing() {
+
+    return EWorkflowStatus.INITIALIZE.equals(getWorkflow().getStatusAsEnum());
+  }
+
+  @Override
+  public boolean isOffering() {
+
+    return EWorkflowStatus.OFFERING.equals(getWorkflow().getStatusAsEnum());
+  }
+
+  @Override
+  public boolean isArchived() {
+
+    return EWorkflowStatus.ARCHIVED.equals(getWorkflow().getStatusAsEnum());
+  }
+
+  @Override
+  public boolean isAssignedStatus() {
+
+    return EWorkflowStatus.ASSIGNED.equals(getWorkflow().getStatusAsEnum());
+  }
+
+  @Override
+  public boolean isDone() {
+
+    return EWorkflowStatus.DONE.equals(getWorkflow().getStatusAsEnum());
+  }
+
   public void setActions(final List<WorkflowActionEntity> actions) {
 
     this.actions.clear();
@@ -250,6 +323,11 @@ public class WorkflowEntity extends BaseEntity {
       }
 
     }
+  }
+
+  @Override
+  public EWorkflowType getWorkflowTypeEnum() {
+    return EWorkflowType.valueFromIdentity(workflowType.getIdentity()) ;
   }
 
   public String getIdentityPreffix() {

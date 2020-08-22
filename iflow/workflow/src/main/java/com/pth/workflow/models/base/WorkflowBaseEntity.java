@@ -61,13 +61,13 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
     }
 
     @Override
-    public EWorkflowStatus getStatus() {
-        return EWorkflowStatus.ofValue(getWorkflow().getStatus());
+    public EWorkflowStatus getStatusEnum() {
+        return EWorkflowStatus.ofValue(getWorkflow().getStatusEnum());
     }
 
     @Override
     public Integer getStatusInt() {
-        return getWorkflow().getStatus();
+        return getWorkflow().getStatusEnum();
     }
 
     @Override

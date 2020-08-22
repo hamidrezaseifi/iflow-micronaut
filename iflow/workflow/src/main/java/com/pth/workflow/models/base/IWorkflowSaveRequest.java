@@ -1,32 +1,33 @@
 package com.pth.workflow.models.base;
 
 import java.util.List;
-import com.pth.iflow.common.enums.EWorkflowProcessCommand;
-import com.pth.iflow.workflow.models.AssignItem;
+
+import com.pth.common.edo.enums.EWorkflowProcessCommand;
+import com.pth.workflow.models.AssignItem;
 
 public interface IWorkflowSaveRequest<W extends IWorkflowBaseEntity> {
 
   /**
    * @return the workflow
    */
-  public W getWorkflow();
+  W getWorkflow();
 
-  public void setWorkflow(W workflow);
+  void setWorkflow(W workflow);
 
-  public Integer getExpireDays();
+  Integer getExpireDays();
 
-  public List<AssignItem> getAssigns();
+  List<AssignItem> getAssigns();
 
-  public EWorkflowProcessCommand getCommand();
+  EWorkflowProcessCommand getCommand();
 
-  public boolean isAssignCommand();
+  boolean isAssignCommand();
 
-  public boolean isArchiveCommand();
+  boolean isArchiveCommand();
 
-  public boolean isCreateCommand();
+  boolean isCreateCommand();
 
-  public boolean isDoneCommand();
+  boolean isDoneCommand();
 
-  public boolean isSaveCommand();
+  boolean isSaveCommand();
 
 }

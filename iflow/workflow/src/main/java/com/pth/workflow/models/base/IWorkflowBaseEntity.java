@@ -37,7 +37,7 @@ public interface IWorkflowBaseEntity {
 
   public void setComments(final String comments);
 
-  public EWorkflowStatus getStatus();
+  public EWorkflowStatus getStatusEnum();
 
   public Integer getStatusInt();
 
