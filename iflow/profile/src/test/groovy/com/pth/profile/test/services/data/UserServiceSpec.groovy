@@ -21,9 +21,6 @@ import spock.lang.Shared
 
 class UserServiceSpec extends ProfileTestDataProvider {
 
-    @Shared
-    private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
-
     private IUserRepository userRepository;
     private ICompanyRepository companyRepository;
     private IUserGroupRepository userGroupRepository;
@@ -36,25 +33,18 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
     void setup() {
         companyRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(companyRepository)
 
         workflowTypeOcrSettingPresetRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(workflowTypeOcrSettingPresetRepository)
 
         userRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(userRepository)
 
         userGroupRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(userGroupRepository)
 
         departmentRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(departmentRepository)
 
         refreshTokenRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(refreshTokenRepository)
 
         userDashboardMenuRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(userDashboardMenuRepository)
 
         userService = new UsersService(userRepository,
                                        companyRepository,

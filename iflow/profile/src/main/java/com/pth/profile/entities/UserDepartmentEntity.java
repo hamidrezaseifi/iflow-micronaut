@@ -9,7 +9,11 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "user_departments")
-public class UserDepartmentEntity extends BaseEntity {
+public class UserDepartmentEntity {
+
+  @Id
+  @Column(name = "id")
+  protected UUID id;
 
   @Column(name = "department_id")
   private UUID departmentId;
@@ -34,12 +38,19 @@ public class UserDepartmentEntity extends BaseEntity {
 
   public UserDepartmentEntity() {
     super();
+
+    this.id = UUID.randomUUID();
   }
 
   public UserDepartmentEntity(UserEntity userEntity, DepartmentEntity departmentEntity) {
     this();
     this.setDepartment(departmentEntity);
     this.setUser(userEntity);
+  }
+
+  public UUID getId() { return id; }
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   public UUID getDepartmentId() {

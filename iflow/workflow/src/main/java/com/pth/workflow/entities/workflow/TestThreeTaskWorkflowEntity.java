@@ -1,6 +1,6 @@
 package com.pth.workflow.entities.workflow;
 
-import com.pth.workflow.entities.workflow.base.IWorkflowContainerEntity;
+import com.pth.workflow.models.base.WorkflowBaseEntity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,14 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "testthreetask_workflow")
-public class TestThreeTaskWorkflowEntity implements IWorkflowContainerEntity {
+public class TestThreeTaskWorkflowEntity extends WorkflowBaseEntity {
 
   @Id
   @Column(name = "workflow_id")
-  private Long workflowId;
+  private UUID workflowId;
 
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "workflow_id")
@@ -28,13 +29,13 @@ public class TestThreeTaskWorkflowEntity implements IWorkflowContainerEntity {
   }
 
   @Override
-  public Long getWorkflowId() {
+  public UUID getWorkflowId() {
 
     return workflowId;
   }
 
   @Override
-  public void setWorkflowId(final Long workflowId) {
+  public void setWorkflowId(final UUID workflowId) {
 
     this.workflowId = workflowId;
   }

@@ -15,10 +15,12 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.security.authentication.DefaultAuthentication
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken
+import spock.lang.AutoCleanup
 
 class AuthenticationControllerSpec extends ProfileTestDataProvider {
 
-    private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
+    @AutoCleanup
+    private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer, "test")
 
     private RxHttpClient lowLevelClient = embeddedServer.applicationContext.createBean(RxHttpClient,
                                                                                        embeddedServer.getURL())

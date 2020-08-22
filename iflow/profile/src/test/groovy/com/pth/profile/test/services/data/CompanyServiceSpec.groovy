@@ -16,9 +16,6 @@ import java.util.stream.Collectors
 
 class CompanyServiceSpec extends ProfileTestDataProvider {
 
-    @Shared
-    private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
-
     private ICompanyRepository companyRepository
     private ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository
 
@@ -26,10 +23,8 @@ class CompanyServiceSpec extends ProfileTestDataProvider {
 
     void setup() {
         companyRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(companyRepository)
 
         workflowTypeOcrSettingPresetRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(workflowTypeOcrSettingPresetRepository)
 
         companyService = new CompanyService(companyRepository, workflowTypeOcrSettingPresetRepository)
     }

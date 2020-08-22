@@ -46,4 +46,4 @@ datasources:
     driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
     username: ${JDBC_USER:iflow}
     password: ${JDBC_PASSWORD:iflow}
-    pool-name: profile-pool
+    pool-name: workflow-pool

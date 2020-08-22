@@ -54,10 +54,10 @@ CREATE TABLE workflow (
 CREATE TABLE workflow_actions (
   id uuid NOT NULL PRIMARY KEY,
   workflow_id uuid NOT NULL,
-  assign_to uuid NOT NULL DEFAULT '0',
-  current_step_id uuid NOT NULL DEFAULT '0',
+  assign_to uuid NULL,
+  current_step_id uuid NULL,
   comments varchar(45) DEFAULT NULL,
-  status uuid DEFAULT 1,
+  status smallint DEFAULT 1,
   created_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
   updated_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
   

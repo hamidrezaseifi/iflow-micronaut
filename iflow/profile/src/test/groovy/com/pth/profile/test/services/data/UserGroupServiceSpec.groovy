@@ -13,9 +13,6 @@ import java.util.stream.Collectors
 
 class UserGroupServiceSpec extends ProfileTestDataProvider {
 
-    @Shared
-    private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
-
     private IUserGroupRepository userGroupRepository
 
     private IUserGroupService userGroupService
@@ -23,7 +20,6 @@ class UserGroupServiceSpec extends ProfileTestDataProvider {
     void setup() {
 
         userGroupRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(userGroupRepository)
 
         userGroupService = new UserGroupService(userGroupRepository)
     }

@@ -1,6 +1,7 @@
 package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,16 +13,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.pth.common.edo.enums.EInvoiceType;
-import com.pth.workflow.entities.workflow.base.IWorkflowContainerEntity;
+import com.pth.workflow.models.base.WorkflowBaseEntity;
 import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "invoice_workflow")
-public class InvoiceWorkflowEntity implements IWorkflowContainerEntity {
+public class InvoiceWorkflowEntity extends WorkflowBaseEntity {
 
   @Id
   @Column(name = "workflow_id")
-  private Long workflowId;
+  private UUID workflowId;
 
   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinColumn(name = "workflow_id")
@@ -72,13 +73,13 @@ public class InvoiceWorkflowEntity implements IWorkflowContainerEntity {
   }
 
   @Override
-  public Long getWorkflowId() {
+  public UUID getWorkflowId() {
 
     return workflowId;
   }
 
   @Override
-  public void setWorkflowId(final Long workflowId) {
+  public void setWorkflowId(final UUID workflowId) {
 
     this.workflowId = workflowId;
   }

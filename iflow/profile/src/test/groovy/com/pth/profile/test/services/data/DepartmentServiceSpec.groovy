@@ -16,9 +16,6 @@ import java.util.stream.Collectors
 
 class DepartmentServiceSpec extends ProfileTestDataProvider {
 
-    @Shared
-    private EmbeddedServer embeddedServer = ApplicationContext.run(EmbeddedServer)
-
     private IDepartmentRepository departmentRepository
     private IUserRepository userRepository
 
@@ -26,10 +23,8 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
     void setup() {
         departmentRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(departmentRepository)
 
         userRepository = Mock()
-        embeddedServer.applicationContext.registerSingleton(userRepository)
 
         departmentService = new DepartmentService(departmentRepository, userRepository)
     }

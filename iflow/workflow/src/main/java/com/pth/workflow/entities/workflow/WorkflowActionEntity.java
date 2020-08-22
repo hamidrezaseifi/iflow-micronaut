@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.entities.BaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NotFound;
@@ -24,16 +25,13 @@ public class WorkflowActionEntity extends BaseEntity {
   private String comments;
 
   @Column(name = "assign_to")
-  private Long assignToId;
+  private UUID assignToId;
 
   @Column(name = "current_step_id")
-  private Long currentStepId;
+  private UUID currentStepId;
 
   @Column(name = "status")
   private Integer status;
-
-  @Column(name = "assign_to")
-  private UUID assignTo;
 
   @CreationTimestamp
   @Column(name = "created_at", insertable = false, updatable = false)
@@ -47,9 +45,11 @@ public class WorkflowActionEntity extends BaseEntity {
   @JoinColumn(name = "workflow_id", nullable = false)
   private WorkflowEntity workflowEntity;
 
-  public WorkflowActionEntity() {
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "current_step_id", nullable = false)
+  private WorkflowTypeStepEntity currentStep;
 
-    assignToId = 0L;
+  public WorkflowActionEntity() {
 
   }
 
@@ -73,14 +73,6 @@ public class WorkflowActionEntity extends BaseEntity {
     this.status = status;
   }
 
-  public UUID getAssignTo() {
-    return assignTo;
-  }
-
-  public void setAssignTo(UUID assignTo) {
-    this.assignTo = assignTo;
-  }
-
   public Date getCreatedAt() {
 
     return this.createdAt;
@@ -101,22 +93,22 @@ public class WorkflowActionEntity extends BaseEntity {
     this.updatedAt = updatedAt;
   }
 
-  public Long getCurrentStepId() {
+  public UUID getCurrentStepId() {
 
     return currentStepId;
   }
 
-  public void setCurrentStepId(final Long currentStepId) {
+  public void setCurrentStepId(final UUID currentStepId) {
 
     this.currentStepId = currentStepId;
   }
 
-  public Long getAssignToId() {
+  public UUID getAssignToId() {
 
     return assignToId;
   }
 
-  public void setAssignToId(final Long assignToId) {
+  public void setAssignToId(final UUID assignToId) {
 
     this.assignToId = assignToId;
   }
@@ -131,4 +123,21 @@ public class WorkflowActionEntity extends BaseEntity {
     this.workflowEntity = workflowEntity;
   }
 
+
+  public boolean isAssigned() {
+
+    return this.assignToId != null;
+  }
+
+  public boolean getIsActive() {
+    return EWorkflowActionStatus.getIsActive(this.getStatus());
+  }
+
+  public WorkflowTypeStepEntity getCurrentStep() {
+    return currentStep;
+  }
+
+  public void setCurrentStep(WorkflowTypeStepEntity currentStep) {
+    this.currentStep = currentStep;
+  }
 }
