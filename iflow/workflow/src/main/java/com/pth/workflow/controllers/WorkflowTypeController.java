@@ -1,79 +1,74 @@
 package com.pth.workflow.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import com.pth.common.contants.ApiUrlConstants;
+import com.pth.common.edo.WorkflowTypeEdo;
+import com.pth.common.edo.WorkflowTypeListEdo;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.mapper.IWorkflowTypeMapper;
+import com.pth.workflow.mapper.IWorkflowTypeStepMapper;
+import com.pth.workflow.services.bl.IWorkflowTypeProcessService;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.rules.SecurityRule;
 
-import com.pth.iflow.common.annotations.IflowGetRequestMapping;
-import com.pth.iflow.common.annotations.IflowPostRequestMapping;
-import com.pth.iflow.common.controllers.helper.ControllerHelper;
-import com.pth.iflow.common.models.edo.WorkflowTypeEdo;
-import com.pth.iflow.common.models.edo.WorkflowTypeListEdo;
-import com.pth.iflow.common.moduls.security.RestAccessRoles;
-import com.pth.iflow.common.rest.IflowRestPaths;
-import com.pth.iflow.workflow.bl.IWorkflowTypeProcessService;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.mapper.WorkflowModelEdoMapper;
+import javax.validation.Valid;
 
-@RestController
-@RequestMapping
+
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_WORKFLOWTYPE_ROOT)
 public class WorkflowTypeController {
 
   final IWorkflowTypeProcessService workflowTypeProcessService;
+  final IWorkflowTypeMapper workflowTypeMapper;
 
-  public WorkflowTypeController(@Autowired final IWorkflowTypeProcessService workflowTypeProcessService) {
+  public WorkflowTypeController(final IWorkflowTypeProcessService workflowTypeProcessService, 
+                                IWorkflowTypeMapper workflowTypeMapper) {
 
     this.workflowTypeProcessService = workflowTypeProcessService;
+    this.workflowTypeMapper = workflowTypeMapper;
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.General.HAS_ROLE_USER)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOWTYPE_READ_BY_IDENTITY)
-  public ResponseEntity<WorkflowTypeEdo> readWorkflowType(@PathVariable final String identity, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Get(value = "/readbyidentity/{identity}")
+  public HttpResponse<WorkflowTypeEdo> readWorkflowType(final String identity,
+                                                        final Authentication authentication) throws Exception {
 
-    final WorkflowType model = this.workflowTypeProcessService.getByIdentity(identity, authentication);
+    final Optional<WorkflowTypeEntity> modelOptional = this.workflowTypeProcessService.getByIdentity(identity);
 
-    return ControllerHelper.createResponseEntity(request, WorkflowModelEdoMapper.toEdo(model), HttpStatus.OK);
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(workflowTypeMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.General.HAS_ROLE_USER)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOWTYPE_READ_LIST)
-  public ResponseEntity<WorkflowTypeListEdo> readWorkflowList(@RequestBody final Set<String> idList, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Post(value = "/readbyidentitylist")
+  public HttpResponse<WorkflowTypeListEdo> readWorkflowList(@Body @Valid final Set<String> idList,
+                                                            final Authentication authentication) throws Exception {
 
-    final List<WorkflowType> modelList = this.workflowTypeProcessService.getListByIdentityList(idList, authentication);
+    final List<WorkflowTypeEntity> modelList = this.workflowTypeProcessService.getListByIdentityList(idList);
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new WorkflowTypeListEdo(WorkflowModelEdoMapper.toWorkflowTypeEdoList(modelList)), HttpStatus.OK);
+    return HttpResponse.ok(new WorkflowTypeListEdo(workflowTypeMapper.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.General.HAS_ROLE_USER)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOWTYPE_READ_LIST_BY_COMPANYIDENTITY)
-  public ResponseEntity<WorkflowTypeListEdo> readWorkflowListByCompany(@PathVariable final String identity,
-      final HttpServletRequest request,
+  @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Get(value = "/readbycompanyidentity/{identity}")
+  public HttpResponse<WorkflowTypeListEdo> readWorkflowListByCompany(final String identity,
       final Authentication authentication) throws Exception {
 
-    final List<WorkflowType> modelList = this.workflowTypeProcessService.getListByCompanyIdentity(identity, authentication);
+    final List<WorkflowTypeEntity> modelList = this.workflowTypeProcessService.getListByCompanyIdentity(identity);
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new WorkflowTypeListEdo(WorkflowModelEdoMapper.toWorkflowTypeEdoList(modelList)), HttpStatus.OK);
+    return HttpResponse.ok(new WorkflowTypeListEdo(workflowTypeMapper.toEdoList(modelList)));
   }
 
 }

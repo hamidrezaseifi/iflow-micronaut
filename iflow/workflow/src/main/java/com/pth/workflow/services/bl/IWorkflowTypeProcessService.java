@@ -7,24 +7,17 @@ import io.micronaut.security.authentication.Authentication;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
 public interface IWorkflowTypeProcessService {
 
-  public WorkflowTypeEntity getByIdentity(String identity,
-                                          final Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  public Optional<WorkflowTypeEntity> getByIdentity(String identity);
 
-  public List<WorkflowTypeEntity> getListByCompanyIdentity(String identity,
-                                                     final Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  public List<WorkflowTypeEntity> getListByCompanyIdentity(String identity);
 
-  public List<WorkflowTypeStepEntity> getStepsByIdentity(String identity,
-                                                         final Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  public List<WorkflowTypeStepEntity> getStepsByIdentity(String identity);
 
-  public List<WorkflowTypeEntity> getListByIdentityList(final Set<String> identityList,
-                                                  final Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+  public List<WorkflowTypeEntity> getListByIdentityList(final Set<String> identityList);
 }

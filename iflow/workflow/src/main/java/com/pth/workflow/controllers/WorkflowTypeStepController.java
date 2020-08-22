@@ -42,7 +42,8 @@ public class WorkflowTypeStepController {
     return HttpResponse.ok(workflowTypeStepMapper.toEdo(model));
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = "/readbyidentitylist")
   public HttpResponse<WorkflowTypeStepListEdo> readByList(@Body @Valid final Set<String> idList,
                                                           final Authentication authentication) throws Exception {
@@ -53,7 +54,8 @@ public class WorkflowTypeStepController {
     return HttpResponse.ok(new WorkflowTypeStepListEdo(workflowTypeStepMapper.toEdoList(modelList)));
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = "/readbyworkflowidentity/{identity}")
   public HttpResponse<WorkflowTypeStepListEdo> readListByWorkflowId(final String identity,
       
