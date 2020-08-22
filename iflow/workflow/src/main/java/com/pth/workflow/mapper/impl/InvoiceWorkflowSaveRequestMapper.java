@@ -9,7 +9,7 @@ import com.pth.workflow.models.workflow.InvoiceWorkflowSaveRequest;
 import javax.inject.Singleton;
 
 @Singleton
-public class InvoiceWorkflowSaveMapper
+public class InvoiceWorkflowSaveRequestMapper
         extends ModelEdoMapperBase<InvoiceWorkflowSaveRequest, InvoiceWorkflowSaveRequestEdo>
         implements IInvoiceWorkflowSaveRequestMapper {
     @Override

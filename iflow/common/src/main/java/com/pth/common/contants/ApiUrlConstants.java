@@ -87,6 +87,8 @@ public class ApiUrlConstants {
         public static final String API001_WORKFLOW001_ROOT = "/api001/workflow001";
         public static final String API001_WORKFLOW001_WORKFLOWTYPESTEP_ROOT = API001_WORKFLOW001_ROOT + "/workflowtypestep";
         public static final String API001_WORKFLOW001_INVOICEWORKFLOW_ROOT = API001_WORKFLOW001_ROOT + "/invoice";
+        public static final String API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT = API001_WORKFLOW001_ROOT + "/singletask";
+        public static final String API001_WORKFLOW001_TESTTHREETASKWORKFLOW_ROOT = API001_WORKFLOW001_ROOT + "/testthreetask";
 
     }
 }

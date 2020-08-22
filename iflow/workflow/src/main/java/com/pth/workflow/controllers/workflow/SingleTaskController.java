@@ -1,119 +1,117 @@
 package com.pth.workflow.controllers.workflow;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import com.pth.common.contants.ApiUrlConstants;
+import com.pth.common.edo.workflow.invoice.InvoiceWorkflowListEdo;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowSaveRequestEdo;
+import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
+import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
+import com.pth.workflow.mapper.ISingleTaskWorkflowMapper;
+import com.pth.workflow.mapper.ISingleTaskWorkflowSaveRequestMapper;
+import com.pth.workflow.services.bl.IWorkflowProcessService;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.rules.SecurityRule;
 
-import com.pth.iflow.common.annotations.IflowGetRequestMapping;
-import com.pth.iflow.common.annotations.IflowPostRequestMapping;
-import com.pth.iflow.common.controllers.helper.ControllerHelper;
-import com.pth.iflow.common.models.edo.workflow.singletask.SingleTaskWorkflowEdo;
-import com.pth.iflow.common.models.edo.workflow.singletask.SingleTaskWorkflowListEdo;
-import com.pth.iflow.common.models.edo.workflow.singletask.SingleTaskWorkflowSaveRequestEdo;
-import com.pth.iflow.common.moduls.security.RestAccessRoles;
-import com.pth.iflow.common.rest.IflowRestPaths;
-import com.pth.iflow.workflow.bl.IWorkflowProcessService;
-import com.pth.iflow.workflow.models.mapper.WorkflowModelEdoMapper;
-import com.pth.iflow.workflow.models.workflow.singletask.SingleTaskWorkflow;
+import javax.validation.Valid;
 
-@RestController
-@RequestMapping
+
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT)
 public class SingleTaskController {
 
-  final IWorkflowProcessService<SingleTaskWorkflow> workflowService;
+  private final IWorkflowProcessService<SingleTaskWorkflowEntity> singleTaskWorkflowService;
+  private final ISingleTaskWorkflowMapper singleTaskWorkflowMapper;
+  private final ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper;
 
-  public SingleTaskController(@Autowired final IWorkflowProcessService<SingleTaskWorkflow> workflowService) {
+  public SingleTaskController(IWorkflowProcessService<SingleTaskWorkflowEntity> singleTaskWorkflowService,
+                           ISingleTaskWorkflowMapper singleTaskWorkflowMapper,
+                           ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper) {
 
-    this.workflowService = workflowService;
+    this.singleTaskWorkflowService = singleTaskWorkflowService;
+    this.singleTaskWorkflowMapper = singleTaskWorkflowMapper;
+    this.singleTaskWorkflowSaveRequestMapper = singleTaskWorkflowSaveRequestMapper;
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.SingleTaskWorkflow.HAS_ROLE_SINGLETASK_READ)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.SINGLETASKWORKFLOW_READ_BY_IDENTITY)
-  public ResponseEntity<SingleTaskWorkflowEdo> readWorkflow(@PathVariable final String identity, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
+  @Get(value = "/readbyidentity/{identity}")
+  public HttpResponse<SingleTaskWorkflowEdo> readInvoice(final String identity,
+                                                      final Authentication authentication) throws Exception {
 
-    final SingleTaskWorkflow model = this.workflowService.getByIdentity(identity, authentication);
+    final Optional<SingleTaskWorkflowEntity> modelOptional = this.singleTaskWorkflowService.getByIdentity(identity);
 
-    return ControllerHelper.createResponseEntity(request, WorkflowModelEdoMapper.toEdo(model), HttpStatus.OK);
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(singleTaskWorkflowMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
-  @ResponseStatus(HttpStatus.CREATED)
-  @PreAuthorize(RestAccessRoles.SingleTaskWorkflow.HAS_ROLE_SINGLETASK_CREATE)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.SINGLETASKWORKFLOW_CREATE)
-  public ResponseEntity<SingleTaskWorkflowListEdo> createWorkflow(
-      @RequestBody final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_CREATE)
+  @Post(value = "/create")
+  public HttpResponse<SingleTaskWorkflowListEdo> createInvoice(
+          @Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
+          final Authentication authentication) throws Exception {
 
-    final List<SingleTaskWorkflow> modelList = this.workflowService
-        .create(WorkflowModelEdoMapper.fromEdo(workflowCreateRequestEdo),
-            authentication);
+    final List<SingleTaskWorkflowEntity> modelList =
+            this.singleTaskWorkflowService.create(singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo));
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new SingleTaskWorkflowListEdo(WorkflowModelEdoMapper.toSingleTaskWorkflowEdoList(modelList)), HttpStatus.CREATED);
+    return HttpResponse.created(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  @PreAuthorize(RestAccessRoles.SingleTaskWorkflow.HAS_ROLE_SINGLETASK_SAVE)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.SINGLETASKWORKFLOW_SAVE)
-  public ResponseEntity<SingleTaskWorkflowEdo> saveWorkflow(@RequestBody final SingleTaskWorkflowSaveRequestEdo requestEdo,
-      final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_SAVE)
+  @Post(value = "/save")
+  public HttpResponse<SingleTaskWorkflowEdo>
+  saveInvoice(@Body @Valid final SingleTaskWorkflowSaveRequestEdo requestEdo,
+              final Authentication authentication) throws Exception {
 
-    final SingleTaskWorkflow model = this.workflowService.save(WorkflowModelEdoMapper.fromEdo(requestEdo), authentication);
+    final Optional<SingleTaskWorkflowEntity> modelOptional =
+            this.singleTaskWorkflowService.save(singleTaskWorkflowSaveRequestMapper.fromEdo(requestEdo));
 
-    return ControllerHelper.createResponseEntity(request, WorkflowModelEdoMapper.toEdo(model), HttpStatus.ACCEPTED);
+    if(modelOptional.isPresent()){
+      return HttpResponse.created(singleTaskWorkflowMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.badRequest();
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.SingleTaskWorkflow.HAS_ROLE_SINGLETASK_READ)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.SINGLETASKWORKFLOW_READ_LIST)
-  public ResponseEntity<SingleTaskWorkflowListEdo> readWorkflowList(@RequestBody final Set<String> idList,
-      final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
+  @Post(value = "/readbyidentitylist")
+  public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
+                                                              final Authentication authentication) throws Exception {
 
-    final List<SingleTaskWorkflow> modelList = this.workflowService.getListByIdentityList(idList, authentication);
+    final List<SingleTaskWorkflowEntity> modelList = this.singleTaskWorkflowService.getListByIdentityList(idList);
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new SingleTaskWorkflowListEdo(WorkflowModelEdoMapper.toSingleTaskWorkflowEdoList(modelList)), HttpStatus.OK);
+    return HttpResponse.ok(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.SINGLETASKWORKFLOW_READ_LIST_BY_USERIDENTITY)
-  @PreAuthorize(RestAccessRoles.SingleTaskWorkflow.HAS_ROLE_SINGLETASK_READ)
-  public ResponseEntity<SingleTaskWorkflowListEdo> readWorkflowListForUser(@PathVariable final String Identity,
-      @PathVariable(required = false) final int status, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
+  @Get(value = "/readbyuseridentity/{identity}/{status}")
+  public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceListForUser(final String Identity,
+                                                                     @PathVariable() final int status,
+                                                                     final Authentication authentication) throws Exception {
 
-    final List<SingleTaskWorkflow> modelList = this.workflowService.getListForUser(Identity, status, authentication);
+    final List<SingleTaskWorkflowEntity> modelList = this.singleTaskWorkflowService.getListForUser(Identity, status);
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new SingleTaskWorkflowListEdo(WorkflowModelEdoMapper.toSingleTaskWorkflowEdoList(modelList)), HttpStatus.OK);
+    return HttpResponse.ok(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.ACCEPTED)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.SINGLETASKWORKFLOW_VALIDATE)
-  @PreAuthorize(RestAccessRoles.SingleTaskWorkflow.HAS_ROLE_SINGLETASK_READ)
-  public void validateWorkflowRequest(@RequestBody final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
-      final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  //@ResponseStatus(HttpStatus.ACCEPTED)
+  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
+  @Status(HttpStatus.ACCEPTED)
+  @Post(value = "/validate")
+  public void
+  validateInvoiceRequest(@Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
+                         final Authentication authentication) throws Exception {
 
-    this.workflowService.validate(WorkflowModelEdoMapper.fromEdo(workflowCreateRequestEdo), authentication);
+    this.singleTaskWorkflowService.validate(singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo));
 
   }
 
