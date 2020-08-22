@@ -1,68 +1,58 @@
 package com.pth.workflow.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import com.pth.common.contants.ApiUrlConstants;
+import com.pth.common.edo.WorkflowMessageListEdo;
+import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
+import com.pth.workflow.mapper.IWorkflowMessageMapper;
+import com.pth.workflow.services.IWorkflowMessageService;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.Controller;
+import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.PathVariable;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.rules.SecurityRule;
 
-import com.pth.iflow.common.annotations.IflowGetRequestMapping;
-import com.pth.iflow.common.controllers.helper.ControllerHelper;
-import com.pth.iflow.common.models.edo.WorkflowMessageListEdo;
-import com.pth.iflow.common.moduls.security.RestAccessRoles;
-import com.pth.iflow.common.rest.IflowRestPaths;
-import com.pth.iflow.workflow.bl.IWorkflowMessageDataService;
-import com.pth.iflow.workflow.models.WorkflowMessage;
-import com.pth.iflow.workflow.models.mapper.WorkflowModelEdoMapper;
 
-@RestController
-@RequestMapping
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_WORKFLOWMESSAGE_ROOT)
 public class WorkflowMessageController {
 
-  final IWorkflowMessageDataService workflowMessageDataService;
+  private final IWorkflowMessageService workflowMessageService;
+  private final IWorkflowMessageMapper workflowMessageMapper;
 
-  public WorkflowMessageController(@Autowired final IWorkflowMessageDataService workflowMessageDataService) {
+  public WorkflowMessageController(IWorkflowMessageService workflowMessageService, IWorkflowMessageMapper workflowMessageMapper) {
 
-    this.workflowMessageDataService = workflowMessageDataService;
+    this.workflowMessageService = workflowMessageService;
+    this.workflowMessageMapper = workflowMessageMapper;
 
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.General.HAS_ROLE_USER)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOWMESSAGE_READ_BY_USERIDENTITY)
-  public ResponseEntity<WorkflowMessageListEdo> readUserWorkflowMessageList(@PathVariable(required = true) final String identity,
-      @PathVariable(required = false) Integer status, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Get(value = "/readbyuserid/{id}/{status}")
+  public HttpResponse<WorkflowMessageListEdo> readUserWorkflowMessageList(final UUID id,
+                                                                          @PathVariable(defaultValue = "0") Integer status,
+                                                                          final Authentication authentication) throws Exception {
 
     status = status == null ? 0 : status;
 
-    final List<WorkflowMessage> messageList = this.workflowMessageDataService.getListForUser(identity, status, authentication);
+    final List<WorkflowMessageEntity> messageList = this.workflowMessageService.getListForUser(id, status);
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new WorkflowMessageListEdo(WorkflowModelEdoMapper.toWorkflowMessageEdoList(messageList)), HttpStatus.OK);
+    return HttpResponse.ok(new WorkflowMessageListEdo(workflowMessageMapper.toEdoList(messageList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @PreAuthorize(RestAccessRoles.General.HAS_ROLE_USER)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOWMESSAGE_READ_BY_WORKFLOWIDENTITY)
-  public ResponseEntity<WorkflowMessageListEdo> readWorkfloWorkflowMessageList(@PathVariable(required = true) final String identity,
-      final HttpServletRequest request,
+  @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Get(value = "/readallforworkflow/{id}")
+  public HttpResponse<WorkflowMessageListEdo> readWorkfloWorkflowMessageList(final UUID id,
       final Authentication authentication) throws Exception {
 
-    final List<WorkflowMessage> messageList = this.workflowMessageDataService.getListForWorkflow(identity, authentication);
+    final List<WorkflowMessageEntity> messageList = this.workflowMessageService.getListForWorkflow(id);
 
-    return ControllerHelper
-        .createResponseEntity(request,
-            new WorkflowMessageListEdo(WorkflowModelEdoMapper.toWorkflowMessageEdoList(messageList)), HttpStatus.OK);
+    return HttpResponse.ok(new WorkflowMessageListEdo(workflowMessageMapper.toEdoList(messageList)));
   }
 
 }

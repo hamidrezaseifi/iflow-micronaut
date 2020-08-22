@@ -89,6 +89,7 @@ public class ApiUrlConstants {
         public static final String API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT = API001_WORKFLOW001_ROOT + "/singletask";
         public static final String API001_WORKFLOW001_TESTTHREETASKWORKFLOW_ROOT = API001_WORKFLOW001_ROOT + "/testthreetask";
 
+        public static final String API001_WORKFLOW001_WORKFLOWMESSAGE_ROOT = API001_WORKFLOW001_ROOT + "/workflowmessage";
         public static final String API001_WORKFLOW001_WORKFLOWTYPE_ROOT = API001_WORKFLOW001_ROOT + "/workflowtype";
         public static final String API001_WORKFLOW001_WORKFLOWTYPESTEP_ROOT = API001_WORKFLOW001_ROOT + "/workflowtypestep";
 
