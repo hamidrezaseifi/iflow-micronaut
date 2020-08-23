@@ -3,7 +3,7 @@ package com.pth.workflow.mapper.impl;
 import com.pth.common.edo.WorkflowTypeStepEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
-import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.entities.WorkflowTypeStepEntity;
 import com.pth.workflow.mapper.IWorkflowTypeStepMapper;
 
 import javax.inject.Singleton;

@@ -2,8 +2,8 @@ package com.pth.workflow.repositories.impl;
 
 import com.pth.common.edo.enums.EWorkflowMessageStatus;
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
-import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
-import com.pth.workflow.entities.workflow.WorkflowMessageEntity_;
+import com.pth.workflow.entities.WorkflowMessageEntity;
+import com.pth.workflow.entities.WorkflowMessageEntity_;
 import com.pth.workflow.repositories.IWorkflowMessageRepository;
 import io.micronaut.spring.tx.annotation.Transactional;
 import org.springframework.stereotype.Repository;

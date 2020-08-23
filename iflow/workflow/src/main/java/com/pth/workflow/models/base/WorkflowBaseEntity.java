@@ -3,7 +3,7 @@ package com.pth.workflow.models.base;
 import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.edo.enums.EWorkflowStatus;
 import com.pth.common.edo.enums.EWorkflowType;
-import com.pth.workflow.entities.workflow.*;
+import com.pth.workflow.entities.*;
 
 import java.util.List;
 import java.util.UUID;

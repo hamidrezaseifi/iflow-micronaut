@@ -1,4 +1,5 @@
-package com.pth.workflow.entities.workflow;
+package com.pth.workflow.entities;
+
 
 import com.pth.workflow.models.base.WorkflowBaseEntity;
 
@@ -13,8 +14,8 @@ import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
-@Table(name = "testthreetask_workflow")
-public class TestThreeTaskWorkflowEntity extends WorkflowBaseEntity {
+@Table(name = "singletask_workflow")
+public class SingleTaskWorkflowEntity extends WorkflowBaseEntity {
 
   @Id
   @Column(name = "workflow_id")
@@ -24,7 +25,7 @@ public class TestThreeTaskWorkflowEntity extends WorkflowBaseEntity {
   @JoinColumn(name = "workflow_id")
   private WorkflowEntity workflow;
 
-  public TestThreeTaskWorkflowEntity() {
+  public SingleTaskWorkflowEntity() {
 
   }
 
@@ -51,5 +52,6 @@ public class TestThreeTaskWorkflowEntity extends WorkflowBaseEntity {
 
     this.workflow = workflow;
   }
+
 
 }

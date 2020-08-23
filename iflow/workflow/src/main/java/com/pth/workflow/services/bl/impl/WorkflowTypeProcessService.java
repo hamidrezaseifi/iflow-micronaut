@@ -1,10 +1,9 @@
 package com.pth.workflow.services.bl.impl;
 
-import java.net.MalformedURLException;
 import java.util.*;
 
-import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
-import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.entities.WorkflowTypeEntity;
+import com.pth.workflow.entities.WorkflowTypeStepEntity;
 import com.pth.workflow.repositories.IWorkflowTypeRepository;
 import com.pth.workflow.services.bl.IWorkflowTypeProcessService;
 import org.slf4j.Logger;
@@ -66,7 +65,7 @@ public class WorkflowTypeProcessService implements IWorkflowTypeProcessService {
 
     Optional<WorkflowTypeEntity> workflowTypeEntityOptional = this.workflowTypeRepository.getById(id);
     if(workflowTypeEntityOptional.isPresent()){
-      return workflowTypeEntityOptional.get().getSteps();
+      return workflowTypeEntityOptional.get().getStepsAsList();
     }
     return new ArrayList<>();
   }

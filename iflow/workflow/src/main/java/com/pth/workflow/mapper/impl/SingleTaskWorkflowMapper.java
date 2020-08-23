@@ -1,12 +1,9 @@
 package com.pth.workflow.mapper.impl;
 
-import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
-import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
-import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
-import com.pth.workflow.mapper.IInvoiceWorkflowMapper;
+import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.mapper.ISingleTaskWorkflowMapper;
 
 import javax.inject.Singleton;

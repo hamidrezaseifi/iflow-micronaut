@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.entities.InvoiceWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
@@ -13,7 +13,6 @@ import com.pth.workflow.services.bl.IWorkflowPrepare;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

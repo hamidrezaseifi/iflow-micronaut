@@ -1,4 +1,4 @@
-package com.pth.workflow.entities.workflow;
+package com.pth.workflow.entities;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.entities.BaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
@@ -42,11 +40,11 @@ public class WorkflowActionEntity extends BaseEntity {
   private Date updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "workflow_id", nullable = false)
+  @JoinColumn(name = "workflow_id", nullable = false, insertable = false, updatable = false)
   private WorkflowEntity workflowEntity;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "current_step_id", nullable = false)
+  @JoinColumn(name = "current_step_id", nullable = false, insertable = false, updatable = false)
   private WorkflowTypeStepEntity currentStep;
 
   public WorkflowActionEntity() {

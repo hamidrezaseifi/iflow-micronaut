@@ -4,8 +4,12 @@ import com.pth.common.edo.enums.ECompanyType;
 import com.pth.common.edo.validation.AEnumValidator;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class CompanyEdo {
+
+  @NotNull(message = "Identity must not be null")
+  private UUID id;
 
   @NotNull(message = "Identity must not be null")
   private String identity;
@@ -26,6 +30,14 @@ public class CompanyEdo {
 
   public CompanyEdo() {
 
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   public String getIdentity() {

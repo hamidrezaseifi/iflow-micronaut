@@ -1,9 +1,7 @@
 package com.pth.workflow.services.bl.strategy.factory;
 
-import java.net.MalformedURLException;
-
 import com.pth.common.exceptions.EIFlowErrorType;
-import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.entities.InvoiceWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
@@ -15,7 +13,6 @@ import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
 import com.pth.workflow.services.bl.strategy.strategies.*;
 import com.pth.workflow.services.bl.strategy.strategies.validation.*;
-import io.micronaut.security.authentication.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

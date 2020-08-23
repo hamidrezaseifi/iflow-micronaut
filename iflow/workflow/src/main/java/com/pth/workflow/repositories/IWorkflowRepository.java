@@ -1,7 +1,7 @@
 package com.pth.workflow.repositories;
 
 import com.pth.common.repositories.IEntityRepository;
-import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.models.WorkflowSearchFilter;
 
 import java.util.List;

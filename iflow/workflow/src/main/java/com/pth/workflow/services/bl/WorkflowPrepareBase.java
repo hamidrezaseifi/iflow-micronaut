@@ -1,12 +1,11 @@
 package com.pth.workflow.services.bl;
 
-import com.pth.workflow.entities.workflow.WorkflowActionEntity;
-import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
-import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.entities.WorkflowActionEntity;
+import com.pth.workflow.entities.WorkflowTypeEntity;
+import com.pth.workflow.entities.WorkflowTypeStepEntity;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.repositories.IWorkflowTypeRepository;
 
-import java.net.MalformedURLException;
 import java.util.*;
 import java.util.stream.Collectors;
 

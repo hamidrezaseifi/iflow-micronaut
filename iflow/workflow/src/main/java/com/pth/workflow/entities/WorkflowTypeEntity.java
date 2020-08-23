@@ -1,31 +1,24 @@
-package com.pth.workflow.entities.workflow;
+package com.pth.workflow.entities;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.pth.common.edo.enums.EWorkflowTypeAssignType;
 import com.pth.common.entities.BaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "workflow_type")
 public class WorkflowTypeEntity extends BaseEntity {
 
-  private static final long serialVersionUID = -8971151977689234657L;
-
-  @Column(name = "company_id")
-  private UUID companyId;
+  //@Column(name = "company_id")
+  //private UUID companyId;
 
   @Column(name = "identity")
   private String identity;
@@ -61,16 +54,11 @@ public class WorkflowTypeEntity extends BaseEntity {
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @JoinColumn(name = "workflow_type_id")
-  private final List<WorkflowTypeStepEntity> steps = new ArrayList<>();
+  private Set<WorkflowTypeStepEntity> steps = new HashSet<>();
 
-
-  public UUID getCompanyId() {
-    return companyId;
-  }
-
-  public void setCompanyId(UUID companyId) {
-    this.companyId = companyId;
-  }
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @JoinColumn(name = "workflow_type_id", insertable = false, updatable = false)
+  private Set<CompanyWorkflowTypeEntity> companyWorkflowTypes = new HashSet<>();
 
   public String getIdentity() {
 
@@ -189,9 +177,14 @@ public class WorkflowTypeEntity extends BaseEntity {
     this.updatedAt = updatedAt;
   }
 
-  public List<WorkflowTypeStepEntity> getSteps() {
+  public Set<WorkflowTypeStepEntity> getSteps() {
 
     return this.steps;
+  }
+
+  public List<WorkflowTypeStepEntity> getStepsAsList() {
+
+    return this.steps.stream().collect(Collectors.toList());
   }
 
   public void setSteps(final List<WorkflowTypeStepEntity> steps) {
@@ -205,6 +198,14 @@ public class WorkflowTypeEntity extends BaseEntity {
   public void addStep(final WorkflowTypeStepEntity stepId) {
 
     this.steps.add(stepId);
+  }
+
+  public Set<CompanyWorkflowTypeEntity> getCompanyWorkflowTypes() {
+    return companyWorkflowTypes;
+  }
+
+  public void setCompanyWorkflowTypes(Set<CompanyWorkflowTypeEntity> companyWorkflowTypes) {
+    this.companyWorkflowTypes = companyWorkflowTypes;
   }
 
   public String getIdentityPreffix() {

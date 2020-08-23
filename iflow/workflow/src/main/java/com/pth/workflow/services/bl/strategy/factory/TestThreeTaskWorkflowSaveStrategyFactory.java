@@ -2,7 +2,7 @@ package com.pth.workflow.services.bl.strategy.factory;
 
 
 import com.pth.common.exceptions.EIFlowErrorType;
-import com.pth.workflow.entities.workflow.TestThreeTaskWorkflowEntity;
+import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.ITestThreeTaskWorkflowRepository;

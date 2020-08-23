@@ -1,14 +1,11 @@
-package com.pth.workflow.entities.workflow;
+package com.pth.workflow.entities;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -29,7 +26,7 @@ public class WorkflowTypeStepEntity extends BaseEntity {
   private String identity;
 
   @Column(name = "workflow_type_id")
-  private Long workflowTypeId;
+  private UUID workflowTypeId;
 
   @Column(name = "title")
   private String title;
@@ -66,7 +63,7 @@ public class WorkflowTypeStepEntity extends BaseEntity {
 
   }
 
-  public Long getWorkflowTypeId() {
+  public UUID getWorkflowTypeId() {
 
     return this.workflowTypeId;
   }
@@ -81,7 +78,7 @@ public class WorkflowTypeStepEntity extends BaseEntity {
     this.identity = identity;
   }
 
-  public void setWorkflowTypeId(final Long workflowTypeId) {
+  public void setWorkflowTypeId(final UUID workflowTypeId) {
 
     this.workflowTypeId = workflowTypeId;
   }

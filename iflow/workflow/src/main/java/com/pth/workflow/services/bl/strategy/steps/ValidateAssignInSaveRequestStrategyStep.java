@@ -1,13 +1,11 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
 import com.pth.common.exceptions.EIFlowErrorType;
-import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.WorkflowTypeEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-
-import java.net.MalformedURLException;
 
 public class ValidateAssignInSaveRequestStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 

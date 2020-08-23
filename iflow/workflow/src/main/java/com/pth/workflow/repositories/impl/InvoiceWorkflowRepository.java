@@ -1,7 +1,7 @@
 package com.pth.workflow.repositories.impl;
 
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
-import com.pth.workflow.entities.workflow.*;
+import com.pth.workflow.entities.*;
 import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
 import io.micronaut.spring.tx.annotation.Transactional;
 import org.springframework.stereotype.Repository;

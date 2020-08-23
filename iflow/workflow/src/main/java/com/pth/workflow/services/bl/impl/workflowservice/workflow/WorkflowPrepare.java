@@ -1,6 +1,6 @@
 package com.pth.workflow.services.bl.impl.workflowservice.workflow;
 
-import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.repositories.IWorkflowTypeRepository;
 import com.pth.workflow.services.bl.WorkflowPrepareBase;
 

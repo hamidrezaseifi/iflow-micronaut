@@ -6,7 +6,7 @@ import com.pth.common.edo.IdentityListEdo;
 import com.pth.common.edo.WorkflowSearchFilterEdo;
 import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.common.edo.workflow.WorkflowListEdo;
-import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.mapper.IWorkflowMapper;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import com.pth.workflow.services.bl.IWorkflowSearchService;

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.WorkflowMessageListEdo;
-import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
+import com.pth.workflow.entities.WorkflowMessageEntity;
 import com.pth.workflow.mapper.IWorkflowMessageMapper;
 import com.pth.workflow.services.IWorkflowMessageService;
 import io.micronaut.http.HttpResponse;

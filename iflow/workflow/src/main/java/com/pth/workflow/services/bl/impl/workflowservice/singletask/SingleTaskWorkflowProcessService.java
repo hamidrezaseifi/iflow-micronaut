@@ -1,13 +1,11 @@
 package com.pth.workflow.services.bl.impl.workflowservice.singletask;
 
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import com.pth.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
+import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.ISingleTaskWorkflowRepository;

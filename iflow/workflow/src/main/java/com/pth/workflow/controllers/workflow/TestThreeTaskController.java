@@ -10,7 +10,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowListEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowSaveRequestEdo;
-import com.pth.workflow.entities.workflow.TestThreeTaskWorkflowEntity;
+import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.mapper.ITestThreeTaskWorkflowMapper;
 import com.pth.workflow.mapper.ITestThreeTaskWorkflowSaveRequestMapper;
 import com.pth.workflow.services.bl.IWorkflowProcessService;

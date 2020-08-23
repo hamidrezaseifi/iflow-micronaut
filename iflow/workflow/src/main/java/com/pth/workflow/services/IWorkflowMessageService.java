@@ -1,9 +1,8 @@
 package com.pth.workflow.services;
 
 import com.pth.common.edo.enums.EWorkflowMessageStatus;
-import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
+import com.pth.workflow.entities.WorkflowMessageEntity;
 
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

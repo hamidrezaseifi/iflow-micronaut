@@ -4,7 +4,7 @@ import com.pth.common.edo.WorkflowSearchFilterEdo;
 import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
-import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.mapper.IWorkflowMapper;
 import com.pth.workflow.models.WorkflowSearchFilter;
 

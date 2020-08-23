@@ -2,10 +2,10 @@ package com.pth.workflow.repositories.impl;
 
 import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.repositories.AEntityRdbmsHibernateRepository;
-import com.pth.workflow.entities.workflow.WorkflowActionEntity;
-import com.pth.workflow.entities.workflow.WorkflowActionEntity_;
-import com.pth.workflow.entities.workflow.WorkflowEntity;
-import com.pth.workflow.entities.workflow.WorkflowEntity_;
+import com.pth.workflow.entities.WorkflowActionEntity;
+import com.pth.workflow.entities.WorkflowActionEntity_;
+import com.pth.workflow.entities.WorkflowEntity;
+import com.pth.workflow.entities.WorkflowEntity_;
 import com.pth.workflow.models.WorkflowSearchFilter;
 import com.pth.workflow.repositories.IWorkflowRepository;
 import io.micronaut.spring.tx.annotation.Transactional;

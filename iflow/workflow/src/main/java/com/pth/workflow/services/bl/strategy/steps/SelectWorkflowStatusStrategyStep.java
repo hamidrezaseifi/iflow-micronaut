@@ -1,8 +1,8 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
 import com.pth.common.edo.enums.EWorkflowStatus;
-import com.pth.workflow.entities.workflow.WorkflowActionEntity;
-import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.WorkflowActionEntity;
+import com.pth.workflow.entities.WorkflowTypeEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;

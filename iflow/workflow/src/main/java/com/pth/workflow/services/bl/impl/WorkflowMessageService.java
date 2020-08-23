@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.pth.common.edo.enums.EWorkflowMessageStatus;
-import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
+import com.pth.workflow.entities.WorkflowMessageEntity;
 import com.pth.workflow.repositories.IWorkflowMessageRepository;
 import com.pth.workflow.services.IWorkflowMessageService;
 import org.slf4j.Logger;

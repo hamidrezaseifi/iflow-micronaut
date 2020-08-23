@@ -10,7 +10,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowListEdo;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowSaveRequestEdo;
-import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.entities.InvoiceWorkflowEntity;
 import com.pth.workflow.mapper.IInvoiceWorkflowMapper;
 import com.pth.workflow.mapper.IInvoiceWorkflowSaveRequestMapper;
 import com.pth.workflow.services.bl.IWorkflowProcessService;

@@ -31,7 +31,7 @@ jpa:
   default:
     name: 'default'
     packages-to-scan:
-      - 'com.pth.core.entities'
+      - 'com.pth.workflow.entities'
     properties:
       hibernate:
         hbm2ddl:

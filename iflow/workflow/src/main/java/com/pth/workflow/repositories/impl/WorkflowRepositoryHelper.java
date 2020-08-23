@@ -1,6 +1,8 @@
 package com.pth.workflow.repositories.impl;
 
-import com.pth.workflow.entities.workflow.*;
+import com.pth.workflow.entities.WorkflowActionEntity;
+import com.pth.workflow.entities.WorkflowActionEntity_;
+import com.pth.workflow.entities.WorkflowEntity_;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

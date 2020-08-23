@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
-import com.pth.workflow.entities.workflow.TestThreeTaskWorkflowEntity;
+import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.models.AssignItem;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 

@@ -1,8 +1,6 @@
 package com.pth.workflow.repositories;
 
-import com.pth.common.repositories.IEntityRepository;
-import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
-import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 
 import java.util.Optional;
 

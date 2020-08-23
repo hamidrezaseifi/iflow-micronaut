@@ -1,13 +1,15 @@
 package com.pth.common.edo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.pth.common.edo.enums.EWorkflowTypeAssignType;
 
 public class WorkflowTypeEdo {
+
+  protected UUID id;
 
   private String identity;
 
@@ -26,7 +28,7 @@ public class WorkflowTypeEdo {
   private Boolean sendToController;
 
   @NotNull(message = "AssignType must not be null")
-  private Integer assignType;
+  private EWorkflowTypeAssignType assignType;
 
   @NotNull(message = "IncreaseStepAutomatic must not be null")
   private Boolean increaseStepAutomatic;
@@ -35,7 +37,15 @@ public class WorkflowTypeEdo {
   private Boolean allowAssign;
 
   @NotNull(message = "WorkflowTypeStepList must not be null")
-  private final List<WorkflowTypeStepEdo> steps = new ArrayList<>();
+  private final Set<WorkflowTypeStepEdo> steps = new HashSet<>();
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
 
@@ -97,12 +107,12 @@ public class WorkflowTypeEdo {
     this.sendToController = sendToController;
   }
 
-  public Integer getAssignType() {
+  public EWorkflowTypeAssignType getAssignType() {
 
     return this.assignType;
   }
 
-  public void setAssignType(final Integer assignType) {
+  public void setAssignType(final EWorkflowTypeAssignType assignType) {
 
     this.assignType = assignType;
   }
@@ -127,13 +137,13 @@ public class WorkflowTypeEdo {
     this.allowAssign = allowAssign;
   }
 
-  public List<WorkflowTypeStepEdo> getSteps() {
+  public Set<WorkflowTypeStepEdo> getSteps() {
 
     return this.steps;
   }
 
   @JsonSetter
-  public void setSteps(final List<WorkflowTypeStepEdo> steps) {
+  public void setSteps(final Set<WorkflowTypeStepEdo> steps) {
 
     this.steps.clear();
     if (steps != null) {

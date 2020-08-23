@@ -1,10 +1,8 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-
 import com.pth.common.exceptions.EIFlowErrorType;
-import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
-import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.entities.WorkflowTypeEntity;
+import com.pth.workflow.entities.WorkflowTypeStepEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;

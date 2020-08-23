@@ -3,7 +3,7 @@ package com.pth.workflow.mapper.impl;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
-import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.entities.InvoiceWorkflowEntity;
 import com.pth.workflow.mapper.IInvoiceWorkflowMapper;
 
 import javax.inject.Singleton;

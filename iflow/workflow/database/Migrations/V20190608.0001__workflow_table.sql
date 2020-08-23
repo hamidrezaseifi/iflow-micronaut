@@ -94,11 +94,11 @@ CREATE TABLE workflow_files_versions (
   CONSTRAINT FK_WORKFLOWFILEVERSION_WORKFLOWFILE FOREIGN KEY (workflow_file_id) REFERENCES workflow_files (id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ;
 
-CREATE TABLE company_workflow_type (
-  company_id uuid NOT NULL,
-  workflow_type_id uuid NOT NULL,
-  created_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
-  PRIMARY KEY (company_id,workflow_type_id),
-  CONSTRAINT FK_COMPANYWORKFLOWTYPE_WORKFLOWTYPE FOREIGN KEY (workflow_type_id) REFERENCES workflow_type (id) ON DELETE CASCADE ON UPDATE CASCADE
-) ;
+CREATE TABLE public.company_workflow_type (
+	id serial NOT NULL PRIMARY KEY,
+	company_id uuid NOT NULL,
+	workflow_type_id uuid NOT NULL,
+	created_at timestamp NOT NULL DEFAULT timezone('utc'::text, now()),
+	CONSTRAINT company_workflow_type_pk PRIMARY KEY (id)
+);
 

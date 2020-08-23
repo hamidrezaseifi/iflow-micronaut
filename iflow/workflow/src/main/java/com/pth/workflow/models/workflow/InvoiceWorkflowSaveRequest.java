@@ -1,7 +1,7 @@
 package com.pth.workflow.models.workflow;
 
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
-import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.entities.InvoiceWorkflowEntity;
 import com.pth.workflow.models.AssignItem;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 

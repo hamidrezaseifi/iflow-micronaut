@@ -1,4 +1,4 @@
-package com.pth.workflow.entities.workflow;
+package com.pth.workflow.entities;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -9,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.metamodel.SingularAttribute;
 
 import com.pth.common.edo.enums.EWorkflowMessageStatus;
 import com.pth.common.edo.enums.EWorkflowMessageType;
