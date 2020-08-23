@@ -4,10 +4,12 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
 import com.pth.workflow.repositories.IWorkflowRepository;
@@ -35,24 +37,29 @@ public class WorkflowProcessService implements IWorkflowProcessService<WorkflowE
   }
 
   @Override
-  public List<WorkflowEntity> create(final IWorkflowSaveRequest<WorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
-
-    throw new IFlowMessageConversionFailureException("not implemented", EIFlowErrorType.SERVICE_NOT_IMPLEMENTED);
+  public Optional<WorkflowEntity> getById(UUID id) {
+    return workflowRepository.getById(id);
   }
 
   @Override
-  public Optional<WorkflowEntity> save(final IWorkflowSaveRequest<WorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+  public List<WorkflowEntity> create(final IWorkflowSaveRequest<WorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
-    throw new IFlowMessageConversionFailureException("not implemented", EIFlowErrorType.SERVICE_NOT_IMPLEMENTED);
+    throw new WorkflowCustomizedException("not implemented", EIFlowErrorType.SERVICE_NOT_IMPLEMENTED);
   }
 
   @Override
-  public void validate(final IWorkflowSaveRequest<WorkflowEntity> request)
-      throws IFlowMessageConversionFailureException {
+  public Optional<WorkflowEntity> save(final IWorkflowSaveRequest<WorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
-    throw new IFlowMessageConversionFailureException("not implemented", EIFlowErrorType.SERVICE_NOT_IMPLEMENTED);
+    throw new WorkflowCustomizedException("not implemented", EIFlowErrorType.SERVICE_NOT_IMPLEMENTED);
+  }
+
+  @Override
+  public void validate(final IWorkflowSaveRequest<WorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
+
+    throw new WorkflowCustomizedException("not implemented", EIFlowErrorType.SERVICE_NOT_IMPLEMENTED);
   }
 
   @Override
@@ -69,11 +76,11 @@ public class WorkflowProcessService implements IWorkflowProcessService<WorkflowE
   }
 
   @Override
-  public List<WorkflowEntity> getListForUser(final String identity, final int status) {
+  public List<WorkflowEntity> getListForUser(final UUID id, final int status) {
 
-    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status);
+    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
-    final List<WorkflowEntity> list = this.workflowRepository.getListForUser(identity, status);
+    final List<WorkflowEntity> list = this.workflowRepository.getListForUser(id, status);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

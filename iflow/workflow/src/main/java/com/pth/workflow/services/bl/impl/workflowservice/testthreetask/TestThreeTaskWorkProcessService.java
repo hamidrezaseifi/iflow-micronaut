@@ -4,9 +4,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.workflow.entities.workflow.TestThreeTaskWorkflowEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.ITestThreeTaskWorkflowRepository;
 import com.pth.workflow.services.bl.IWorkflowPrepare;
@@ -40,12 +42,17 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
   }
 
   @Override
+  public Optional<TestThreeTaskWorkflowEntity> getById(UUID id) {
+    return testThreeTaskWorkflowRepository.getById(id);
+  }
+
+  @Override
   public List<TestThreeTaskWorkflowEntity>
-    create(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+    create(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     final IWorkflowSaveStrategy<TestThreeTaskWorkflowEntity> workflowStrategy =
-            this.workStrategyFactory.selectSaveWorkStrategy(request);
+            this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);
 
     workflowStrategy.process();
 
@@ -56,13 +63,13 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
 
   @Override
   public Optional<TestThreeTaskWorkflowEntity>
-    save(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+    save(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     logger.debug("Saving workflow");
 
     final IWorkflowSaveStrategy<TestThreeTaskWorkflowEntity> workflowStrategy =
-            this.workStrategyFactory.selectSaveWorkStrategy(request);
+            this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);
 
     workflowStrategy.process();
 
@@ -73,13 +80,13 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
 
   @Override
   public void
-    validate(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+    validate(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     workflowPrepare.prepareWorkflow(request.getWorkflow());
 
     final IWorkflowSaveStrategy<TestThreeTaskWorkflowEntity> workflowStrategy = this.workStrategyFactory
-        .selectValidationWorkStrategy(request);
+        .selectValidationWorkStrategy(request, authorization);
 
     workflowStrategy.process();
   }
@@ -99,12 +106,12 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
   }
 
   @Override
-  public List<TestThreeTaskWorkflowEntity> getListForUser(final String identity, final int status){
+  public List<TestThreeTaskWorkflowEntity> getListForUser(final UUID id, final int status){
 
-    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status);
+    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
     final List<TestThreeTaskWorkflowEntity> list =
-            this.testThreeTaskWorkflowRepository.getListForUser(identity, status);
+            this.testThreeTaskWorkflowRepository.getListForUser(id, status);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

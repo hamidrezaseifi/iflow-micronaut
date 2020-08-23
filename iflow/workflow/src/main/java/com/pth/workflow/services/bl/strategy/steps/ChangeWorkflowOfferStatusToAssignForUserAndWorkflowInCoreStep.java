@@ -1,14 +1,16 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.enums.EWorkflowMessageStatus;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflow;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
 
-public class ChangeWorkflowOfferStatusToAssignForUserAndWorkflowInCoreStep<W extends IWorkflow>
+import com.pth.common.edo.enums.EWorkflowMessageStatus;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public class ChangeWorkflowOfferStatusToAssignForUserAndWorkflowInCoreStep<W extends IWorkflowBaseEntity>
     extends AbstractWorkflowSaveStrategyStep<W> {
 
   public ChangeWorkflowOfferStatusToAssignForUserAndWorkflowInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
@@ -17,17 +19,21 @@ public class ChangeWorkflowOfferStatusToAssignForUserAndWorkflowInCoreStep<W ext
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
-    final IWorkflowSaveRequest<W> processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
-    final W processingWorkflow = this.getWorkflowSaveStrategy().getSavedSingleWorkflow();
-    final String userId = processingWorkflowSaveRequest.getAssigns().get(0).getItemIdentity();
+    final IWorkflowSaveRequest<W>
+            processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
+    final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflowOptional();
+    if(processingWorkflowOptional.isPresent()){
+      final UUID userId = processingWorkflowSaveRequest.getAssigns().get(0).getItemId();
 
-    this.getWorkflowSaveStrategy()
-        .updateUserAndWorkflowMessageStatus(processingWorkflow.getIdentity(),
-                                            processingWorkflow.getCurrentStepIdentity(),
-                                            userId,
-                                            EWorkflowMessageStatus.ASSIGNED);
+      this.getWorkflowSaveStrategy()
+          .updateUserAndWorkflowMessageStatus(processingWorkflowOptional.get().getWorkflowId(),
+                                              processingWorkflowOptional.get().getCurrentStepId(),
+                                              userId,
+                                              EWorkflowMessageStatus.ASSIGNED);
+    }
+
 
   }
 

@@ -62,7 +62,7 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserEntity> getUserListByDepartmentIdentity(String departmentId) {
+    public List<UserEntity> getUserListByDepartmentId(UUID departmentId) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<UserEntity> criteriaQuery = criteriaBuilder.createQuery(UserEntity.class);
@@ -71,7 +71,7 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
         SetJoin<UserEntity, UserDepartmentEntity> userDepartmentJoin = root.join(UserEntity_.userDepartments);
         CriteriaQuery<UserEntity> criteriaRootQuery = criteriaQuery.select(root);
 
-        criteriaRootQuery.where( criteriaBuilder.equal(userDepartmentJoin.get(UserDepartmentEntity_.DEPARTMENT).get(DepartmentEntity_.IDENTITY) , departmentId));
+        criteriaRootQuery.where( criteriaBuilder.equal(userDepartmentJoin.get(UserDepartmentEntity_.DEPARTMENT).get(DepartmentEntity_.ID) , departmentId));
 
         TypedQuery<UserEntity> typedQuery = entityManager.createQuery(criteriaRootQuery);
 

@@ -1,15 +1,16 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.enums.EWorkflowActionStatus;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.base.IWorkflow;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
 
-public class AssignWorkflowActiveActionStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import com.pth.common.edo.enums.EWorkflowActionStatus;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
+
+import java.util.UUID;
+
+public class AssignWorkflowActiveActionStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public AssignWorkflowActiveActionStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -17,12 +18,13 @@ public class AssignWorkflowActiveActionStrategyStep<W extends IWorkflow> extends
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
-    final IWorkflowSaveRequest<W> processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
+    final IWorkflowSaveRequest<W>
+            processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
 
-    final String userId = processingWorkflowSaveRequest.getAssigns().get(0).getItemIdentity();
+    final UUID userId = processingWorkflowSaveRequest.getAssigns().get(0).getItemId();
 
     processingWorkflow.setActiveActionAssignTo(userId);
     processingWorkflow.setActiveActionStatus(EWorkflowActionStatus.OPEN);
@@ -32,12 +34,12 @@ public class AssignWorkflowActiveActionStrategyStep<W extends IWorkflow> extends
   @Override
   public boolean shouldProcess() {
 
-    final WorkflowType processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowTypeEntity processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
     final IWorkflowSaveRequest<W> processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
     if (processingWorkflowSaveRequest.isDoneCommand() && processingWorkflowType.isAssignTypeManual()) {
-      return this.getWorkflowSaveStrategy().IsWorkflowCurrectStepChanged() && processingWorkflow.hasActiveAction();
+      return this.getWorkflowSaveStrategy().IsWorkflowCurrentStepChanged() && processingWorkflow.hasActiveAction();
     }
 
     return processingWorkflowType.isAssignTypeManual() || processingWorkflowSaveRequest.isAssignCommand();

@@ -9,6 +9,7 @@ import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
 import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
 import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.User;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IWorkflowBaseRepository;
@@ -34,26 +35,29 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
   private final IWorkflowPrepare<W> workflowPrepare;
 
   protected final IWorkflowSaveRequest<W> processingWorkflowSaveRequest;
-  protected final Authentication authentication;
   protected final WorkflowActionEntity prevActiveAction;
-  protected final W existsingWorkflow;
+  protected final Optional<W> existsingWorkflowOptional;
 
   protected final List<IWorkflowSaveStrategyStep> steps = new ArrayList<>();
 
   protected final Map<UUID, W> savedWorkflowList = new HashMap<>();
 
-  protected W savedSingleWorkflow = null;
+  protected Optional<W> savedSingleWorkflowOptional = Optional.empty();
 
   private final Set<UUID> assignedUsersId = new HashSet<>();
 
+  protected final String authorization;
+
   public AbstractWorkflowSaveStrategy(final IWorkflowSaveRequest<W> workflowCreateRequest,
-      final Authentication authentication,
-      final IDepartmentDataService departmentDataService,
-      final IWorkflowMessageRepository workflowMessageRepository,
-      final IGuiCachDataDataService profileCachDataDataService,
-      final IWorkflowBaseRepository<W> workflowRepository,
-      final IWorkflowPrepare<W> workflowPrepare)
+                                      final String authorization,
+                                      final IDepartmentDataService departmentDataService,
+                                      final IWorkflowMessageRepository workflowMessageRepository,
+                                      final IGuiCachDataDataService profileCachDataDataService,
+                                      final IWorkflowBaseRepository<W> workflowRepository,
+                                      final IWorkflowPrepare<W> workflowPrepare)
       throws WorkflowCustomizedException {
+
+    this.authorization = authorization;
 
     this.departmentDataService = departmentDataService;
     this.workflowMessageRepository = workflowMessageRepository;
@@ -62,29 +66,27 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     this.workflowPrepare = workflowPrepare;
 
     this.processingWorkflowSaveRequest = workflowCreateRequest;
-    this.authentication = authentication;
     this.prevActiveAction = workflowCreateRequest.getWorkflow().getActiveAction();
 
 
-    if(getProcessingWorkflow().isNew()){
-      this.existsingWorkflow = null;
+    if(workflowRepository.isWorkflowNew(processingWorkflowSaveRequest.getWorkflow().getWorkflowId())){
+      this.existsingWorkflowOptional = Optional.empty();
     }
     else{
       Optional<W> workflowOptional = workflowRepository.getByWorkflowId(getProcessingWorkflow().getWorkflowId());
       if(workflowOptional.isPresent()){
-        this.existsingWorkflow = workflowOptional.get();
+        this.existsingWorkflowOptional = workflowOptional;
       }
       else{
-        this.existsingWorkflow = null;
+        this.existsingWorkflowOptional = Optional.empty();
       }
     }
 
     this.setup();
   }
 
-  public Authentication getAuthentication() {
-
-    return authentication;
+  public String getAuthorization() {
+    return authorization;
   }
 
   public IDepartmentDataService getDepartmentDataService() {
@@ -135,12 +137,12 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
 
   public void resetUserListCachData(final UUID companyId, final Set<UUID> userIdList){
 
-    profileCachDataDataService.resetCachDataForUserList(companyId, userIdList, authentication);
+    profileCachDataDataService.resetCachDataForUserList(companyId, userIdList, authorization);
   }
 
   public void resetWorkflowtCachData(final UUID companyId, final UUID workflowId){
 
-    profileCachDataDataService.resetCachDataForWorkflow(companyId, workflowId, authentication);
+    profileCachDataDataService.resetCachDataForWorkflow(companyId, workflowId, authorization);
   }
 
   public Optional<W> saveWorkflow(final W workflow)
@@ -329,14 +331,14 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     return workflowRepository;
   }
 
-  public Optional<W> getSavedSingleWorkflow() {
+  public Optional<W> getSavedSingleWorkflowOptional() {
 
-    return Optional.of(savedSingleWorkflow);
+    return savedSingleWorkflowOptional;
   }
 
-  public void setSavedSingleWorkflow(final W savedSingleWorkflow) {
+  public void setSavedSingleWorkflowOptional(final W savedSingleWorkflowOptional) {
 
-    this.savedSingleWorkflow = savedSingleWorkflow;
+    this.savedSingleWorkflowOptional = Optional.of(savedSingleWorkflowOptional);
   }
 
   public Map<UUID, W> getSavedWorkflowList() {
@@ -379,7 +381,7 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
   @Override
   public Optional<W> getSingleProceedWorkflow() {
 
-    return getSavedSingleWorkflow();
+    return getSavedSingleWorkflowOptional();
   }
 
   @Override
@@ -388,11 +390,14 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     return getSavedWorkflowList().values().stream().collect(Collectors.toList());
   }
 
-  public boolean IsWorkflowCurrectStepChanged() {
+  public boolean IsWorkflowCurrentStepChanged() {
 
     final W processingWorkflow = getProcessingWorkflow();
 
-    return existsingWorkflow == null || processingWorkflow.isCurrentStepId(existsingWorkflow.getCurrentStepId()) == false;
+    if(existsingWorkflowOptional.isPresent() == false){
+      return true;
+    }
+    return processingWorkflow.isCurrentStepId(existsingWorkflowOptional.get().getCurrentStepId()) == false;
   }
 
   public Optional<W> prepareWorkflow(final W workflow) {
@@ -402,6 +407,10 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
 
   public List<W> prepareWorkflowList(final List<W> workflowList) {
 
-    return workflowPrepare.prepareWorkflowList(workflowList);
+    return this.workflowPrepare.prepareWorkflowList(workflowList);
+  }
+
+  public List<User> getDepartmentUserList(UUID departmentId) {
+    return this.departmentDataService.getUserListByDepartmentId(departmentId, this.authorization);
   }
 }

@@ -26,24 +26,3 @@ micronaut:
     project: core
     securities:
       passwordpepper: passwordpepper
-
-jpa:
-  default:
-    name: 'default'
-    packages-to-scan:
-      - 'com.pth.core.entities'
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: none
-        show_sql: true
-        format_sql: true
-
-datasources:
-  default:
-    name: 'default'
-    url: ${JDBC_URL:`jdbc:postgresql://localhost:5432/core`}?ApplicationName=core-pool
-    driverClassName: ${JDBC_DRIVER:org.postgresql.Driver}
-    username: ${JDBC_USER:iflow}
-    password: ${JDBC_PASSWORD:iflow}
-    pool-name: profile-pool

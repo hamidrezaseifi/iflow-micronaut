@@ -49,12 +49,12 @@ public class CollectAssignedUserIdListStep<W extends IWorkflowBaseEntity> extend
       final UUID assignToId =
               this.getWorkflowSaveStrategy().getProcessingWorkflow().getLastAction().getAssignToId();
       if (assignToId != null) {
-        assignedUsers.add(assignToId);
+        assignedUserIdList.add(assignToId);
       }
 
     }
 
-    this.getWorkflowSaveStrategy().setAssignedUsers(assignedUsers);
+    this.getWorkflowSaveStrategy().setAssignedUsers(assignedUserIdList);
 
   }
 

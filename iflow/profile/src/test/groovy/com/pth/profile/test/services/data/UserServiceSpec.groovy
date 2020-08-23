@@ -14,10 +14,6 @@ import com.pth.profile.repositories.IUserRepository
 import com.pth.profile.services.data.IUsersService
 import com.pth.profile.services.data.impl.UsersService
 import com.pth.profile.test.ProfileTestDataProvider
-import io.micronaut.context.ApplicationContext
-import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.Shared
-
 
 class UserServiceSpec extends ProfileTestDataProvider {
 
@@ -96,13 +92,13 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
             def userEntity = createTestUser(1)
         when:
-            def userOptional = userService.getUserByIdentity("user-identity")
+            def userOptional = userService.getUserById(UUID.randomUUID())
 
         then:
             userOptional.isPresent()
             verifyUser(userOptional.get(), userEntity)
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
 
     }
 
@@ -170,7 +166,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
                                                             new Date())
 
         when:
-            def profileResponseOptional = userService.getProfileResponseByIdentity("app", "user-identity")
+            def profileResponseOptional = userService.getProfileResponseById("app", UUID.randomUUID())
 
         then:
             profileResponseOptional.isPresent()
@@ -179,7 +175,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
 
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
             1 * refreshTokenRepository.findByUsername(_) >> Optional.of(refreshTokenEntity)
             1 * workflowTypeOcrSettingPresetRepository.getByCompanyId(_) >> presetList
             1 * userDashboardMenuRepository.getByUserId(_, _) >> dashboardMenuList
@@ -195,14 +191,14 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def groupList = userService.getUserGroups("user-identity")
+            def groupList = userService.getUserGroups(UUID.randomUUID())
 
         then:
             groupList.isEmpty() == false
             groupList.size() == 2
 
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
 
     }
 
@@ -215,14 +211,14 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def departmentList = userService.getUserDepartments("user-identity")
+            def departmentList = userService.getUserDepartments(UUID.randomUUID())
 
         then:
             departmentList.isEmpty() == false
             departmentList.size() == 2
 
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
 
     }
 
@@ -235,14 +231,14 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def deputyList = userService.getUserDeputies("user-identity")
+            def deputyList = userService.getUserDeputies(UUID.randomUUID())
 
         then:
             deputyList.isEmpty() == false
             deputyList.size() == 2
 
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
 
     }
 
@@ -252,14 +248,14 @@ class UserServiceSpec extends ProfileTestDataProvider {
             def companyEntity = createTestCompany(1)
 
         when:
-            def userList = userService.getCompanyUsers("company-identity")
+            def userList = userService.getCompanyUsers(UUID.randomUUID())
 
         then:
             userList.isEmpty() == false
             userList.size() == 3
 
         and:
-            1 * companyRepository.getByIdentity(_) >> Optional.of(companyEntity)
+            1 * companyRepository.getById(_) >> Optional.of(companyEntity)
             1 * userRepository.getUserListByCompanyId(_) >> Arrays.asList(createTestUser(1),
                                                                           createTestUser(2),
                                                                           createTestUser(3))
@@ -270,14 +266,14 @@ class UserServiceSpec extends ProfileTestDataProvider {
         given:
 
         when:
-            def userList = userService.getAllUserIdentityListByDepartmentIdentity("department-identity")
+            def userList = userService.getAllUserListByDepartmentId(UUID.randomUUID())
 
         then:
             userList.isEmpty() == false
             userList.size() == 3
 
         and:
-            1 * userRepository.getUserListByDepartmentIdentity(_) >> Arrays.asList(createTestUser(1),
+            1 * userRepository.getUserListByDepartmentId(_) >> Arrays.asList(createTestUser(1),
                                                                                  createTestUser(2),
                                                                                  createTestUser(3))
     }
@@ -307,14 +303,14 @@ class UserServiceSpec extends ProfileTestDataProvider {
         given:
             def userEntity = createTestUser(1)
         when:
-            def dashboardMenuList = userService.getUserDashboardMenuListByUserIdentity("test-app", "test-user")
+            def dashboardMenuList = userService.getUserDashboardMenuListByUserId("test-app", UUID.randomUUID())
 
         then:
             dashboardMenuList.isEmpty() == false
             dashboardMenuList.size() == 3
 
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
             1 * userDashboardMenuRepository.getByUserId(_, _) >> Arrays.asList(createTestUserDashboardMenuEntity(1),
                                                                                createTestUserDashboardMenuEntity(2),
                                                                                createTestUserDashboardMenuEntity(3))
@@ -328,16 +324,16 @@ class UserServiceSpec extends ProfileTestDataProvider {
                                                                createTestUserDashboardMenuEntity(2),
                                                                createTestUserDashboardMenuEntity(3))
         when:
-            def dashboardMenuList = userService.saveUserDashboardMenuListByUserIdentity("test-app",
-                                                                                        "test-user",
-                                                                                        userDashboardMenuEntityList)
+            def dashboardMenuList = userService.saveUserDashboardMenuListByUserId("test-app",
+                                                                                  UUID.randomUUID(),
+                                                                                  userDashboardMenuEntityList)
 
         then:
             dashboardMenuList.isEmpty() == false
             dashboardMenuList.size() == 3
 
         and:
-            1 * userRepository.getByIdentity(_) >> Optional.of(userEntity)
+            1 * userRepository.getById(_) >> Optional.of(userEntity)
             3 * userDashboardMenuRepository.save(_)
             1 * userDashboardMenuRepository.getByUserId(_, _) >> Arrays.asList(createTestUserDashboardMenuEntity(1),
                                                                                createTestUserDashboardMenuEntity(2),

@@ -11,8 +11,6 @@ import java.util.UUID;
 
 public interface IWorkflowMessageRepository extends IEntityRepository<WorkflowMessageEntity> {
 
-    Optional<WorkflowMessageEntity> getByIdentity(final String identity);
-
     List<WorkflowMessageEntity> getListForUser(final UUID userId, final int status);
 
     List<WorkflowMessageEntity> getListForWorkflow(final UUID workflowID);

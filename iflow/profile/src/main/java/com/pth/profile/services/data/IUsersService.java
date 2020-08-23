@@ -9,6 +9,7 @@ import com.pth.profile.models.ProfileResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 
 public interface IUsersService {
@@ -17,33 +18,33 @@ public interface IUsersService {
 
   void delete(UserEntity model);
 
-  Optional<UserEntity> getUserByIdentity(String identity);
+  Optional<UserEntity> getUserById(UUID id);
 
   Optional<UserEntity> getUserByEmail(String email);
 
   Optional<ProfileResponse> getProfileResponseByEmail(String appIdentity,
                                                       String email);
 
-  Optional<ProfileResponse> getProfileResponseByIdentity(String appIdentity,
-                                                         String identity);
+  Optional<ProfileResponse> getProfileResponseById(String appIdentity,
+                                                   UUID id);
 
-  List<UserGroupEntity> getUserGroups(String identity);
+  List<UserGroupEntity> getUserGroups(UUID id);
 
-  List<DepartmentEntity> getUserDepartments(String identity);
+  List<DepartmentEntity> getUserDepartments(UUID id);
 
-  List<UserEntity> getUserDeputies(String identity);
+  List<UserEntity> getUserDeputies(UUID id);
 
-  List<UserEntity> getCompanyUsers(String companyIdentity);
+  List<UserEntity> getCompanyUsers(UUID companyId);
 
-  List<UserEntity> getAllUserIdentityListByDepartmentIdentity(String identity);
+  List<UserEntity> getAllUserListByDepartmentId(UUID id);
 
   List<UserEntity> getUserListByIdentityList(Set<String> identityList);
 
-  List<UserDashboardMenuEntity> getUserDashboardMenuListByUserIdentity(String appIdentity,
-                                                                       String userIdentity);
+  List<UserDashboardMenuEntity> getUserDashboardMenuListByUserId(String appIdentity,
+                                                                 UUID userId);
 
-  List<UserDashboardMenuEntity> saveUserDashboardMenuListByUserIdentity(String appIdentity,
-                                                                        String userIdentity,
-                                                                        List<UserDashboardMenuEntity> list);
+  List<UserDashboardMenuEntity> saveUserDashboardMenuListByUserId(String appIdentity,
+                                                                  UUID userId,
+                                                                  List<UserDashboardMenuEntity> list);
 
 }

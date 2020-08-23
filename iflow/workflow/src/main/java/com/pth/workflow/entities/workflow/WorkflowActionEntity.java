@@ -73,6 +73,11 @@ public class WorkflowActionEntity extends BaseEntity {
     this.status = status;
   }
 
+  public void setStatus(final EWorkflowActionStatus status) {
+
+    this.status = status.getValue();
+  }
+
   public Date getCreatedAt() {
 
     return this.createdAt;

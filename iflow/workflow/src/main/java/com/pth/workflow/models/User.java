@@ -3,15 +3,13 @@ package com.pth.workflow.models;
 import com.pth.common.edo.enums.EUserStatus;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class User {
 
-  private String identity;
-  private String companyIdentity;
+  private UUID id;
+  private String username;
+  private UUID companyId;
   private String email;
   private LocalDate birthDate;
   private String firstName;
@@ -24,24 +22,28 @@ public class User {
   private final Set<String> deputies = new HashSet<>();
   private final Set<Integer> roles = new HashSet<>();
 
-  public String getIdentity() {
-
-    return this.identity;
+  public UUID getId() {
+    return id;
   }
 
-  public void setIdentity(final String identity) {
-
-    this.identity = identity;
+  public void setId(UUID id) {
+    this.id = id;
   }
 
-  public String getCompanyIdentity() {
-
-    return companyIdentity;
+  public String getUsername() {
+    return username;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    this.companyIdentity = companyIdentity;
+  public UUID getCompanyId() {
+    return companyId;
+  }
+
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
   public String getEmail() {

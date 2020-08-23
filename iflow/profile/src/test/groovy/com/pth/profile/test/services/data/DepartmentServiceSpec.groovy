@@ -8,9 +8,6 @@ import com.pth.profile.repositories.IUserRepository
 import com.pth.profile.services.data.IDepartmentService
 import com.pth.profile.services.data.impl.DepartmentService
 import com.pth.profile.test.ProfileTestDataProvider
-import io.micronaut.context.ApplicationContext
-import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.Shared
 
 import java.util.stream.Collectors
 
@@ -66,13 +63,13 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
             documentEntity.status = 1
 
         when:
-            def companyOptional = departmentService.getByIdentity("test identity")
+            def companyOptional = departmentService.getById(UUID.randomUUID())
 
         then:
             companyOptional.isPresent()
             verifyDepartment(companyOptional.get(), documentEntity)
         and:
-            1 * departmentRepository.getByIdentity(_) >> Optional.of(documentEntity)
+            1 * departmentRepository.getById(_) >> Optional.of(documentEntity)
 
     }
 
@@ -141,7 +138,7 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def resultDepartmentList = departmentService.getListByIdCompanyIdentity("identity1")
+            def resultDepartmentList = departmentService.getListByIdCompanyId(UUID.randomUUID())
 
             then:
             resultDepartmentList != null
@@ -150,7 +147,7 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
                 verifyDepartment(entity, departmentList.get(entity.id))
             }
         and:
-            1 * departmentRepository.getListByIdCompanyIdentity(_) >> departmentList.values().stream().collect(Collectors.toList())
+            1 * departmentRepository.getListByIdCompanyId(_) >> departmentList.values().stream().collect(Collectors.toList())
 
     }
 
@@ -189,14 +186,14 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def resultUserEntityOptional = departmentService.getDepartmentManager(documentEntity.identity)
+            def resultUserEntityOptional = departmentService.getDepartmentManager(documentEntity.id)
 
         then:
             resultUserEntityOptional != null
             resultUserEntityOptional.isPresent()
             resultUserEntityOptional.get() == manager
         and:
-            1 * userRepository.getUserListByDepartmentIdentity(_) >> userList
+            1 * userRepository.getUserListByDepartmentId(_) >> userList
 
     }
 
@@ -230,14 +227,14 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def resultUserEntityOptional = departmentService.getDepartmentManager(documentEntity.identity)
+            def resultUserEntityOptional = departmentService.getDepartmentManager(documentEntity.id)
 
         then:
             resultUserEntityOptional != null
             resultUserEntityOptional.isPresent() == false
 
         and:
-            1 * userRepository.getUserListByDepartmentIdentity(_) >> userList
+            1 * userRepository.getUserListByDepartmentId(_) >> userList
 
     }
 
@@ -276,14 +273,14 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-        def resultUserEntityOptional = departmentService.getDepartmentDeputy(documentEntity.identity)
+        def resultUserEntityOptional = departmentService.getDepartmentDeputy(documentEntity.id)
 
         then:
         resultUserEntityOptional != null
         resultUserEntityOptional.isPresent()
         resultUserEntityOptional.get() == deputy
         and:
-        1 * userRepository.getUserListByDepartmentIdentity(_) >> userList
+        1 * userRepository.getUserListByDepartmentId(_) >> userList
 
     }
 
@@ -318,14 +315,14 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def resultUserEntityOptional = departmentService.getDepartmentDeputy(documentEntity.identity)
+            def resultUserEntityOptional = departmentService.getDepartmentDeputy(documentEntity.id)
 
         then:
             resultUserEntityOptional != null
             resultUserEntityOptional.isPresent() == false
 
         and:
-            1 * userRepository.getUserListByDepartmentIdentity(_) >> userList
+            1 * userRepository.getUserListByDepartmentId(_) >> userList
 
     }
 

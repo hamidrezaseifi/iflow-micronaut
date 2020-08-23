@@ -4,9 +4,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.workflow.entities.workflow.SingleTaskWorkflowEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.ISingleTaskWorkflowRepository;
 import com.pth.workflow.services.bl.IWorkflowPrepare;
@@ -39,13 +41,18 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   }
 
   @Override
+  public Optional<SingleTaskWorkflowEntity> getById(UUID id) {
+    return singleTaskWorkflowRepository.getById(id);
+  }
+
+  @Override
   public List<SingleTaskWorkflowEntity>
-    create(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+    create(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     final IWorkflowSaveStrategy<
             SingleTaskWorkflowEntity>
-            workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request);
+            workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);
 
     workflowStrategy.process();
 
@@ -55,13 +62,14 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   }
 
   @Override
-  public Optional<SingleTaskWorkflowEntity>
-    save(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request) throws IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflowEntity> save(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request,
+                                                 String authorization) throws WorkflowCustomizedException {
 
     logger.debug("Saving workflow");
 
     final IWorkflowSaveStrategy<
-        SingleTaskWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request);
+        SingleTaskWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request,
+                                                                                                     authorization);
 
     workflowStrategy.process();
 
@@ -71,14 +79,13 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   }
 
   @Override
-  public void
-    validate(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+  public void validate(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request,
+                       String authorization) throws WorkflowCustomizedException {
 
     workflowPrepare.prepareWorkflow(request.getWorkflow());
 
     final IWorkflowSaveStrategy<SingleTaskWorkflowEntity> workflowStrategy =
-            this.workStrategyFactory.selectValidationWorkStrategy(request);
+            this.workStrategyFactory.selectValidationWorkStrategy(request, authorization);
 
     workflowStrategy.process();
   }
@@ -98,11 +105,11 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   }
 
   @Override
-  public List<SingleTaskWorkflowEntity> getListForUser(final String identity, final int status){
+  public List<SingleTaskWorkflowEntity> getListForUser(final UUID id, final int status){
 
-    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status);
+    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
-    final List<SingleTaskWorkflowEntity> list = this.singleTaskWorkflowRepository.getListForUser(identity, status);
+    final List<SingleTaskWorkflowEntity> list = this.singleTaskWorkflowRepository.getListForUser(id, status);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

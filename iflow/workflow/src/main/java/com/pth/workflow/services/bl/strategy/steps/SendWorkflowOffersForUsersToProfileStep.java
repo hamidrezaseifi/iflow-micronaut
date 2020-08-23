@@ -24,7 +24,7 @@ public class SendWorkflowOffersForUsersToProfileStep<W extends IWorkflowBaseEnti
     final UUID companyId = this.getWorkflowSaveStrategy().getProcessingWorkflow().getCompanyId();
 
     if (workflowType.isAssignTypeOffering()) {
-      final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflow();
+      final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflowOptional();
 
       if(processingWorkflowOptional.isPresent()){
         this.getWorkflowSaveStrategy().resetWorkflowtCachData(companyId,

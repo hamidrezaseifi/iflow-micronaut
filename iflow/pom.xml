@@ -13,7 +13,10 @@
   </properties>
   <modules>
     <module>common</module>
+    <module>clients</module>
     <module>profile</module>
+    <module>workflow</module>
+    <module>gui</module>
     <module>core</module>
   </modules>
   <repositories>

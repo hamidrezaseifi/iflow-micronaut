@@ -1,15 +1,14 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.enums.EAssignType;
-import com.pth.iflow.common.exceptions.EIFlowErrorType;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflow;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
 
-public class ValidateSingleUserAssignInSaveRequestStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import com.pth.common.edo.enums.EAssignType;
+import com.pth.common.exceptions.EIFlowErrorType;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
+
+public class ValidateSingleUserAssignInSaveRequestStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public ValidateSingleUserAssignInSaveRequestStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -17,9 +16,10 @@ public class ValidateSingleUserAssignInSaveRequestStrategyStep<W extends IWorkfl
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
-    final IWorkflowSaveRequest<W> processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
+    final IWorkflowSaveRequest<W>
+            processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
 
     if (processingWorkflowSaveRequest.getAssigns().size() != 1
         || processingWorkflowSaveRequest.getAssigns().get(0).getItemType() != EAssignType.USER) {

@@ -4,6 +4,9 @@ import java.net.MalformedURLException;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pth.clients.gui.IGui001Client;
+import com.pth.common.edo.IdListEdo;
+import com.pth.common.edo.IdentityListEdo;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.services.bl.IGuiCachDataDataService;
 import io.micronaut.security.authentication.Authentication;
@@ -18,67 +21,41 @@ public class GuiCachDataDataService implements IGuiCachDataDataService {
 
   private static final Logger logger = LoggerFactory.getLogger(GuiCachDataDataService.class);
 
-  private final IRestTemplateCall restTemplate;
-  private final WorkflowConfiguration.ModuleAccessConfig moduleAccessConfig;
+  private final IGui001Client gui001Client;
 
-  public GuiCachDataDataService(IRestTemplateCall restTemplate,
-      WorkflowConfiguration.ModuleAccessConfig moduleAccessConfig) {
+  public GuiCachDataDataService(IGui001Client gui001Client) {
 
-    this.restTemplate = restTemplate;
-    this.moduleAccessConfig = moduleAccessConfig;
+    this.gui001Client = gui001Client;
   }
 
   @Override
-  public void resetCachDataForUser(final UUID companyId, final UUID userId, final Authentication authentication)
+  public void resetCachDataForUser(final UUID companyId, final UUID userId, final String authorization)
           throws WorkflowCustomizedException {
 
     logger.debug("Reset cach data request for user");
 
-    this.restTemplate
-        .callRestGet(
-            this.moduleAccessConfig
-                .generateGuieUrl(IflowRestPaths.GuiModule.CAL_CACHDATA_USER_DATARESET(companyIdentity, userIdentity)),
-            EModule.CORE,
-            Void.class,
-            authentication.getDetails().toString(),
-            true);
-
+    gui001Client.calUserDataResetByCompanyAndUserId(authorization, companyId, userId);
   }
 
   @Override
   public void resetCachDataForUserList(final UUID companyId,
                                        final Set<UUID> userIdList,
-                                       final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+                                       final String authorization){
 
     logger.debug("Reset cach data request for user list");
 
-    final IdentityListEdo idListEdo = new IdentityListEdo(userIdentityList);
-    this.restTemplate
-        .callRestPost(
-            this.moduleAccessConfig.generateGuieUrl(IflowRestPaths.GuiModule.CAL_CACHDATA_USERLIST_DATARESET(companyIdentity)),
-            EModule.CORE,
-            idListEdo,
-            Void.class,
-            authentication.getDetails().toString(),
-            true);
+    IdListEdo idListEdo = new IdListEdo(userIdList);
+    gui001Client.calUserListDataResetByCompanyAndUserId(authorization, companyId, idListEdo);
 
   }
 
   @Override
-  public void resetCachDataForWorkflow(final UUID companyId, final UUID workflowId, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void resetCachDataForWorkflow(final UUID companyId, final UUID workflowId, final String authorization){
 
     logger.debug("Reset cach data request for workflow");
 
-    this.restTemplate
-        .callRestGet(
-            this.moduleAccessConfig
-                .generateGuieUrl(IflowRestPaths.GuiModule.CAL_CACHDATA_WORKFLOW_DATARESET(companyIdentity, workflowIdentity)),
-            EModule.CORE,
-            Void.class,
-            authentication.getDetails().toString(),
-            true);
+    gui001Client.calWorkflowDataResetByCompanyAndUserId(authorization, companyId, workflowId);
+
 
   }
 

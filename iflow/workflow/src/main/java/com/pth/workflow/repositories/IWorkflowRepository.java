@@ -7,12 +7,13 @@ import com.pth.workflow.models.WorkflowSearchFilter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public interface IWorkflowRepository extends IEntityRepository<WorkflowEntity> {
 
     Optional<WorkflowEntity> getByIdentity(String identity);
 
-    List<WorkflowEntity> getListForUser(String identity, int status);
+    List<WorkflowEntity> getListForUser(UUID id, int status);
 
     List<WorkflowEntity> getListByIdentityList(Set<String> identityList);
 

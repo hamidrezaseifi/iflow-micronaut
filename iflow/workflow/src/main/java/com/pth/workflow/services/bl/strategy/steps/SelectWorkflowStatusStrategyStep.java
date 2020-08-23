@@ -1,15 +1,13 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.enums.EWorkflowStatus;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowAction;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import com.pth.common.edo.enums.EWorkflowStatus;
+import com.pth.workflow.entities.workflow.WorkflowActionEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public class SelectWorkflowStatusStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+public class SelectWorkflowStatusStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public SelectWorkflowStatusStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -17,14 +15,14 @@ public class SelectWorkflowStatusStrategyStep<W extends IWorkflow> extends Abstr
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     final AbstractWorkflowSaveStrategy<W> strategy = this.getWorkflowSaveStrategy();
     final W processingWorkflow = strategy.getProcessingWorkflow();
-    final WorkflowType processingWorkflowType = strategy.getProcessingWorkflowType();
-    final WorkflowAction activeAction = strategy.getActiveAction();
+    final WorkflowTypeEntity processingWorkflowType = strategy.getProcessingWorkflowType();
+    final WorkflowActionEntity activeAction = strategy.getActiveAction();
 
-    if (strategy.IsWorkflowCurrectStepChanged() == false) {
+    if (strategy.IsWorkflowCurrentStepChanged() == false) {
       if (strategy.isLastStep(processingWorkflowType, processingWorkflow.getCurrentStep())) {
         processingWorkflow.setStatus(EWorkflowStatus.DONE);
       }

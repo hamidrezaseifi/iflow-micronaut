@@ -2,29 +2,30 @@ package com.pth.workflow.models;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class WorkflowSearchFilter {
 
-  private Set<String> assignedUserIdentitySet = new HashSet<>();
+  private Set<UUID> assignedUserIdSet = new HashSet<>();
 
   private Set<Integer> statusSet = new HashSet<>();
 
-  private Set<String> workflowTypeIdentitySet = new HashSet<>();
+  private Set<UUID> workflowTypeIdSet = new HashSet<>();
 
-  private Set<String> workflowStepIdentitySet = new HashSet<>();
+  private Set<UUID> workflowStepIdSet = new HashSet<>();
 
-  private String companyIdentity;
+  private UUID companyId;
 
-  public Set<String> getAssignedUserIdentitySet() {
+  public Set<UUID> getAssignedUserIdSet() {
 
-    return this.assignedUserIdentitySet;
+    return this.assignedUserIdSet;
   }
 
-  public void setAssignedUserIdentitySet(final Set<String> assignedUserIdSet) {
+  public void setAssignedUserIdSet(final Set<UUID> assignedUserIdSet) {
 
-    this.assignedUserIdentitySet = new HashSet<>();
+    this.assignedUserIdSet = new HashSet<>();
     if (assignedUserIdSet != null) {
-      this.assignedUserIdentitySet.addAll(assignedUserIdSet);
+      this.assignedUserIdSet.addAll(assignedUserIdSet);
     }
   }
 
@@ -41,40 +42,33 @@ public class WorkflowSearchFilter {
     }
   }
 
-  public Set<String> getWorkflowTypeIdentitySet() {
+  public Set<UUID> getWorkflowTypeIdSet() {
 
-    return this.workflowTypeIdentitySet;
+    return this.workflowTypeIdSet;
   }
 
-  public void setWorkflowTypeIdentitySet(final Set<String> workflowTypeIdSet) {
 
-    this.workflowTypeIdentitySet = new HashSet<>();
-    if (workflowTypeIdSet != null) {
-      this.workflowTypeIdentitySet.addAll(workflowTypeIdSet);
-    }
+  public Set<UUID> getWorkflowStepIdSet() {
+
+    return this.workflowStepIdSet;
   }
 
-  public Set<String> getWorkflowStepIdentitySet() {
+  public void setWorkflowStepIdSet(final Set<UUID> workflowStepIdSet) {
 
-    return this.workflowStepIdentitySet;
-  }
-
-  public void setWorkflowStepIdentitySet(final Set<String> workflowStepIdSet) {
-
-    this.workflowStepIdentitySet = new HashSet<>();
+    this.workflowStepIdSet = new HashSet<>();
     if (workflowStepIdSet != null) {
-      this.workflowStepIdentitySet.addAll(workflowStepIdSet);
+      this.workflowStepIdSet.addAll(workflowStepIdSet);
     }
   }
 
-  public String getCompanyIdentity() {
+  public UUID getCompanyIdentity() {
 
-    return companyIdentity;
+    return companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
+  public void setCompanyIdentity(final UUID companyIdentity) {
 
-    this.companyIdentity = companyIdentity;
+    this.companyId = companyIdentity;
   }
 
 }

@@ -1,40 +1,37 @@
 package com.pth.workflow.services.bl.strategy.strategies;
 
-import java.net.MalformedURLException;
 
-import org.springframework.security.core.Authentication;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.repositories.IWorkflowBaseRepository;
+import com.pth.workflow.repositories.IWorkflowMessageRepository;
+import com.pth.workflow.repositories.IWorkflowRepository;
+import com.pth.workflow.services.bl.IDepartmentDataService;
+import com.pth.workflow.services.bl.IGuiCachDataDataService;
+import com.pth.workflow.services.bl.IWorkflowPrepare;
+import com.pth.workflow.services.bl.strategy.steps.*;
+import io.micronaut.security.authentication.Authentication;
 
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.IDepartmentDataService;
-import com.pth.iflow.workflow.bl.IGuiCachDataDataService;
-import com.pth.iflow.workflow.bl.IWorkflowDataService;
-import com.pth.iflow.workflow.bl.IWorkflowMessageDataService;
-import com.pth.iflow.workflow.bl.IWorkflowPrepare;
-import com.pth.iflow.workflow.bl.strategy.steps.CollectAssignedUserIdListStep;
-import com.pth.iflow.workflow.bl.strategy.steps.InitializeWorkflowActiveActionStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.steps.InitializeWorkflowInitialActionStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.steps.SaveWorkflowInCoreStep;
-import com.pth.iflow.workflow.bl.strategy.steps.SaveWorkflowOfferForAssignedUseresInCoreStep;
-import com.pth.iflow.workflow.bl.strategy.steps.SendWorkflowOffersForUsersToProfileStep;
-import com.pth.iflow.workflow.bl.strategy.steps.ValidateAssignInSaveRequestStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.steps.ValidateCurrentStepExistsInWorkflowTypeStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.steps.ValidateWorkflowActiveActionStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.steps.ValidateWorkflowDetailStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.steps.ValidateWorkflowTypeStepStrategyStep;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflow;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
 
-public class CreateOfferlAssignWorkflowStrategy<W extends IWorkflow> extends AbstractWorkflowSaveStrategy<W> {
+public class CreateOfferlAssignWorkflowStrategy<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategy<W> {
 
-  public CreateOfferlAssignWorkflowStrategy(final IWorkflowSaveRequest<W> workflowCreateRequest, final Authentication authentication,
-      final IDepartmentDataService departmentDataService, final IWorkflowMessageDataService workflowMessageDataService,
-      final IGuiCachDataDataService cachDataDataService, final IWorkflowDataService<W> workflowDataService,
-      final IWorkflowPrepare<W> workflowPrepare)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public CreateOfferlAssignWorkflowStrategy(final IWorkflowSaveRequest<W> workflowCreateRequest,
+                                            final String authorization,
+                                            final IDepartmentDataService departmentDataService,
+                                            final IWorkflowMessageRepository workflowMessageRepository,
+                                            final IGuiCachDataDataService cachDataDataService,
+                                            final IWorkflowBaseRepository<W> workflowRepository,
+                                            final IWorkflowPrepare<W> workflowPrepare)
+          throws WorkflowCustomizedException{
 
-    super(workflowCreateRequest,authentication,departmentDataService,workflowMessageDataService,cachDataDataService,workflowDataService,
-        workflowPrepare);
+    super(workflowCreateRequest,
+          authorization,
+          departmentDataService,
+          workflowMessageRepository,
+          cachDataDataService,
+          workflowRepository,
+          workflowPrepare);
 
   }
 

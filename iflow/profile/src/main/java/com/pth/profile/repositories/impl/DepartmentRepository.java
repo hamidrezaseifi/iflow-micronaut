@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 @Repository
@@ -36,12 +37,14 @@ public class DepartmentRepository extends AEntityRdbmsHibernateRepository<Depart
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<DepartmentEntity> getListByIdentityList(Collection<String> identityList) {
         return queryCollection((cb, root) -> ( root.in(identityList)));
     }
 
     @Override
-    public List<DepartmentEntity> getListByIdCompanyIdentity(String identity) {
-        return queryCollection((cb, root) -> (cb.equal(root.get(DepartmentEntity_.companyId), identity)));
+    @Transactional(readOnly = true)
+    public List<DepartmentEntity> getListByIdCompanyId(UUID id) {
+        return queryCollection((cb, root) -> (cb.equal(root.get(DepartmentEntity_.companyId), id)));
     }
 }

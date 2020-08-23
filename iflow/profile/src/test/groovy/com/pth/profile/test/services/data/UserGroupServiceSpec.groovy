@@ -61,13 +61,13 @@ class UserGroupServiceSpec extends ProfileTestDataProvider {
             userGroupEntity.status = 1
 
         when:
-            def companyOptional = userGroupService.getByIdentity("test identity")
+            def companyOptional = userGroupService.getById(UUID.randomUUID())
 
         then:
             companyOptional.isPresent()
             verifyUserGroup(companyOptional.get(), userGroupEntity)
         and:
-            1 * userGroupRepository.getByIdentity(_) >> Optional.of(userGroupEntity)
+            1 * userGroupRepository.getById(_) >> Optional.of(userGroupEntity)
 
     }
 
@@ -136,7 +136,7 @@ class UserGroupServiceSpec extends ProfileTestDataProvider {
 
 
         when:
-            def resultuserGroupList = userGroupService.getListByIdCompanyIdentity("identity1")
+            def resultuserGroupList = userGroupService.getListByIdCompanyId(UUID.randomUUID())
 
             then:
             resultuserGroupList != null
@@ -145,7 +145,7 @@ class UserGroupServiceSpec extends ProfileTestDataProvider {
                 verifyUserGroup(entity, userGroupList.get(entity.id))
             }
         and:
-            1 * userGroupRepository.getListByIdCompanyIdentity(_) >> userGroupList.values().stream().collect(Collectors.toList())
+            1 * userGroupRepository.getListByIdCompanyId(_) >> userGroupList.values().stream().collect(Collectors.toList())
 
     }
 

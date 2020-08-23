@@ -7,6 +7,7 @@ import com.pth.profile.entities.UserGroupEntity;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface IUserGroupRepository extends IEntityRepository<UserGroupEntity> {
 
@@ -14,5 +15,5 @@ public interface IUserGroupRepository extends IEntityRepository<UserGroupEntity>
 
     List<UserGroupEntity> getListByIdentityList(Collection<String> identityList);
 
-    List<UserGroupEntity> getListByIdCompanyIdentity(String identity);
+    List<UserGroupEntity> getListByIdCompanyId(UUID id);
 }

@@ -23,6 +23,7 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
 
     @PersistenceContext
     private final EntityManager entityManager;
+
     private final Class<TEntity> entityType;
 
     private final HibernatePredicateQueryAdapter hibernatePredicateQueryAdapter;
@@ -127,5 +128,9 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
     protected int queryCountItems(PredicateBuilder<TEntity> predicateBuilder) {
 
         return hibernatePredicateQueryAdapter.queryCountItems(entityManager, entityType, predicateBuilder);
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

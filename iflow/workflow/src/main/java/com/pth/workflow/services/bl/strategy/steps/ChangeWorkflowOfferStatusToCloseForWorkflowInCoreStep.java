@@ -1,14 +1,16 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.enums.EWorkflowMessageStatus;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowAction;
-import com.pth.iflow.workflow.models.base.IWorkflow;
 
-public class ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import com.pth.common.edo.enums.EWorkflowMessageStatus;
+import com.pth.workflow.entities.workflow.WorkflowActionEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public class ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -16,16 +18,20 @@ public class ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep<W extends IWo
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
-    final W processingWorkflow = this.getWorkflowSaveStrategy().getSavedSingleWorkflow();
-    final WorkflowAction prevAction = this.getWorkflowSaveStrategy().getPrevActiveAction();
-    final String stepId = prevAction != null ? prevAction.getCurrentStepIdentity() : processingWorkflow.getCurrentStepIdentity();
+    final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflowOptional();
+    if(processingWorkflowOptional.isPresent()){
+      W processingWorkflow = processingWorkflowOptional.get();
+      final WorkflowActionEntity prevAction = this.getWorkflowSaveStrategy().getPrevActiveAction();
+      final UUID stepId = prevAction != null ? prevAction.getCurrentStepId() : processingWorkflow.getCurrentStepId();
 
-    this.getWorkflowSaveStrategy()
-        .updateWorkflowMessageStatus(processingWorkflow.getIdentity(),
-                                     stepId,
-                                     EWorkflowMessageStatus.CLOSED);
+      this.getWorkflowSaveStrategy()
+          .updateWorkflowMessageStatus(processingWorkflow.getWorkflowId(),
+                                       stepId,
+                                       EWorkflowMessageStatus.CLOSED);
+    }
+
 
   }
 

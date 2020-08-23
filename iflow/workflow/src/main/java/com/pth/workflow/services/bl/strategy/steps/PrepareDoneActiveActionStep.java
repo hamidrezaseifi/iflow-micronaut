@@ -1,14 +1,13 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.enums.EWorkflowActionStatus;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowAction;
-import com.pth.iflow.workflow.models.base.IWorkflow;
 
-public class PrepareDoneActiveActionStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import com.pth.common.edo.enums.EWorkflowActionStatus;
+import com.pth.workflow.entities.workflow.WorkflowActionEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
+
+public class PrepareDoneActiveActionStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public PrepareDoneActiveActionStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -16,9 +15,9 @@ public class PrepareDoneActiveActionStep<W extends IWorkflow> extends AbstractWo
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
-    final WorkflowAction activeAction = this.getWorkflowSaveStrategy().getActiveAction();
+    final WorkflowActionEntity activeAction = this.getWorkflowSaveStrategy().getActiveAction();
 
     activeAction.setStatus(EWorkflowActionStatus.DONE);
 

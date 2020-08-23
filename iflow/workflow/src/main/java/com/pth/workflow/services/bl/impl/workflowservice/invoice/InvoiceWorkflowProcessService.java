@@ -3,15 +3,17 @@ package com.pth.workflow.services.bl.impl.workflowservice.invoice;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
-import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
 import com.pth.workflow.services.bl.IWorkflowPrepare;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +41,17 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
   }
 
   @Override
+  public Optional<InvoiceWorkflowEntity> getById(UUID id) {
+    return invoiceWorkflowRepository.getById(id);
+  }
+
+  @Override
   public List<InvoiceWorkflowEntity>
-    create(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request) throws IFlowMessageConversionFailureException {
+    create(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     final IWorkflowSaveStrategy<InvoiceWorkflowEntity> workflowStrategy =
-            this.workStrategyFactory.selectSaveWorkStrategy(request);
+            this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);
 
     workflowStrategy.process();
 
@@ -54,10 +62,12 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
 
   @Override
   public Optional<InvoiceWorkflowEntity>
-    save(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request) throws IFlowMessageConversionFailureException {
+    save(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     final IWorkflowSaveStrategy<
-        InvoiceWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request);
+        InvoiceWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request,
+                                                                                                  authorization);
 
     workflowStrategy.process();
 
@@ -68,13 +78,13 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
 
   @Override
   public void
-    validate(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request)
-          throws IFlowMessageConversionFailureException {
+    validate(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request, String authorization)
+          throws WorkflowCustomizedException {
 
     workflowPrepare.prepareWorkflow(request.getWorkflow());
 
     final IWorkflowSaveStrategy<InvoiceWorkflowEntity> workflowStrategy =
-            this.workStrategyFactory.selectValidationWorkStrategy(request);
+            this.workStrategyFactory.selectValidationWorkStrategy(request, authorization);
 
     workflowStrategy.process();
   }
@@ -92,12 +102,12 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
   }
 
   @Override
-  public List<InvoiceWorkflowEntity> getListForUser(final String identity, final int status)
+  public List<InvoiceWorkflowEntity> getListForUser(final UUID id, final int status)
        {
 
-    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", identity, status);
+    logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
-    final List<InvoiceWorkflowEntity> list = this.invoiceWorkflowRepository.getListForUser(identity, status);
+    final List<InvoiceWorkflowEntity> list = this.invoiceWorkflowRepository.getListForUser(id, status);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

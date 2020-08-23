@@ -166,6 +166,7 @@ public class H2RefreshTokenRepository implements IRefreshTokenRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RefreshTokenEntity> getAll() {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<RefreshTokenEntity> criteriaQuery = criteriaBuilder.createQuery(RefreshTokenEntity.class);

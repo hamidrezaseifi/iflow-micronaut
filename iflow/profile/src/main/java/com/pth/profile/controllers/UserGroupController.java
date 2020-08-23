@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Validated
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -36,10 +37,10 @@ public class UserGroupController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_BY_IDENTITY)
-  public HttpResponse<UserGroupEdo> readUserGroup(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_BY_ID)
+  public HttpResponse<UserGroupEdo> readUserGroup(final UUID id) throws Exception {
 
-    final Optional<UserGroupEntity> modelOptional = this.userGroupService.getByIdentity(identity);
+    final Optional<UserGroupEntity> modelOptional = this.userGroupService.getById(id);
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(this.userGroupMapper.toEdo(modelOptional.get()));
@@ -58,10 +59,10 @@ public class UserGroupController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_LIST_BY_COMPANYIDENTITY)
-  public HttpResponse<UserGroupListEdo> readUserGroupListByCompany(final String companyidentity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_LIST_BY_COMPANYID)
+  public HttpResponse<UserGroupListEdo> readUserGroupListByCompany(final UUID companyid) throws Exception {
 
-    final List<UserGroupEntity> modelList = this.userGroupService.getListByIdCompanyIdentity(companyidentity);
+    final List<UserGroupEntity> modelList = this.userGroupService.getListByIdCompanyId(companyid);
 
     return HttpResponse.ok(new UserGroupListEdo(this.userGroupMapper.toEdoList(modelList)));
   }

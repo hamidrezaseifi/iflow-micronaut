@@ -11,11 +11,13 @@ import java.util.UUID;
 
 public interface IWorkflowBaseRepository<W extends IWorkflowBaseEntity> extends IEntityRepository<W> {
 
+    boolean isWorkflowNew(UUID workflowId);
+
     Optional<W> getByWorkflowId(UUID workflowId);
 
     Optional<W> getByIdentity(String identity);
 
-    List<W> getListForUser(String identity, int status);
+    List<W> getListForUser(UUID id, int status);
 
     List<W> getListByIdentityList(Set<String> identityList);
 }

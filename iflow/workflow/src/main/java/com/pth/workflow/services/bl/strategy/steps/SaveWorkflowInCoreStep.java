@@ -1,13 +1,12 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import java.util.Optional;
 
-public class SaveWorkflowInCoreStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+public class SaveWorkflowInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   private final boolean addToSavedWorkflowList;
 
@@ -18,19 +17,21 @@ public class SaveWorkflowInCoreStep<W extends IWorkflow> extends AbstractWorkflo
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
-    final W savedWorkflow = this.getWorkflowSaveStrategy().saveWorkflow(processingWorkflow);
+    final Optional<W> savedWorkflowOptional = this.getWorkflowSaveStrategy().saveWorkflow(processingWorkflow);
 
-    // this.getWorkflowSaveStrategy().setProcessingWorkflow(savedWorkflow);
+    if(savedWorkflowOptional.isPresent()){
+      W savedWorkflow = savedWorkflowOptional.get();
+      this.getWorkflowSaveStrategy().setSavedSingleWorkflowOptional(savedWorkflow);
 
-    this.getWorkflowSaveStrategy().setSavedSingleWorkflow(savedWorkflow);
-
-    if (this.addToSavedWorkflowList) {
-      this.getWorkflowSaveStrategy().addSavedWorkflowToList("not-set", savedWorkflow);
+      if (this.addToSavedWorkflowList) {
+        this.getWorkflowSaveStrategy().addSavedWorkflowToList(null, savedWorkflow);
+      }
     }
+
   }
 
   @Override

@@ -7,16 +7,17 @@ import com.pth.common.mapping.IModelEdoMapper;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface IUserGroupService {
 
   Optional<UserGroupEntity> save(UserGroupEntity model);
 
-  Optional<UserGroupEntity> getByIdentity(final String identity);
+  Optional<UserGroupEntity> getById(final UUID id);
 
   void delete(UserGroupEntity model);
 
   List<UserGroupEntity> getListByIdentityList(final Collection<String> idList);
 
-  List<UserGroupEntity> getListByIdCompanyIdentity(final String companyIdentity);
+  List<UserGroupEntity> getListByIdCompanyId(final UUID companyId);
 }

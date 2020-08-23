@@ -1,61 +1,77 @@
 package com.pth.workflow.controllers.workflow;
 
+
+import com.pth.common.contants.ApiUrlConstants;
+import com.pth.common.edo.IdentityListEdo;
+import com.pth.common.edo.WorkflowSearchFilterEdo;
+import com.pth.common.edo.workflow.WorkflowEdo;
+import com.pth.common.edo.workflow.WorkflowListEdo;
+import com.pth.workflow.entities.workflow.WorkflowEntity;
+import com.pth.workflow.mapper.IWorkflowMapper;
+import com.pth.workflow.services.bl.IWorkflowProcessService;
+import com.pth.workflow.services.bl.IWorkflowSearchService;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.*;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.authentication.Authentication;
+import io.micronaut.security.rules.SecurityRule;
+
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-@RestController
-@RequestMapping
+@Secured(SecurityRule.IS_AUTHENTICATED)
+@Controller(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_WORKFLOW_ROOT)
 public class WorkflowController {
 
-  final IWorkflowSearchService workflowSearchService;
-  final IWorkflowProcessService<Workflow> workflowService;
+  private final IWorkflowSearchService workflowSearchService;
+  private final IWorkflowProcessService<WorkflowEntity> workflowService;
+  private final IWorkflowMapper workflowMapper;
 
-  public WorkflowController(@Autowired final IWorkflowSearchService workflowSearchService,
-      @Autowired final IWorkflowProcessService<Workflow> workflowService) {
+  public WorkflowController(IWorkflowSearchService workflowSearchService,
+                            IWorkflowProcessService<WorkflowEntity> workflowService,
+                            IWorkflowMapper workflowMapper) {
 
     this.workflowSearchService = workflowSearchService;
     this.workflowService = workflowService;
+    this.workflowMapper = workflowMapper;
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOW_SEARCH)
-  @PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
-  public ResponseEntity<WorkflowListEdo> searchWorkflow(@RequestBody final WorkflowSearchFilterEdo workflowSearchFilterEdo,
-      final HttpServletRequest request, final Authentication authentication) throws Exception {
+  @Post(value = "/search")
+  //@PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
+  public HttpResponse<WorkflowListEdo> searchWorkflow(@Body @Valid final WorkflowSearchFilterEdo workflowSearchFilterEdo,
+                                                      final Authentication authentication) throws Exception {
 
-    final List<
-        Workflow> modelList = this.workflowSearchService.search(WorkflowModelEdoMapper.fromEdo(workflowSearchFilterEdo), authentication);
+    final List<WorkflowEntity>
+            modelList = this.workflowSearchService.search(workflowMapper.fromEdo(workflowSearchFilterEdo));
 
-    return ControllerHelper
-        .createResponseEntity(request, new WorkflowListEdo(WorkflowModelEdoMapper.toWorkflowEdoList(modelList)),
-            HttpStatus.OK);
+    return HttpResponse.ok(new WorkflowListEdo(workflowMapper.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowPostRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOW_READLISTBY_IDENTITYLIST)
-  @PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
-  public ResponseEntity<WorkflowListEdo> readWorkflowList(@RequestBody final IdentityListEdo identityList, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  @Post(value = "/readbyidentitylist")
+  //@PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
+  public HttpResponse<WorkflowListEdo> readWorkflowList(@Body @Valid final IdentityListEdo identityList,
+                                                        final Authentication authentication) throws Exception {
 
-    final List<
-        Workflow> modelList = this.workflowSearchService.readWorkflowListByIdentityList(identityList.getIdentityList(), authentication);
+    final List<WorkflowEntity> modelList =
+            this.workflowSearchService.readWorkflowListByIdentityList(identityList.getIdentityList());
 
-    return ControllerHelper
-        .createResponseEntity(request, new WorkflowListEdo(WorkflowModelEdoMapper.toWorkflowEdoList(modelList)),
-            HttpStatus.OK);
+    return HttpResponse.ok(new WorkflowListEdo(workflowMapper.toEdoList(modelList)));
   }
 
-  @ResponseStatus(HttpStatus.OK)
-  @IflowGetRequestMapping(path = IflowRestPaths.WorkflowModule.WORKFLOW_READ_BY_IDENTITY)
-  @PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
-  public ResponseEntity<WorkflowEdo> readWorkflow(@PathVariable final String identity, final HttpServletRequest request,
-      final Authentication authentication) throws Exception {
+  @Get(value = "/read/{id}")
+  //@PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
+  public HttpResponse<WorkflowEdo> readWorkflow(final UUID id,
+                                                final Authentication authentication,
+                                                @Header String authorization) throws Exception {
 
-    final Workflow model = this.workflowService.getByIdentity(identity, authentication);
+    final Optional<WorkflowEntity> modelOptional = this.workflowService.getById(id);
 
-    return ControllerHelper.createResponseEntity(request, WorkflowModelEdoMapper.toEdo(model), HttpStatus.OK);
+    if(modelOptional.isPresent()){
+      return HttpResponse.ok(workflowMapper.toEdo(modelOptional.get()));
+    }
+    return HttpResponse.notFound();
   }
 
 }

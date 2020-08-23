@@ -12,6 +12,7 @@ import com.pth.workflow.services.IWorkflowMessageService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
@@ -34,9 +35,11 @@ public class WorkflowMessageController {
 
   @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = "/readbyuserid/{id}/{status}")
-  public HttpResponse<WorkflowMessageListEdo> readUserWorkflowMessageList(final UUID id,
-                                                                          @PathVariable(defaultValue = "0") Integer status,
-                                                                          final Authentication authentication) throws Exception {
+  public HttpResponse<WorkflowMessageListEdo>
+    readUserWorkflowMessageList(final UUID id,
+                                @PathVariable(defaultValue = "0") Integer status,
+                                final Authentication authentication,
+                                @Header String authorization) throws Exception {
 
     status = status == null ? 0 : status;
 
@@ -48,7 +51,9 @@ public class WorkflowMessageController {
   @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = "/readallforworkflow/{id}")
   public HttpResponse<WorkflowMessageListEdo> readWorkfloWorkflowMessageList(final UUID id,
-      final Authentication authentication) throws Exception {
+                                                                             final Authentication authentication,
+                                                                             @Header String authorization)
+          throws Exception {
 
     final List<WorkflowMessageEntity> messageList = this.workflowMessageService.getListForWorkflow(id);
 

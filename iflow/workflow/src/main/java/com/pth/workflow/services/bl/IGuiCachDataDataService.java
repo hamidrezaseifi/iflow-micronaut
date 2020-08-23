@@ -10,17 +10,17 @@ public interface IGuiCachDataDataService {
 
   void resetCachDataForUser(UUID companyId,
                                    UUID userId,
-                                   Authentication authentication)
+                                   String authorization)
           throws WorkflowCustomizedException;
 
   void resetCachDataForUserList(UUID companyId,
                                        Set<UUID> userIdList,
-                                       Authentication authentication)
+                                       String authorization)
       throws WorkflowCustomizedException;
 
   void resetCachDataForWorkflow(UUID companyId,
                                        UUID workflowId,
-                                       Authentication authentication)
+                                       String authorization)
       throws WorkflowCustomizedException;
 
 }

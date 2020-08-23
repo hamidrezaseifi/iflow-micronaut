@@ -6,10 +6,7 @@ import com.pth.profile.models.ProfileResponse;
 import com.pth.profile.repositories.*;
 import com.pth.profile.services.data.IUsersService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UsersService implements IUsersService {
@@ -50,8 +47,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public Optional<UserEntity> getUserByIdentity(String identity) {
-    return this.userRepository.getByIdentity(identity);
+  public Optional<UserEntity> getUserById(UUID id) {
+    return this.userRepository.getById(id);
   }
 
   @Override
@@ -74,8 +71,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public Optional<ProfileResponse> getProfileResponseByIdentity(String appIdentity, String identity) {
-    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+  public Optional<ProfileResponse> getProfileResponseById(String appIdentity, UUID id) {
+    Optional<UserEntity> userEntityOptional = getUserById(id);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 
@@ -87,8 +84,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserGroupEntity> getUserGroups(String identity) {
-    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+  public List<UserGroupEntity> getUserGroups(UUID id) {
+    Optional<UserEntity> userEntityOptional = getUserById(id);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 
@@ -99,8 +96,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<DepartmentEntity> getUserDepartments(String identity) {
-    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+  public List<DepartmentEntity> getUserDepartments(UUID id) {
+    Optional<UserEntity> userEntityOptional = getUserById(id);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 
@@ -111,8 +108,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserEntity> getUserDeputies(String identity) {
-    Optional<UserEntity> userEntityOptional = getUserByIdentity(identity);
+  public List<UserEntity> getUserDeputies(UUID id) {
+    Optional<UserEntity> userEntityOptional = getUserById(id);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 
@@ -123,8 +120,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserEntity> getCompanyUsers(String companyIdentity) {
-    Optional<CompanyEntity> companyEntityOptional = this.companyRepository.getByIdentity(companyIdentity);
+  public List<UserEntity> getCompanyUsers(UUID companyId) {
+    Optional<CompanyEntity> companyEntityOptional = this.companyRepository.getById(companyId);
     if(companyEntityOptional.isPresent()){
       CompanyEntity companyEntity = companyEntityOptional.get();
       return this.userRepository.getUserListByCompanyId(companyEntity.getId());
@@ -133,8 +130,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserEntity> getAllUserIdentityListByDepartmentIdentity(String identity) {
-    return this.userRepository.getUserListByDepartmentIdentity(identity);
+  public List<UserEntity> getAllUserListByDepartmentId(UUID id) {
+    return this.userRepository.getUserListByDepartmentId(id);
   }
 
   @Override
@@ -143,8 +140,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserDashboardMenuEntity> getUserDashboardMenuListByUserIdentity(String appIdentity, String userIdentity) {
-    Optional<UserEntity> userEntityOptional = getUserByIdentity(userIdentity);
+  public List<UserDashboardMenuEntity> getUserDashboardMenuListByUserId(String appIdentity, UUID userId) {
+    Optional<UserEntity> userEntityOptional = getUserById(userId);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 
@@ -154,8 +151,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserDashboardMenuEntity> saveUserDashboardMenuListByUserIdentity(String appIdentity, String userIdentity, List<UserDashboardMenuEntity> list) {
-    Optional<UserEntity> userEntityOptional = getUserByIdentity(userIdentity);
+  public List<UserDashboardMenuEntity> saveUserDashboardMenuListByUserId(String appIdentity, UUID userId, List<UserDashboardMenuEntity> list) {
+    Optional<UserEntity> userEntityOptional = getUserById(userId);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 

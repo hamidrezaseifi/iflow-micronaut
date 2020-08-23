@@ -23,6 +23,7 @@ import io.micronaut.validation.Validated;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Validated
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -77,12 +78,10 @@ public class UserController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_READ_BY_IDENTITY)
-  public HttpResponse<UserEdo>
-      readUserByIdentity(final String identity)
-          throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_READ_BY_ID)
+  public HttpResponse<UserEdo> readUserByIdentity(final UUID id) throws Exception {
 
-    final Optional<UserEntity> userOptional = this.usersService.getUserByIdentity(identity);
+    final Optional<UserEntity> userOptional = this.usersService.getUserById(id);
 
     if(userOptional.isPresent()){
       return HttpResponse.ok(this.userMapper.toEdo(userOptional.get()));
@@ -91,48 +90,48 @@ public class UserController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USERGROUPS_LIST_BY_IDENTITY)
-  public HttpResponse<UserGroupListEdo> readUserGroups(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USERGROUPS_LIST_BY_ID)
+  public HttpResponse<UserGroupListEdo> readUserGroups(final UUID id) throws Exception {
 
-    final List<UserGroupEntity> groups = this.usersService.getUserGroups(identity);
+    final List<UserGroupEntity> groups = this.usersService.getUserGroups(id);
 
     return HttpResponse.ok(new UserGroupListEdo(this.userGroupMapper.toEdoList(groups)));
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_DEPARTMENTS_LIST_BY_IDENTITY)
-  public HttpResponse<DepartmentListEdo> readUserDepartments(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_DEPARTMENTS_LIST_BY_ID)
+  public HttpResponse<DepartmentListEdo> readUserDepartments(final UUID id) throws Exception {
 
-    final List<DepartmentEntity> list = this.usersService.getUserDepartments(identity);
+    final List<DepartmentEntity> list = this.usersService.getUserDepartments(id);
 
     return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(list)));
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_DEPUTIES_LIST_BY_IDENTITY)
-  public HttpResponse<UserListEdo> readUserDeputies(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_DEPUTIES_LIST_BY_ID)
+  public HttpResponse<UserListEdo> readUserDeputies(final UUID id) throws Exception {
 
-    final List<UserEntity> list = this.usersService.getUserDeputies(identity);
+    final List<UserEntity> list = this.usersService.getUserDeputies(id);
     final UserListEdo edo = new UserListEdo();
     edo.setUsers(this.userMapper.toEdoList(list));
     return HttpResponse.ok(edo);
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_COMPANYIDENTITY)
-  public HttpResponse<UserListEdo> readCompanyUsers(final String companyidentity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_COMPANYID)
+  public HttpResponse<UserListEdo> readCompanyUsers(final UUID companyid) throws Exception {
 
-    final List<UserEntity> list = this.usersService.getCompanyUsers(companyidentity);
+    final List<UserEntity> list = this.usersService.getCompanyUsers(companyid);
     final UserListEdo edo = new UserListEdo();
     edo.setUsers(this.userMapper.toEdoList(list));
     return HttpResponse.ok(edo);
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_DEPARTMENTIDENTITY)
-  public HttpResponse<UserListEdo> readDepartmentUsers(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_DEPARTMENTID)
+  public HttpResponse<UserListEdo> readDepartmentUsers(final UUID id) throws Exception {
 
-    final List<UserEntity> list = this.usersService.getAllUserIdentityListByDepartmentIdentity(identity);
+    final List<UserEntity> list = this.usersService.getAllUserListByDepartmentId(id);
     final UserListEdo edo = new UserListEdo();
     edo.setUsers(this.userMapper.toEdoList(list));
     return HttpResponse.ok(edo);
@@ -152,11 +151,11 @@ public class UserController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERIDENTITY)
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERID)
   public HttpResponse<ProfileResponseEdo> readUserProfileByIdentity(final String appIdentity,
-                                                                    final String identity) throws Exception {
+                                                                    final UUID id) throws Exception {
 
-    final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseByIdentity(appIdentity, identity);
+    final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseById(appIdentity, id);
 
     if(profileResponseOptional.isPresent()){
       return HttpResponse.ok(this.profileResponseMapper.toEdo(profileResponseOptional.get()));
@@ -165,30 +164,30 @@ public class UserController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_READ_BY_USERIDENTITY)
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_READ_BY_USERID)
   public HttpResponse<UserDashboardMenuListEdo>
-  readUserDashboardMenuByIdentity(final String appIdentity, final String userIdentity) throws Exception {
+  readUserDashboardMenuByIdentity(final String appIdentity, final UUID userId) throws Exception {
 
     final List<UserDashboardMenuEntity> list =
-            this.usersService.getUserDashboardMenuListByUserIdentity(appIdentity, userIdentity);
+            this.usersService.getUserDashboardMenuListByUserId(appIdentity, userId);
 
     final List<UserDashboardMenuEdo> edoList = this.userDashboardMenuMapper.toEdoList(list);
 
     return HttpResponse.ok(new UserDashboardMenuListEdo(edoList));
   }
 
-  @Post(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_SAVE_BY_USERIDENTITY)
+  @Post(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_SAVE_BY_USERID)
   public HttpResponse<UserDashboardMenuListEdo>
       saveUserDashboardMenuByIdentity(@Body @Valid final UserDashboardMenuListEdo requestedEdoList,
                                       final String appIdentity,
-                                      final String userIdentity)
+                                      final UUID userId)
           throws Exception {
 
     final List<UserDashboardMenuEntity> requestedModelList = this.userDashboardMenuMapper
         .fromEdoList(requestedEdoList.getUserDashboardMenus());
 
     final List<UserDashboardMenuEntity> list = this.usersService
-        .saveUserDashboardMenuListByUserIdentity(appIdentity, userIdentity, requestedModelList);
+        .saveUserDashboardMenuListByUserId(appIdentity, userId, requestedModelList);
 
     final List<UserDashboardMenuEdo> edoList = this.userDashboardMenuMapper.toEdoList(list);
 

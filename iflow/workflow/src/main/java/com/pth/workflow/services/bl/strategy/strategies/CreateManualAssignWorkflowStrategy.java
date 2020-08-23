@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 public class CreateManualAssignWorkflowStrategy<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategy<W> {
 
   public CreateManualAssignWorkflowStrategy(IWorkflowSaveRequest<W> workflowCreateRequest,
-                                            Authentication authentication,
+                                            final String authorization,
                                             IDepartmentDataService departmentDataService,
                                             IWorkflowMessageRepository workflowMessageRepository,
                                             IGuiCachDataDataService cachDataDataService,
@@ -27,7 +27,7 @@ public class CreateManualAssignWorkflowStrategy<W extends IWorkflowBaseEntity> e
           throws WorkflowCustomizedException {
 
     super(workflowCreateRequest,
-          authentication,
+          authorization,
           departmentDataService,
           workflowMessageRepository,
           cachDataDataService,

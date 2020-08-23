@@ -1,69 +1,74 @@
 package com.pth.workflow.services.bl.impl;
 
 import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.repositories.IWorkflowTypeRepository;
+import com.pth.workflow.services.bl.IWorkflowTypeProcessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.IWorkflowTypeDataService;
-import com.pth.iflow.workflow.bl.IWorkflowTypeProcessService;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.WorkflowTypeStep;
 
-@Service
+import javax.inject.Singleton;
+
+@Singleton
 public class WorkflowTypeProcessService implements IWorkflowTypeProcessService {
 
   private static final Logger logger = LoggerFactory.getLogger(WorkflowTypeProcessService.class);
 
-  private final IWorkflowTypeDataService workflowTypeDataService;
+  private final IWorkflowTypeRepository workflowTypeRepository;
 
-  public WorkflowTypeProcessService(@Autowired final IWorkflowTypeDataService workflowTypeDataService) {
+  public WorkflowTypeProcessService( IWorkflowTypeRepository workflowTypeRepository) {
 
-    this.workflowTypeDataService = workflowTypeDataService;
+    this.workflowTypeRepository = workflowTypeRepository;
   }
 
   @Override
-  public WorkflowType getByIdentity(final String identity, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<WorkflowTypeEntity> getById(final UUID id){
+
+    logger.debug("Request workflow data for id {}", id);
+
+    return this.workflowTypeRepository.getById(id);
+
+  }
+
+  @Override
+  public Optional<WorkflowTypeEntity> getByIdentity(final String identity){
 
     logger.debug("Request workflow data for id {}", identity);
 
-    return this.workflowTypeDataService.getByIdentity(identity, authentication);
+    return this.workflowTypeRepository.getByIdentity(identity);
 
   }
 
   @Override
-  public List<WorkflowType> getListByCompanyIdentity(final String identity, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<WorkflowTypeEntity> getListByCompanyId(final UUID id){
 
-    logger.debug("Request workflow list for company id {}", identity);
+    logger.debug("Request workflow list for company id {}", id);
 
-    return this.workflowTypeDataService.getListByCompanyIdentity(identity, authentication);
+    return this.workflowTypeRepository.getListByCompanyId(id);
   }
 
   @Override
-  public List<WorkflowType> getListByIdentityList(final Set<String> identityList, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<WorkflowTypeEntity> getListByIdentityList(final Set<String> identityList){
 
     logger.debug("Request workflow list for id list {}");
 
-    return this.workflowTypeDataService.getListByIdentityList(identityList, authentication);
+    return this.workflowTypeRepository.getListByIdentityList(identityList);
   }
 
   @Override
-  public List<WorkflowTypeStep> getStepsByIdentity(final String identity, final Authentication authentication)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public List<WorkflowTypeStepEntity> getStepsById(final UUID id){
 
-    logger.debug("Request workflow-step list for workflow id {}", identity);
+    logger.debug("Request workflow-step list for workflow-type id {}", id);
 
-    return this.workflowTypeDataService.getStepsByIdentity(identity, authentication);
+    Optional<WorkflowTypeEntity> workflowTypeEntityOptional = this.workflowTypeRepository.getById(id);
+    if(workflowTypeEntityOptional.isPresent()){
+      return workflowTypeEntityOptional.get().getSteps();
+    }
+    return new ArrayList<>();
   }
 
 }

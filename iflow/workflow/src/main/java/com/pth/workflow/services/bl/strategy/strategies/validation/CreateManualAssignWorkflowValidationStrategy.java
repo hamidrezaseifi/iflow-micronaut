@@ -16,16 +16,16 @@ import io.micronaut.security.authentication.Authentication;
 public class CreateManualAssignWorkflowValidationStrategy<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategy<W> {
 
   public CreateManualAssignWorkflowValidationStrategy(final IWorkflowSaveRequest<W> workflowCreateRequest,
-      final Authentication authentication,
-      final IDepartmentDataService departmentDataService,
-      final IWorkflowMessageRepository workflowMessageRepository,
-      final IGuiCachDataDataService cachDataDataService,
-      final IWorkflowBaseRepository<W> workflowRepository,
-      final IWorkflowPrepare<W> workflowPrepare)
-          throws WorkflowCustomizedException{
+                                                      final String authorization,
+                                                      final IDepartmentDataService departmentDataService,
+                                                      final IWorkflowMessageRepository workflowMessageRepository,
+                                                      final IGuiCachDataDataService cachDataDataService,
+                                                      final IWorkflowBaseRepository<W> workflowRepository,
+                                                      final IWorkflowPrepare<W> workflowPrepare)
+                                                          throws WorkflowCustomizedException{
 
     super(workflowCreateRequest,
-        authentication,
+          authorization,
         departmentDataService,
         workflowMessageRepository,
         cachDataDataService,

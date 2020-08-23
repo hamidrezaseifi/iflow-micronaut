@@ -186,6 +186,11 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
     return workflowType.getIdentity();
   }
 
+  @Override
+  public boolean isCurrentStepId(UUID currentStepId) {
+    return this.currentStepId == currentStepId;
+  }
+
   public Date getCreatedAt() {
 
     return this.createdAt;

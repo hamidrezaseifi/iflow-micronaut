@@ -3,6 +3,7 @@ package com.pth.workflow.controllers.workflow;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 
 import com.pth.common.contants.ApiUrlConstants;
@@ -43,9 +44,11 @@ public class TestThreeTaskController {
   //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Get(value = "/readbyidentity/{identity}")
   public HttpResponse<TestThreeTaskWorkflowEdo> readInvoice(final String identity,
-                                                      final Authentication authentication) throws Exception {
+                                                            final Authentication authentication,
+                                                            @Header String authorization) throws Exception {
 
-    final Optional<TestThreeTaskWorkflowEntity> modelOptional = this.testThreeTaskWorkflowService.getByIdentity(identity);
+    final Optional<TestThreeTaskWorkflowEntity> modelOptional =
+            this.testThreeTaskWorkflowService.getByIdentity(identity);
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(testThreeTaskWorkflowMapper.toEdo(modelOptional.get()));
@@ -55,12 +58,15 @@ public class TestThreeTaskController {
 
   //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_CREATE)
   @Post(value = "/create")
-  public HttpResponse<TestThreeTaskWorkflowListEdo> createInvoice(
-          @Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
-          final Authentication authentication) throws Exception {
+  public HttpResponse<TestThreeTaskWorkflowListEdo>
+    createInvoice(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
+                  final Authentication authentication,
+                  @Header String authorization) throws Exception {
 
     final List<TestThreeTaskWorkflowEntity> modelList =
-            this.testThreeTaskWorkflowService.create(testThreeTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo));
+            this.testThreeTaskWorkflowService.create(
+                    testThreeTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo),
+                    authorization);
 
     return HttpResponse.created(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
@@ -69,10 +75,12 @@ public class TestThreeTaskController {
   @Post(value = "/save")
   public HttpResponse<TestThreeTaskWorkflowEdo>
   saveInvoice(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo requestEdo,
-              final Authentication authentication) throws Exception {
+              final Authentication authentication,
+              @Header String authorization) throws Exception {
 
     final Optional<TestThreeTaskWorkflowEntity> modelOptional =
-            this.testThreeTaskWorkflowService.save(testThreeTaskWorkflowSaveRequestMapper.fromEdo(requestEdo));
+            this.testThreeTaskWorkflowService.save(testThreeTaskWorkflowSaveRequestMapper.fromEdo(requestEdo),
+                                                   authorization);
 
     if(modelOptional.isPresent()){
       return HttpResponse.created(testThreeTaskWorkflowMapper.toEdo(modelOptional.get()));
@@ -83,20 +91,25 @@ public class TestThreeTaskController {
   //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Post(value = "/readbyidentitylist")
   public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
-                                                              final Authentication authentication) throws Exception {
+                                                                    final Authentication authentication,
+                                                                    @Header String authorization) throws Exception {
 
-    final List<TestThreeTaskWorkflowEntity> modelList = this.testThreeTaskWorkflowService.getListByIdentityList(idList);
+    final List<TestThreeTaskWorkflowEntity> modelList =
+            this.testThreeTaskWorkflowService.getListByIdentityList(idList);
 
     return HttpResponse.ok(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
 
   //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
-  @Get(value = "/readbyuseridentity/{identity}/{status}")
-  public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceListForUser(final String Identity,
-                                                                     @PathVariable() final int status,
-                                                                     final Authentication authentication) throws Exception {
+  @Get(value = "/readbyuseridentity/{id}/{status}")
+  public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceListForUser(final UUID id,
+                                                                           @PathVariable() final int status,
+                                                                           final Authentication authentication,
+                                                                           @Header String authorization)
+          throws Exception {
 
-    final List<TestThreeTaskWorkflowEntity> modelList = this.testThreeTaskWorkflowService.getListForUser(Identity, status);
+    final List<TestThreeTaskWorkflowEntity> modelList =
+            this.testThreeTaskWorkflowService.getListForUser(id, status);
 
     return HttpResponse.ok(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
@@ -105,11 +118,13 @@ public class TestThreeTaskController {
   //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Status(HttpStatus.ACCEPTED)
   @Post(value = "/validate")
-  public void
-  validateInvoiceRequest(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
-                         final Authentication authentication) throws Exception {
+  public void validateInvoiceRequest(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
+                                     final Authentication authentication,
+                                     @Header String authorization) throws Exception {
 
-    this.testThreeTaskWorkflowService.validate(testThreeTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo));
+    this.testThreeTaskWorkflowService.validate(
+            testThreeTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo),
+            authorization);
 
   }
 }

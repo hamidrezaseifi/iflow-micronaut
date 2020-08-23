@@ -2,6 +2,7 @@ package com.pth.workflow.services.bl.strategy;
 
 import com.pth.common.exceptions.IFlowMessageConversionFailureException;
 import com.pth.workflow.entities.workflow.InvoiceWorkflowEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface IWorkflowSaveStrategy<W extends IWorkflowBaseEntity> {
 
   void setup();
 
-  void process() throws IFlowMessageConversionFailureException;
+  void process() throws WorkflowCustomizedException;
 
   Optional<W> getSingleProceedWorkflow();
 

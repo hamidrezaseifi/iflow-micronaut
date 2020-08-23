@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Validated
@@ -45,10 +46,10 @@ public class DepartmentController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_BY_IDENTITY)
-  public HttpResponse<DepartmentEdo> readDepartment(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_BY_ID)
+  public HttpResponse<DepartmentEdo> readDepartment(final UUID id) throws Exception {
 
-    final Optional<DepartmentEntity> modelOptional = this.departmentService.getByIdentity(identity);
+    final Optional<DepartmentEntity> modelOptional = this.departmentService.getById(id);
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(this.departmentMapper.toEdo(modelOptional.get()));
@@ -88,28 +89,28 @@ public class DepartmentController {
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_LIST_BY_COMPANYIDENTITY)
-  public HttpResponse<DepartmentListEdo> readDepartmentListByCompany(final String companyidentity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_LIST_BY_COMPANYID)
+  public HttpResponse<DepartmentListEdo> readDepartmentListByCompany(final UUID companyid) throws Exception {
 
-    final List<DepartmentEntity> modelList = this.departmentService.getListByIdCompanyIdentity(companyidentity);
+    final List<DepartmentEntity> modelList = this.departmentService.getListByIdCompanyId(companyid);
 
     return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(modelList)));
   }
 
   
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTIDENTITY)
-  public HttpResponse<UserListEdo> readAllUserListByDepartmentGroup(final String identity) throws Exception {
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTID)
+  public HttpResponse<UserListEdo> readAllUserListByDepartmentGroup(final UUID id) throws Exception {
 
-    final List<UserEntity> modelList = this.userService.getAllUserIdentityListByDepartmentIdentity(identity);
+    final List<UserEntity> modelList = this.userService.getAllUserListByDepartmentId(id);
 
     return HttpResponse.ok(new UserListEdo(this.userMapper.toEdoList(modelList)));
   }
 
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_GET_MANAGER)
-  public HttpResponse<UserEdo> getDepartmentGroupManager(final String identity) throws Exception {
+  public HttpResponse<UserEdo> getDepartmentGroupManager(final UUID id) throws Exception {
 
-    final Optional<UserEntity> modelOptional = this.departmentService.getDepartmentManager(identity);
+    final Optional<UserEntity> modelOptional = this.departmentService.getDepartmentManager(id);
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(this.userMapper.toEdo(modelOptional.get()));
@@ -119,9 +120,9 @@ public class DepartmentController {
 
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_GET_DEPUTY)
-  public HttpResponse<UserEdo> getDepartmentGroupDeputy(final String identity) throws Exception {
+  public HttpResponse<UserEdo> getDepartmentGroupDeputy(final UUID id) throws Exception {
 
-    final Optional<UserEntity> modelOptional = this.departmentService.getDepartmentDeputy(identity);
+    final Optional<UserEntity> modelOptional = this.departmentService.getDepartmentDeputy(id);
 
 
     if(modelOptional.isPresent()){

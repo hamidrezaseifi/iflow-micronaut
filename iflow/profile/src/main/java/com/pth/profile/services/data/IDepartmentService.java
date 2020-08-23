@@ -6,6 +6,7 @@ import com.pth.profile.entities.UserEntity;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public interface IDepartmentService {
@@ -14,14 +15,14 @@ public interface IDepartmentService {
 
   void delete(DepartmentEntity model);
 
-  Optional<DepartmentEntity> getByIdentity(final String identity);
+  Optional<DepartmentEntity> getById(final UUID id);
 
   List<DepartmentEntity> getListByIdentityList(final Collection<String> idList);
 
-  List<DepartmentEntity> getListByIdCompanyIdentity(final String identity);
+  List<DepartmentEntity> getListByIdCompanyId(final UUID id);
 
-  Optional<UserEntity> getDepartmentManager(final String identity);
+  Optional<UserEntity> getDepartmentManager(final UUID id);
 
-  Optional<UserEntity> getDepartmentDeputy(final String identity);
+  Optional<UserEntity> getDepartmentDeputy(final UUID id);
 
 }

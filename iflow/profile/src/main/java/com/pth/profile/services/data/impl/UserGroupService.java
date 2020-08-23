@@ -14,6 +14,7 @@ import javax.inject.Singleton;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Singleton
 public class UserGroupService implements IUserGroupService {
@@ -36,8 +37,8 @@ public class UserGroupService implements IUserGroupService {
     }
 
     @Override
-    public Optional<UserGroupEntity> getByIdentity(String identity) {
-        return userGroupRepository.getByIdentity(identity);
+    public Optional<UserGroupEntity> getById(final UUID id) {
+        return userGroupRepository.getById(id);
     }
 
     @Override
@@ -46,8 +47,8 @@ public class UserGroupService implements IUserGroupService {
     }
 
     @Override
-    public List<UserGroupEntity> getListByIdCompanyIdentity(String identity) {
-        return userGroupRepository.getListByIdCompanyIdentity(identity);
+    public List<UserGroupEntity> getListByIdCompanyId(final UUID companyId) {
+        return userGroupRepository.getListByIdCompanyId(companyId);
     }
 
 

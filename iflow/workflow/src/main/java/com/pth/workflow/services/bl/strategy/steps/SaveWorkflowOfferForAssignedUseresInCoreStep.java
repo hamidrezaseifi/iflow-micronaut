@@ -24,7 +24,7 @@ public class SaveWorkflowOfferForAssignedUseresInCoreStep<W extends IWorkflowBas
     final WorkflowTypeEntity workflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
 
     if (workflowType.isAssignTypeOffering()) {
-      final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflow();
+      final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflowOptional();
 
       if(processingWorkflowOptional.isPresent()){
         W processingWorkflow = processingWorkflowOptional.get();

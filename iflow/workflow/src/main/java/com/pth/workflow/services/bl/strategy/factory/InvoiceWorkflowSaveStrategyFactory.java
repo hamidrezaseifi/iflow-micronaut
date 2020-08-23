@@ -54,7 +54,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
   @Override
   public IWorkflowSaveStrategy<InvoiceWorkflowEntity>
     selectSaveWorkStrategy(final IWorkflowSaveRequest<InvoiceWorkflowEntity> workflowSaveRequest,
-                           final Authentication authentication) throws WorkflowCustomizedException {
+                           final String authorization) throws WorkflowCustomizedException {
 
     logger.debug("selecting save strategy for workflow");
 
@@ -62,7 +62,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
       if (workflowSaveRequest.getWorkflow().getWorkflowType().isAssignTypeManual()) {
         logger.debug("The CreateManualAssignWorkflowStrategy is selected for workflow save");
         return new CreateManualAssignWorkflowStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                             authentication,
+                                                                             authorization,
                                                                              departmentDataService,
                                                                              workflowMessageRepository,
                                                                              cachDataDataService,
@@ -73,7 +73,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
       if (workflowSaveRequest.getWorkflow().getWorkflowType().isAssignTypeOffering()) {
         logger.debug("The CreateOfferlAssignWorkflowStrategy is selected for workflow save");
         return new CreateOfferlAssignWorkflowStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                             authentication,
+                                                                             authorization,
                                                                              departmentDataService,
                                                                              workflowMessageRepository,
                                                                              cachDataDataService,
@@ -85,7 +85,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isArchiveCommand()) {
       logger.debug("The ArchivingWorkflowStrategy is selected for workflow save");
       return new ArchivingWorkflowStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                  authentication,
+                                                                  authorization,
                                                                   departmentDataService,
                                                                   workflowMessageRepository,
                                                                   cachDataDataService,
@@ -96,7 +96,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isSaveCommand()) {
       logger.debug("The SaveExistingWorkflowStrategy is selected for workflow save");
       return new SaveExistingWorkflowStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                     authentication,
+                                                                     authorization,
                                                                      departmentDataService,
                                                                      workflowMessageRepository,
                                                                      cachDataDataService,
@@ -107,7 +107,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isAssignCommand()) {
       logger.debug("The AssignWorkflowStrategy is selected for workflow save");
       return new AssignWorkflowStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                               authentication,
+                                                               authorization,
                                                                departmentDataService,
                                                                workflowMessageRepository,
                                                                cachDataDataService,
@@ -118,7 +118,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isDoneCommand()) {
       logger.debug("The DoneExistingWorkflowStrategy is selected for workflow save");
       return new DoneExistingWorkflowStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-          authentication,
+          authorization,
           departmentDataService,
           workflowMessageRepository,
           cachDataDataService,
@@ -131,7 +131,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
 
   @Override
   public IWorkflowSaveStrategy<InvoiceWorkflowEntity>
-      selectValidationWorkStrategy(final IWorkflowSaveRequest<InvoiceWorkflowEntity> workflowSaveRequest, final Authentication authentication)
+      selectValidationWorkStrategy(final IWorkflowSaveRequest<InvoiceWorkflowEntity> workflowSaveRequest, final String authorization)
           throws WorkflowCustomizedException {
 
     logger.debug("selecting validation strategy for workflow");
@@ -140,7 +140,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
       if (workflowSaveRequest.getWorkflow().getWorkflowType().isAssignTypeManual()) {
         logger.debug("The CreateManualAssignWorkflowValidationStrategy is selected for workflow validation");
         return new CreateManualAssignWorkflowValidationStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                                       authentication,
+                                                                                       authorization,
                                                                                        departmentDataService,
                                                                                        workflowMessageRepository,
                                                                                        cachDataDataService,
@@ -151,7 +151,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
       if (workflowSaveRequest.getWorkflow().getWorkflowType().isAssignTypeOffering()) {
         logger.debug("The CreateOfferlAssignWorkflowValidationStrategy is selected for workflow validation");
         return new CreateOfferlAssignWorkflowValidationStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                                       authentication,
+                                                                                       authorization,
                                                                                        departmentDataService,
                                                                                        workflowMessageRepository,
                                                                                        cachDataDataService,
@@ -163,7 +163,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isArchiveCommand()) {
       logger.debug("The ArchivingWorkflowValidationStrategy is selected for workflow validation");
       return new ArchivingWorkflowValidationStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                            authentication,
+                                                                            authorization,
                                                                             departmentDataService,
                                                                             workflowMessageRepository,
                                                                             cachDataDataService,
@@ -174,7 +174,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isSaveCommand()) {
       logger.debug("The SaveExistingWorkflowValidationStrategy is selected for workflow validation");
       return new SaveExistingWorkflowValidationStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                               authentication,
+                                                                               authorization,
                                                                                departmentDataService,
                                                                                workflowMessageRepository,
                                                                                cachDataDataService,
@@ -185,7 +185,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isAssignCommand()) {
       logger.debug("The AssignWorkflowValidationStrategy is selected for workflow validation");
       return new AssignWorkflowValidationStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-                                                                         authentication,
+                                                                         authorization,
                                                                          departmentDataService,
                                                                          workflowMessageRepository,
                                                                          cachDataDataService,
@@ -196,7 +196,7 @@ public class InvoiceWorkflowSaveStrategyFactory implements IWorkflowSaveStrategy
     if (workflowSaveRequest.isDoneCommand()) {
       logger.debug("The DoneExistingWorkflowValidationStrategy is selected for workflow validation");
       return new DoneExistingWorkflowValidationStrategy<InvoiceWorkflowEntity>(workflowSaveRequest,
-          authentication,
+          authorization,
           departmentDataService,
           workflowMessageRepository,
           cachDataDataService,
