@@ -6,6 +6,14 @@
   {
     "id": "core",
     "baseUrl": "http://localhost:1010"
+  },
+  {
+    "id": "workflow",
+    "baseUrl": "http://localhost:1030"
+  },
+  {
+    "id": "gui",
+    "baseUrl": "http://localhost:1200"
   }
 ]
 
