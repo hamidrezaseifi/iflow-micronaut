@@ -3,26 +3,28 @@ package com.pth.workflow.models;
 
 import com.pth.common.edo.enums.EAssignType;
 
+import java.util.UUID;
+
 public class AssignItem {
 
-  private String      itemIdentity;
+  private UUID itemId;
   private EAssignType itemType;
 
   public AssignItem() {
 
   }
 
-  public AssignItem(final String itemIdentity, final EAssignType itemType) {
-    this.setItemIdentity(itemIdentity);
+  public AssignItem(final UUID itemId, final EAssignType itemType) {
+    this.setItemId(itemId);
     this.setItemType(itemType);
   }
 
-  public String getItemIdentity() {
-    return itemIdentity;
+  public UUID getItemId() {
+    return itemId;
   }
 
-  public void setItemIdentity(final String itemIdentity) {
-    this.itemIdentity = itemIdentity;
+  public void setItemId(UUID itemId) {
+    this.itemId = itemId;
   }
 
   public EAssignType getItemType() {

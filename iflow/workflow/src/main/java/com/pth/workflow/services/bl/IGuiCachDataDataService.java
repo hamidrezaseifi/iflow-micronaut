@@ -1,26 +1,26 @@
 package com.pth.workflow.services.bl;
 
-import com.pth.common.exceptions.IFlowMessageConversionFailureException;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import io.micronaut.security.authentication.Authentication;
 
-import java.net.MalformedURLException;
 import java.util.Set;
+import java.util.UUID;
 
 public interface IGuiCachDataDataService {
 
-  public void resetCachDataForUser(String companyIdentity,
-                                   String userIdentity,
+  void resetCachDataForUser(UUID companyId,
+                                   UUID userId,
                                    Authentication authentication)
-          throws IFlowMessageConversionFailureException;
+          throws WorkflowCustomizedException;
 
-  public void resetCachDataForUserList(String companyIdentity,
-                                       Set<String> userIdentityList,
+  void resetCachDataForUserList(UUID companyId,
+                                       Set<UUID> userIdList,
                                        Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+      throws WorkflowCustomizedException;
 
-  public void resetCachDataForWorkflow(String companyIdentity,
-                                       String workflowIdentity,
+  void resetCachDataForWorkflow(UUID companyId,
+                                       UUID workflowId,
                                        Authentication authentication)
-      throws IFlowMessageConversionFailureException;
+      throws WorkflowCustomizedException;
 
 }

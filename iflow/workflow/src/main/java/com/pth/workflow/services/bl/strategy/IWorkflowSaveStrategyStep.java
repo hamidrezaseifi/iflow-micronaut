@@ -1,13 +1,15 @@
 package com.pth.workflow.services.bl.strategy;
 
+import com.pth.common.exceptions.IFlowCustomizedException;
 import com.pth.common.exceptions.IFlowMessageConversionFailureException;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 
 import java.net.MalformedURLException;
 
 
 public interface IWorkflowSaveStrategyStep {
 
-  public void process() throws IFlowMessageConversionFailureException;
+  void process() throws WorkflowCustomizedException;
 
-  public boolean shouldProcess();
+  boolean shouldProcess();
 }

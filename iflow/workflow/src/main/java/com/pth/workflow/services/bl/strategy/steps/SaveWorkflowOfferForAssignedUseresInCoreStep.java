@@ -1,16 +1,16 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
+import com.pth.common.edo.enums.EWorkflowMessageStatus;
+import com.pth.common.edo.enums.EWorkflowMessageType;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-import com.pth.iflow.common.enums.EWorkflowMessageStatus;
-import com.pth.iflow.common.enums.EWorkflowMessageType;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import java.util.Optional;
+import java.util.UUID;
 
-public class SaveWorkflowOfferForAssignedUseresInCoreStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+public class SaveWorkflowOfferForAssignedUseresInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public SaveWorkflowOfferForAssignedUseresInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
 
@@ -19,26 +19,31 @@ public class SaveWorkflowOfferForAssignedUseresInCoreStep<W extends IWorkflow> e
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
-    final WorkflowType workflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowTypeEntity workflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
 
     if (workflowType.isAssignTypeOffering()) {
-      final W processingWorkflow = this.getWorkflowSaveStrategy().getSavedSingleWorkflow();
+      final Optional<W> processingWorkflowOptional = this.getWorkflowSaveStrategy().getSavedSingleWorkflow();
 
-      for (final String userIdentity : this.getWorkflowSaveStrategy().getAssignedUsers()) {
-        this
-            .getWorkflowSaveStrategy()
-            .createWorkflowMessage(processingWorkflow, userIdentity, EWorkflowMessageType.OFFERING_WORKFLOW,
-                EWorkflowMessageStatus.OFFERING);
+      if(processingWorkflowOptional.isPresent()){
+        W processingWorkflow = processingWorkflowOptional.get();
+        for (final UUID userId : this.getWorkflowSaveStrategy().getAssignedUsers()) {
+          this.getWorkflowSaveStrategy().createWorkflowMessage(processingWorkflow,
+                                                               userId,
+                                                               EWorkflowMessageType.OFFERING_WORKFLOW,
+                                                               EWorkflowMessageStatus.OFFERING);
+        }
       }
+
     }
     else {
-      for (final String userIdentity : this.getWorkflowSaveStrategy().getSavedWorkflowList().keySet()) {
-        final W workflow = this.getWorkflowSaveStrategy().getSavedWorkflowList().get(userIdentity);
-        this
-            .getWorkflowSaveStrategy()
-            .createWorkflowMessage(workflow, userIdentity, EWorkflowMessageType.ASSIGNED_WORKFLOW, EWorkflowMessageStatus.ASSIGNED);
+      for (final UUID userId : this.getWorkflowSaveStrategy().getSavedWorkflowList().keySet()) {
+        final W workflow = this.getWorkflowSaveStrategy().getSavedWorkflowList().get(userId);
+        this.getWorkflowSaveStrategy().createWorkflowMessage(workflow,
+                                                             userId,
+                                                             EWorkflowMessageType.ASSIGNED_WORKFLOW,
+                                                             EWorkflowMessageStatus.ASSIGNED);
       }
     }
 
@@ -47,14 +52,14 @@ public class SaveWorkflowOfferForAssignedUseresInCoreStep<W extends IWorkflow> e
   @Override
   public boolean shouldProcess() {
 
-    final WorkflowType processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowTypeEntity processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
     if (processingWorkflow.isDone() || processingWorkflow.isArchived()) {
       return false;
     }
 
-    return this.getWorkflowSaveStrategy().getAssignedUsers().isEmpty() == false; // processingWorkflowType.isAssignTypeOffering();
+    return this.getWorkflowSaveStrategy().getAssignedUsers().isEmpty() == false;
   }
 
 }

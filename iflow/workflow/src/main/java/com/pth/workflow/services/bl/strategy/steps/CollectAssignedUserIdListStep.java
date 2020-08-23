@@ -4,19 +4,18 @@ import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.pth.iflow.common.enums.EAssignType;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.common.models.helper.IdentityModel;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.AssignItem;
-import com.pth.iflow.workflow.models.User;
-import com.pth.iflow.workflow.models.base.IWorkflow;
-import com.pth.iflow.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.common.edo.enums.EAssignType;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.AssignItem;
+import com.pth.workflow.models.User;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.models.base.IWorkflowSaveRequest;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public class CollectAssignedUserIdListStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+public class CollectAssignedUserIdListStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public CollectAssignedUserIdListStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
 
@@ -25,30 +24,32 @@ public class CollectAssignedUserIdListStep<W extends IWorkflow> extends Abstract
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
-    final IWorkflowSaveRequest<W> processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
+    final IWorkflowSaveRequest<W>
+            processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
 
-    final Set<String> assignedUsers = new HashSet<>();
+    final Set<UUID> assignedUserIdList = new HashSet<>();
 
     for (final AssignItem assign : processingWorkflowSaveRequest.getAssigns()) {
 
       if (assign.getItemType() == EAssignType.USER) {
-        assignedUsers.add(assign.getItemIdentity());
+        assignedUserIdList.add(assign.getItemId());
       }
 
       if (assign.getItemType() == EAssignType.DEPARTMENT) {
-        final List<User> departmentUserIds = this.getWorkflowSaveStrategy().getDepartmentUserList(assign.getItemIdentity());
-        assignedUsers.addAll(departmentUserIds.stream().map(u -> u.getIdentity()).collect(Collectors.toSet()));
+        final List<User> departmentUserIds = this.getWorkflowSaveStrategy().getDepartmentUserList(assign.getItemId());
+        assignedUserIdList.addAll(departmentUserIds.stream().map(u -> u.getId()).collect(Collectors.toSet()));
       }
 
     }
 
     if (processingWorkflowSaveRequest.isDoneCommand()) {
 
-      final String assignToIdentity = this.getWorkflowSaveStrategy().getProcessingWorkflow().getLastAction().getAssignToIdentity();
-      if (IdentityModel.isIdentityNew(assignToIdentity) == false) {
-        assignedUsers.add(assignToIdentity);
+      final UUID assignToId =
+              this.getWorkflowSaveStrategy().getProcessingWorkflow().getLastAction().getAssignToId();
+      if (assignToId != null) {
+        assignedUsers.add(assignToId);
       }
 
     }

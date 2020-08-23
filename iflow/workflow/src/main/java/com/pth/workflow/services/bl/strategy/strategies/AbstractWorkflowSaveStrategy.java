@@ -1,7 +1,14 @@
 package com.pth.workflow.services.bl.strategy.strategies;
 
-import com.pth.common.exceptions.IFlowMessageConversionFailureException;
+import com.pth.common.edo.enums.EWorkflowActionStatus;
+import com.pth.common.edo.enums.EWorkflowMessageStatus;
+import com.pth.common.edo.enums.EWorkflowMessageType;
+import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.workflow.entities.workflow.WorkflowActionEntity;
+import com.pth.workflow.entities.workflow.WorkflowMessageEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IWorkflowBaseRepository;
@@ -13,15 +20,7 @@ import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyStep;
 import io.micronaut.security.authentication.Authentication;
 
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -29,9 +28,9 @@ import java.util.stream.Collectors;
 public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity> implements IWorkflowSaveStrategy<W> {
 
   private final IDepartmentDataService departmentDataService;
-  private final IWorkflowMessageRepository workflowMessageDataService;
+  private final IWorkflowMessageRepository workflowMessageRepository;
   private final IGuiCachDataDataService profileCachDataDataService;
-  private final IWorkflowBaseRepository<W> workflowDataService;
+  private final IWorkflowBaseRepository<W> workflowRepository;
   private final IWorkflowPrepare<W> workflowPrepare;
 
   protected final IWorkflowSaveRequest<W> processingWorkflowSaveRequest;
@@ -41,24 +40,24 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
 
   protected final List<IWorkflowSaveStrategyStep> steps = new ArrayList<>();
 
-  protected final Map<String, W> savedWorkflowList = new HashMap<>();
+  protected final Map<UUID, W> savedWorkflowList = new HashMap<>();
 
   protected W savedSingleWorkflow = null;
 
-  private final Set<String> assignedUsersIdentity = new HashSet<>();
+  private final Set<UUID> assignedUsersId = new HashSet<>();
 
   public AbstractWorkflowSaveStrategy(final IWorkflowSaveRequest<W> workflowCreateRequest,
       final Authentication authentication,
       final IDepartmentDataService departmentDataService,
-      final IWorkflowMessageRepository workflowMessageDataService,
+      final IWorkflowMessageRepository workflowMessageRepository,
       final IGuiCachDataDataService profileCachDataDataService,
-      final IWorkflowBaseRepository<W> workflowDataService,
+      final IWorkflowBaseRepository<W> workflowRepository,
       final IWorkflowPrepare<W> workflowPrepare)
-      throws IFlowMessageConversionFailureException {
+      throws WorkflowCustomizedException {
 
     this.departmentDataService = departmentDataService;
-    this.workflowMessageDataService = workflowMessageDataService;
-    this.workflowDataService = workflowDataService;
+    this.workflowMessageRepository = workflowMessageRepository;
+    this.workflowRepository = workflowRepository;
     this.profileCachDataDataService = profileCachDataDataService;
     this.workflowPrepare = workflowPrepare;
 
@@ -66,15 +65,21 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     this.authentication = authentication;
     this.prevActiveAction = workflowCreateRequest.getWorkflow().getActiveAction();
 
-    this.existsingWorkflow = getProcessingWorkflow().isNew() ? null
-        : workflowDataService.getByIdentity(getProcessingWorkflow().getIdentity(), authentication);
+
+    if(getProcessingWorkflow().isNew()){
+      this.existsingWorkflow = null;
+    }
+    else{
+      Optional<W> workflowOptional = workflowRepository.getByWorkflowId(getProcessingWorkflow().getWorkflowId());
+      if(workflowOptional.isPresent()){
+        this.existsingWorkflow = workflowOptional.get();
+      }
+      else{
+        this.existsingWorkflow = null;
+      }
+    }
 
     this.setup();
-  }
-
-  public String getToken() {
-
-    return authentication.getDetails().toString();
   }
 
   public Authentication getAuthentication() {
@@ -87,90 +92,96 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     return departmentDataService;
   }
 
-  public IWorkflowMessageDataService getWorkflowMessageDataService() {
+  public IWorkflowMessageRepository getWorkflowMessageRepository() {
 
-    return workflowMessageDataService;
+    return workflowMessageRepository;
   }
 
-  public void createWorkflowMessage(final W workflow, final String userIdentity, final EWorkflowMessageType messageType,
-      final EWorkflowMessageStatus messageStatus)
-      throws MalformedURLException, IFlowMessageConversionFailureException {
+  public void createWorkflowMessage(final W workflow,
+                                    final UUID userId,
+                                    final EWorkflowMessageType messageType,
+                                    final EWorkflowMessageStatus messageStatus){
 
-    final WorkflowMessage message = new WorkflowMessage();
-    message.setCreatedByIdentity(workflow.getCreatedByIdentity());
+    final WorkflowMessageEntity message = new WorkflowMessageEntity();
+    message.setCreatedById(workflow.getCreatedById());
     message.setExpireDays(this.processingWorkflowSaveRequest.getExpireDays());
     message.setMessage("Offering Workflow Message");
-    message.setMessageType(messageType);
-    message.setStatus(messageStatus);
-    message.setUserIdentity(userIdentity);
-    message.setWorkflowIdentity(workflow.getIdentity());
-    message.setStepIdentity(workflow.getCurrentStepIdentity());
+    message.setMessageType(messageType.getValue());
+    message.setStatus(messageStatus.getValue());
+    message.setUserId(userId);
+    message.setWorkflowId(workflow.getWorkflowId());
+    message.setStepId(workflow.getCurrentStepId());
     message.setVersion(1);
-    getWorkflowMessageDataService().save(message, authentication);
+    getWorkflowMessageRepository().save(message);
 
     // EWorkflowMessageType.OFFERING_WORKFLOW
     // EWorkflowMessageStatus.OFFERING
   }
 
-  public void updateWorkflowMessageStatus(final String workflowIdentity, final String stepIdentity, final EWorkflowMessageStatus status)
-      throws MalformedURLException, IFlowMessageConversionFailureException {
+  public void updateWorkflowMessageStatus(final UUID workflowID,
+                                          final UUID stepId,
+                                          final EWorkflowMessageStatus status) {
 
-    workflowMessageDataService.updateWorkflowMessageStatus(workflowIdentity, stepIdentity, status, authentication);
+    workflowMessageRepository.updateWorkflowMessageStatus(workflowID, stepId, status);
   }
 
-  public void updateUserAndWorkflowMessageStatus(final String workflowIdentity, final String stepIdentity, final String userIdentity,
-      final EWorkflowMessageStatus status) throws MalformedURLException, IFlowMessageConversionFailureException {
+  public void updateUserAndWorkflowMessageStatus(final UUID workflowID,
+                                                 final UUID stepId,
+                                                 final UUID userId,
+                                                 final EWorkflowMessageStatus status){
 
-    workflowMessageDataService.updateUserAndWorkflowMessageStatus(workflowIdentity, stepIdentity, userIdentity, status, authentication);
+    workflowMessageRepository.updateWorkflowMessageStatus(workflowID, stepId, userId, status);
   }
 
-  public void resetUserListCachData(final String companyIdentity, final Set<String> userIdentityList)
-      throws MalformedURLException, IFlowMessageConversionFailureException {
+  public void resetUserListCachData(final UUID companyId, final Set<UUID> userIdList){
 
-    profileCachDataDataService.resetCachDataForUserList(companyIdentity, userIdentityList, authentication);
+    profileCachDataDataService.resetCachDataForUserList(companyId, userIdList, authentication);
   }
 
-  public void resetWorkflowtCachData(final String companyIdentity, final String workflowIdentity)
-      throws MalformedURLException, IFlowMessageConversionFailureException {
+  public void resetWorkflowtCachData(final UUID companyId, final UUID workflowId){
 
-    profileCachDataDataService.resetCachDataForWorkflow(companyIdentity, workflowIdentity, authentication);
+    profileCachDataDataService.resetCachDataForWorkflow(companyId, workflowId, authentication);
   }
 
-  public W saveWorkflow(final W workflow)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<W> saveWorkflow(final W workflow)
+      throws WorkflowCustomizedException {
 
-    final W savedWorkflow = this.workflowDataService.save(workflow, this.authentication);
+    this.workflowRepository.save(workflow);
+    final Optional<W> savedWorkflowOptional = this.workflowRepository.getByWorkflowId(workflow.getWorkflowId());
 
-    return prepareWorkflow(savedWorkflow);
+    if(savedWorkflowOptional.isPresent()){
+      return prepareWorkflow(savedWorkflowOptional.get());
+    }
+    return Optional.empty();
   }
 
-  public WorkflowTypeStep findFirstStep(final WorkflowType workflowType) {
+  public WorkflowTypeStepEntity findFirstStep(final WorkflowTypeEntity workflowType) {
 
-    final List<WorkflowTypeStep> steps = this.getSortedStepsList(workflowType);
+    final List<WorkflowTypeStepEntity> steps = this.getSortedStepsList(workflowType);
 
     return steps.size() > 0 ? steps.get(0) : null;
   }
 
-  private Map<Integer, WorkflowTypeStep> getIndexKeySteps(final WorkflowType workflowType) {
+  private Map<Integer, WorkflowTypeStepEntity> getIndexKeySteps(final WorkflowTypeEntity workflowType) {
 
     final Map<Integer,
-        WorkflowTypeStep> map = workflowType.getSteps().stream().collect(Collectors.toMap(step -> step.getStepIndex(), step -> step));
+        WorkflowTypeStepEntity> map = workflowType.getSteps().stream().collect(Collectors.toMap(step -> step.getStepIndex(), step -> step));
 
     return map;
   }
 
-  private List<Integer> getSortedStepIndexs(final WorkflowType workflowType) {
+  private List<Integer> getSortedStepIndexs(final WorkflowTypeEntity workflowType) {
 
     final List<Integer> list = workflowType.getSteps().stream().map(step -> step.getStepIndex()).sorted().collect(Collectors.toList());
 
     return list;
   }
 
-  public WorkflowTypeStep findNextStep(final WorkflowType workflowType, final W workflow) {
+  public WorkflowTypeStepEntity findNextStep(final WorkflowTypeEntity workflowType, final W workflow) {
 
-    final WorkflowTypeStep currectStep = workflow.getLastAction().getCurrentStep();
+    final WorkflowTypeStepEntity currectStep = workflow.getLastAction().getCurrentStep();
 
-    final Map<Integer, WorkflowTypeStep> steps = this.getIndexKeySteps(workflowType);
+    final Map<Integer, WorkflowTypeStepEntity> steps = this.getIndexKeySteps(workflowType);
     final List<Integer> sortedIndexes = getSortedStepIndexs(workflowType);
 
     final int stepIndexInList = sortedIndexes.indexOf(currectStep.getStepIndex());
@@ -182,26 +193,26 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
 
   }
 
-  public boolean isLastStep(final WorkflowType workflowType, final WorkflowTypeStep step) {
+  public boolean isLastStep(final WorkflowTypeEntity workflowType, final WorkflowTypeStepEntity step) {
 
-    final WorkflowTypeStep lastStep = this.findLastStep(workflowType);
+    final WorkflowTypeStepEntity lastStep = this.findLastStep(workflowType);
 
     return step.getStepIndex() == lastStep.getStepIndex();
   }
 
-  private WorkflowTypeStep findLastStep(final WorkflowType workflowType) {
+  private WorkflowTypeStepEntity findLastStep(final WorkflowTypeEntity workflowType) {
 
-    final List<WorkflowTypeStep> steps = this.getSortedStepsList(workflowType);
+    final List<WorkflowTypeStepEntity> steps = this.getSortedStepsList(workflowType);
 
     return steps.size() > 0 ? steps.get(steps.size() - 1) : null;
   }
 
-  private List<WorkflowTypeStep> getSortedStepsList(final WorkflowType workflowType) {
+  private List<WorkflowTypeStepEntity> getSortedStepsList(final WorkflowTypeEntity workflowType) {
 
-    final List<WorkflowTypeStep> list = workflowType.getSteps().stream().sorted(new Comparator<WorkflowTypeStep>() {
+    final List<WorkflowTypeStepEntity> list = workflowType.getSteps().stream().sorted(new Comparator<WorkflowTypeStepEntity>() {
 
       @Override
-      public int compare(final WorkflowTypeStep o1, final WorkflowTypeStep o2) {
+      public int compare(final WorkflowTypeStepEntity o1, final WorkflowTypeStepEntity o2) {
 
         return o1.getStepIndex() > o2.getStepIndex() ? 1 : o1.getStepIndex() == o2.getStepIndex() ? 0 : -1;
       }
@@ -210,10 +221,10 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     return list;
   }
 
-  public WorkflowTypeStep findWorkflowStepinWorkflowTypeById(final WorkflowType workflowType, final String stepIdentity) {
+  public WorkflowTypeStepEntity findWorkflowStepinWorkflowTypeById(final WorkflowTypeEntity workflowType, final String stepIdentity) {
 
-    WorkflowTypeStep foundStep = null;
-    for (final WorkflowTypeStep step : workflowType.getSteps()) {
+    WorkflowTypeStepEntity foundStep = null;
+    for (final WorkflowTypeStepEntity step : workflowType.getSteps()) {
       if (step.getIdentity() == stepIdentity) {
         foundStep = step;
         break;
@@ -222,7 +233,7 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     return foundStep;
   }
 
-  public void validateCurrentStepExistsInWorkflowType(final W newWorkflow, final WorkflowType workflowType) {
+  public void validateCurrentStepExistsInWorkflowType(final W newWorkflow, final WorkflowTypeEntity workflowType) {
 
     final List<String> stepIdList = this.getWorkflowTypeIdList(workflowType);
 
@@ -231,36 +242,36 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     }
   }
 
-  private List<String> getWorkflowTypeIdList(final WorkflowType workflowType) {
+  private List<String> getWorkflowTypeIdList(final WorkflowTypeEntity workflowType) {
 
     return workflowType.getSteps().stream().map(step -> step.getIdentity()).collect(Collectors.toList());
   }
 
-  public WorkflowAction getInitialStepAction(final W workflow) {
+  public WorkflowActionEntity getInitialStepAction(final W workflow) {
 
-    final WorkflowTypeStep firstStep = this.findFirstStep(workflow.getWorkflowType());
+    final WorkflowTypeStepEntity firstStep = this.findFirstStep(workflow.getWorkflowType());
 
-    final WorkflowAction action = new WorkflowAction();
-    action.setAssignToIdentity("");
+    final WorkflowActionEntity action = new WorkflowActionEntity();
+    action.setAssignToId(null);
     action.setComments(workflow.getComments());
     action.setCurrentStep(firstStep);
-    action.setCurrentStepIdentity(firstStep.getIdentity());
-    action.setStatus(EWorkflowActionStatus.INITIALIZE);
+    action.setCurrentStepId(firstStep.getId());
+    action.setStatus(EWorkflowActionStatus.INITIALIZE.getValue());
 
     return action;
   }
 
-  public WorkflowAction initialNextStep(final W workflow) {
+  public WorkflowActionEntity initialNextStep(final W workflow) {
 
-    final WorkflowTypeStep nextStep = this.findNextStep(workflow.getWorkflowType(), getProcessingWorkflow());
+    final WorkflowTypeStepEntity nextStep = this.findNextStep(workflow.getWorkflowType(), getProcessingWorkflow());
 
     if (nextStep != null) {
-      final WorkflowAction action = new WorkflowAction();
-      action.setAssignToIdentity("");
+      final WorkflowActionEntity action = new WorkflowActionEntity();
+      action.setAssignToId(null);
       action.setComments(workflow.getComments());
       action.setCurrentStep(nextStep);
-      action.setCurrentStepIdentity(nextStep.getIdentity());
-      action.setStatus(EWorkflowActionStatus.INITIALIZE);
+      action.setCurrentStepId(nextStep.getId());
+      action.setStatus(EWorkflowActionStatus.INITIALIZE.getValue());
       return action;
     }
     return null;
@@ -298,29 +309,29 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     processingWorkflowSaveRequest.setWorkflow(workflow);
   }
 
-  public WorkflowAction getActiveAction() {
+  public WorkflowActionEntity getActiveAction() {
 
     return processingWorkflowSaveRequest.getWorkflow().getActiveAction();
   }
 
-  public WorkflowAction getPrevActiveAction() {
+  public WorkflowActionEntity getPrevActiveAction() {
 
     return prevActiveAction;
   }
 
-  public WorkflowType getProcessingWorkflowType() {
+  public WorkflowTypeEntity getProcessingWorkflowType() {
 
     return processingWorkflowSaveRequest.getWorkflow().getWorkflowType();
   }
 
-  public IWorkflowDataService<W> getWorkflowDataService() {
+  public IWorkflowBaseRepository<W> getWorkflowRepository() {
 
-    return workflowDataService;
+    return workflowRepository;
   }
 
-  public W getSavedSingleWorkflow() {
+  public Optional<W> getSavedSingleWorkflow() {
 
-    return savedSingleWorkflow;
+    return Optional.of(savedSingleWorkflow);
   }
 
   public void setSavedSingleWorkflow(final W savedSingleWorkflow) {
@@ -328,38 +339,32 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     this.savedSingleWorkflow = savedSingleWorkflow;
   }
 
-  public Map<String, W> getSavedWorkflowList() {
+  public Map<UUID, W> getSavedWorkflowList() {
 
     return savedWorkflowList;
   }
 
-  public void addSavedWorkflowToList(final String userIdentity, final W savedWorkflow) {
+  public void addSavedWorkflowToList(final UUID userId, final W savedWorkflow) {
 
-    this.savedWorkflowList.put(userIdentity, savedWorkflow);
+    this.savedWorkflowList.put(userId, savedWorkflow);
 
   }
 
-  public List<User> getDepartmentUserList(final String departmentIdentity)
-      throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Set<UUID> getAssignedUsers() {
 
-    return departmentDataService.getUserListByDepartmentIdentity(departmentIdentity, authentication);
+    return assignedUsersId;
   }
 
-  public Set<String> getAssignedUsers() {
+  public void setAssignedUsers(final Collection<UUID> assignedUsers) {
 
-    return assignedUsersIdentity;
-  }
-
-  public void setAssignedUsers(final Collection<String> assignedUsers) {
-
-    this.assignedUsersIdentity.clear();
+    this.assignedUsersId.clear();
     if (assignedUsers != null) {
-      this.assignedUsersIdentity.addAll(assignedUsers);
+      this.assignedUsersId.addAll(assignedUsers);
     }
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     for (int stepProcessIndex = 0; stepProcessIndex < steps.size(); stepProcessIndex++) {
       final IWorkflowSaveStrategyStep processStep = steps.get(stepProcessIndex);
@@ -372,7 +377,7 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
   }
 
   @Override
-  public W getSingleProceedWorkflow() {
+  public Optional<W> getSingleProceedWorkflow() {
 
     return getSavedSingleWorkflow();
   }
@@ -387,16 +392,16 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
 
     final W processingWorkflow = getProcessingWorkflow();
 
-    return existsingWorkflow == null || processingWorkflow.isCurrentStepIdentity(existsingWorkflow.getCurrentStepIdentity()) == false;
+    return existsingWorkflow == null || processingWorkflow.isCurrentStepId(existsingWorkflow.getCurrentStepId()) == false;
   }
 
-  public W prepareWorkflow(final W workflow) throws MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<W> prepareWorkflow(final W workflow) {
 
-    return workflowPrepare.prepareWorkflow(this.authentication, workflow);
+    return workflowPrepare.prepareWorkflow(workflow);
   }
 
-  public List<W> prepareWorkflowList(final List<W> workflowList) throws MalformedURLException, IFlowMessageConversionFailureException {
+  public List<W> prepareWorkflowList(final List<W> workflowList) {
 
-    return workflowPrepare.prepareWorkflowList(this.authentication, workflowList);
+    return workflowPrepare.prepareWorkflowList(workflowList);
   }
 }

@@ -1,15 +1,17 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
 
-import com.pth.iflow.common.enums.EWorkflowActionStatus;
-import com.pth.iflow.common.enums.EWorkflowStatus;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import com.pth.common.edo.enums.EWorkflowActionStatus;
+import com.pth.common.edo.enums.EWorkflowStatus;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.repositories.IWorkflowBaseRepository;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public class SaveWorkflowForAssignedUseresInCoreStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import java.util.Optional;
+import java.util.UUID;
+
+public class SaveWorkflowForAssignedUseresInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public SaveWorkflowForAssignedUseresInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
 
@@ -18,19 +20,22 @@ public class SaveWorkflowForAssignedUseresInCoreStep<W extends IWorkflow> extend
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
     // final List<W> result = new ArrayList<>();
 
-    for (final String userIdentity : this.getWorkflowSaveStrategy().getAssignedUsers()) {
-      processingWorkflow.setActiveActionAssignTo(userIdentity);
+    for (final UUID userId : this.getWorkflowSaveStrategy().getAssignedUsers()) {
+      processingWorkflow.setActiveActionAssignTo(userId);
       processingWorkflow.setActiveActionStatus(EWorkflowActionStatus.OPEN);
       processingWorkflow.setStatus(EWorkflowStatus.ASSIGNED);
 
-      final W savedWorkflow = this.getWorkflowSaveStrategy().saveWorkflow(processingWorkflow);
-      this.getWorkflowSaveStrategy().addSavedWorkflowToList(userIdentity, savedWorkflow);
+      final Optional<W> savedWorkflowOptional = this.getWorkflowSaveStrategy().saveWorkflow(processingWorkflow);
+      if(savedWorkflowOptional.isPresent()){
+        this.getWorkflowSaveStrategy().addSavedWorkflowToList(userId, savedWorkflowOptional.get());
+      }
+
     }
 
     // this.getWorkflowSaveStrategy().setSavedWorkflowList(result);

@@ -1,6 +1,7 @@
 package com.pth.workflow.entities.workflow;
 
 import java.sql.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,19 +24,19 @@ public class WorkflowMessageEntity extends BaseEntity {
   private static final long serialVersionUID = -3112387006573750725L;
 
   @Column(name = "workflow_id")
-  private Long workflowId;
+  private UUID workflowId;
 
   @Column(name = "step_id")
-  private Long stepId;
+  private UUID stepId;
 
   @Column(name = "user_id")
-  private Long userId;
+  private UUID userId;
 
   @Column(name = "message")
   private String message;
 
   @Column(name = "created_by")
-  private Long createdById;
+  private UUID createdById;
 
   @Column(name = "message_type")
   private Integer messageType;
@@ -66,32 +67,32 @@ public class WorkflowMessageEntity extends BaseEntity {
 
   }
 
-  public Long getWorkflowId() {
+  public UUID getWorkflowId() {
 
     return workflowId;
   }
 
-  public void setWorkflowId(final Long workflowId) {
+  public void setWorkflowId(final UUID workflowId) {
 
     this.workflowId = workflowId;
   }
 
-  public Long getStepId() {
+  public UUID getStepId() {
 
     return stepId;
   }
 
-  public void setStepId(final Long stepId) {
+  public void setStepId(final UUID stepId) {
 
     this.stepId = stepId;
   }
 
-  public Long getUserId() {
+  public UUID getUserId() {
 
     return userId;
   }
 
-  public void setUserId(final Long userId) {
+  public void setUserId(final UUID userId) {
 
     this.userId = userId;
   }
@@ -106,12 +107,12 @@ public class WorkflowMessageEntity extends BaseEntity {
     this.message = message;
   }
 
-  public Long getCreatedById() {
+  public UUID getCreatedById() {
 
     return createdById;
   }
 
-  public void setCreatedById(final Long createdBy) {
+  public void setCreatedById(final UUID createdBy) {
 
     this.createdById = createdBy;
   }

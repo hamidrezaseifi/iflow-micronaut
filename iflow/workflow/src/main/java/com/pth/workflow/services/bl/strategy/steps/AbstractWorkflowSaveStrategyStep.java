@@ -1,10 +1,11 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import com.pth.iflow.workflow.bl.strategy.IWorkflowSaveStrategyStep;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyStep;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public abstract class AbstractWorkflowSaveStrategyStep<W extends IWorkflow> implements IWorkflowSaveStrategyStep {
+public abstract class AbstractWorkflowSaveStrategyStep<W extends IWorkflowBaseEntity> implements
+                                                                                      IWorkflowSaveStrategyStep {
 
   private final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy;
 

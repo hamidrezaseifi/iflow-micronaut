@@ -11,18 +11,18 @@ import java.util.UUID;
 
 public interface IWorkflowMessageRepository extends IEntityRepository<WorkflowMessageEntity> {
 
-    Optional<WorkflowMessageEntity> getByIdentity(String identity);
+    Optional<WorkflowMessageEntity> getByIdentity(final String identity);
 
-    List<WorkflowMessageEntity> getListForUser(UUID userId, int status);
+    List<WorkflowMessageEntity> getListForUser(final UUID userId, final int status);
 
-    List<WorkflowMessageEntity> getListForWorkflow(UUID workflowID);
+    List<WorkflowMessageEntity> getListForWorkflow(final UUID workflowID);
 
-    void updateWorkflowMessageStatus(UUID workflowID,
-                                     UUID stepId,
-                                     EWorkflowMessageStatus status);
+    void updateWorkflowMessageStatus(final UUID workflowID,
+                                     final UUID stepId,
+                                     final EWorkflowMessageStatus status);
 
-    void updateWorkflowMessageStatus(UUID workflowID,
-                                     UUID stepId,
-                                     UUID userId,
-                                     EWorkflowMessageStatus status);
+    void updateWorkflowMessageStatus(final UUID workflowID,
+                                     final UUID stepId,
+                                     final UUID userId,
+                                     final EWorkflowMessageStatus status);
 }

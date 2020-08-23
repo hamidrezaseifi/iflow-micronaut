@@ -216,4 +216,12 @@ public class WorkflowTypeEntity extends BaseEntity {
 
     version += 1;
   }
+
+  public boolean isAssignTypeOffering() {
+    return assignType == EWorkflowTypeAssignType.OFFER;
+  }
+
+  public boolean isAssignTypeManual() {
+    return assignType == EWorkflowTypeAssignType.MANUAL;
+  }
 }

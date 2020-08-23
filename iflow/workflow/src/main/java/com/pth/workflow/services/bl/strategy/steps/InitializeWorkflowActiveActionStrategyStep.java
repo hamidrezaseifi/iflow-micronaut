@@ -1,14 +1,12 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowAction;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import com.pth.workflow.entities.workflow.WorkflowActionEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public class InitializeWorkflowActiveActionStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+public class InitializeWorkflowActiveActionStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public InitializeWorkflowActiveActionStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -16,11 +14,11 @@ public class InitializeWorkflowActiveActionStrategyStep<W extends IWorkflow> ext
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
-    final WorkflowAction action = this.getWorkflowSaveStrategy().initialNextStep(processingWorkflow);
+    final WorkflowActionEntity action = this.getWorkflowSaveStrategy().initialNextStep(processingWorkflow);
     if (action != null) {
       processingWorkflow.addAction(action);
     }
@@ -30,8 +28,8 @@ public class InitializeWorkflowActiveActionStrategyStep<W extends IWorkflow> ext
   @Override
   public boolean shouldProcess() {
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
-    final WorkflowType processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
-    final WorkflowAction prevAction = this.getWorkflowSaveStrategy().getPrevActiveAction();
+    final WorkflowTypeEntity processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowActionEntity prevAction = this.getWorkflowSaveStrategy().getPrevActiveAction();
 
     if (prevAction != null && this.getWorkflowSaveStrategy().isLastStep(processingWorkflowType, prevAction.getCurrentStep())) {
       return false;

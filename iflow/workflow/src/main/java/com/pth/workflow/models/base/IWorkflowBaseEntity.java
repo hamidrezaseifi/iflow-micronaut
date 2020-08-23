@@ -105,4 +105,7 @@ public interface IWorkflowBaseEntity {
 
   public String getWorkflowTypeIdentity();
 
+  boolean isCurrentStepId(UUID currentStepId);
+
+  UUID getCompanyId();
 }

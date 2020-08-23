@@ -1,15 +1,15 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.exceptions.EIFlowErrorType;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.WorkflowTypeStep;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import com.pth.common.exceptions.EIFlowErrorType;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public class ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import java.net.MalformedURLException;
+
+public class ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public ValidateCurrentStepExistsInWorkflowTypeStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -17,10 +17,10 @@ public class ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W extends IWork
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException {
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
-    final WorkflowType processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowTypeEntity processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
 
     final boolean isValid = this.validateCurrentStepExistsInWorkflowType(processingWorkflow.getCurrentStep(), processingWorkflowType);
     if (isValid == false) {
@@ -32,10 +32,10 @@ public class ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W extends IWork
 
   }
 
-  private boolean validateCurrentStepExistsInWorkflowType(final WorkflowTypeStep step, final WorkflowType workflowType) {
+  private boolean validateCurrentStepExistsInWorkflowType(final WorkflowTypeStepEntity step, final WorkflowTypeEntity workflowType) {
 
-    for (final WorkflowTypeStep typeStep : workflowType.getSteps()) {
-      if (typeStep.hasSameIdentity(step.getIdentity())) {
+    for (final WorkflowTypeStepEntity typeStep : workflowType.getSteps()) {
+      if (typeStep.getId() == step.getId()) {
         return true;
       }
     }

@@ -1,15 +1,13 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
-import java.net.MalformedURLException;
-import com.pth.iflow.common.exceptions.EIFlowErrorType;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.WorkflowTypeStep;
-import com.pth.iflow.workflow.models.base.IWorkflow;
+import com.pth.common.exceptions.EIFlowErrorType;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
-public class ValidateWorkflowNextStepStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+public class ValidateWorkflowNextStepStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public ValidateWorkflowNextStepStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -17,12 +15,13 @@ public class ValidateWorkflowNextStepStrategyStep<W extends IWorkflow> extends A
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() {
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
-    final WorkflowType processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowTypeEntity processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
 
-    final WorkflowTypeStep nextStep = this.getWorkflowSaveStrategy().findNextStep(processingWorkflowType, processingWorkflow);
+    final WorkflowTypeStepEntity
+            nextStep = this.getWorkflowSaveStrategy().findNextStep(processingWorkflowType, processingWorkflow);
     if (nextStep == null) {
       throw new WorkflowCustomizedException("Invalid workflow step identity:" + processingWorkflow.getIdentity(),
                                             EIFlowErrorType.INVALID_WORKFLOW_STEP);

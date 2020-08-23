@@ -18,9 +18,17 @@ public class IFlowCustomizedException extends ValidationException {
   }
 
   public IFlowCustomizedException(final String message, final String detailes, final String moduleName,
-      final EIFlowErrorType errorType) {
+                                  final EIFlowErrorType errorType) {
     super(message);
     this.detailes = detailes;
+    this.moduleName = moduleName;
+    this.errorType = errorType;
+  }
+
+  public IFlowCustomizedException(final String message, final String moduleName,
+                                  final EIFlowErrorType errorType) {
+    super(message);
+    this.detailes = "";
     this.moduleName = moduleName;
     this.errorType = errorType;
   }

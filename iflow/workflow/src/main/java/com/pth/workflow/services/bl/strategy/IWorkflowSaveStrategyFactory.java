@@ -8,8 +8,10 @@ import io.micronaut.security.authentication.Authentication;
 
 public interface IWorkflowSaveStrategyFactory<W extends IWorkflowBaseEntity> {
 
-  IWorkflowSaveStrategy<W> selectSaveWorkStrategy(IWorkflowSaveRequest<W> workflowSaveRequest);
+  IWorkflowSaveStrategy<W> selectSaveWorkStrategy(IWorkflowSaveRequest<W> workflowSaveRequest,
+                                                  final Authentication authentication);
 
-  IWorkflowSaveStrategy<W> selectValidationWorkStrategy(IWorkflowSaveRequest<W> workflowSaveRequest);
+  IWorkflowSaveStrategy<W> selectValidationWorkStrategy(IWorkflowSaveRequest<W> workflowSaveRequest,
+                                                        final Authentication authentication);
 
 }

@@ -62,12 +62,12 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
 
     @Override
     public EWorkflowStatus getStatusEnum() {
-        return EWorkflowStatus.ofValue(getWorkflow().getStatusEnum());
+        return EWorkflowStatus.ofValue(getWorkflow().getStatus());
     }
 
     @Override
     public Integer getStatusInt() {
-        return getWorkflow().getStatusEnum();
+        return getWorkflow().getStatus();
     }
 
     @Override
@@ -235,6 +235,16 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
     @Override
     public String getWorkflowTypeIdentity() {
         return getWorkflow().getWorkflowType().getIdentity();
+    }
+
+    @Override
+    public boolean isCurrentStepId(UUID currentStepId){
+        return getWorkflow().getCurrentStepId() == currentStepId;
+    }
+
+    @Override
+    public UUID getCompanyId(){
+        return getWorkflow().getCompanyId();
     }
 
 }

@@ -1,15 +1,15 @@
 package com.pth.workflow.services.bl.strategy.steps;
 
 import java.net.MalformedURLException;
-import com.pth.iflow.common.exceptions.EIFlowErrorType;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.workflow.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
-import com.pth.iflow.workflow.exceptions.WorkflowCustomizedException;
-import com.pth.iflow.workflow.models.WorkflowType;
-import com.pth.iflow.workflow.models.WorkflowTypeStep;
-import com.pth.iflow.workflow.models.base.IWorkflow;
 
-public class ValidateWorkflowTypeStepStrategyStep<W extends IWorkflow> extends AbstractWorkflowSaveStrategyStep<W> {
+import com.pth.common.exceptions.EIFlowErrorType;
+import com.pth.workflow.entities.workflow.WorkflowTypeEntity;
+import com.pth.workflow.entities.workflow.WorkflowTypeStepEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
+import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
+
+public class ValidateWorkflowTypeStepStrategyStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   public ValidateWorkflowTypeStepStrategyStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
     super(workflowSaveStrategy);
@@ -17,10 +17,10 @@ public class ValidateWorkflowTypeStepStrategyStep<W extends IWorkflow> extends A
   }
 
   @Override
-  public void process() throws WorkflowCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public void process() throws WorkflowCustomizedException{
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
-    final WorkflowType processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
+    final WorkflowTypeEntity processingWorkflowType = this.getWorkflowSaveStrategy().getProcessingWorkflowType();
 
     if (processingWorkflow.getCurrentStep() == null) {
 
@@ -37,13 +37,13 @@ public class ValidateWorkflowTypeStepStrategyStep<W extends IWorkflow> extends A
 
   }
 
-  private void setWorkflowCurrentStep(final IWorkflow workflow, final WorkflowType workflowType) {
+  private void setWorkflowCurrentStep(final IWorkflowBaseEntity workflow, final WorkflowTypeEntity workflowType) {
 
     if (workflow.isInitializing() || workflow.isOffering()) {
-      final WorkflowTypeStep firstStep = this.getWorkflowSaveStrategy().findFirstStep(workflowType);
+      final WorkflowTypeStepEntity firstStep = this.getWorkflowSaveStrategy().findFirstStep(workflowType);
       if (firstStep != null) {
         workflow.setCurrentStep(firstStep);
-        workflow.setCurrentStepIdentity(firstStep.getIdentity());
+        workflow.setCurrentStepId(firstStep.getId());
       }
     }
 
