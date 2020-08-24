@@ -1,7 +1,10 @@
 package com.pth.common.edo;
 
+import io.micronaut.core.annotation.Introspected;
+
 import javax.validation.constraints.NotNull;
 
+@Introspected
 public class UserGroupEdo {
 
   @NotNull(message = "Identity must not be null")

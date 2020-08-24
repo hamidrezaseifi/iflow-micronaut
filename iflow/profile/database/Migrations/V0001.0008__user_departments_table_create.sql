@@ -1,5 +1,5 @@
 CREATE TABLE user_departments (
-  id uuid NOT NULL PRIMARY KEY,
+  id serial NOT NULL PRIMARY KEY,
   user_id uuid NOT NULL,
   department_id uuid NOT NULL,
   member_type int NOT NULL default 5,

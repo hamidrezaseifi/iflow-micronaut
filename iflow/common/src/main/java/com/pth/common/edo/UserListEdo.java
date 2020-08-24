@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
 public class UserListEdo {
 
   @NotNull

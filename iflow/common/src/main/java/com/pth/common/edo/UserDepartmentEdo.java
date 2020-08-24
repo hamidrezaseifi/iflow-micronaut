@@ -2,14 +2,20 @@ package com.pth.common.edo;
 
 import com.pth.common.edo.enums.EUserDepartmentMemberType;
 import com.pth.common.edo.validation.AEnumValueValidator;
+import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.UUID;
 
+@Introspected
 public class UserDepartmentEdo {
 
-  @NotNull(message = "DepartmentIdentity must not be null")
-  private String departmentIdentity;
+  @NotNull(message = "departmentId must not be null")
+  private UUID departmentId;
+
+  @NotNull(message = "userId must not be null")
+  private UUID userId;
 
   @AEnumValueValidator(enumClazz = EUserDepartmentMemberType.class)
   @NotNull(message = "MemberType must not be null")
@@ -19,20 +25,26 @@ public class UserDepartmentEdo {
 
   }
 
-  public UserDepartmentEdo(final String departmentIdentity, final int memberType) {
+  public UserDepartmentEdo(final UUID departmentId, final int memberType) {
 
-    this.departmentIdentity = departmentIdentity;
+    this.departmentId = departmentId;
     this.memberType = memberType;
   }
 
-  public String getDepartmentIdentity() {
-
-    return this.departmentIdentity;
+  public UUID getDepartmentId() {
+    return departmentId;
   }
 
-  public void setDepartmentIdentity(final String departmentIdentity) {
+  public void setDepartmentId(UUID departmentId) {
+    this.departmentId = departmentId;
+  }
 
-    this.departmentIdentity = departmentIdentity;
+  public UUID getUserId() {
+    return userId;
+  }
+
+  public void setUserId(UUID userId) {
+    this.userId = userId;
   }
 
   public int getMemberType() {

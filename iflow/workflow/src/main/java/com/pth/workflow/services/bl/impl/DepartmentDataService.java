@@ -1,6 +1,5 @@
 package com.pth.workflow.services.bl.impl;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +11,6 @@ import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.mapper.IUserMapper;
 import com.pth.workflow.models.User;
 import com.pth.workflow.services.bl.IDepartmentDataService;
-import io.micronaut.security.authentication.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

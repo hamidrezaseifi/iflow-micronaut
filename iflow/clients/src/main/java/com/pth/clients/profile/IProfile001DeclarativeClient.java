@@ -12,7 +12,8 @@ import java.util.UUID;
 @Client(id = "profile")
 public interface IProfile001DeclarativeClient {
 
-    @Get(ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTID)
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_DEPARTMENT
+            + ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTID)
     HttpResponse<UserListEdo> getAllDocumentMetaData(@Header String authorization, UUID id);
 
 }

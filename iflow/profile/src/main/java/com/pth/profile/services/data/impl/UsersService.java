@@ -6,9 +6,11 @@ import com.pth.profile.models.ProfileResponse;
 import com.pth.profile.repositories.*;
 import com.pth.profile.services.data.IUsersService;
 
+import javax.inject.Singleton;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Singleton
 public class UsersService implements IUsersService {
 
   private final IUserRepository userRepository;

@@ -98,7 +98,6 @@ CREATE TABLE public.company_workflow_type (
 	id serial NOT NULL PRIMARY KEY,
 	company_id uuid NOT NULL,
 	workflow_type_id uuid NOT NULL,
-	created_at timestamp NOT NULL DEFAULT timezone('utc'::text, now()),
-	CONSTRAINT company_workflow_type_pk PRIMARY KEY (id)
+	created_at timestamp NOT NULL DEFAULT timezone('utc'::text, now())
 );
 

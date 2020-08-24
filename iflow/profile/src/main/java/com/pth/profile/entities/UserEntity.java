@@ -262,4 +262,8 @@ public class UserEntity extends BaseEntity {
     public void setUserDepartments(Set<UserDepartmentEntity> userDepartments) {
         this.userDepartments = userDepartments;
     }
+
+    public String getCompanyIdentity(){
+        return company.getIdentity();
+    }
 }

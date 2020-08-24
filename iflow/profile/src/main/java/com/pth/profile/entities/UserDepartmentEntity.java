@@ -13,7 +13,7 @@ public class UserDepartmentEntity {
 
   @Id
   @Column(name = "id")
-  protected UUID id;
+  protected long id;
 
   @Column(name = "department_id")
   private UUID departmentId;
@@ -39,7 +39,6 @@ public class UserDepartmentEntity {
   public UserDepartmentEntity() {
     super();
 
-    this.id = UUID.randomUUID();
   }
 
   public UserDepartmentEntity(UserEntity userEntity, DepartmentEntity departmentEntity) {
@@ -48,8 +47,8 @@ public class UserDepartmentEntity {
     this.setUser(userEntity);
   }
 
-  public UUID getId() { return id; }
-  public void setId(UUID id) {
+  public Long getId() { return id; }
+  public void setId(Long id) {
     this.id = id;
   }
 

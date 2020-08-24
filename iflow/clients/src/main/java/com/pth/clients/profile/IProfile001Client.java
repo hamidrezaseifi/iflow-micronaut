@@ -1,5 +1,6 @@
 package com.pth.clients.profile;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pth.common.edo.UserListEdo;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.security.authentication.Authentication;

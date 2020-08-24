@@ -1,11 +1,11 @@
 package com.pth.common.edo;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,13 +16,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.micronaut.core.annotation.Introspected;
 
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@Introspected
 public class UserEdo {
 
   @NotNull(message = "CompanyIdentity must not be null")
   private String companyIdentity;
+
+  @NotNull(message = "CompanyId must not be null")
+  private UUID companyId;
 
   @NotNull(message = "Identity must not be null")
   private String identity;
@@ -30,7 +37,7 @@ public class UserEdo {
   @NotNull(message = "Email must not be null")
   private String email;
 
-  private LocalDate birthDate;
+  private Date birthDate;
 
   @NotNull(message = "FirstName must not be null")
   private String firstName;
@@ -48,16 +55,24 @@ public class UserEdo {
   private Integer permission;
 
   @NotNull(message = "GroupList must not be null")
-  private final Set<String> groups = new HashSet<>();
+  private final Set<UserGroupEdo> groups = new HashSet<>();
 
   @NotNull(message = "UserDepartmentList must not be null")
   private final List<UserDepartmentEdo> userDepartments = new ArrayList<>();
 
   @NotNull(message = "DeputyList must not be null")
-  private final Set<String> deputies = new HashSet<>();
+  private final Set<UserEdo> deputies = new HashSet<>();
 
   @NotNull(message = "RoleList must not be null")
   private final Set<String> roles = new HashSet<>();
+
+  public UUID getCompanyId() {
+    return companyId;
+  }
+
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
+  }
 
   public String getCompanyIdentity() {
 
@@ -89,12 +104,12 @@ public class UserEdo {
     this.email = email;
   }
 
-  public LocalDate getBirthDate() {
+  public Date getBirthDate() {
 
     return this.birthDate;
   }
 
-  public void setBirthDate(final LocalDate birthDate) {
+  public void setBirthDate(final Date birthDate) {
 
     this.birthDate = birthDate;
   }
@@ -149,13 +164,13 @@ public class UserEdo {
     this.permission = permission;
   }
 
-  public Set<String> getGroups() {
+  public Set<UserGroupEdo> getGroups() {
 
     return this.groups;
   }
 
   @JsonSetter
-  public void setGroups(final Collection<String> groups) {
+  public void setGroups(final Collection<UserGroupEdo> groups) {
 
     this.groups.clear();
     if (groups != null) {
@@ -163,9 +178,9 @@ public class UserEdo {
     }
   }
 
-  public void addGroup(final String groupId) {
+  public void addGroup(final UserGroupEdo group) {
 
-    this.groups.add(groupId);
+    this.groups.add(group);
   }
 
   public List<UserDepartmentEdo> getUserDepartments() {
@@ -182,13 +197,18 @@ public class UserEdo {
     }
   }
 
-  public Set<String> getDeputies() {
+  public void addUserDepartment(final UserDepartmentEdo userDepartmentEdo) {
+
+    this.userDepartments.add(userDepartmentEdo);
+  }
+
+  public Set<UserEdo> getDeputies() {
 
     return this.deputies;
   }
 
   @JsonSetter
-  public void setDeputies(final Collection<String> deputies) {
+  public void setDeputies(final Collection<UserEdo> deputies) {
 
     this.deputies.clear();
     if (deputies != null) {
@@ -196,9 +216,9 @@ public class UserEdo {
     }
   }
 
-  public void addDeputy(final String deputyId) {
+  public void addDeputy(final UserEdo deputy) {
 
-    this.deputies.add(deputyId);
+    this.deputies.add(deputy);
   }
 
   public Set<String> getRoles() {
