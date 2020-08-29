@@ -4,7 +4,7 @@ import com.pth.common.contants.TestDataConstants;
 import com.pth.common.credentials.IPasswordHashGenerator;
 import com.pth.common.edo.UserAuthenticationRequestEdo;
 import com.pth.common.edo.UserPasswordGenerationResponseEdo;
-import com.pth.common.enums.EUserRoles;
+import com.pth.common.enums.UserRoles;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.repositories.IUserRepository;
 import io.micronaut.http.HttpResponse;
@@ -15,7 +15,6 @@ import io.micronaut.validation.Validated;
 import io.micronaut.security.annotation.Secured;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,9 +47,9 @@ public class MainController {
         response.setPasswordHash(passwordHashGenerator.produceHash("test", salt));
         response.setPasswordSalt(salt);
         Set<String> roles = new HashSet<>();
-        roles.add(EUserRoles.ADMIN.getId());
-        roles.add(EUserRoles.DATAENTRY.getId());
-        roles.add(EUserRoles.VIEW.getId());
+        roles.add(UserRoles.ADMIN.getId());
+        roles.add(UserRoles.DATAENTRY.getId());
+        roles.add(UserRoles.VIEW.getId());
         response.setRoles(roles);
         response.setStatus(1);
 

@@ -82,17 +82,16 @@ public class AuthenticationFromDatabaseValidatorDb implements IAuthenticationVal
                             Date expire = java.sql.Timestamp.valueOf(LocalDateTime.now().plusSeconds(
                                     jwtConfigurationProperties.getRefreshTokenExpiration()));
 
-                            roles.add(String.format("uname=%s", username.toLowerCase()));
-                            roles.add(String.format("uid=%s", userId));
-                            roles.add(String.format("cid=%s", companyId));
-
                             roles.addAll(userEntity.getRoles()
-                                                           .stream()
-                                                           .map(r -> String.format("rid=%s", r))
-                                                           .collect(Collectors.toList()));
+                                                   .stream()
+                                                   .map(r -> String.format("ROLE_%s", r.toUpperCase()))
+                                                   .collect(Collectors.toList()));
                             Map<String, Object> attr = new HashMap<>();
                             attr.put("issued", issued);
                             attr.put("expire", expire);
+                            attr.put("uid", userId);
+                            attr.put("cid", companyId);
+                            attr.put("uname", username.toLowerCase());
 
                             UserDetails userDetails = new UserDetails(userEntity.getUsername(), roles, attr);
                             Optional<AccessRefreshToken> tokenOptional = this.accessRefreshTokenGenerator.generate(userDetails);

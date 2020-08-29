@@ -39,7 +39,6 @@ public class WorkflowController {
   }
 
   @Post(value = "/search")
-  //@PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
   public HttpResponse<WorkflowListEdo> searchWorkflow(@Body @Valid final WorkflowSearchFilterEdo workflowSearchFilterEdo,
                                                       final Authentication authentication) throws Exception {
 
@@ -50,7 +49,6 @@ public class WorkflowController {
   }
 
   @Post(value = "/readbyidentitylist")
-  //@PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
   public HttpResponse<WorkflowListEdo> readWorkflowList(@Body @Valid final IdentityListEdo identityList,
                                                         final Authentication authentication) throws Exception {
 
@@ -61,7 +59,6 @@ public class WorkflowController {
   }
 
   @Get(value = "/read/{id}")
-  //@PreAuthorize(RestAccessRoles.Workflow.HAS_ROLE_WORKFLOW_READ)
   public HttpResponse<WorkflowEdo> readWorkflow(final UUID id,
                                                 final Authentication authentication,
                                                 @Header String authorization) throws Exception {

@@ -33,7 +33,6 @@ public class WorkflowMessageController {
 
   }
 
-  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = "/readbyuserid/{id}/{status}")
   public HttpResponse<WorkflowMessageListEdo>
     readUserWorkflowMessageList(final UUID id,
@@ -48,7 +47,6 @@ public class WorkflowMessageController {
     return HttpResponse.ok(new WorkflowMessageListEdo(workflowMessageMapper.toEdoList(messageList)));
   }
 
-  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = "/readallforworkflow/{id}")
   public HttpResponse<WorkflowMessageListEdo> readWorkfloWorkflowMessageList(final UUID id,
                                                                              final Authentication authentication,

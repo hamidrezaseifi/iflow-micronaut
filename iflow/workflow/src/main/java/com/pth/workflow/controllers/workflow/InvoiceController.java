@@ -10,6 +10,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowListEdo;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowSaveRequestEdo;
+import com.pth.common.enums.UserRoles;
 import com.pth.workflow.entities.InvoiceWorkflowEntity;
 import com.pth.workflow.mapper.IInvoiceWorkflowMapper;
 import com.pth.workflow.mapper.IInvoiceWorkflowSaveRequestMapper;
@@ -57,6 +58,7 @@ public class InvoiceController {
   }
 
   //@PreAuthorize(RestAccessRoles.InvoiceWorkflowEntity.HAS_ROLE_INVOICE_CREATE)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/create")
   public HttpResponse<InvoiceWorkflowListEdo> createInvoice(
                                               @Body @Valid final InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo,
@@ -70,7 +72,7 @@ public class InvoiceController {
     return HttpResponse.created(new InvoiceWorkflowListEdo(invoiceWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@PreAuthorize(RestAccessRoles.InvoiceWorkflowEntity.HAS_ROLE_INVOICE_SAVE)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/save")
   public HttpResponse<InvoiceWorkflowEdo>
     saveInvoice(@Body @Valid final InvoiceWorkflowSaveRequestEdo requestEdo,
@@ -86,7 +88,6 @@ public class InvoiceController {
     return HttpResponse.badRequest();
   }
 
-  //@PreAuthorize(RestAccessRoles.InvoiceWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Post(value = "/readbyidentitylist")
   public HttpResponse<InvoiceWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
                                                               Authentication authentication,
@@ -97,7 +98,6 @@ public class InvoiceController {
     return HttpResponse.ok(new InvoiceWorkflowListEdo(invoiceWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@PreAuthorize(RestAccessRoles.InvoiceWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Get(value = "/readbyuseridentity/{id}/{status}")
   public HttpResponse<InvoiceWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                      @PathVariable(defaultValue = "0") final int status,
@@ -110,8 +110,7 @@ public class InvoiceController {
     return HttpResponse.ok(new InvoiceWorkflowListEdo(invoiceWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@ResponseStatus(HttpStatus.ACCEPTED)
-  //@PreAuthorize(RestAccessRoles.InvoiceWorkflowEntity.HAS_ROLE_INVOICE_READ)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Status(HttpStatus.ACCEPTED)
   @Post(value = "/validate")
   public void

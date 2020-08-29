@@ -10,6 +10,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowSaveRequestEdo;
+import com.pth.common.enums.UserRoles;
 import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.mapper.ISingleTaskWorkflowMapper;
 import com.pth.workflow.mapper.ISingleTaskWorkflowSaveRequestMapper;
@@ -41,7 +42,6 @@ public class SingleTaskController {
     this.singleTaskWorkflowSaveRequestMapper = singleTaskWorkflowSaveRequestMapper;
   }
 
-  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Get(value = "/readbyidentity/{identity}")
   public HttpResponse<SingleTaskWorkflowEdo> readInvoice(final String identity,
                                                          final Authentication authentication,
@@ -56,7 +56,7 @@ public class SingleTaskController {
     return HttpResponse.notFound();
   }
 
-  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_CREATE)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/create")
   public HttpResponse<SingleTaskWorkflowListEdo> createInvoice(
           @Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
@@ -71,7 +71,7 @@ public class SingleTaskController {
     return HttpResponse.created(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_SAVE)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/save")
   public HttpResponse<SingleTaskWorkflowEdo>
   saveInvoice(@Body @Valid final SingleTaskWorkflowSaveRequestEdo requestEdo,
@@ -88,7 +88,6 @@ public class SingleTaskController {
     return HttpResponse.badRequest();
   }
 
-  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Post(value = "/readbyidentitylist")
   public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
                                                                  final Authentication authentication,
@@ -100,7 +99,6 @@ public class SingleTaskController {
     return HttpResponse.ok(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Get(value = "/readbyuseridentity/{id}/{status}")
   public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                         @PathVariable(defaultValue = "0") final int status,
@@ -113,9 +111,8 @@ public class SingleTaskController {
     return HttpResponse.ok(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@ResponseStatus(HttpStatus.ACCEPTED)
-  //@PreAuthorize(RestAccessRoles.SingleTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Status(HttpStatus.ACCEPTED)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/validate")
   public void
   validateInvoiceRequest(@Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,

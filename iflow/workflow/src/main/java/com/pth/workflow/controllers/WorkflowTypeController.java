@@ -9,6 +9,7 @@ import java.util.UUID;
 import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.WorkflowTypeEdo;
 import com.pth.common.edo.WorkflowTypeListEdo;
+import com.pth.common.enums.UserRoles;
 import com.pth.workflow.entities.WorkflowTypeEntity;
 import com.pth.workflow.mapper.IWorkflowTypeMapper;
 import com.pth.workflow.services.bl.IWorkflowTypeProcessService;
@@ -18,6 +19,7 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 
@@ -60,12 +62,10 @@ public class WorkflowTypeController {
     return HttpResponse.ok(new WorkflowTypeListEdo(workflowTypeMapper.toEdoList(modelList)));
   }
 
-  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = "/readbycompanyidentity/{id}")
   public HttpResponse<WorkflowTypeListEdo> readWorkflowListByCompany(final UUID id,
                                                                      final Authentication authentication,
                                                                      @Header String authorization) throws Exception {
-
     final List<WorkflowTypeEntity> modelList = this.workflowTypeProcessService.getListByCompanyId(id);
 
     return HttpResponse.ok(new WorkflowTypeListEdo(workflowTypeMapper.toEdoList(modelList)));

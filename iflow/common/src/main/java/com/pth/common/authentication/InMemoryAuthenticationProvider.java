@@ -1,6 +1,6 @@
 package com.pth.common.authentication;
 
-import com.pth.common.enums.EUserRoles;
+import com.pth.common.enums.UserRoles;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.security.authentication.*;
@@ -36,9 +36,9 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
 
       roles.add(String.format("uname=%s", username));
       roles.add(String.format("uid=%s", VALID_USER_ID));
-      roles.add(String.format("rid=%s", EUserRoles.ADMIN.getId()));
-      roles.add(String.format("rid=%s", EUserRoles.DATAENTRY.getId()));
-      roles.add(String.format("rid=%s", EUserRoles.VIEW.getId()));
+      roles.add(String.format("rid=%s", UserRoles.ADMIN.getId()));
+      roles.add(String.format("rid=%s", UserRoles.DATAENTRY.getId()));
+      roles.add(String.format("rid=%s", UserRoles.VIEW.getId()));
 
 
       return Flowable.just(new UserDetails(VALID_USER_ID.toString(), roles));

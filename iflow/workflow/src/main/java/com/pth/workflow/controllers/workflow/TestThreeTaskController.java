@@ -10,6 +10,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowListEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowSaveRequestEdo;
+import com.pth.common.enums.UserRoles;
 import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.mapper.ITestThreeTaskWorkflowMapper;
 import com.pth.workflow.mapper.ITestThreeTaskWorkflowSaveRequestMapper;
@@ -41,7 +42,6 @@ public class TestThreeTaskController {
     this.testThreeTaskWorkflowSaveRequestMapper = testThreeTaskWorkflowSaveRequestMapper;
   }
 
-  //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Get(value = "/readbyidentity/{identity}")
   public HttpResponse<TestThreeTaskWorkflowEdo> readInvoice(final String identity,
                                                             final Authentication authentication,
@@ -56,7 +56,7 @@ public class TestThreeTaskController {
     return HttpResponse.notFound();
   }
 
-  //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_CREATE)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/create")
   public HttpResponse<TestThreeTaskWorkflowListEdo>
     createInvoice(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
@@ -71,7 +71,7 @@ public class TestThreeTaskController {
     return HttpResponse.created(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_SAVE)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/save")
   public HttpResponse<TestThreeTaskWorkflowEdo>
   saveInvoice(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo requestEdo,
@@ -88,7 +88,6 @@ public class TestThreeTaskController {
     return HttpResponse.badRequest();
   }
 
-  //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Post(value = "/readbyidentitylist")
   public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
                                                                     final Authentication authentication,
@@ -100,7 +99,6 @@ public class TestThreeTaskController {
     return HttpResponse.ok(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Get(value = "/readbyuseridentity/{id}/{status}")
   public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                            @PathVariable() final int status,
@@ -114,9 +112,8 @@ public class TestThreeTaskController {
     return HttpResponse.ok(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  //@ResponseStatus(HttpStatus.ACCEPTED)
-  //@PreAuthorize(RestAccessRoles.TestThreeTaskWorkflowEntity.HAS_ROLE_INVOICE_READ)
   @Status(HttpStatus.ACCEPTED)
+  @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/validate")
   public void validateInvoiceRequest(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
                                      final Authentication authentication,
