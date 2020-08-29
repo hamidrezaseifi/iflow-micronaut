@@ -3,24 +3,24 @@ micronaut:
     name: gui
   server:
     port: 1200
-  security:
-    enabled: true
-    endpoints:
-      login:
-        enabled: false
-      oauth:
-        enabled: false
-    token:
-      jwt:
+
+  router:
+    static-resources:
+      default:
         enabled: true
-        generator:
-          access-token-expiration: 3600
-          refresh-token-expiration: 172800
-        signatures:
-          secret:
-            generator:
-              jws-algorithm: HS256
-              secret: ${JWT_GENERATOR_SECRET:pleaseChangeThisSecretForANewOne}
+        mapping: "/**"
+        paths: "classpath:static"
+
+  views:
+    folder: templates
+    thymeleaf:
+      enabled: true
+      character-encoding: UTF-8
+      template-mode:
+        thymeleaf:
+          suffix: .html
+          prefix: /templates
+
 
   extensions:
     project: gui
