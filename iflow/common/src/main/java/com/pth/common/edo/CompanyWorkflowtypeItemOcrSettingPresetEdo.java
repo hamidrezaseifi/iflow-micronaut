@@ -2,6 +2,7 @@ package com.pth.common.edo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
@@ -9,6 +10,10 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 
 public class CompanyWorkflowtypeItemOcrSettingPresetEdo {
+
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   @NotNull(message = "Identity must not be null")
   private String identity;
@@ -30,6 +35,14 @@ public class CompanyWorkflowtypeItemOcrSettingPresetEdo {
 
   @NotNull(message = "CompanyWorkflowtypeItemOcrSettingPresetItemList must not be null")
   private List<CompanyWorkflowtypeItemOcrSettingPresetItemEdo> items = new ArrayList<>();
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
 

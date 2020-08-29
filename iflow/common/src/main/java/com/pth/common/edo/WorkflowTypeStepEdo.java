@@ -1,8 +1,12 @@
 package com.pth.common.edo;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class WorkflowTypeStepEdo {
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   private String  identity;
 
@@ -25,6 +29,14 @@ public class WorkflowTypeStepEdo {
 
   @NotNull
   private Integer expireDays;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
     return this.identity;

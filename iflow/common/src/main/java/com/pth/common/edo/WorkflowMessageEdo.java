@@ -1,6 +1,7 @@
 package com.pth.common.edo;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,6 +12,10 @@ import com.pth.common.edo.enums.EWorkflowMessageType;
 import com.pth.common.edo.validation.AEnumValueValidator;
 
 public class WorkflowMessageEdo {
+
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   @NotNull(message = "WorkflowIdentity must not be null")
   private String        workflowIdentity;
@@ -42,6 +47,14 @@ public class WorkflowMessageEdo {
 
   @JsonFormat(pattern = IsoFormats.DATETIME_FORMAT_ISO)
   private LocalDateTime createdAt;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getWorkflowIdentity() {
     return this.workflowIdentity;

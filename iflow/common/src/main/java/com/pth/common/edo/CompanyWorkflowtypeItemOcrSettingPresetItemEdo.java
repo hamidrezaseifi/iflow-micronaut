@@ -2,16 +2,21 @@ package com.pth.common.edo;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
+import java.util.UUID;
 
 public class CompanyWorkflowtypeItemOcrSettingPresetItemEdo {
 
-  @NotNull(message = "PropertyName must not be null")
-  private String propertyName;
+
+    @NotNull(message = "id must not be null")
+    protected UUID id;
+
+    @NotNull(message = "PropertyName must not be null")
+    private String propertyName;
 
   private String value;
 
   @NotNull(message = "OcrType must not be null")
- private Integer ocrType;
+  private Integer ocrType;
 
   @NotNull(message = "Status must not be null")
   private Integer status;
@@ -19,7 +24,15 @@ public class CompanyWorkflowtypeItemOcrSettingPresetItemEdo {
   @NotNull(message = "Version must not be null")
   private Integer version;
 
-  public String getPropertyName() {
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getPropertyName() {
 
     return this.propertyName;
   }

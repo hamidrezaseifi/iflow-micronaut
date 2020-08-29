@@ -3,8 +3,13 @@ package com.pth.common.edo;
 import com.pth.common.edo.enums.EWorkflowActionStatus;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class WorkflowActionEdo {
+
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   private String  assignToIdentity;
 
@@ -15,6 +20,14 @@ public class WorkflowActionEdo {
 
   @NotNull(message = "Status must not be null")
   private Integer status;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getAssignToIdentity() {
     return this.assignToIdentity;

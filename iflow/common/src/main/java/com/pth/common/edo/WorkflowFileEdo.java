@@ -2,12 +2,17 @@ package com.pth.common.edo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class WorkflowFileEdo {
+
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   @NotNull(message = "Identity is not allowed to be null!")
   private String                       identity;
@@ -32,6 +37,14 @@ public class WorkflowFileEdo {
 
   @NotNull
   private List<WorkflowFileVersionEdo> fileVersions = new ArrayList<>();
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
     return this.identity;

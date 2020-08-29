@@ -1,8 +1,13 @@
 package com.pth.common.edo;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class WorkflowFileVersionEdo {
+
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   @NotNull(message = "CreatedByIdentity must not be null!")
   private String  createdByIdentity;
@@ -17,6 +22,14 @@ public class WorkflowFileVersionEdo {
 
   @NotNull(message = "Status must not be null!")
   private Integer status;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getFilePath() {
     return this.filePath;

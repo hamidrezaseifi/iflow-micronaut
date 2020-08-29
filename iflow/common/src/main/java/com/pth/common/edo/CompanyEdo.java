@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class CompanyEdo {
 
-  @NotNull(message = "Identity must not be null")
+  @NotNull(message = "Id must not be null")
   private UUID id;
 
   @NotNull(message = "Identity must not be null")

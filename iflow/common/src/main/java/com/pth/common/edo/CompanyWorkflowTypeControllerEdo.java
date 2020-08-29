@@ -1,8 +1,12 @@
 package com.pth.common.edo;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class CompanyWorkflowTypeControllerEdo {
+
+  @NotNull(message = "Id must not be null")
+  private UUID id;
 
   @NotNull(message = "WorkflowTypeIdentity must not be null")
   private String workflowTypeIdentity;
@@ -22,6 +26,14 @@ public class CompanyWorkflowTypeControllerEdo {
     this.workflowTypeIdentity = workflowTypeIdentity;
     this.userIdentity = userIdentity;
     this.priority = priority;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
   }
 
   public String getWorkflowTypeIdentity() {

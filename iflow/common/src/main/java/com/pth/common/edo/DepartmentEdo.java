@@ -1,10 +1,13 @@
 package com.pth.common.edo;
 
 import javax.validation.constraints.NotNull;
-
+import java.util.UUID;
 
 
 public class DepartmentEdo {
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   @NotNull(message = "Identity must not be null")
   private String identity;
@@ -20,6 +23,14 @@ public class DepartmentEdo {
 
   @NotNull
   private Integer version;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
 

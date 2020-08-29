@@ -9,6 +9,7 @@ import com.pth.common.edo.enums.EWorkflowTypeAssignType;
 
 public class WorkflowTypeEdo {
 
+  @NotNull(message = "id must not be null")
   protected UUID id;
 
   private String identity;

@@ -4,8 +4,13 @@ import com.pth.common.edo.enums.EApplication;
 import com.pth.common.edo.validation.AEnumNameValidator;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 public class UserDashboardMenuEdo {
+
+
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
   @NotNull(message = "UserIdentity must not be null")
   private String userIdentity;
@@ -28,6 +33,14 @@ public class UserDashboardMenuEdo {
 
   @NotNull(message = "Version must not be null")
   private Integer version;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getUserIdentity() {
 
