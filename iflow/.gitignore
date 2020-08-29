@@ -12,3 +12,4 @@ out/
 .settings
 .classpath
 /.mvn/wrapper/
+/gui/src/main/resources/static/scripts/

@@ -12,3 +12,8 @@ out/
 .settings
 .classpath
 /.mvn/wrapper/
+/src/main/resources/static/assets/
+/src/main/resources/static/scripts/
+/src/main/java/com/pth/gui/models/Person.java
+/src/main/resources/views/home.html
+/src/main/resources/views/layoutFile.html
