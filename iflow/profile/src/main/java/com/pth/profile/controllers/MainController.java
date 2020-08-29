@@ -47,9 +47,9 @@ public class MainController {
         response.setPasswordHash(passwordHashGenerator.produceHash("test", salt));
         response.setPasswordSalt(salt);
         Set<String> roles = new HashSet<>();
-        roles.add(UserRoles.ADMIN.getId());
-        roles.add(UserRoles.DATAENTRY.getId());
-        roles.add(UserRoles.VIEW.getId());
+        roles.add(UserRoles.ROLE_ADMIN);
+        roles.add(UserRoles.ROLE_DATAENTRY);
+        roles.add(UserRoles.ROLE_VIEW);
         response.setRoles(roles);
         response.setStatus(1);
 

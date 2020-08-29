@@ -10,6 +10,4 @@ public class UserRoles {
 
     public static final String VIEW = "VIEW";
     public static final String ROLE_VIEW = "ROLE_" + VIEW;
-
-
 }
