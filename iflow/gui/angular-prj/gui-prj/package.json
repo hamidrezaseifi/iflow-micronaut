@@ -32,6 +32,7 @@
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "net": "^1.0.2",
+    "ng": "0.0.0",
     "ng-angular8-datatable": "^0.9.11",
     "ng-seven-datatable": "^0.9.0",
     "ng2-pdf-viewer": "^6.0.2",

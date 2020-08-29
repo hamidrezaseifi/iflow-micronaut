@@ -1,4 +1,4 @@
-package com.pth.core;
+package com.pth.gui;
 
 import io.micronaut.runtime.Micronaut;
 
