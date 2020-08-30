@@ -48,4 +48,12 @@ public class IFlowCustomizedException extends ValidationException {
     return this.errorType;
   }
 
+  public static String stackListToString(final StackTraceElement[] list) {
+    String res = "";
+    for (final StackTraceElement el : list) {
+      res += el.toString() + "\n";
+    }
+
+    return res;
+  }
 }

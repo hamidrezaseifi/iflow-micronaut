@@ -9,37 +9,37 @@ import { HttpHepler } from '../helper/http-hepler';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalService {
-	
-	loadGeneralDataUrl :string = "/general/data/generaldatat";
-	public currentSessionDataSubject: BehaviorSubject<GeneralData> = new BehaviorSubject<GeneralData>(null);
-	//public currentSessionDataObs :Observable<GeneralData>;		
 
-	public presensSubject :BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);		
+	loadGeneralDataUrl :string = "/users/sessiondata";
+	public currentSessionDataSubject: BehaviorSubject<GeneralData> = new BehaviorSubject<GeneralData>(null);
+	//public currentSessionDataObs :Observable<GeneralData>;
+
+	public presensSubject :BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
 	public loadedGeneralData : GeneralData = null;
-	
-	constructor(private http:HttpClient, private loadingService: LoadingServiceService,) { 
-		
+
+	constructor(private http:HttpClient, private loadingService: LoadingServiceService,) {
+
 	}
-   
-	
+
+
 	loadAllSetting(){
 		this.loadingService.showLoading();
-		
+
         const httpOptions = { headers: HttpHepler.generateFormHeader() };
 
 				this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe(
 						(generalData :GeneralData) => {
 		            console.log("GET call successful generaldata", generalData);
-		            
+
 		            var islogged = generalData.isLogged + "";
 		            generalData.isLogged = islogged === "true";
-		            
+
 		            this.loadedGeneralData = <GeneralData> JSON.parse(JSON.stringify(generalData));
-		            
+
 		        	this.currentSessionDataSubject.next(generalData);
 		        	this.presensSubject.next(true);
-		        	
+
 		        	this.loadingService.hideLoading();
 		        },
 		        response => {
@@ -47,28 +47,28 @@ export class GlobalService {
 		            this.loadingService.hideLoading();
 		        },
 		        () => {
-		            
+
 		            this.loadingService.hideLoading();
 		        }
 		);
 	}
-	
+
 	/*setGeneralData(generalData :GeneralData){
 		this.currentSessionDataSubject.next(generalData);
 		//this.currentSessionDataSubject.complete();
 	}*/
-  
-	loadAllSettingObserv(){		
+
+	loadAllSettingObserv(){
         const httpOptions = { headers: HttpHepler.generateFormHeader() };
-        
+
 		return this.http.get(this.loadGeneralDataUrl, httpOptions);
 	}
-  
-	/*clear(){	
-		
+
+	/*clear(){
+
 		//alert("clear global");
 		this.currentSessionDataSubject.next(null);
 		//this.currentSessionDataSubject.complete();
 	}*/
-  
+
 }

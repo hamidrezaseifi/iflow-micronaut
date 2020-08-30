@@ -5,7 +5,7 @@
 			<a class="toolbar-link" (click)="reload()"><i class="material-icons">refresh</i></a>
 			<a class="toolbar-link" (click)="addPreset()"><i class="material-icons">add</i></a>
 		</div>
-	
+
 		<div class="workflow-content" *ngIf="showList">
 			<div class="item-row">
 				<div class="list-group">
@@ -22,11 +22,11 @@
 				<a class="toolbar-link" (click)="closePreset()"><i class="material-icons">close</i></a>
 				<a class="toolbar-link" (click)="savePreset()" *ngIf="selectedPresetChanged"><i class="material-icons">save</i></a>
 			</div>
-		
+
 			<div>
 				<label class="property-label">WorkflowType</label>
 				<select class="property-value" (ngModelChange)="setPresetWorkflowIdentity($event)" [ngModel]="selectedPreset.workflowTypeIdentity">
-					<option *ngFor="let worlflowType of worlflowTypes;" value="{{worlflowType.identity}}">{{worlflowType.title}}</option>
+					<option *ngFor="let worlflowType of workflowTypes;" value="{{worlflowType.identity}}">{{worlflowType.title}}</option>
 				</select>
 			</div>
 			<div>
@@ -39,7 +39,7 @@
 					  <div *ngFor="let prop of selectedPresetItems;" class="list-group-item list-group-item-action link-out" >
 					  	<label class="property-label">{{ prop.propertyName | translate  }}</label>
 					  	<input type="text" class="property-value" readonly
-					  		(ngModelChange)="setPresetItemValue(prop.propertyName, $event)" 
+					  		(ngModelChange)="setPresetItemValue(prop.propertyName, $event)"
 					  		[ngModel]="prop.value"/>
 					  	<a (click)="selectValueList(prop)" class="toolbar-link selectlist-button" ><i class="material-icons">list</i></a>
 					  </div>
@@ -47,14 +47,14 @@
 					<div class="clear"></div>
 				</div>
 			</div>
-		
-		</div>
-	
-	</div>
-	
-	
 
-	
+		</div>
+
+	</div>
+
+
+
+
 		<div class="modal fade show" tabindex="-1" *ngIf="showTextListDialog" role="dialog">
 			<div class="modal-dialog text-list-dialog" role="document">
 				<div class="modal-header">
@@ -62,14 +62,13 @@
 					<button type="button" class="close" (click)="hideTextListDialog()" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-				</div>			
+				</div>
 				<div class="modal-body">
 					<app-text-list [separator]="textSeparator" [text]="selectedTextToMakeList" (textChanged)="selectedTextChanged($event)"></app-text-list>
-				</div>	
+				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" (click)="applySelectexTextChanged()">{{ 'common.apply' | translate }}</button>
 					<button type="button" class="btn btn-secondary" (click)="hideTextListDialog()">{{ 'common.close' | translate }}</button>
-				</div>						
+				</div>
 			</div>
 		</div>
-		

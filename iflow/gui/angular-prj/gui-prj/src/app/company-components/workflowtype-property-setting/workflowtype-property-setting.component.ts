@@ -21,23 +21,23 @@ import { WorkflowType } from '../../wf-models/workflowtype';
 export class WorkflowtypePropertySettingComponent implements OnInit {
 
 	ocrSettingPresets : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
-	
-	worlflowTypes: WorkflowType[] = [];
+
+	workflowTypes: WorkflowType[] = [];
 	worlflowTypeItems: string[][] = [];
 
   selectedPreset :CompanyWorkflowtypeItemOcrSettingPreset = null;
   selectedPresetItems :CompanyWorkflowtypeItemOcrSettingPresetItem[] = [];
-	
+
 	selectedPresetChanged :boolean = false;
 
 	generalDataObs :Observable<GeneralData> = null;
-	
+
 	showList: boolean = true;
 
 	showDetail: boolean = false;
-	
+
 	showTextListDialog :boolean = false;
-	
+
 	textSeparator :string = ";";
 	selectedTextToMakeList :string = "";
 	selectedPropertyName :string= "";
@@ -52,89 +52,89 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 			private route :ActivatedRoute,
 			private formBuilder: FormBuilder,
 			private dateAdapter: DateAdapter<Date>,
-			
+
 	) {
 		this.dateAdapter.setLocale('de');
-		
+
        /* translate.get('user-delete-message').subscribe((res: string) => {
         	this.deleteMessageBase = res;
         });*/
 
-        
+
 		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
 		this.generalDataObs.subscribe(data => {
-			   
-			this.worlflowTypes = data.workflow.worlflowTypes;
-			
-			for(var id in this.worlflowTypes){
-				var type:WorkflowType = this.worlflowTypes[id];
+
+			this.workflowTypes = data.workflow.workflowTypes;
+
+			for(var id in this.workflowTypes){
+				var type:WorkflowType = this.workflowTypes[id];
 				//this.workflowtypeItemNames[type.identity] = null;
-				
+
 				if(this.ocrSettingPresets[type.identity] === undefined){
 					this.ocrSettingPresets[type.identity] = [];
 				}
 			}
 		});
-		
+
 	}
 
 	ngOnInit() {
-		
-		
+
+
 		this.global.loadAllSetting();
-		
+
 		this.reload();
 	}
 
 	debug():string{
-		
+
 		return JSON.stringify(this.ocrSettingPresets);
 	}
-	
+
 	reload() {
 		this.loadingService.showLoading();
-		
+
 		this.editService.listPresets().subscribe(
 	        (results :CompanyWorkflowtypeItemOcrSettingPreset[]) => {
-	        	
+
 	            console.log("CompanyWorkflowtypeItemOcrSetting list", results);
-	        	
+
 	            this.ocrSettingPresets = results;
 	        },
 	        response => {
 	        	console.log("Error in get CompanyWorkflowtypeItemOcrSetting list", response);
-	        	this.loadingService.hideLoading();	 
+	        	this.loadingService.hideLoading();
 	        	this.errorService.showErrorResponse(response);
 	        },
 	        () => {
-	        	
-	        	this.loadingService.hideLoading();	            
+
+	        	this.loadingService.hideLoading();
 	        }
-		);	       	
+		);
 	}
-	
+
 	addPreset(){
 	  this.selectedPreset = new CompanyWorkflowtypeItemOcrSettingPreset();
-	  	  
+
 		this.selectedPresetItems = this.selectedPreset.items;
-		
+
 		this.showList = false;
 		this.showDetail = true;
 		this.selectedPresetChanged = false;
-	  
+
 	}
-	
+
 	showPreset(preset :CompanyWorkflowtypeItemOcrSettingPreset){
-	  
+
 	  this.selectedPreset = JSON.parse(JSON.stringify(preset))
 
 		this.selectedPresetItems = preset.items;
-		
+
 		this.showList = false;
 		this.showDetail = true;
 		this.selectedPresetChanged = false;
 	}
-	
+
 	closePreset(){
 
 		this.showList = true;
@@ -142,52 +142,52 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 		this.selectedPresetChanged = false;
 		this.reload();
 	}
-	
+
 	setPresetName(newVal:string){
 	  this.selectedPreset.presetName = newVal;
 	}
-	
+
 	setPresetWorkflowIdentity(newVal:string){
 	  this.selectedPreset.workflowTypeIdentity = newVal;
-	  
+
 	  this.verifyWorlflowTypeItems(newVal);
 	}
-	
+
 	verifyWorlflowTypeItems(workflowTypeIdentity: string){
 		if(this.worlflowTypeItems[workflowTypeIdentity] === undefined){
-	    
+
 	    this.loadingService.showLoading();
-			
+
 			this.editService.listWorkflowTypeItems(workflowTypeIdentity).subscribe(
 		        (results :string[]) => {
-		        	
+
 		            console.log("Workflowtype Items for " + workflowTypeIdentity, results);
-		        	
+
 		            this.worlflowTypeItems[workflowTypeIdentity] = results;
-		                
+
 		            this.selectedPresetItems = this.resetPresetItems(this.selectedPreset);
 		        },
 		        response => {
 		        	console.log("Error in get Workflowtype Items for " + workflowTypeIdentity, response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        	this.errorService.showErrorResponse(response);
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	            
+
+		        	this.loadingService.hideLoading();
 		        }
-			);	   
-			
+			);
+
 	  }
 	}
-	
+
 	resetPresetItems(preset :CompanyWorkflowtypeItemOcrSettingPreset): CompanyWorkflowtypeItemOcrSettingPresetItem[]{
 	  //this.selectedPreset = new CompanyWorkflowtypeItemOcrSettingPreset();
-	  
+
 	  var items: CompanyWorkflowtypeItemOcrSettingPresetItem[] = [];
-	  
+
 	  for(var index in this.worlflowTypeItems[preset.workflowTypeIdentity]){
-	  	var itemName = this.worlflowTypeItems[preset.workflowTypeIdentity][index];  
+	  	var itemName = this.worlflowTypeItems[preset.workflowTypeIdentity][index];
 	  	var item :CompanyWorkflowtypeItemOcrSettingPresetItem = this.findItemByName(preset, itemName);
 	  	if(item === null){
 	  	  item = new CompanyWorkflowtypeItemOcrSettingPresetItem();
@@ -196,12 +196,12 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 	  	}
 	  	items.push(item);
 	  }
-	  
+
 	  return items;
-	  
+
 		//this.selectedPresetItems = this.selectedPreset.items;
 	}
-	
+
 	private findItemByName(preset :CompanyWorkflowtypeItemOcrSettingPreset, propertyName: string)
 		:CompanyWorkflowtypeItemOcrSettingPresetItem{
 	  for(var index in preset.items){
@@ -211,69 +211,69 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 	  }
 	  return null;
 	}
-	
+
 	setPresetItemValue(name:string, newVal:string){
-		
+
 	  this.selectedPresetItems[name].value = newVal;
 
 		this.selectedPresetChanged = true;
 	}
-	
+
 	savePreset(){
-		
-		
+
+
 		this.loadingService.showLoading();
-		
+
 		this.editService.updatePreset(this.selectedPreset).subscribe(
 	        (results :CompanyWorkflowtypeItemOcrSettingPreset[]) => {
-	        	
+
 	            console.log("Update CompanyWorkflowtypeItemOcrSetting result list", results);
-	        	
+
 	            this.ocrSettingPresets = results;
-	            
+
 	            this.showList = true;
 	    		this.showDetail = false;
 	    		this.selectedPresetChanged = false;
-	    		
+
 	    		this.reload();
-	    		
+
 	        },
 	        response => {
 	        	console.log("Error in Update CompanyWorkflowtypeItemOcrSetting list", response);
-	        	this.loadingService.hideLoading();	 
+	        	this.loadingService.hideLoading();
 	        	this.errorService.showErrorResponse(response);
 	        },
 	        () => {
-	        	
-	        	this.loadingService.hideLoading();	            
+
+	        	this.loadingService.hideLoading();
 	        }
-		);	   
-		
-		
+		);
+
+
 		//this.reload();
 	}
-	
+
 	selectValueList(prop:CompanyWorkflowtypeItemOcrSettingPresetItem){
 		this.selectedTextToMakeList = prop.value;
 		this.selectedPropertyName = prop.propertyName;
-		
+
 		this.showTextListDialog = true;
 	}
-	
+
 	selectedTextChanged(text:string){
 
 		this.selectedTextToMakeList = text;
 	}
-	
+
 	applySelectexTextChanged(){
 
 	  this.selectedPresetItems[this.selectedPropertyName].value = this.selectedTextToMakeList;
 	  this.selectedPresetChanged = true;
 		this.showTextListDialog = false;
 	}
-	
+
 	hideTextListDialog(){
 		this.showTextListDialog = false;
 	}
-	
+
 }

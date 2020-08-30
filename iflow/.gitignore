@@ -13,3 +13,4 @@ out/
 .classpath
 /.mvn/wrapper/
 /gui/src/main/resources/static/scripts/
+/gui/src/main/java/com/pth/gui/models/gui/Person.java

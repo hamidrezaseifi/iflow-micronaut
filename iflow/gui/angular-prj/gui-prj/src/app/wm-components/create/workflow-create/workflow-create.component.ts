@@ -14,30 +14,30 @@ import { User, GeneralData } from '../../../ui-models';
   styleUrls: ['./workflow-create.component.css']
 })
 export class WorkflowCreateComponent implements OnInit {
-	
-	worlflowTypes: WorkflowType[] = [];
+
+	workflowTypes: WorkflowType[] = [];
 	generalDataObs :Observable<GeneralData> = null;
 
 	constructor(
 		    private router: Router,
 			private global: GlobalService,
 			translate: TranslateService,
-			
+
 	) {
-		
+
 		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
 		this.generalDataObs.subscribe(data => {
-			   
-			this.worlflowTypes = data.workflow.worlflowTypes;
+
+			this.workflowTypes = data.workflow.workflowTypes;
 		});
 	}
-	  
+
 	ngOnInit() {
-					
+
 		this.global.loadAllSetting();
 	}
-	
-	
+
+
 
 }
 

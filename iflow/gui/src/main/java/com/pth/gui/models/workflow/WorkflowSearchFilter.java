@@ -1,4 +1,4 @@
-package com.pth.gui.models;
+package com.pth.gui.models.workflow;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -2,6 +2,7 @@ package com.pth.common.edo.workflow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
@@ -12,6 +13,9 @@ import com.pth.common.edo.WorkflowActionEdo;
 import com.pth.common.edo.WorkflowFileEdo;
 
 public class WorkflowEdo {
+
+  @NotNull(message = "Id is not allowed to be null!")
+  private UUID id;
 
   @NotNull(message = "Identity is not allowed to be null!")
   private String identity;
@@ -41,6 +45,14 @@ public class WorkflowEdo {
 
   @NotNull(message = "WorkflowActionSet is not allowed to be null!")
   private List<WorkflowActionEdo> actions = new ArrayList<>();
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
 
