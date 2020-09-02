@@ -26,7 +26,7 @@
 		        
 					<div class="form-group">
 					    <label for="companyid" th:text="#{common.companyidentificator}"></label>
-					    <input class="form-control" id="companyid"  type="text" name="companyid" autofocus th:value="${companyid}">
+					    <input class="form-control" id="companyid"  type="text" name="companyId" autofocus th:value="${companyId}">
 					</div>
   		        
 					<div class="form-group">
@@ -48,7 +48,11 @@
 		        	</div> 
 		        	
 		        	<input type="hidden" name="returnUrl" th:value="${returnUrl}">
-		          
+
+					<li th:if="${isFailed}" id="errors">
+						<span style="color: red;">Login Failed</span>
+					</li>
+
 		        </form>
 	        
 	        </div>

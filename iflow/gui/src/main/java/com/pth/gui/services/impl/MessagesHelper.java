@@ -14,17 +14,15 @@ import com.pth.gui.services.IMessagesHelper;
 
 
 @Singleton
-public class MessagesHelper implements IMessagesHelper {
+public class MessagesHelper extends ResourceBundleMessageSource implements IMessagesHelper  {
 
   private static final String   ERROR_TYPE_PREFIX = "error-type-";
-
-  //@Autowired
-  private MessageSource messageSource;
 
   private MessageSource.MessageContext messageContext;
 
   public MessagesHelper() {
-    this.messageSource = new ResourceBundleMessageSource("messages.messages");
+    super("messages.messages");
+    messageContext = MessageSource.MessageContext.of(Locale.GERMAN);
   }
 
   //private MessageSourceAccessor accessor;
@@ -59,7 +57,7 @@ public class MessagesHelper implements IMessagesHelper {
   }
 
   private String getMessageFromSource(String key){
-    return this.messageSource.getMessage(key, messageContext).get();
+    return this.getMessage(key, messageContext).get();
   }
   private String getErrorTypeMessageKey(final EIFlowErrorType errorType) {
     return ERROR_TYPE_PREFIX + errorType.toString().toLowerCase();

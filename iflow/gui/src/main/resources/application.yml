@@ -4,6 +4,41 @@ micronaut:
   server:
     port: 1200
 
+  security:
+    enabled: true
+    intercept-url-map:
+      - pattern: /css/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /js/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /images/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /auth/authenticate
+        httpMethod: POST
+        access:
+          - isAnonymous()
+      - pattern: /auth/login
+        httpMethod: GET
+        access:
+          - isAnonymous()
+    endpoints:
+      login:
+        enabled: true
+      logout:
+        enabled: true
+    session:
+      enabled: true
+      login-success-target-url: /
+      login-failure-target-url: /auth/authFailed
+      logout-targetUrl: '/auth/login'
+      unauthorized-target-url: '/auth/login'
+
   router:
     static-resources:
       default:

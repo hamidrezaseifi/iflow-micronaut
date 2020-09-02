@@ -26,6 +26,7 @@ import java.util.Optional;
 @Singleton
 @Replaces(JwtTokenValidator.class)
 @Requires(property = "micronaut.extensions.project", notEquals = "profile")
+@Requires(property = "micronaut.extensions.project", notEquals = "gui")
 public class RemoteJwtTokenValidator extends JwtTokenValidator {
 
     private final IAuthenticationV001DeclarativeClient authenticationV001DeclarativeClient;

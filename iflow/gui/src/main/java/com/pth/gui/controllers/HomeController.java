@@ -11,7 +11,7 @@ import io.micronaut.views.ModelAndView;
 
 import java.security.Principal;
 
-@Secured(SecurityRule.IS_ANONYMOUS)
+@Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller
 public class HomeController {
 
