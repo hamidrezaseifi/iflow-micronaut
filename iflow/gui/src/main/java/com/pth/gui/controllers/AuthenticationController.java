@@ -28,16 +28,10 @@ public class AuthenticationController {
 
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Get(value = "/login")
-    public ModelAndView login(@Body LoginModel loginModel,
-                              @CookieValue(value = "company-id", defaultValue = "") String companyId,
+    public ModelAndView login(@CookieValue(value = "company-id", defaultValue = "") String companyId,
                               @QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
 
         LoginModel model = new LoginModel();
-        if(loginModel != null){
-            model.setCompanyId(loginModel.getCompanyId());
-            model.setPassword(loginModel.getPassword());
-            model.setUsername(loginModel.getUsername());
-        }
 
         if(model.getCompanyId().isEmpty() && companyId.isEmpty() == false){
             model.setCompanyId(companyId);
@@ -48,7 +42,7 @@ public class AuthenticationController {
     }
 
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Post(value = "/authenticate")
+    @Post(value = "/authenticate111")
     public ModelAndView authenticate(@Body LoginModel loginModel,
                                      @CookieValue(value = "company-id", defaultValue = "") String companyId,
                                      @QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {

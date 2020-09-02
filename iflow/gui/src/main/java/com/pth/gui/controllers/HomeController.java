@@ -7,6 +7,7 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.session.Session;
 import io.micronaut.views.ModelAndView;
 
 import java.security.Principal;
@@ -16,7 +17,7 @@ import java.security.Principal;
 public class HomeController {
 
     @Get
-    public ModelAndView index() {
+    public ModelAndView index(Session session) {
         return new ModelAndView("index", new Person(true, "sdelamo"));
     }
 

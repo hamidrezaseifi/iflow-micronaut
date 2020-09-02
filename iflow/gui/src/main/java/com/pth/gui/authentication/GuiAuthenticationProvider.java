@@ -11,6 +11,9 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class GuiAuthenticationProvider implements AuthenticationProvider {
@@ -35,9 +38,19 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                     this.authenticationV001DeclarativeClient.postLogin(usernamePasswordCredentials);
             if(response.status() == HttpStatus.OK){
                 if(response.getBody().isPresent()){
-                    //return Flowable.just(authentication);
+                    BearerAccessRefreshToken bearerAccessRefreshToken = response.body();
 
-                    UserDetails userDetails = new UserDetails((String) authenticationRequest.getIdentity(), new ArrayList<>());
+                    Collection<String> roles = bearerAccessRefreshToken.getRoles();
+
+                    Map<String, Object> attributes = new HashMap<>();
+                    attributes.put("access_token" , bearerAccessRefreshToken.getAccessToken());
+                    attributes.put("refresh_token" , bearerAccessRefreshToken.getRefreshToken());
+                    attributes.put("expires_in" , bearerAccessRefreshToken.getExpiresIn());
+                    attributes.put("roles" , roles);
+
+                    UserDetails userDetails = new UserDetails(bearerAccessRefreshToken.getUsername(),
+                                                              roles,
+                                                              attributes);
                     emitter.onNext(userDetails);
                     emitter.onComplete();
                 }

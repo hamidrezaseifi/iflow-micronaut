@@ -278,11 +278,11 @@ public class User extends GuiBaseModel {
     return this.roles.stream().map(r -> r.getId()).collect(Collectors.toSet());
   }
 
-  public void setRoles(final Set<Integer> roles) {
+  public void setRoles(final Collection<String> roles) {
 
     this.roles.clear();
     if (roles != null) {
-      this.roles.addAll(roles.stream().map(r -> EUiUserRole.ofId(r)).collect(Collectors.toList()));
+      this.roles.addAll(roles.stream().map(r -> EUiUserRole.ofValue(r)).collect(Collectors.toList()));
     }
   }
 
