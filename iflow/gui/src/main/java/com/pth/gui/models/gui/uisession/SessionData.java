@@ -6,13 +6,13 @@ public class SessionData {
 
     boolean isLogged;
 
-    private CompanySessionData company;
+    private CompanySessionData companySessionData;
 
-    private WorkflowSessionData workflow;
+    private WorkflowSessionData workflowSessionData;
 
     private User currentUser;
 
-    private AppSessionData app;
+    private AppSessionData appSessionData;
 
 
     public SessionData() {
@@ -26,22 +26,6 @@ public class SessionData {
         isLogged = logged;
     }
 
-    public CompanySessionData getCompany() {
-        return company;
-    }
-
-    public void setCompany(CompanySessionData company) {
-        this.company = company;
-    }
-
-    public WorkflowSessionData getWorkflow() {
-        return workflow;
-    }
-
-    public void setWorkflow(WorkflowSessionData workflow) {
-        this.workflow = workflow;
-    }
-
     public User getCurrentUser() {
         return currentUser;
     }
@@ -50,11 +34,27 @@ public class SessionData {
         this.currentUser = currentUser;
     }
 
-    public AppSessionData getApp() {
-        return app;
+    public CompanySessionData getCompanySessionData() {
+        return companySessionData;
     }
 
-    public void setApp(AppSessionData app) {
-        this.app = app;
+    public void setCompanySessionData(CompanySessionData companySessionData) {
+        this.companySessionData = companySessionData;
+    }
+
+    public WorkflowSessionData getWorkflowSessionData() {
+        return workflowSessionData;
+    }
+
+    public void setWorkflowSessionData(WorkflowSessionData workflowSessionData) {
+        this.workflowSessionData = workflowSessionData;
+    }
+
+    public AppSessionData getAppSessionData() {
+        return appSessionData;
+    }
+
+    public void setAppSessionData(AppSessionData appSessionData) {
+        this.appSessionData = appSessionData;
     }
 }

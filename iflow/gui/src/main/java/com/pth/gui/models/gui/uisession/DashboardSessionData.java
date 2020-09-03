@@ -7,14 +7,25 @@ import java.util.List;
 
 public class DashboardSessionData {
 
+    public static final int DEFAULT_TOTAL_COLUMNS = 10;
+    public static final int DEFAULT_TOTAL_ROWS = 10;
     private int totalColumns;
     private int totalRows;
     private List<List<UserDashboardMenu>> dashboardMenus;
 
     public DashboardSessionData() {
-        totalColumns = 0;
-        totalRows = 0;
-        dashboardMenus = new ArrayList<>();
+        this(DEFAULT_TOTAL_COLUMNS, DEFAULT_TOTAL_ROWS, new ArrayList<>());
+    }
+
+    public DashboardSessionData(List<List<UserDashboardMenu>> dashboardMenus) {
+        this(DEFAULT_TOTAL_COLUMNS, DEFAULT_TOTAL_ROWS, dashboardMenus);
+    }
+
+    public DashboardSessionData(int totalColumns, int totalRows, List<List<UserDashboardMenu>> dashboardMenus) {
+
+        this.totalColumns = totalColumns;
+        this.totalRows = totalRows;
+        this.dashboardMenus = dashboardMenus;
     }
 
     public int getTotalColumns() {

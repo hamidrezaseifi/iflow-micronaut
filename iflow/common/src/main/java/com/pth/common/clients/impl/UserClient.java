@@ -1,10 +1,10 @@
 package com.pth.common.clients.impl;
 
+import com.pth.common.clients.IUserClient;
 import com.pth.common.declaratives.user.IUserV001DeclarativeClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;
 import com.pth.common.edo.UserListEdo;
-import com.pth.gui.clients.IUserClient;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 

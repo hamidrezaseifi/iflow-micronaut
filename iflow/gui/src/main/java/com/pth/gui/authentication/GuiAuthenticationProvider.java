@@ -5,6 +5,13 @@ import com.pth.common.clients.IProfileClient;
 import com.pth.common.clients.IUserClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.enums.EApplication;
+import com.pth.common.edo.enums.EUserAcces;
+import com.pth.gui.mapper.*;
+import com.pth.gui.models.*;
+import com.pth.gui.models.gui.uisession.AppSessionData;
+import com.pth.gui.models.gui.uisession.CompanySessionData;
+import com.pth.gui.models.gui.uisession.DashboardSessionData;
+import com.pth.gui.models.gui.uisession.SessionData;
 import io.micronaut.security.authentication.*;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.reactivex.BackpressureStrategy;
@@ -18,16 +25,40 @@ import java.util.*;
 public class GuiAuthenticationProvider implements AuthenticationProvider {
 
     private final IAuthenticationDetailResolver authenticationDetailResolver;
+
     private final IProfileClient profileClient;
     private final IUserClient userClient;
 
+    private final IUserMapper userMapper;
+    private final ICompanyMapper companyMapper;
+    private final ICompanyWorkflowTypeOcrSettingPresetMapper companyWorkflowTypeOcrSettingPresetMapper;
+    private final IDepartmentMapper departmentMapper;
+    private final IUserGroupMapper userGroupMapper;
+    private final IUserDashboardMenuMapper dashboardMenuMapper;
+
+
+
+
     public GuiAuthenticationProvider(IAuthenticationDetailResolver authenticationDetailResolver,
                                      IProfileClient profileClient,
-                                     IUserClient userClient) {
+                                     IUserClient userClient,
+                                     IUserMapper userMapper,
+                                     ICompanyMapper companyMapper,
+                                     ICompanyWorkflowTypeOcrSettingPresetMapper companyWorkflowTypeOcrSettingPresetMapper,
+                                     IDepartmentMapper departmentMapper,
+                                     IUserGroupMapper userGroupMapper,
+                                     IUserDashboardMenuMapper dashboardMenuMapper) {
         this.authenticationDetailResolver = authenticationDetailResolver;
 
         this.profileClient = profileClient;
         this.userClient = userClient;
+
+        this.userMapper = userMapper;
+        this.companyMapper = companyMapper;
+        this.companyWorkflowTypeOcrSettingPresetMapper = companyWorkflowTypeOcrSettingPresetMapper;
+        this.departmentMapper = departmentMapper;
+        this.userGroupMapper = userGroupMapper;
+        this.dashboardMenuMapper = dashboardMenuMapper;
     }
 
     @Override
@@ -92,5 +123,31 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
             }*/
 
         }, BackpressureStrategy.ERROR);
+    }
+
+    private SessionData gerSessionData(UUID userId, String refreshToken){
+        SessionData sessionData = new SessionData();
+
+        Optional<ProfileResponseEdo> profileResponseEdoOptional =
+                this.userClient.readUserProfileById(refreshToken, EApplication.IFLOW.getIdentity(), userId);
+
+        if(profileResponseEdoOptional.isPresent()){
+            ProfileResponseEdo profileResponseEdo = profileResponseEdoOptional.get();
+
+            sessionData.setLogged(true);
+            sessionData.setCurrentUser(this.userMapper.fromEdo(profileResponseEdo.getUser()));
+
+            List<UserDashboardMenu> dashboardMenuList = this.dashboardMenuMapper.fromEdoList(profileResponseEdo.getUserDashboardMenus());
+            Company company = this.companyMapper.fromEdo(profileResponseEdo.getCompanyProfile().getCompany());
+            List<Department> departments = this.departmentMapper.fromEdoList(profileResponseEdo.getCompanyProfile().getDepartments());
+            List<UserGroup> userGroups = this.userGroupMapper.fromEdoList(profileResponseEdo.getCompanyProfile().getUserGroups());
+
+            sessionData.setCompanySessionData(new CompanySessionData(company, departments, userGroups));
+            sessionData.setAppSessionData(new AppSessionData(new ArrayList<>(), new DashboardSessionData(dashboardMenuList)));
+        }
+
+
+
+
     }
 }

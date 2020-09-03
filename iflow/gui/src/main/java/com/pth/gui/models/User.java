@@ -30,9 +30,9 @@ public class User extends GuiBaseModel {
   private Integer version;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
-  private final Set<String> groups = new HashSet<>();
+  private final Set<UserGroup> groups = new HashSet<>();
   private final List<UserDepartment> userDepartments = new ArrayList<>();
-  private final Set<String> deputies = new HashSet<>();
+  private final Set<User> deputies = new HashSet<>();
   private final List<EUiUserRole> roles = new ArrayList<>();
 
   private EUserAcces userAccess;
@@ -219,12 +219,12 @@ public class User extends GuiBaseModel {
     this.userAccess = EUserAcces.valueOf(userAcces);
   }
 
-  public Set<String> getGroups() {
+  public Set<UserGroup> getGroups() {
 
     return this.groups;
   }
 
-  public void setGroups(final Set<String> groups) {
+  public void setGroups(final Set<UserGroup> groups) {
 
     this.groups.clear();
     if (groups != null) {
@@ -232,9 +232,9 @@ public class User extends GuiBaseModel {
     }
   }
 
-  public void addGroup(final String groupId) {
+  public void addGroup(final UserGroup group) {
 
-    this.groups.add(groupId);
+    this.groups.add(group);
   }
 
   public List<UserDepartment> getUserDepartments() {
@@ -250,12 +250,17 @@ public class User extends GuiBaseModel {
     }
   }
 
-  public Set<String> getDeputies() {
+  public void addUserDepartment(final UserDepartment department) {
+
+    this.userDepartments.add(department);
+  }
+
+  public Set<User> getDeputies() {
 
     return this.deputies;
   }
 
-  public void setDeputies(final Set<String> deputies) {
+  public void setDeputies(final Set<User> deputies) {
 
     this.deputies.clear();
     if (deputies != null) {
@@ -263,9 +268,9 @@ public class User extends GuiBaseModel {
     }
   }
 
-  public void addDeputy(final String deputyId) {
+  public void addDeputy(final User deputy) {
 
-    this.deputies.add(deputyId);
+    this.deputies.add(deputy);
   }
 
   public List<EUiUserRole> getRoles() {

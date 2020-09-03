@@ -19,6 +19,22 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
     public User fromEdo(UserEdo edo) {
         User model = MappingUtils.copyProperties(edo, new User());
 
+        for(UserDepartmentEdo udEdo: edo.getUserDepartments()){
+            UserDepartment udE = MappingUtils.copyProperties(udEdo, new UserDepartment());
+            model.addUserDepartment(udE);
+        }
+
+        for(UserEdo udEdo: edo.getDeputies()){
+            User udE = MappingUtils.copyProperties(udEdo, new User());
+            model.addDeputy(udE);
+        }
+
+
+        for(UserGroupEdo udEdo: edo.getGroups()){
+            UserGroup udE = MappingUtils.copyProperties(udEdo, new UserGroup());
+            model.addGroup(udE);
+        }
+
         return model;
     }
 

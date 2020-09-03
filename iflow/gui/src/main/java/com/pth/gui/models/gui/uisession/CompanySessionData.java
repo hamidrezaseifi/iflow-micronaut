@@ -3,23 +3,24 @@ package com.pth.gui.models.gui.uisession;
 import com.pth.gui.models.Company;
 import com.pth.gui.models.Department;
 import com.pth.gui.models.User;
+import com.pth.gui.models.UserGroup;
 
 import java.util.List;
 
 public class CompanySessionData {
     private Company company;
     private List<Department> departments;
-    private User users;
+    private List<UserGroup> userGroups;
 
     public CompanySessionData() {
     }
 
     public CompanySessionData(Company company,
                               List<Department> departments,
-                              User users) {
+                              List<UserGroup> userGroups) {
         this.company = company;
         this.departments = departments;
-        this.users = users;
+        this.userGroups = userGroups;
     }
 
     public Company getCompany() {
@@ -38,11 +39,11 @@ public class CompanySessionData {
         this.departments = departments;
     }
 
-    public User getUsers() {
-        return users;
+    public List<UserGroup> getUserGroups() {
+        return userGroups;
     }
 
-    public void setUsers(User users) {
-        this.users = users;
+    public void setUserGroups(List<UserGroup> userGroups) {
+        this.userGroups = userGroups;
     }
 }

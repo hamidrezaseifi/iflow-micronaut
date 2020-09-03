@@ -5,10 +5,9 @@ import com.pth.common.edo.UserAuthenticationRequestEdo;
 import com.pth.common.edo.UserAuthenticationResponseEdo;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.common.utils.MappingUtils;
-import com.pth.profile.mapper.IUserAuthenticationEdoMapper;
-import com.pth.profile.models.TokenValidationRequest;
-import com.pth.profile.models.UserAuthenticationRequest;
-import com.pth.profile.models.UserAuthenticationResponse;
+import com.pth.gui.mapper.IUserAuthenticationEdoMapper;
+import com.pth.gui.models.UserAuthenticationRequest;
+import com.pth.gui.models.UserAuthenticationResponse;
 
 import javax.inject.Singleton;
 
@@ -48,23 +47,6 @@ public class UserAuthenticationEdoMapper implements IUserAuthenticationEdoMapper
         return request;
     }
 
-    @Override
-    public TokenValidationRequestEdo toEdo(TokenValidationRequest request){
-        TokenValidationRequestEdo edo =
-                MappingUtils.copyProperties(request, new TokenValidationRequestEdo());
-
-        return edo;
-
-    }
-
-    @Override
-    public TokenValidationRequest fromEdo(TokenValidationRequestEdo edo){
-        TokenValidationRequest request =
-                MappingUtils.copyProperties(edo, new TokenValidationRequest());
-
-        request.setApp(EApplication.valueFromId(edo.getAppId()));
-        return request;
-    }
 
 
 

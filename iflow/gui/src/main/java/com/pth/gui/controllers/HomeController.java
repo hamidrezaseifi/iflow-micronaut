@@ -1,6 +1,5 @@
 package com.pth.gui.controllers;
 
-import com.pth.gui.models.gui.Person;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -18,7 +17,7 @@ public class HomeController {
 
     @Get
     public ModelAndView index(Session session) {
-        return new ModelAndView("index", new Person(true, "sdelamo"));
+        return new ModelAndView("index", null);
     }
 
     @Produces(MediaType.TEXT_PLAIN)

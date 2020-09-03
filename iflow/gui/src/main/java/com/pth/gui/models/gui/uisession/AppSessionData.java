@@ -16,6 +16,11 @@ public class AppSessionData {
         dashboard = new DashboardSessionData();
     }
 
+    public AppSessionData(List<UiMenuItem> menus, DashboardSessionData dashboard) {
+        this.menus = menus;
+        this.dashboard = dashboard;
+    }
+
     public List<UiMenuItem> getMenus() {
         return menus;
     }

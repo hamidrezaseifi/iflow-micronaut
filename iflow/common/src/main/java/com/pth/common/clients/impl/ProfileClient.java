@@ -1,8 +1,8 @@
 package com.pth.common.clients.impl;
 
+import com.pth.common.clients.IProfileClient;
 import com.pth.common.declaratives.authentication.IAuthenticationV001DeclarativeClient;
 import com.pth.common.edo.TokenValidationRequestEdo;
-import com.pth.gui.clients.IProfileClient;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;

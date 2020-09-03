@@ -3,23 +3,23 @@ package com.pth.gui.mapper.impl;
 import com.pth.common.edo.UserDashboardMenuEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
-import com.pth.profile.entities.UserDashboardMenuEntity;
-import com.pth.profile.mapper.IUserDashboardMenuMapper;
+import com.pth.gui.mapper.IUserDashboardMenuMapper;
+import com.pth.gui.models.UserDashboardMenu;
 
 import javax.inject.Singleton;
 
 @Singleton
-public class UserDashboardMenuMapper extends ModelEdoMapperBase<UserDashboardMenuEntity, UserDashboardMenuEdo>
+public class UserDashboardMenuMapper extends ModelEdoMapperBase<UserDashboardMenu, UserDashboardMenuEdo>
         implements IUserDashboardMenuMapper {
     @Override
-    public UserDashboardMenuEntity fromEdo(UserDashboardMenuEdo edo) {
-        UserDashboardMenuEntity model = MappingUtils.copyProperties(edo, new UserDashboardMenuEntity());
+    public UserDashboardMenu fromEdo(UserDashboardMenuEdo edo) {
+        UserDashboardMenu model = MappingUtils.copyProperties(edo, new UserDashboardMenu());
 
         return model;
     }
 
     @Override
-    public UserDashboardMenuEdo toEdo(UserDashboardMenuEntity model) {
+    public UserDashboardMenuEdo toEdo(UserDashboardMenu model) {
         UserDashboardMenuEdo edo = MappingUtils.copyProperties(model, new UserDashboardMenuEdo());
 
         return edo;
