@@ -35,10 +35,22 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
+    token:
+      jwt:
+        enabled: true
+        generator:
+          access-token-expiration: 3600
+          refresh-token-expiration: 172800
+        signatures:
+          secret:
+            generator:
+              jws-algorithm: HS256
+              secret: ${JWT_GENERATOR_SECRET:pleaseChangeThisSecretForANewOne}
+
     endpoints:
       login:
         enabled: true
-      logout:
+      oauth:
         enabled: true
     session:
       enabled: true

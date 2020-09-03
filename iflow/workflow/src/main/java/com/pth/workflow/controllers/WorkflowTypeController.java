@@ -62,7 +62,7 @@ public class WorkflowTypeController {
     return HttpResponse.ok(new WorkflowTypeListEdo(workflowTypeMapper.toEdoList(modelList)));
   }
 
-  @Get(value = "/readbycompanyidentity/{id}")
+  @Get(value = "/readbycompanyid/{id}")
   public HttpResponse<WorkflowTypeListEdo> readWorkflowListByCompany(final UUID id,
                                                                      final Authentication authentication,
                                                                      @Header String authorization) throws Exception {

@@ -1,6 +1,7 @@
-package com.pth.common.clients.impl;
+package com.pth.common.clients.profile.impl;
 
-import com.pth.common.clients.IProfileClient;
+import com.pth.common.clients.ClientBase;
+import com.pth.common.clients.profile.IProfileClient;
 import com.pth.common.declaratives.authentication.IAuthenticationV001DeclarativeClient;
 import com.pth.common.edo.TokenValidationRequestEdo;
 import io.micronaut.http.HttpResponse;
@@ -12,7 +13,7 @@ import javax.inject.Singleton;
 import java.util.Optional;
 
 @Singleton
-public class ProfileClient implements IProfileClient {
+public class ProfileClient extends ClientBase implements IProfileClient {
 
   private final IAuthenticationV001DeclarativeClient authenticationDeclarativeClient;
 
@@ -34,7 +35,7 @@ public class ProfileClient implements IProfileClient {
   @Override
   public Optional<BearerAccessRefreshToken> validateToken(String authorization, TokenValidationRequestEdo requestEdo) {
     HttpResponse<BearerAccessRefreshToken> response =
-            this.authenticationDeclarativeClient.validateToken(authorization, requestEdo);
+            this.authenticationDeclarativeClient.validateToken(prepareBearerAuthorization(authorization), requestEdo);
     if(response.getStatus() == HttpStatus.OK){
       return response.getBody();
     }

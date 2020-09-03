@@ -22,7 +22,6 @@ import java.util.Optional;
 
 @Singleton
 @Replaces(JwtTokenValidator.class)
-@Requires(property = "micronaut.extensions.project", value = "profile")
 @Requires(notEnv = Environment.TEST)
 public class ProfileJwtTokenValidator extends JwtTokenValidator {
 

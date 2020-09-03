@@ -1,6 +1,7 @@
 package com.pth.gui.models.gui.uisession;
 
 import com.pth.gui.models.UserDashboardMenu;
+import com.pth.gui.models.gui.UiMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class DashboardSessionData {
 
     public static final int DEFAULT_TOTAL_COLUMNS = 10;
-    public static final int DEFAULT_TOTAL_ROWS = 10;
+    public static final int DEFAULT_TOTAL_ROWS = 6;
     private int totalColumns;
     private int totalRows;
     private List<List<UserDashboardMenu>> dashboardMenus;
@@ -27,6 +28,7 @@ public class DashboardSessionData {
         this.totalRows = totalRows;
         this.dashboardMenus = dashboardMenus;
     }
+
 
     public int getTotalColumns() {
         return totalColumns;
@@ -51,4 +53,65 @@ public class DashboardSessionData {
     public void setDashboardMenus(List<List<UserDashboardMenu>> dashboardMenus) {
         this.dashboardMenus = dashboardMenus;
     }
+
+
+    public static List<List<UserDashboardMenu>>
+        getPreparedUserDashboardMenus(List<UserDashboardMenu> dashboardMenus, final List<UiMenuItem> menuList) {
+
+        final List<List<UserDashboardMenu>> dashboardMenuList = new ArrayList<>();
+
+        for (int r = 1; r <= DEFAULT_TOTAL_ROWS; r++) {
+            final List<UserDashboardMenu> row = new ArrayList<>();
+
+            for (int c = 1; c <= DEFAULT_TOTAL_COLUMNS; c++) {
+
+                UserDashboardMenu item = findUserDashboardMenu(dashboardMenus, menuList, r, c);
+
+                if (item == null) {
+                    item = initializeUserDashboardMenu(r, c);
+                }
+
+                row.add(item);
+            }
+
+            dashboardMenuList.add(row);
+        }
+
+        return dashboardMenuList;
+    }
+
+    private static UserDashboardMenu
+        findUserDashboardMenu(List<UserDashboardMenu> dashboardMenus,
+                              final List<UiMenuItem> menuList,
+                              final int r,
+                              final int c) {
+
+        UserDashboardMenu item = null;
+        for (final UserDashboardMenu searchItem : dashboardMenus) {
+            if (searchItem.getRowIndex() == r && searchItem.getColumnIndex() == c) {
+                item = searchItem;
+
+                for (final UiMenuItem menuItem : menuList) {
+                    if (menuItem.getId().equals(item.getMenuId())) {
+                        item.setMenu(menuItem);
+                    }
+                }
+
+                break;
+            }
+        }
+        return item;
+    }
+
+    private static UserDashboardMenu initializeUserDashboardMenu(final int r, final int c) {
+
+        UserDashboardMenu item;
+        item = new UserDashboardMenu();
+        item.setMenu(null);
+
+        item.setRowIndex(r);
+        item.setColumnIndex(c);
+        return item;
+    }
+
 }

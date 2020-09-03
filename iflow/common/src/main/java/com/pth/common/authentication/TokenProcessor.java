@@ -41,9 +41,13 @@ public class TokenProcessor implements IAuthenticationDetailResolver {
   @Override
   public UUID resolveUserId(Authentication authentication) {
 
-    String userIdString = authentication.getName();
+    if(authentication.getAttributes().containsKey("uid")){
+      String idString = authentication.getAttributes().get("uid").toString();
 
-    return UUID.fromString(userIdString);
+      return UUID.fromString(idString);
+    }
+
+    return null;
   }
 
   @Override
@@ -57,11 +61,14 @@ public class TokenProcessor implements IAuthenticationDetailResolver {
   @Override
   public UUID resolveCompanyId(Authentication authentication) {
 
-    String customerIdString = resolveElements(authentication, "cid").stream()
-            .findFirst()
-            .get();
 
-    return UUID.fromString(customerIdString);
+    if(authentication.getAttributes().containsKey("cid")){
+      String idString = authentication.getAttributes().get("cid").toString();
+
+      return UUID.fromString(idString);
+    }
+
+    return null;
   }
 
   @Override
@@ -89,8 +96,7 @@ public class TokenProcessor implements IAuthenticationDetailResolver {
             && elementTypeSearchString != null
             && !elementTypeSearchString.equals("")) {
 
-      JSONArray roles = (JSONArray) authentication.getAttributes()
-              .get("roles");
+      JSONArray roles = (JSONArray) authentication.getAttributes();
       roleElements = roles.stream()
               .map(r -> (String) r)
               .filter(r -> r.toLowerCase().startsWith(elementTypeSearchString.toLowerCase() + "="))

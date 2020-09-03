@@ -6,7 +6,9 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
 public class ProfileResponseEdo {
 
   @NotNull
@@ -28,8 +30,10 @@ public class ProfileResponseEdo {
     this.sessionid = "";
   }
 
-  public ProfileResponseEdo(final UserEdo user, final CompanyProfileEdo company, final String sessionid,
-      final List<UserDashboardMenuEdo> userDashboardMenus) {
+  public ProfileResponseEdo(final UserEdo user,
+                            final CompanyProfileEdo company,
+                            final String sessionid,
+                            final List<UserDashboardMenuEdo> userDashboardMenus) {
 
     this.user = user;
     this.companyProfile = company;
@@ -38,41 +42,33 @@ public class ProfileResponseEdo {
   }
 
   public UserEdo getUser() {
-
-    return this.user;
+    return user;
   }
 
-  public void setUser(final UserEdo user) {
-
+  public void setUser(UserEdo user) {
     this.user = user;
   }
 
   public CompanyProfileEdo getCompanyProfile() {
-
-    return this.companyProfile;
+    return companyProfile;
   }
 
-  public void setCompanyProfile(final CompanyProfileEdo company) {
-
-    this.companyProfile = company;
+  public void setCompanyProfile(CompanyProfileEdo companyProfile) {
+    this.companyProfile = companyProfile;
   }
 
   public String getSessionid() {
-
-    return this.sessionid;
+    return sessionid;
   }
 
-  public void setSessionid(final String sessionid) {
-
+  public void setSessionid(String sessionid) {
     this.sessionid = sessionid;
   }
 
   public List<UserDashboardMenuEdo> getUserDashboardMenus() {
-
-    return this.userDashboardMenus;
+    return userDashboardMenus;
   }
 
-  @JsonSetter
   public void setUserDashboardMenus(final List<UserDashboardMenuEdo> userDashboardMenus) {
 
     this.userDashboardMenus.clear();

@@ -1,4 +1,4 @@
-package com.pth.common.clients;
+package com.pth.common.clients.profile;
 
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;

@@ -1,6 +1,7 @@
-package com.pth.common.clients.impl;
+package com.pth.common.clients.profile.impl;
 
-import com.pth.common.clients.IUserClient;
+import com.pth.common.clients.ClientBase;
+import com.pth.common.clients.profile.IUserClient;
 import com.pth.common.declaratives.user.IUserV001DeclarativeClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Singleton
-public class UserClient implements IUserClient {
+public class UserClient extends ClientBase implements IUserClient {
 
   private final IUserV001DeclarativeClient userDeclarativeClient;
 
@@ -24,7 +25,7 @@ public class UserClient implements IUserClient {
   @Override
   public Optional<UserEdo> saveUser(String authorization, UserEdo userEdo) {
 
-    HttpResponse<UserEdo> response = this.userDeclarativeClient.saveUser(authorization, userEdo);
+    HttpResponse<UserEdo> response = this.userDeclarativeClient.saveUser(prepareBearerAuthorization(authorization), userEdo);
     if(response.getStatus() == HttpStatus.CREATED){
       return  response.getBody();
     }
@@ -35,7 +36,7 @@ public class UserClient implements IUserClient {
   @Override
   public void deleteUser(String authorization, UserEdo userEdo) {
 
-    HttpResponse<?> response = this.userDeclarativeClient.deleteUser(authorization, userEdo);
+    HttpResponse<?> response = this.userDeclarativeClient.deleteUser(prepareBearerAuthorization(authorization), userEdo);
     if(response.getStatus() == HttpStatus.ACCEPTED){
 
     }
@@ -43,7 +44,7 @@ public class UserClient implements IUserClient {
 
   @Override
   public Optional<UserEdo> readUserById(String authorization, UUID id) {
-    HttpResponse<UserEdo> response = this.userDeclarativeClient.readUserById(authorization, id);
+    HttpResponse<UserEdo> response = this.userDeclarativeClient.readUserById(prepareBearerAuthorization(authorization), id);
     if(response.getStatus() == HttpStatus.OK){
       return  response.getBody();
     }
@@ -53,7 +54,7 @@ public class UserClient implements IUserClient {
 
   @Override
   public Optional<UserListEdo> readCompanyUsers(String authorization, UUID companyid) {
-    HttpResponse<UserListEdo> response = this.userDeclarativeClient.readCompanyUsers(authorization, companyid);
+    HttpResponse<UserListEdo> response = this.userDeclarativeClient.readCompanyUsers(prepareBearerAuthorization(authorization), companyid);
     if(response.getStatus() == HttpStatus.OK){
       return  response.getBody();
     }
@@ -63,8 +64,10 @@ public class UserClient implements IUserClient {
 
   @Override
   public Optional<ProfileResponseEdo> readUserProfileById(String authorization, String appIdentity, UUID id) {
+
+    String authorizationBearer = prepareBearerAuthorization(authorization);
     HttpResponse<ProfileResponseEdo> response =
-            this.userDeclarativeClient.readUserProfileById(authorization, appIdentity, id);
+            this.userDeclarativeClient.readUserProfileById(authorizationBearer, appIdentity, id);
     if(response.getStatus() == HttpStatus.OK){
       return  response.getBody();
     }

@@ -13,6 +13,10 @@ public class WorkflowSessionData {
         workflowTypes = new ArrayList<>();
     }
 
+    public WorkflowSessionData(List<WorkflowType> workflowTypes) {
+        this.workflowTypes = workflowTypes;
+    }
+
     public List<WorkflowType> getWorkflowTypes() {
         return workflowTypes;
     }

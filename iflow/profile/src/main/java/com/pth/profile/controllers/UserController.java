@@ -58,6 +58,7 @@ public class UserController {
     this.userGroupMapper = userGroupMapper;
   }
 
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_SAVE)
   public HttpResponse<UserEdo> saveUser(@Body @Valid final UserEdo userEdo) throws Exception {
 
@@ -68,7 +69,8 @@ public class UserController {
     }
     return HttpResponse.badRequest();
   }
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_DELETE)
   public HttpResponse<?> deleteUser(@Body @Valid final UserEdo userEdo) throws Exception {
 
@@ -77,7 +79,8 @@ public class UserController {
     return HttpResponse.accepted();
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_READ_BY_ID)
   public HttpResponse<UserEdo> readUserByIdentity(final UUID id) throws Exception {
 
@@ -89,7 +92,8 @@ public class UserController {
     return HttpResponse.badRequest();
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USERGROUPS_LIST_BY_ID)
   public HttpResponse<UserGroupListEdo> readUserGroups(final UUID id) throws Exception {
 
@@ -98,7 +102,8 @@ public class UserController {
     return HttpResponse.ok(new UserGroupListEdo(this.userGroupMapper.toEdoList(groups)));
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_DEPARTMENTS_LIST_BY_ID)
   public HttpResponse<DepartmentListEdo> readUserDepartments(final UUID id) throws Exception {
 
@@ -107,7 +112,8 @@ public class UserController {
     return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(list)));
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_DEPUTIES_LIST_BY_ID)
   public HttpResponse<UserListEdo> readUserDeputies(final UUID id) throws Exception {
 
@@ -117,7 +123,8 @@ public class UserController {
     return HttpResponse.ok(edo);
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_COMPANYID)
   public HttpResponse<UserListEdo> readCompanyUsers(final UUID companyid) throws Exception {
 
@@ -127,7 +134,8 @@ public class UserController {
     return HttpResponse.ok(edo);
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_DEPARTMENTID)
   public HttpResponse<UserListEdo> readDepartmentUsers(final UUID id) throws Exception {
 
@@ -149,6 +157,7 @@ public class UserController {
     return HttpResponse.notFound();
   }
 
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERID)
   public HttpResponse<ProfileResponseEdo> readUserProfileById(final String appIdentity,
                                                                     final UUID id) throws Exception {
@@ -156,12 +165,14 @@ public class UserController {
     final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseById(appIdentity, id);
 
     if(profileResponseOptional.isPresent()){
-      return HttpResponse.ok(this.profileResponseMapper.toEdo(profileResponseOptional.get()));
+      ProfileResponseEdo edo = this.profileResponseMapper.toEdo(profileResponseOptional.get());
+      return HttpResponse.ok(edo);
     }
     return HttpResponse.notFound();
   }
 
-  
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_READ_BY_USERID)
   public HttpResponse<UserDashboardMenuListEdo>
       readUserDashboardMenuByIdentity(final String appIdentity, final UUID userId) throws Exception {
@@ -174,6 +185,7 @@ public class UserController {
     return HttpResponse.ok(new UserDashboardMenuListEdo(edoList));
   }
 
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_SAVE_BY_USERID)
   public HttpResponse<UserDashboardMenuListEdo>
       saveUserDashboardMenuByIdentity(@Body @Valid final UserDashboardMenuListEdo requestedEdoList,

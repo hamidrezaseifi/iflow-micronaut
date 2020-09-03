@@ -89,8 +89,8 @@ public class AuthenticationFromDatabaseValidatorDb implements IAuthenticationVal
                             Map<String, Object> attr = new HashMap<>();
                             attr.put("issued", issued);
                             attr.put("expire", expire);
-                            attr.put("uid", userId);
-                            attr.put("cid", companyId);
+                            attr.put("uid", userId.toString());
+                            attr.put("cid", companyId.toString());
                             attr.put("uname", username.toLowerCase());
 
                             UserDetails userDetails = new UserDetails(userEntity.getUsername(), roles, attr);
