@@ -1,4 +1,4 @@
-package com.pth.common.declaratives;
+package com.pth.common.declaratives.authentication;
 
 import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.TokenValidationRequestEdo;

@@ -137,7 +137,6 @@ public class UserController {
     return HttpResponse.ok(edo);
   }
 
-  
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_EMAIL)
   public HttpResponse<ProfileResponseEdo> readUserProfileByEmail(final String appIdentity,
                                                                  final String email) throws Exception {
@@ -150,9 +149,8 @@ public class UserController {
     return HttpResponse.notFound();
   }
 
-  
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERID)
-  public HttpResponse<ProfileResponseEdo> readUserProfileByIdentity(final String appIdentity,
+  public HttpResponse<ProfileResponseEdo> readUserProfileById(final String appIdentity,
                                                                     final UUID id) throws Exception {
 
     final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseById(appIdentity, id);
@@ -166,7 +164,7 @@ public class UserController {
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_READ_BY_USERID)
   public HttpResponse<UserDashboardMenuListEdo>
-  readUserDashboardMenuByIdentity(final String appIdentity, final UUID userId) throws Exception {
+      readUserDashboardMenuByIdentity(final String appIdentity, final UUID userId) throws Exception {
 
     final List<UserDashboardMenuEntity> list =
             this.usersService.getUserDashboardMenuListByUserId(appIdentity, userId);

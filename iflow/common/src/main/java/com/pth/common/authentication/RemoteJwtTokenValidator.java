@@ -2,7 +2,7 @@ package com.pth.common.authentication;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.SignedJWT;
-import com.pth.common.declaratives.IAuthenticationV001DeclarativeClient;
+import com.pth.common.declaratives.authentication.IAuthenticationV001DeclarativeClient;
 import com.pth.common.edo.TokenValidationRequestEdo;
 import com.pth.common.edo.enums.EApplication;
 import io.micronaut.context.annotation.Replaces;
@@ -19,7 +19,6 @@ import org.reactivestreams.Publisher;
 
 import javax.inject.Singleton;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
