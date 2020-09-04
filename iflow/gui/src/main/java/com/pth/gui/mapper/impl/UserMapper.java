@@ -11,13 +11,25 @@ import com.pth.gui.models.UserDepartment;
 import com.pth.gui.models.UserGroup;
 
 import javax.inject.Singleton;
+import java.util.stream.Collectors;
 
 @Singleton
 public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
         implements IUserMapper {
     @Override
     public User fromEdo(UserEdo edo) {
-        User model = MappingUtils.copyProperties(edo, new User());
+        final User model = new User();
+
+        model.setFirstName(edo.getFirstName());
+        model.setLastName(edo.getLastName());
+        model.setPermission(edo.getPermission());
+        model.setStatus(edo.getStatus());
+        model.setVersion(edo.getVersion());
+        model.setEmail(edo.getEmail());
+        model.setBirthDate(edo.getBirthDate());
+        model.setCompanyIdentity(edo.getCompanyIdentity());
+        model.setRoles(edo.getRoles());
+        model.setIdentity(edo.getIdentity());
 
         for(UserDepartmentEdo udEdo: edo.getUserDepartments()){
             UserDepartment udE = MappingUtils.copyProperties(udEdo, new UserDepartment());

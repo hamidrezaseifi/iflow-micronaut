@@ -14,7 +14,7 @@ import com.pth.common.edo.enums.EUserAcces;
 import com.pth.common.edo.enums.EUserStatus;
 import com.pth.gui.enums.EUiUserRole;
 
-@JsonIgnoreProperties(value = { "authorities", "enabled", "roles", })
+@JsonIgnoreProperties(value = { "authorities", "enabled", })
 public class User extends GuiBaseModel {
 
   private String identity;
@@ -22,7 +22,7 @@ public class User extends GuiBaseModel {
   private String email;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-  private LocalDate birthDate;
+  private Date birthDate;
 
   private String firstName;
   private String lastName;
@@ -35,7 +35,7 @@ public class User extends GuiBaseModel {
   private final Set<User> deputies = new HashSet<>();
   private final List<EUiUserRole> roles = new ArrayList<>();
 
-  private EUserAcces userAccess;
+  private EUserAcces permission;
 
   private boolean isEnabled;
 
@@ -71,12 +71,12 @@ public class User extends GuiBaseModel {
     this.email = email;
   }
 
-  public LocalDate getBirthDate() {
+  public Date getBirthDate() {
 
     return this.birthDate;
   }
 
-  public void setBirthDate(final LocalDate birthDate) {
+  public void setBirthDate(final Date birthDate) {
 
     this.birthDate = birthDate;
   }
@@ -189,34 +189,16 @@ public class User extends GuiBaseModel {
     this.updatedAt = updatedAt;
   }
 
-  public Integer getPermissionFromUserAccess() {
-
-    return this.userAccess.getPermission();
+  public EUserAcces getPermission() {
+    return permission;
   }
 
-  public void setUserAccessFromPermission(final Integer permission) {
-
-    this.userAccess = EUserAcces.fromPermission(permission);
+  public void setPermission(EUserAcces permission) {
+    this.permission = permission;
   }
 
-  public EUserAcces getUserAccess() {
-
-    return this.userAccess;
-  }
-
-  public String getUserAccessLabel() {
-
-    return this.userAccess.getLabelId();
-  }
-
-  public void setUserAccess(final EUserAcces userAcces) {
-
-    this.userAccess = userAcces;
-  }
-
-  public void setUserAccess111(final String userAcces) {
-
-    this.userAccess = EUserAcces.valueOf(userAcces);
+  public void setPermission(Integer permission) {
+    this.permission = EUserAcces.fromPermission(permission);
   }
 
   public Set<UserGroup> getGroups() {

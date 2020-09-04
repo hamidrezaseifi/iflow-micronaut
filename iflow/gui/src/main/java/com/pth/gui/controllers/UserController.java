@@ -28,18 +28,14 @@ public class UserController {
 
         //micronaut.AUTHENTICATION
         Optional<Object> oUserDetailsOptional = session.get("micronaut.AUTHENTICATION");
-        if(oUserDetailsOptional.isPresent()){
+        if(oUserDetailsOptional.isPresent() && oUserDetailsOptional.get() instanceof AuthenticationUserDetailsAdapter){
 
             AuthenticationUserDetailsAdapter userDetails = (AuthenticationUserDetailsAdapter)oUserDetailsOptional.get();
-            Collection<String> roles = (Collection<String>)userDetails.getAttributes().get("roles");
 
-            sessionData.setLogged(true);
-            User user = new User();
-            user.setEmail(userDetails.getName());
-            user.setRoles(roles);
-            user.setStatus(1);
-            user.setUserAccess(EUserAcces.ADMIN);
-            sessionData.setCurrentUser(user);
+            if(userDetails.getAttributes().containsKey("session-data")){
+                sessionData = (SessionData)userDetails.getAttributes().get("session-data");
+            }
+
         }
 
         return HttpResponse.ok(sessionData);
