@@ -255,9 +255,9 @@ public class User extends GuiBaseModel {
     this.deputies.add(deputy);
   }
 
-  public List<EUiUserRole> getRoles() {
+  public List<String> getRoles() {
 
-    return this.roles;
+    return this.roles.stream().map(r -> r.getName()).collect(Collectors.toList());
   }
 
   public Set<Integer> getRolesInt() {

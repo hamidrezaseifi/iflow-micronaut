@@ -42,7 +42,7 @@ public class AuthenticationController {
     }
 
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Post(value = "/authenticate111")
+    @Post(value = "/authenticate")
     public ModelAndView authenticate(@Body LoginModel loginModel,
                                      @CookieValue(value = "company-id", defaultValue = "") String companyId,
                                      @QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
