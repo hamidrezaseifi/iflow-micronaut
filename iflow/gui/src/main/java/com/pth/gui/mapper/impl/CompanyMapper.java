@@ -13,14 +13,26 @@ public class CompanyMapper extends ModelEdoMapperBase<Company, CompanyEdo>
         implements ICompanyMapper {
     @Override
     public Company fromEdo(CompanyEdo edo) {
-        Company model = MappingUtils.copyProperties(edo, new Company());
+        final Company model = new Company();
+        model.setCompanyName(edo.getCompanyName());
+        model.setIdentity(edo.getIdentity());
+        model.setStatus(edo.getStatus());
+        model.setVersion(edo.getVersion());
+        model.setCompanyType(edo.getCompanyType());
+        model.setCompanyTypeCustome(edo.getCompanyTypeCustome());
 
         return model;
     }
 
     @Override
     public CompanyEdo toEdo(Company model) {
-        CompanyEdo edo = MappingUtils.copyProperties(model, new CompanyEdo());
+        final CompanyEdo edo = new CompanyEdo();
+        edo.setCompanyName(model.getCompanyName());
+        edo.setIdentity(model.getIdentity());
+        edo.setStatus(model.getStatus());
+        edo.setVersion(model.getVersion());
+        edo.setCompanyType(model.getCompanyType());
+        edo.setCompanyTypeCustome(model.getCompanyTypeCustome());
 
         return edo;
     }

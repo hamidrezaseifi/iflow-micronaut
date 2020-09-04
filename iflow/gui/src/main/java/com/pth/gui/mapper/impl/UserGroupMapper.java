@@ -13,14 +13,25 @@ public class UserGroupMapper extends ModelEdoMapperBase<UserGroup, UserGroupEdo>
         implements IUserGroupMapper {
     @Override
     public UserGroup fromEdo(UserGroupEdo edo) {
-        UserGroup model = MappingUtils.copyProperties(edo, new UserGroup());
+        final UserGroup model = new UserGroup();
+
+        model.setTitle(edo.getTitle());
+        model.setStatus(edo.getStatus());
+        model.setIdentity(edo.getIdentity());
+        model.setCompanyIdentity(edo.getCompanyIdentity());
+        model.setVersion(edo.getVersion());
 
         return model;
     }
 
     @Override
     public UserGroupEdo toEdo(UserGroup model) {
-        UserGroupEdo edo = MappingUtils.copyProperties(model, new UserGroupEdo());
+        final UserGroupEdo edo = new UserGroupEdo();
+        edo.setTitle(model.getTitle());
+        edo.setStatus(model.getStatus());
+        edo.setIdentity(model.getIdentity());
+        edo.setCompanyIdentity(model.getCompanyIdentity());
+        edo.setVersion(model.getVersion());
 
         return edo;
     }

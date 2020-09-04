@@ -7,14 +7,23 @@ import com.pth.common.edo.enums.EWorkflowTypeAssignType;
 import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.common.utils.MappingUtils;
 import com.pth.gui.mapper.IWorkflowTypeMapper;
+import com.pth.gui.mapper.IWorkflowTypeStepMapper;
 import com.pth.gui.models.workflow.WorkflowType;
 import com.pth.gui.models.workflow.WorkflowTypeStep;
 
 import javax.inject.Singleton;
+import java.util.stream.Collectors;
 
 @Singleton
 public class WorkflowTypeMapper extends ModelEdoMapperBase<WorkflowType, WorkflowTypeEdo>
         implements IWorkflowTypeMapper {
+
+    private final IWorkflowTypeStepMapper workflowTypeStepMapper;
+
+    public WorkflowTypeMapper(IWorkflowTypeStepMapper workflowTypeStepMapper) {
+        this.workflowTypeStepMapper = workflowTypeStepMapper;
+    }
+
     @Override
     public WorkflowType fromEdo(WorkflowTypeEdo edo) {
         final WorkflowType model = new WorkflowType();
@@ -28,10 +37,7 @@ public class WorkflowTypeMapper extends ModelEdoMapperBase<WorkflowType, Workflo
         model.setAllowAssign(edo.getAllowAssign());
         model.setIncreaseStepAutomatic(edo.getIncreaseStepAutomatic());
         model.setVersion(edo.getVersion());
-        for(WorkflowTypeStepEdo stepEdo: edo.getSteps()){
-            WorkflowTypeStep step = MappingUtils.copyProperties(stepEdo, new WorkflowTypeStep());
-            model.addStep(step);
-        }
+        model.setSteps(workflowTypeStepMapper.fromEdoList(edo.getSteps().stream().collect(Collectors.toList())));
 
         return model;
     }
@@ -47,11 +53,8 @@ public class WorkflowTypeMapper extends ModelEdoMapperBase<WorkflowType, Workflo
         edo.setAssignType(model.geAssignType());
         edo.setIncreaseStepAutomatic(model.getIncreaseStepAutomatic());
         edo.setAllowAssign(model.getAllowAssign());
+        edo.setSteps(workflowTypeStepMapper.toEdoList(model.getSteps()).stream().collect(Collectors.toSet()));
         edo.setVersion(model.getVersion());
-        for(WorkflowTypeStep step: model.getSteps()){
-            WorkflowTypeStepEdo stepEdo = MappingUtils.copyProperties(step, new WorkflowTypeStepEdo());
-            edo.addStep(stepEdo);
-        }
 
         return edo;
     }
