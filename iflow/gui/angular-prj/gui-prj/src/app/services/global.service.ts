@@ -24,23 +24,24 @@ export class GlobalService {
 
 
 	loadAllSetting(){
-		this.loadingService.showLoading();
+	alert("start loadAllSetting");
+		    this.loadingService.showLoading();
 
         const httpOptions = { headers: HttpHepler.generateFormHeader() };
 
 				this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe(
 						(generalData :GeneralData) => {
 		            console.log("GET call successful generaldata", generalData);
-
+alert("loaded generaldata: " + generalData);
 		            var islogged = generalData.isLogged + "";
 		            generalData.isLogged = islogged === "true";
 
 		            this.loadedGeneralData = <GeneralData> JSON.parse(JSON.stringify(generalData));
 
-		        	this.currentSessionDataSubject.next(generalData);
-		        	this.presensSubject.next(true);
+		            this.currentSessionDataSubject.next(generalData);
+		        	  this.presensSubject.next(true);
 
-		        	this.loadingService.hideLoading();
+		        	  this.loadingService.hideLoading();
 		        },
 		        response => {
 		            console.log("Error in read general list", response);

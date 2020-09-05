@@ -6223,11 +6223,17 @@ class AuthenticationService {
         return this.currentUserSubject.value != null;
     }
     checkLoginState(returnUrl) {
+        alert("global.loadedGeneralData: " + this.global.loadedGeneralData);
+        if (this.global.loadedGeneralData == null) {
+            this.global.loadAllSetting();
+        }
         this.loadingService.showLoading();
         this.global.loadAllSettingObserv().subscribe((generalData) => {
             console.log("GET call successful generaldata", generalData);
             var value = generalData.isLogged + "";
+            alert("checkLoginState: value : " + value);
             if (value === "true" && generalData.user) {
+                alert("checkLoginState: value is true");
                 this.isLoggedIn = true;
                 this.currentUserSubject.next(generalData.user.currentUser);
                 this.global.loadAllSetting();
@@ -6237,8 +6243,9 @@ class AuthenticationService {
             else {
                 this.isLoggedIn = false;
                 this.currentUserSubject.next(null);
+                alert("checkLoginState: value is false");
                 //this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
-                window.location.assign("/auth/login?returnUrl=" + returnUrl);
+                //window.location.assign("/auth/login?returnUrl=" + returnUrl);
             }
         }, response => {
             console.log("Error in read menu list", response);
@@ -6254,7 +6261,7 @@ class AuthenticationService {
         window.location.assign("/auth/logout");
     }
     canActivate(route, state) {
-        //alert("check authentication fo : " + state.url + " : isLoggedIn: " + this.isLoggedIn);
+        alert("canActivate: check authentication of : " + state.url + " : isLoggedIn: " + this.isLoggedIn);
         if (this.isLoggedIn === true) {
             return true;
         }
@@ -6741,10 +6748,12 @@ class GlobalService {
         this.loadedGeneralData = null;
     }
     loadAllSetting() {
+        alert("start loadAllSetting");
         this.loadingService.showLoading();
         const httpOptions = { headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_2__["HttpHepler"].generateFormHeader() };
         this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe((generalData) => {
             console.log("GET call successful generaldata", generalData);
+            alert("loaded generaldata: " + generalData);
             var islogged = generalData.isLogged + "";
             generalData.isLogged = islogged === "true";
             this.loadedGeneralData = JSON.parse(JSON.stringify(generalData));

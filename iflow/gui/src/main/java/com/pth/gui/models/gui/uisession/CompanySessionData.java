@@ -11,16 +11,19 @@ public class CompanySessionData {
     private Company company;
     private List<Department> departments;
     private List<UserGroup> userGroups;
+    private List<User> users;
 
     public CompanySessionData() {
     }
 
     public CompanySessionData(Company company,
                               List<Department> departments,
-                              List<UserGroup> userGroups) {
+                              List<UserGroup> userGroups,
+                              List<User> users) {
         this.company = company;
         this.departments = departments;
         this.userGroups = userGroups;
+        this.users = users;
     }
 
     public Company getCompany() {
@@ -45,5 +48,13 @@ public class CompanySessionData {
 
     public void setUserGroups(List<UserGroup> userGroups) {
         this.userGroups = userGroups;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

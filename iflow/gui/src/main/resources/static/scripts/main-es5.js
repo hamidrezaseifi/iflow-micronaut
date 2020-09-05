@@ -12295,12 +12295,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function checkLoginState(returnUrl) {
           var _this33 = this;
 
+          alert("global.loadedGeneralData: " + this.global.loadedGeneralData);
+
+          if (this.global.loadedGeneralData == null) {
+            this.global.loadAllSetting();
+          }
+
           this.loadingService.showLoading();
           this.global.loadAllSettingObserv().subscribe(function (generalData) {
             console.log("GET call successful generaldata", generalData);
             var value = generalData.isLogged + "";
+            alert("checkLoginState: value : " + value);
 
             if (value === "true" && generalData.user) {
+              alert("checkLoginState: value is true");
               _this33.isLoggedIn = true;
 
               _this33.currentUserSubject.next(generalData.user.currentUser);
@@ -12313,10 +12321,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             } else {
               _this33.isLoggedIn = false;
 
-              _this33.currentUserSubject.next(null); //this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
+              _this33.currentUserSubject.next(null);
 
-
-              window.location.assign("/auth/login?returnUrl=" + returnUrl);
+              alert("checkLoginState: value is false"); //this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
+              //window.location.assign("/auth/login?returnUrl=" + returnUrl);
             }
           }, function (response) {
             console.log("Error in read menu list", response);
@@ -12342,7 +12350,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "canActivate",
         value: function canActivate(route, state) {
-          //alert("check authentication fo : " + state.url + " : isLoggedIn: " + this.isLoggedIn);
+          alert("canActivate: check authentication of : " + state.url + " : isLoggedIn: " + this.isLoggedIn);
+
           if (this.isLoggedIn === true) {
             return true;
           }
@@ -13430,12 +13439,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function loadAllSetting() {
           var _this39 = this;
 
+          alert("start loadAllSetting");
           this.loadingService.showLoading();
           var httpOptions = {
             headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_2__["HttpHepler"].generateFormHeader()
           };
           this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe(function (generalData) {
             console.log("GET call successful generaldata", generalData);
+            alert("loaded generaldata: " + generalData);
             var islogged = generalData.isLogged + "";
             generalData.isLogged = islogged === "true";
             _this39.loadedGeneralData = JSON.parse(JSON.stringify(generalData));

@@ -6,6 +6,7 @@ import com.pth.common.clients.profile.IProfileClient;
 import com.pth.common.clients.profile.IUserClient;
 import com.pth.common.clients.workflow.IWorkflowTypeClient;
 import com.pth.common.edo.ProfileResponseEdo;
+import com.pth.common.edo.UserListEdo;
 import com.pth.common.edo.WorkflowTypeListEdo;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.gui.mapper.*;
@@ -127,7 +128,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
             ProfileResponseEdo profileResponseEdo = profileResponseEdoOptional.get();
 
             sessionData.setLogged(true);
-            sessionData.setCurrentUser(this.userMapper.fromEdo(profileResponseEdo.getUser()));
+            sessionData.getUser().setCurrentUser(this.userMapper.fromEdo(profileResponseEdo.getUser()));
 
             List<UserDashboardMenu> dashboardMenuList =
                     this.dashboardMenuMapper.fromEdoList(profileResponseEdo.getUserDashboardMenus());
@@ -141,8 +142,13 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
             List<List<UserDashboardMenu>> preparedDashboardMenuList =
                     DashboardSessionData.getPreparedUserDashboardMenus(dashboardMenuList, menuItemList);
 
-            sessionData.setCompanySessionData(new CompanySessionData(company, departments, userGroups));
-            sessionData.setAppSessionData(
+            Optional<UserListEdo> userEdoListOptional =
+                    this.userClient.readCompanyUsers(bearerAccessRefreshToken.getRefreshToken(),
+                                                     profileResponseEdo.getCompanyProfile().getCompany().getId());
+            List<User> users = this.userMapper.fromEdoList(userEdoListOptional.get().getUsers());
+
+                    sessionData.setCompany(new CompanySessionData(company, departments, userGroups, users));
+            sessionData.setApp(
                     new AppSessionData(menuItemList, new DashboardSessionData(preparedDashboardMenuList)));
 
             Optional<WorkflowTypeListEdo> workflowTypeListEdoOptional =
@@ -152,7 +158,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                 WorkflowTypeListEdo workflowTypeListEdo = workflowTypeListEdoOptional.get();
                 List<WorkflowType> workflowTypes =
                         this.workflowTypeMapper.fromEdoList(workflowTypeListEdo.getWorkflowTypes());
-                sessionData.setWorkflowSessionData(new WorkflowSessionData(workflowTypes));
+                sessionData.setWorkflow(new WorkflowSessionData(workflowTypes));
             }
 
             return Optional.of(sessionData);

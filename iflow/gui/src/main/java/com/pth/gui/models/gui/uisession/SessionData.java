@@ -6,16 +6,21 @@ public class SessionData {
 
     boolean isLogged;
 
-    private CompanySessionData companySessionData;
+    private CompanySessionData company;
 
-    private WorkflowSessionData workflowSessionData;
+    private WorkflowSessionData workflow;
 
-    private User currentUser;
+    private UserSessionData user;
 
-    private AppSessionData appSessionData;
+    private AppSessionData app;
 
 
     public SessionData() {
+        isLogged = false;
+        company = new CompanySessionData();
+        workflow = new WorkflowSessionData();
+        user = new UserSessionData();
+        app = new AppSessionData();
     }
 
     public boolean isLogged() {
@@ -26,35 +31,35 @@ public class SessionData {
         isLogged = logged;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    public CompanySessionData getCompany() {
+        return company;
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public void setCompany(CompanySessionData company) {
+        this.company = company;
     }
 
-    public CompanySessionData getCompanySessionData() {
-        return companySessionData;
+    public WorkflowSessionData getWorkflow() {
+        return workflow;
     }
 
-    public void setCompanySessionData(CompanySessionData companySessionData) {
-        this.companySessionData = companySessionData;
+    public void setWorkflow(WorkflowSessionData workflow) {
+        this.workflow = workflow;
     }
 
-    public WorkflowSessionData getWorkflowSessionData() {
-        return workflowSessionData;
+    public UserSessionData getUser() {
+        return user;
     }
 
-    public void setWorkflowSessionData(WorkflowSessionData workflowSessionData) {
-        this.workflowSessionData = workflowSessionData;
+    public void setUser(UserSessionData user) {
+        this.user = user;
     }
 
-    public AppSessionData getAppSessionData() {
-        return appSessionData;
+    public AppSessionData getApp() {
+        return app;
     }
 
-    public void setAppSessionData(AppSessionData appSessionData) {
-        this.appSessionData = appSessionData;
+    public void setApp(AppSessionData app) {
+        this.app = app;
     }
 }
