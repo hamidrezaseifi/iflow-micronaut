@@ -67,7 +67,7 @@ public class ApiUrlConstants {
         public static final String USER_DEPUTIES_LIST_BY_ID = "/user/deputies/{id}";
         public static final String USER_USER_LIST_BY_COMPANYID = "/company/users/{companyid}";
         public static final String USER_USER_LIST_BY_DEPARTMENTID = "/department/users/{id}";
-        public static final String USERPROFILE_READ_BY_EMAIL = "/readprofile/email/{appIdentity}/{email}";
+        public static final String USERPROFILE_READ_BY_USERNAME = "/readprofile/email/{appIdentity}/{username}";
         public static final String USERPROFILE_READ_BY_USERID = "/readprofile/identity/{appIdentity}/{id}";
         public static final String USERDASHBOARDMENU_READ_BY_USERID = "/dashboardmenu/read/{appIdentity}/{userId}";
         public static final String USERDASHBOARDMENU_SAVE_BY_USERID = "/dashboardmenu/svae/{appIdentity}/{userId}";

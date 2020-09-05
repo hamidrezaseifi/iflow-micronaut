@@ -17,8 +17,15 @@ public interface IUserClient {
 
   Optional<UserEdo> readUserById(final String authorization, final UUID id);
 
-  Optional<UserListEdo> readCompanyUsers(final String authorization, final UUID companyid);
+  Optional<UserListEdo> readCompanyUsers(final String authorization,
+                                         final UUID companyid);
 
-  Optional<ProfileResponseEdo> readUserProfileById(final String authorization, final String appIdentity, final UUID id);
+  Optional<ProfileResponseEdo> readUserProfileById(final String authorization,
+                                                   final String appIdentity,
+                                                   final UUID id);
+
+  Optional<ProfileResponseEdo> readUserProfileByUsername(final String authorization,
+                                                         final String appIdentity,
+                                                         final String username);
 
 }

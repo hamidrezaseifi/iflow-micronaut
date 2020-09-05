@@ -37,7 +37,7 @@ micronaut:
           - isAnonymous()
     token:
       jwt:
-        enabled: true
+#        enabled: true
         generator:
           access-token-expiration: 3600
           refresh-token-expiration: 172800
@@ -56,9 +56,16 @@ micronaut:
       enabled: true
       login-success-target-url: /
       login-failure-target-url: /auth/authFailed
-      logout-targetUrl: '/auth/login'
-      login-targetUrl: '/auth/authenticate'
-      unauthorized-target-url: '/auth/login'
+      #logout-targetUrl: '/auth/login'
+      #login-targetUrl: '/auth/authenticate'
+      #unauthorized-target-url: '/auth/login'
+
+  session:
+    http:
+      cookie-path: /
+  #    cookie-secure: true
+      cookie-name: iflow
+
 
   router:
     static-resources:

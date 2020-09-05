@@ -49,8 +49,8 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<UserEntity> getUserByEmail(String email) {
-        return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.email), email)));
+    public Optional<UserEntity> getUserByUsername(String email) {
+        return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.username), email)));
     }
 
     @Override

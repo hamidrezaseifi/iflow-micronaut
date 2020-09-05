@@ -20,10 +20,10 @@ public interface IUsersService {
 
   Optional<UserEntity> getUserById(UUID id);
 
-  Optional<UserEntity> getUserByEmail(String email);
+  Optional<UserEntity> getUserByUsername(String email);
 
-  Optional<ProfileResponse> getProfileResponseByEmail(String appIdentity,
-                                                      String email);
+  Optional<ProfileResponse> getProfileResponseByUserName(String appIdentity,
+                                                         String userName);
 
   Optional<ProfileResponse> getProfileResponseById(String appIdentity,
                                                    UUID id);

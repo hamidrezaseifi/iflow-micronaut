@@ -28,23 +28,19 @@ public class AuthenticationController {
 
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Get(value = "/login")
-    public ModelAndView login(@CookieValue(value = "company-id", defaultValue = "") String companyId,
-                              @QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
+    public ModelAndView login(@QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
 
         LoginModel model = new LoginModel();
 
-        if(model.getCompanyId().isEmpty() && companyId.isEmpty() == false){
-            model.setCompanyId(companyId);
-        }
         model.setFailed(false);
 
         return new ModelAndView("/auth/login", model);
     }
 
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Post(value = "/authenticate")
     public ModelAndView authenticate(@Body LoginModel loginModel,
-                                     @CookieValue(value = "company-id", defaultValue = "") String companyId,
                                      @QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
 
         LoginModel model = new LoginModel();
@@ -53,9 +49,7 @@ public class AuthenticationController {
             model.setPassword(loginModel.getPassword() + "-authed");
             model.setUsername(loginModel.getUsername() + "-authed");
         }
-        if(model.getCompanyId().isEmpty() && companyId.isEmpty() == false){
-            model.setCompanyId(companyId);
-        }
+
         model.setFailed(false);
 
         return new ModelAndView("/auth/login", model);

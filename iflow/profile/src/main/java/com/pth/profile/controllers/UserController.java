@@ -145,11 +145,12 @@ public class UserController {
     return HttpResponse.ok(edo);
   }
 
-  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_EMAIL)
+  @Get(value = ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERNAME)
   public HttpResponse<ProfileResponseEdo> readUserProfileByEmail(final String appIdentity,
-                                                                 final String email) throws Exception {
+                                                                 final String username) throws Exception {
 
-    final Optional<ProfileResponse> profileResponseOptional = this.usersService.getProfileResponseByEmail(appIdentity, email);
+    final Optional<ProfileResponse> profileResponseOptional =
+            this.usersService.getProfileResponseByUserName(appIdentity, username);
 
     if(profileResponseOptional.isPresent()){
       return HttpResponse.ok(this.profileResponseMapper.toEdo(profileResponseOptional.get()));

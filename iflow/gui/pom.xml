@@ -68,6 +68,7 @@
       <artifactId>micronaut-security-session</artifactId>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-spring</artifactId>

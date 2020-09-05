@@ -108,13 +108,13 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
             def userEntity = createTestUser(1)
         when:
-            def userOptional = userService.getUserByEmail("user-email")
+            def userOptional = userService.getUserByUsername("user-email")
 
         then:
             userOptional.isPresent()
             verifyUser(userOptional.get(), userEntity)
         and:
-            1 * userRepository.getUserByEmail(_) >> Optional.of(userEntity)
+            1 * userRepository.getUserByUsername(_) >> Optional.of(userEntity)
 
     }
 
@@ -134,7 +134,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
                                                             new Date())
 
         when:
-            def profileResponseOptional = userService.getProfileResponseByEmail("app", "user-email")
+            def profileResponseOptional = userService.getProfileResponseByUserName("app", "user-email")
 
         then:
             profileResponseOptional.isPresent()
@@ -143,7 +143,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
 
         and:
-            1 * userRepository.getUserByEmail(_) >> Optional.of(userEntity)
+            1 * userRepository.getUserByUsername(_) >> Optional.of(userEntity)
             1 * refreshTokenRepository.findByUsername(_) >> Optional.of(refreshTokenEntity)
             1 * workflowTypeOcrSettingPresetRepository.getByCompanyId(_) >> presetList
             1 * userDashboardMenuRepository.getByUserId(_, _) >> dashboardMenuList

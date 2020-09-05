@@ -54,14 +54,14 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public Optional<UserEntity> getUserByEmail(String email) {
-    return this.userRepository.getUserByEmail(email);
+  public Optional<UserEntity> getUserByUsername(String userName) {
+    return this.userRepository.getUserByUsername(userName);
   }
 
   @Override
-  public Optional<ProfileResponse> getProfileResponseByEmail(String appIdentity, String email) {
+  public Optional<ProfileResponse> getProfileResponseByUserName(String appIdentity, String userName) {
 
-    Optional<UserEntity> userEntityOptional = getUserByEmail(email);
+    Optional<UserEntity> userEntityOptional = getUserByUsername(userName);
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 

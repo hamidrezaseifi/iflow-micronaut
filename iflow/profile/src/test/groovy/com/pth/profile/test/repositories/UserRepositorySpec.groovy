@@ -1,6 +1,3 @@
-import com.pth.common.edo.enums.ECompanyType
-import com.pth.profile.entities.CompanyEntity
-import com.pth.profile.entities.UserDepartmentEntity
 import com.pth.profile.entities.UserEntity
 import com.pth.profile.repositories.ICompanyRepository
 import com.pth.profile.repositories.IDepartmentRepository
@@ -13,10 +10,6 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.runtime.server.EmbeddedServer
 import spock.lang.AutoCleanup
 import spock.lang.Shared
-import spock.lang.Specification
-
-import java.time.LocalDateTime
-import java.time.Month
 
 class UserRepositorySpec extends ProfileTestDataProvider {
 
@@ -243,7 +236,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
 
         when:
         userRepository.save(userEntity)
-        def userOptional = userRepository.getUserByEmail(userEntity.email)
+        def userOptional = userRepository.getUserByUsername(userEntity.email)
 
         then:
         userOptional.isPresent()

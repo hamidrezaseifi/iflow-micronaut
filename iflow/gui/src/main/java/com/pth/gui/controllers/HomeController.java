@@ -10,13 +10,15 @@ import io.micronaut.session.Session;
 import io.micronaut.views.ModelAndView;
 
 import java.security.Principal;
+import javax.annotation.Nullable;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller
 public class HomeController {
 
     @Get
-    public ModelAndView index(Session session) {
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    public ModelAndView index(Session session, @Nullable Principal principal) {
         return new ModelAndView("index", null);
     }
 

@@ -32,10 +32,17 @@ public interface IUserV001DeclarativeClient {
     HttpResponse<UserEdo> readUserById(@Header("Authorization") String authorization, final UUID id);
 
     @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_COMPANYID)
-    HttpResponse<UserListEdo> readCompanyUsers(@Header("Authorization") String authorization, final UUID companyid);
+    HttpResponse<UserListEdo> readCompanyUsers(@Header("Authorization") String authorization,
+                                               final UUID companyid);
 
     @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERID)
-    HttpResponse<ProfileResponseEdo> readUserProfileById(@Header("Authorization") String authorization, final String appIdentity, final UUID id);
+    HttpResponse<ProfileResponseEdo> readUserProfileById(@Header("Authorization") String authorization,
+                                                         final String appIdentity, final UUID id);
+
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USERPROFILE_READ_BY_USERNAME)
+    HttpResponse<ProfileResponseEdo> readUserProfileByUsername(@Header("Authorization") String authorization,
+                                                         final String appIdentity,
+                                                         final String username);
 
 
 }

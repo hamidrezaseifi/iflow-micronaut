@@ -22,13 +22,8 @@
 	        <div class="login-photo"></div>
 	        
 	        <div class="login-form-container">
-		        <form action="/auth/authenticate" method="POST" style="margin: 0;">
-		        
-					<div class="form-group">
-					    <label for="companyid" th:text="#{common.companyidentificator}"></label>
-					    <input class="form-control" id="companyid"  type="text" name="companyId" autofocus th:value="${companyId}">
-					</div>
-  		        
+		        <form action="/login" method="POST" style="margin: 0;">
+
 					<div class="form-group">
 					    <label for="username" th:text="#{common.username}"></label>
 					    <input class="form-control" id="username"  type="text" name="username" th:value="${username}">

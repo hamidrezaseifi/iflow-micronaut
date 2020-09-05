@@ -74,4 +74,18 @@ public class UserClient extends ClientBase implements IUserClient {
 
     return Optional.empty();
   }
+
+  @Override
+  public Optional<ProfileResponseEdo> readUserProfileByUsername(String authorization,
+                                                                String appIdentity,
+                                                                String username) {
+    String authorizationBearer = prepareBearerAuthorization(authorization);
+    HttpResponse<ProfileResponseEdo> response =
+            this.userDeclarativeClient.readUserProfileByUsername(authorizationBearer, appIdentity, username);
+    if(response.getStatus() == HttpStatus.OK){
+      return  response.getBody();
+    }
+
+    return Optional.empty();
+  }
 }

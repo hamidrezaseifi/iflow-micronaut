@@ -1,6 +1,7 @@
 package com.pth.gui.authentication;
 
-import com.pth.common.authentication.IAuthenticationDetailResolver;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pth.common.clients.profile.IProfileClient;
 import com.pth.common.clients.profile.IUserClient;
 import com.pth.common.clients.workflow.IWorkflowTypeClient;
@@ -15,7 +16,6 @@ import com.pth.gui.models.workflow.WorkflowType;
 import com.pth.gui.services.IGuiMenuService;
 import io.micronaut.security.authentication.*;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import org.reactivestreams.Publisher;
 
@@ -24,8 +24,6 @@ import java.util.*;
 
 @Singleton
 public class GuiAuthenticationProvider implements AuthenticationProvider {
-
-    private final IAuthenticationDetailResolver authenticationDetailResolver;
 
     private final IProfileClient profileClient;
     private final IUserClient userClient;
@@ -41,8 +39,9 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
 
     private final IGuiMenuService menuService;
 
-    public GuiAuthenticationProvider(IAuthenticationDetailResolver authenticationDetailResolver,
-                                     IProfileClient profileClient,
+    private final ObjectMapper objectMapper;
+
+    public GuiAuthenticationProvider(IProfileClient profileClient,
                                      IUserClient userClient,
                                      IWorkflowTypeClient workflowTypeClient,
                                      IUserMapper userMapper,
@@ -52,8 +51,8 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                                      IUserGroupMapper userGroupMapper,
                                      IUserDashboardMenuMapper dashboardMenuMapper,
                                      IWorkflowTypeMapper workflowTypeMapper,
-                                     IGuiMenuService menuService) {
-        this.authenticationDetailResolver = authenticationDetailResolver;
+                                     IGuiMenuService menuService,
+                                     ObjectMapper objectMapper) {
 
         this.profileClient = profileClient;
         this.userClient = userClient;
@@ -68,77 +67,61 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
         this.workflowTypeMapper = workflowTypeMapper;
 
         this.menuService = menuService;
+
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public Publisher<AuthenticationResponse> authenticate(AuthenticationRequest authenticationRequest) {
-        return Flowable.create(emitter -> {
 
-            String username = authenticationRequest.getIdentity().toString();
-            String password = authenticationRequest.getSecret().toString();
+        String username = authenticationRequest.getIdentity().toString();
+        String password = authenticationRequest.getSecret().toString();
 
-            UsernamePasswordCredentials usernamePasswordCredentials = new UsernamePasswordCredentials(username,
-                                                                                                      password);
+        UsernamePasswordCredentials usernamePasswordCredentials = new UsernamePasswordCredentials(username,
+                                                                                                  password);
 
-            Optional<BearerAccessRefreshToken> accessRefreshToken = this.profileClient.postLogin(usernamePasswordCredentials);
-            if(accessRefreshToken.isPresent()){
-                    BearerAccessRefreshToken bearerAccessRefreshToken = accessRefreshToken.get();
+        Optional<BearerAccessRefreshToken> accessRefreshToken = this.profileClient.postLogin(usernamePasswordCredentials);
+        if(accessRefreshToken.isPresent()){
+            BearerAccessRefreshToken bearerAccessRefreshToken = accessRefreshToken.get();
 
-                    String refreshToken = bearerAccessRefreshToken.getRefreshToken();
+            String refreshToken = bearerAccessRefreshToken.getRefreshToken();
+            Optional<SessionData> sessionDataOptional = gerSessionData(bearerAccessRefreshToken);
 
-                    Optional<Authentication> authenticationOptional = this.authenticationDetailResolver.resolveAuthentication(refreshToken);
+            if(sessionDataOptional.isPresent()){
+                SessionData sessionData = sessionDataOptional.get();
 
-                    if(authenticationOptional.isPresent()){
-                        Authentication authentication = authenticationOptional.get();
-                        UUID userId = this.authenticationDetailResolver.resolveUserId(authentication);
-                        UUID companyId = this.authenticationDetailResolver.resolveCompanyId(authentication);
+                Collection<String> roles = bearerAccessRefreshToken.getRoles();
 
-                        Optional<SessionData> sessionDataOptional = gerSessionData(userId, companyId, refreshToken);
+                Map<String, Object> attributes = new HashMap<>();
+                attributes.put("access_token" , bearerAccessRefreshToken.getAccessToken());
+                attributes.put("refresh_token" , refreshToken);
+                attributes.put("expires_in" , bearerAccessRefreshToken.getExpiresIn());
+                //attributes.put("user-id" , userId);
+                //attributes.put("company-id" , companyId);
+                attributes.put("session-data" , sessionData);
 
-                        if(sessionDataOptional.isPresent()){
-                            SessionData sessionData = sessionDataOptional.get();
+                UserDetails userDetails = new UserDetails(bearerAccessRefreshToken.getUsername(),
+                                                          roles,
+                                                          attributes);
 
-                            Collection<String> roles = bearerAccessRefreshToken.getRoles();
-
-                            Map<String, Object> attributes = new HashMap<>();
-                            attributes.put("access_token" , bearerAccessRefreshToken.getAccessToken());
-                            attributes.put("refresh_token" , refreshToken);
-                            attributes.put("expires_in" , bearerAccessRefreshToken.getExpiresIn());
-                            attributes.put("user-id" , userId);
-                            attributes.put("company-id" , companyId);
-                            attributes.put("session-data" , sessionData);
-
-                            UserDetails userDetails = new UserDetails(bearerAccessRefreshToken.getUsername(),
-                                    roles,
-                                    attributes);
-                            emitter.onNext(userDetails);
-                            emitter.onComplete();
-                        }
-
-
-                    }
-
-
+                return Flowable.just(userDetails);
             }
-            emitter.onError(new AuthenticationException(new AuthenticationFailed()));
 
-            /*if (authenticationRequest.getIdentity().equals("sherlock") &&
-                authenticationRequest.getSecret().equals("password")) {
-                UserDetails userDetails = new UserDetails((String) authenticationRequest.getIdentity(), new ArrayList<>());
-                emitter.onNext(userDetails);
-                emitter.onComplete();
-            } else {
-                emitter.onError(new AuthenticationException(new AuthenticationFailed()));
-            }*/
 
-        }, BackpressureStrategy.ERROR);
+
+
+
+        }
+        return Flowable.just(new AuthenticationFailed());
     }
 
-    private Optional<SessionData> gerSessionData(UUID userId, UUID companyId, String refreshToken){
+    private Optional<SessionData> gerSessionData(BearerAccessRefreshToken bearerAccessRefreshToken){
         SessionData sessionData = new SessionData();
 
         Optional<ProfileResponseEdo> profileResponseEdoOptional =
-                this.userClient.readUserProfileById(refreshToken, EApplication.IFLOW.getIdentity(), userId);
+                this.userClient.readUserProfileByUsername(bearerAccessRefreshToken.getRefreshToken(),
+                                                    EApplication.IFLOW.getIdentity(),
+                                                          bearerAccessRefreshToken.getUsername());
 
         if(profileResponseEdoOptional.isPresent()){
             ProfileResponseEdo profileResponseEdo = profileResponseEdoOptional.get();
@@ -163,7 +146,8 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                     new AppSessionData(menuItemList, new DashboardSessionData(preparedDashboardMenuList)));
 
             Optional<WorkflowTypeListEdo> workflowTypeListEdoOptional =
-                    this.workflowTypeClient.readByCompanyId(refreshToken, companyId);
+                    this.workflowTypeClient.readByCompanyId(bearerAccessRefreshToken.getRefreshToken(),
+                                                            profileResponseEdo.getCompanyProfile().getCompany().getId());
             if(workflowTypeListEdoOptional.isPresent()){
                 WorkflowTypeListEdo workflowTypeListEdo = workflowTypeListEdoOptional.get();
                 List<WorkflowType> workflowTypes =
