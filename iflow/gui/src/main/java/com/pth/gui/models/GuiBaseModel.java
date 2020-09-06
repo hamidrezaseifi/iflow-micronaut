@@ -14,6 +14,10 @@ public class GuiBaseModel {
         return id;
     }
 
+    public boolean hasId(UUID id) {
+        return this.id == id;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }

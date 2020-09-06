@@ -1,10 +1,9 @@
 package com.pth.gui.authentication;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pth.common.clients.profile.IProfileClient;
-import com.pth.common.clients.profile.IUserClient;
-import com.pth.common.clients.workflow.IWorkflowTypeClient;
+import com.pth.clients.profile.IProfileClient;
+import com.pth.clients.profile.IUserClient;
+import com.pth.clients.workflow.IWorkflowTypeClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserListEdo;
 import com.pth.common.edo.WorkflowTypeListEdo;
@@ -25,6 +24,11 @@ import java.util.*;
 
 @Singleton
 public class GuiAuthenticationProvider implements AuthenticationProvider {
+
+    public static final String SESSION_DATA_KEY = "session-data";
+    public static final String EXPIRES_IN_KEY = "expires_in";
+    public static final String REFRESH_TOKEN_KEY = "refresh_token";
+    public static final String ACCESS_TOKEN_KEY = "access_token";
 
     private final IProfileClient profileClient;
     private final IUserClient userClient;
@@ -94,12 +98,12 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                 Collection<String> roles = bearerAccessRefreshToken.getRoles();
 
                 Map<String, Object> attributes = new HashMap<>();
-                attributes.put("access_token" , bearerAccessRefreshToken.getAccessToken());
-                attributes.put("refresh_token" , refreshToken);
-                attributes.put("expires_in" , bearerAccessRefreshToken.getExpiresIn());
+                attributes.put(ACCESS_TOKEN_KEY, bearerAccessRefreshToken.getAccessToken());
+                attributes.put(REFRESH_TOKEN_KEY, refreshToken);
+                attributes.put(EXPIRES_IN_KEY, bearerAccessRefreshToken.getExpiresIn());
                 //attributes.put("user-id" , userId);
                 //attributes.put("company-id" , companyId);
-                attributes.put("session-data" , sessionData);
+                attributes.put(SESSION_DATA_KEY, sessionData);
 
                 UserDetails userDetails = new UserDetails(bearerAccessRefreshToken.getUsername(),
                                                           roles,
@@ -119,15 +123,18 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
     private Optional<SessionData> gerSessionData(BearerAccessRefreshToken bearerAccessRefreshToken){
         SessionData sessionData = new SessionData();
 
+        String refreshToken = bearerAccessRefreshToken.getRefreshToken();
+
         Optional<ProfileResponseEdo> profileResponseEdoOptional =
-                this.userClient.readUserProfileByUsername(bearerAccessRefreshToken.getRefreshToken(),
-                                                    EApplication.IFLOW.getIdentity(),
+                this.userClient.readUserProfileByUsername(refreshToken,
+                                                          EApplication.IFLOW.getIdentity(),
                                                           bearerAccessRefreshToken.getUsername());
 
         if(profileResponseEdoOptional.isPresent()){
             ProfileResponseEdo profileResponseEdo = profileResponseEdoOptional.get();
 
-            sessionData.setLogged(true);
+            sessionData.setIsLogged(true);
+            sessionData.setRefreshToken(refreshToken);
             sessionData.getUser().setCurrentUser(this.userMapper.fromEdo(profileResponseEdo.getUser()));
 
             List<UserDashboardMenu> dashboardMenuList =
@@ -143,7 +150,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                     DashboardSessionData.getPreparedUserDashboardMenus(dashboardMenuList, menuItemList);
 
             Optional<UserListEdo> userEdoListOptional =
-                    this.userClient.readCompanyUsers(bearerAccessRefreshToken.getRefreshToken(),
+                    this.userClient.readCompanyUsers(refreshToken,
                                                      profileResponseEdo.getCompanyProfile().getCompany().getId());
             List<User> users = this.userMapper.fromEdoList(userEdoListOptional.get().getUsers());
 
@@ -152,7 +159,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                     new AppSessionData(menuItemList, new DashboardSessionData(preparedDashboardMenuList)));
 
             Optional<WorkflowTypeListEdo> workflowTypeListEdoOptional =
-                    this.workflowTypeClient.readByCompanyId(bearerAccessRefreshToken.getRefreshToken(),
+                    this.workflowTypeClient.readByCompanyId(refreshToken,
                                                             profileResponseEdo.getCompanyProfile().getCompany().getId());
             if(workflowTypeListEdoOptional.isPresent()){
                 WorkflowTypeListEdo workflowTypeListEdo = workflowTypeListEdoOptional.get();

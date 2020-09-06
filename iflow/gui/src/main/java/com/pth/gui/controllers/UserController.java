@@ -1,11 +1,17 @@
 package com.pth.gui.controllers;
 
 import com.pth.common.edo.enums.EUserAcces;
+import com.pth.gui.helpers.SessionDataHelper;
 import com.pth.gui.models.User;
 import com.pth.gui.models.gui.uisession.SessionData;
+import com.pth.gui.models.workflow.WorkflowMessage;
+import com.pth.gui.services.IWorkflowMessageHandler;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.authentication.AuthenticationUserDetailsAdapter;
@@ -13,75 +19,71 @@ import io.micronaut.security.authentication.UserDetails;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.session.Session;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.util.*;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller("/users")
 public class UserController {
 
+    private final IWorkflowMessageHandler workflowMessageHandler;
+
+    public UserController(IWorkflowMessageHandler workflowMessageHandler) {
+        this.workflowMessageHandler = workflowMessageHandler;
+    }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Get("/sessiondata")
     public HttpResponse<SessionData> sessionData(Session session){
         SessionData sessionData = new SessionData();
 
-        //micronaut.AUTHENTICATION
-        Optional<Object> oUserDetailsOptional = session.get("micronaut.AUTHENTICATION");
-        if(oUserDetailsOptional.isPresent() && oUserDetailsOptional.get() instanceof AuthenticationUserDetailsAdapter){
-
-            AuthenticationUserDetailsAdapter userDetails = (AuthenticationUserDetailsAdapter)oUserDetailsOptional.get();
-
-            if(userDetails.getAttributes().containsKey("session-data")){
-                sessionData = (SessionData)userDetails.getAttributes().get("session-data");
-            }
-
+        Optional<SessionData> sessionDataOptional = SessionDataHelper.getSessionData(session);
+        if(sessionDataOptional.isPresent()){
+            sessionData = sessionDataOptional.get();
         }
 
         return HttpResponse.ok(sessionData);
     }
 
-    /*private void generateGeneralData(final Map<String, Object> map) throws IFlowMessageConversionFailureException {
 
-        if (this.isSessionValidAndLoggedIn()) {
+    @Post(value = "/workflowmessages{?reset}" , produces = MediaType.APPLICATION_JSON)
+    public HttpResponse<List<WorkflowMessage>> listWorkflowMessages(Optional<String> reset, Session session){
 
-            Map<String, Object> childsMap = new HashMap<>();
+        List<WorkflowMessage> messageList = new ArrayList<>();
+        Optional<SessionData> sessionDataOptional = SessionDataHelper.getSessionData(session);
+        if (sessionDataOptional.isPresent()) {
 
+            SessionData sessionData = sessionDataOptional.get();
 
-            childsMap = new HashMap<>();
-            childsMap.put("menus", this.getMenus());
+            if ("1".equals(reset)) {
+                this.callUserMessageReset(sessionData);
+            }
 
-            final Map<String, Object> dashboardMap = new HashMap<>();
-            dashboardMap.put("totalColumns", this.getSessionUserInfo().getDashboarTotalColumns());
-            dashboardMap.put("totalRows", this.getSessionUserInfo().getDashboarTotalRows());
-            dashboardMap.put("dashboardMenus", this.getSessionUserInfo().getPreparedUserDashboardMenus(this.getMenus()));
-            childsMap.put("dashboard", dashboardMap);
-
-            map.put("app", childsMap);
-
-            map.put("isLogged", "true");
+            messageList = this.readUserMessages(sessionData);
 
         }
-        else {
-            Map<String, Object> childsMap = new HashMap<>();
-            childsMap.put("company", null);
-            childsMap.put("departments", new ArrayList<>());
-            childsMap.put("users", new ArrayList<>());
-            map.put("company", childsMap);
+        return HttpResponse.ok(messageList);
+    }
 
-            childsMap = new HashMap<>();
-            childsMap.put("worlflowTypes", new ArrayList<>());
-            map.put("workflow", childsMap);
+    private List<WorkflowMessage> readUserMessages(SessionData sessionData) {
 
-            childsMap = new HashMap<>();
-            childsMap.put("currentUser", null);
-            map.put("user", childsMap);
+        UUID companyId = sessionData.getCompany().getCompany().getId();
+        UUID userId = sessionData.getUser().getCurrentUser().getId();
 
-            childsMap = new HashMap<>();
-            childsMap.put("menus", new ArrayList<>());
-            map.put("app", childsMap);
+        return this.workflowMessageHandler.readUserMessages(companyId, userId);
+    }
 
-        }
-    }*/
+    private void callUserMessageReset(SessionData sessionData){
+
+        UUID companyId = sessionData.getCompany().getCompany().getId();
+        UUID userId = sessionData.getUser().getCurrentUser().getId();
+        String refreshToken = sessionData.getRefreshToken();
+
+        this.workflowMessageHandler.callUserMessageReset(companyId, userId,false, refreshToken);
+    }
+
+    private IWorkflowMessageHandler getWorkflowMessageHandler() {
+
+        return this.workflowMessageHandler;
+    }
 
 }

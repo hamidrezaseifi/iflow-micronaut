@@ -37,7 +37,6 @@ public class WorkflowMessageController {
   public HttpResponse<WorkflowMessageListEdo>
     readUserWorkflowMessageList(final UUID id,
                                 @PathVariable(defaultValue = "0") Integer status,
-                                final Authentication authentication,
                                 @Header String authorization) throws Exception {
 
     status = status == null ? 0 : status;
@@ -49,7 +48,6 @@ public class WorkflowMessageController {
 
   @Get(value = "/readallforworkflow/{id}")
   public HttpResponse<WorkflowMessageListEdo> readWorkfloWorkflowMessageList(final UUID id,
-                                                                             final Authentication authentication,
                                                                              @Header String authorization)
           throws Exception {
 

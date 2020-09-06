@@ -6223,7 +6223,6 @@ class AuthenticationService {
         return this.currentUserSubject.value != null;
     }
     checkLoginState(returnUrl) {
-        alert("global.loadedGeneralData: " + this.global.loadedGeneralData);
         if (this.global.loadedGeneralData == null) {
             this.global.loadAllSetting();
         }
@@ -6233,7 +6232,6 @@ class AuthenticationService {
             var value = generalData.isLogged + "";
             alert("checkLoginState: value : " + value);
             if (value === "true" && generalData.user) {
-                alert("checkLoginState: value is true");
                 this.isLoggedIn = true;
                 this.currentUserSubject.next(generalData.user.currentUser);
                 this.global.loadAllSetting();
@@ -6243,7 +6241,6 @@ class AuthenticationService {
             else {
                 this.isLoggedIn = false;
                 this.currentUserSubject.next(null);
-                alert("checkLoginState: value is false");
                 //this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
                 //window.location.assign("/auth/login?returnUrl=" + returnUrl);
             }
@@ -6261,7 +6258,6 @@ class AuthenticationService {
         window.location.assign("/auth/logout");
     }
     canActivate(route, state) {
-        alert("canActivate: check authentication of : " + state.url + " : isLoggedIn: " + this.isLoggedIn);
         if (this.isLoggedIn === true) {
             return true;
         }
@@ -6753,10 +6749,12 @@ class GlobalService {
         const httpOptions = { headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_2__["HttpHepler"].generateFormHeader() };
         this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe((generalData) => {
             console.log("GET call successful generaldata", generalData);
-            alert("loaded generaldata: " + generalData);
+            alert(generalData.isLogged);
             var islogged = generalData.isLogged + "";
             generalData.isLogged = islogged === "true";
+            alert("loaded generaldata islogged" + generalData.isLogged + "   data:" + JSON.stringify(generalData));
             this.loadedGeneralData = JSON.parse(JSON.stringify(generalData));
+            alert("parsed generaldata islogged" + this.loadedGeneralData.isLogged + "   data:" + JSON.stringify(this.loadedGeneralData));
             this.currentSessionDataSubject.next(generalData);
             this.presensSubject.next(true);
             this.loadingService.hideLoading();

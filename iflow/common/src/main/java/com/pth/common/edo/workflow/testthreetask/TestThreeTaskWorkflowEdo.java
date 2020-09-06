@@ -16,7 +16,6 @@ public class TestThreeTaskWorkflowEdo {
   }
 
   public void setWorkflow(final WorkflowEdo workflow) {
-    workflow.setWorkflowTypeIdentity(EWorkflowType.TESTTHREE_TASK_WORKFLOW_TYPE.getIdentity());
     this.workflow = workflow;
   }
 

@@ -39,7 +39,6 @@ export class AuthenticationService implements CanActivate{
     checkLoginState(returnUrl :string, ) {
 
 
-      alert("global.loadedGeneralData: " + this.global.loadedGeneralData);
       if(this.global.loadedGeneralData == null){
         this.global.loadAllSetting();
       }
@@ -55,7 +54,7 @@ export class AuthenticationService implements CanActivate{
 
 
 		            if(value === "true" && generalData.user){
-alert("checkLoginState: value is true");
+
 		            	this.isLoggedIn = true;
 		            	this.currentUserSubject.next(generalData.user.currentUser);
 
@@ -67,7 +66,7 @@ alert("checkLoginState: value is true");
 		            else{
 		            	this.isLoggedIn = false;
 		            	this.currentUserSubject.next(null);
-alert("checkLoginState: value is false");
+
 			        		//this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
 
 			        		//window.location.assign("/auth/login?returnUrl=" + returnUrl);
@@ -97,8 +96,6 @@ alert("checkLoginState: value is false");
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
-    	  alert("canActivate: check authentication of : " + state.url + " : isLoggedIn: " + this.isLoggedIn);
 
         if (this.isLoggedIn === true) {
 

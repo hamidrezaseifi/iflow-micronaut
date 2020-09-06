@@ -102,6 +102,11 @@ public class GuiSocketMessage extends HashMap<String, Object> {
     this.put(ESocketCommands.FILE_NAME.getValue(), status);
   }
 
+  public void setUserLoggedIn(final String msg) {
+
+    this.put(ESocketCommands.USER_LOGGED_IN.getValue(), msg);
+  }
+
   public String getCommand() {
 
     return this.get(ESocketCommands.COMMAND.getValue()).toString();

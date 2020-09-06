@@ -17,8 +17,8 @@ public class WorkflowFileEdo {
   @NotNull(message = "Identity is not allowed to be null!")
   private String                       identity;
 
-  @NotNull(message = "CreatedByIdentity is not allowed to be null!")
-  private String                       createdByIdentity;
+  @NotNull(message = "CreatedById is not allowed to be null!")
+  private UUID                       createdById;
 
   @NotNull
   private String                       title;
@@ -62,12 +62,12 @@ public class WorkflowFileEdo {
     this.activeFilePath = filePath;
   }
 
-  public String getCreatedByIdentity() {
-    return this.createdByIdentity;
+  public UUID getCreatedById() {
+    return this.createdById;
   }
 
-  public void setCreatedByIdentity(final String createdByIdentity) {
-    this.createdByIdentity = createdByIdentity;
+  public void setCreatedById(final UUID createdById) {
+    this.createdById = createdById;
   }
 
   public String getTitle() {

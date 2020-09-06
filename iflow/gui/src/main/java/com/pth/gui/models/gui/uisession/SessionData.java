@@ -1,7 +1,13 @@
 package com.pth.gui.models.gui.uisession;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pth.gui.models.User;
+import com.pth.gui.models.workflow.WorkflowType;
 
+import java.util.UUID;
+
+@JsonIgnoreProperties(value = {})
 public class SessionData {
 
     boolean isLogged;
@@ -14,6 +20,8 @@ public class SessionData {
 
     private AppSessionData app;
 
+    private String refreshToken;
+
 
     public SessionData() {
         isLogged = false;
@@ -23,12 +31,12 @@ public class SessionData {
         app = new AppSessionData();
     }
 
-    public boolean isLogged() {
-        return isLogged;
+    public boolean getIsLogged() {
+        return this.isLogged;
     }
 
-    public void setLogged(boolean logged) {
-        isLogged = logged;
+    public void setIsLogged(boolean isLogged) {
+        this.isLogged = isLogged;
     }
 
     public CompanySessionData getCompany() {
@@ -51,6 +59,10 @@ public class SessionData {
         return user;
     }
 
+    public UUID getCurrentUserId() {
+        return user.getCurrentUser().getId();
+    }
+
     public void setUser(UserSessionData user) {
         this.user = user;
     }
@@ -61,5 +73,44 @@ public class SessionData {
 
     public void setApp(AppSessionData app) {
         this.app = app;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public User findUser(UUID id){
+        if(id == null){
+            return null;
+        }
+
+        if(user.getCurrentUser().hasId(id)){
+            return  user.getCurrentUser();
+        }
+
+        for(User user: company.getUsers()){
+            if(user.hasId(id)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+
+    public WorkflowType findWorkflowType(UUID id){
+        if(id == null){
+            return null;
+        }
+
+        for(WorkflowType workflowType: workflow.getWorkflowTypes()){
+            if(workflowType.hasId(id)){
+                return workflowType;
+            }
+        }
+        return null;
     }
 }

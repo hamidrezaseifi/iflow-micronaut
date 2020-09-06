@@ -9,22 +9,23 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class WorkflowMessage extends GuiBaseModel {
 
-  private String workflowIdentity;
+  private UUID workflowId;
 
   private Workflow workflow;
 
-  private String stepIdentity;
+  private UUID stepId;
 
   private WorkflowTypeStep step;
 
-  private String userIdentity;
+  private UUID userId;
 
   private String message;
 
-  private String createdByIdentity;
+  private UUID createdById;
 
   private EWorkflowMessageType messageType;
 
@@ -40,24 +41,37 @@ public class WorkflowMessage extends GuiBaseModel {
     super();
   }
 
-  public String getWorkflowIdentity() {
 
-    return this.workflowIdentity;
+  public UUID getWorkflowId() {
+    return workflowId;
   }
 
-  public void setWorkflowIdentity(final String workflowIdentity) {
-
-    this.workflowIdentity = workflowIdentity;
+  public void setWorkflowId(UUID workflowId) {
+    this.workflowId = workflowId;
   }
 
-  public String getStepIdentity() {
-
-    return this.stepIdentity;
+  public UUID getStepId() {
+    return stepId;
   }
 
-  public void setStepIdentity(final String stepId) {
+  public void setStepId(UUID stepId) {
+    this.stepId = stepId;
+  }
 
-    this.stepIdentity = stepId;
+  public UUID getUserId() {
+    return userId;
+  }
+
+  public void setUserId(UUID userId) {
+    this.userId = userId;
+  }
+
+  public UUID getCreatedById() {
+    return createdById;
+  }
+
+  public void setCreatedById(UUID createdById) {
+    this.createdById = createdById;
   }
 
   public WorkflowTypeStep getStep() {
@@ -80,16 +94,6 @@ public class WorkflowMessage extends GuiBaseModel {
     this.workflow = workflow;
   }
 
-  public String getUserIdentity() {
-
-    return this.userIdentity;
-  }
-
-  public void setUserIdentity(final String userIdentity) {
-
-    this.userIdentity = userIdentity;
-  }
-
   public String getMessage() {
 
     return this.message;
@@ -98,16 +102,6 @@ public class WorkflowMessage extends GuiBaseModel {
   public void setMessage(final String message) {
 
     this.message = message;
-  }
-
-  public String getCreatedByIdentity() {
-
-    return this.createdByIdentity;
-  }
-
-  public void setCreatedByIdentity(final String createdByIdentity) {
-
-    this.createdByIdentity = createdByIdentity;
   }
 
   public EWorkflowMessageType getMessageType() {
@@ -191,7 +185,7 @@ public class WorkflowMessage extends GuiBaseModel {
 
   public String getIdentityPath() {
 
-    return this.workflowIdentity + "-" + this.stepIdentity + "-" + this.userIdentity;
+    return this.workflowId + "-" + this.stepId + "-" + this.userId;
   }
 
 }

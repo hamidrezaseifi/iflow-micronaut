@@ -64,7 +64,6 @@ public class InvoiceWorkflowEdo {
   }
 
   public void setWorkflow(final WorkflowEdo workflow) {
-    workflow.setWorkflowTypeIdentity(EWorkflowType.INVOICE_WORKFLOW_TYPE.getIdentity());
     this.workflow = workflow;
   }
 

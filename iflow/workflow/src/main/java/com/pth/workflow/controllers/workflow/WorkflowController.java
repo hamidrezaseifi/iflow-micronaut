@@ -40,7 +40,7 @@ public class WorkflowController {
 
   @Post(value = "/search")
   public HttpResponse<WorkflowListEdo> searchWorkflow(@Body @Valid final WorkflowSearchFilterEdo workflowSearchFilterEdo,
-                                                      final Authentication authentication) throws Exception {
+                                                      @Header String authorization) throws Exception {
 
     final List<WorkflowEntity>
             modelList = this.workflowSearchService.search(workflowMapper.fromEdo(workflowSearchFilterEdo));
@@ -50,7 +50,7 @@ public class WorkflowController {
 
   @Post(value = "/readbyidentitylist")
   public HttpResponse<WorkflowListEdo> readWorkflowList(@Body @Valid final IdentityListEdo identityList,
-                                                        final Authentication authentication) throws Exception {
+                                                        @Header String authorization) throws Exception {
 
     final List<WorkflowEntity> modelList =
             this.workflowSearchService.readWorkflowListByIdentityList(identityList.getIdentityList());
@@ -60,7 +60,6 @@ public class WorkflowController {
 
   @Get(value = "/read/{id}")
   public HttpResponse<WorkflowEdo> readWorkflow(final UUID id,
-                                                final Authentication authentication,
                                                 @Header String authorization) throws Exception {
 
     final Optional<WorkflowEntity> modelOptional = this.workflowService.getById(id);

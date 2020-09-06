@@ -17,7 +17,7 @@ import javax.annotation.Nullable;
 public class HomeController {
 
     @Get
-    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Secured(SecurityRule.IS_AUTHENTICATED)
     public ModelAndView index(Session session, @Nullable Principal principal) {
         return new ModelAndView("index", null);
     }

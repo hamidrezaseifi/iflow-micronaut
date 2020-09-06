@@ -58,7 +58,7 @@ micronaut:
       login-failure-target-url: /auth/authFailed
       #logout-targetUrl: '/auth/login'
       #login-targetUrl: '/auth/authenticate'
-      #unauthorized-target-url: '/auth/login'
+      unauthorized-target-url: '/auth/login'
 
   session:
     http:
@@ -79,6 +79,7 @@ micronaut:
     thymeleaf:
       enabled: true
       character-encoding: UTF-8
+      suffix: .html
       template-mode:
         thymeleaf:
           suffix: .html
@@ -90,3 +91,8 @@ micronaut:
     securities:
       passwordpepper: passwordpepper
 
+iflow:
+  gui:
+    uploadfile:
+      temp-base-dir: c:/upload/temp
+      archive-base-dir: c:/upload/archive

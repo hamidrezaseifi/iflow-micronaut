@@ -42,13 +42,12 @@ public class TestThreeTaskController {
     this.testThreeTaskWorkflowSaveRequestMapper = testThreeTaskWorkflowSaveRequestMapper;
   }
 
-  @Get(value = "/readbyidentity/{identity}")
-  public HttpResponse<TestThreeTaskWorkflowEdo> readInvoice(final String identity,
-                                                            final Authentication authentication,
+  @Get(value = "/read/{id}")
+  public HttpResponse<TestThreeTaskWorkflowEdo> readInvoice(final UUID id,
                                                             @Header String authorization) throws Exception {
 
     final Optional<TestThreeTaskWorkflowEntity> modelOptional =
-            this.testThreeTaskWorkflowService.getByIdentity(identity);
+            this.testThreeTaskWorkflowService.getById(id);
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(testThreeTaskWorkflowMapper.toEdo(modelOptional.get()));
@@ -60,7 +59,6 @@ public class TestThreeTaskController {
   @Post(value = "/create")
   public HttpResponse<TestThreeTaskWorkflowListEdo>
     createInvoice(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
-                  final Authentication authentication,
                   @Header String authorization) throws Exception {
 
     final List<TestThreeTaskWorkflowEntity> modelList =
@@ -75,7 +73,6 @@ public class TestThreeTaskController {
   @Post(value = "/save")
   public HttpResponse<TestThreeTaskWorkflowEdo>
   saveInvoice(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo requestEdo,
-              final Authentication authentication,
               @Header String authorization) throws Exception {
 
     final Optional<TestThreeTaskWorkflowEntity> modelOptional =
@@ -90,7 +87,6 @@ public class TestThreeTaskController {
 
   @Post(value = "/readbyidentitylist")
   public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
-                                                                    final Authentication authentication,
                                                                     @Header String authorization) throws Exception {
 
     final List<TestThreeTaskWorkflowEntity> modelList =
@@ -99,10 +95,9 @@ public class TestThreeTaskController {
     return HttpResponse.ok(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
   }
 
-  @Get(value = "/readbyuseridentity/{id}/{status}")
+  @Get(value = "/readbyuserid/{id}/{status}")
   public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                            @PathVariable() final int status,
-                                                                           final Authentication authentication,
                                                                            @Header String authorization)
           throws Exception {
 
@@ -116,7 +111,6 @@ public class TestThreeTaskController {
   @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/validate")
   public void validateInvoiceRequest(@Body @Valid final TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
-                                     final Authentication authentication,
                                      @Header String authorization) throws Exception {
 
     this.testThreeTaskWorkflowService.validate(

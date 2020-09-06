@@ -11,10 +11,10 @@ public class WorkflowActionEdo {
   @NotNull(message = "id must not be null")
   protected UUID id;
 
-  private String  assignToIdentity;
+  private UUID assignToId;
 
-  @NotNull(message = "CurrentStepIdentity must not be null")
-  private String  currentStepIdentity;
+  @NotNull(message = "CurrentStepId must not be null")
+  private UUID currentStepId;
 
   private String  comments;
 
@@ -29,20 +29,20 @@ public class WorkflowActionEdo {
     this.id = id;
   }
 
-  public String getAssignToIdentity() {
-    return this.assignToIdentity;
+  public UUID getAssignToId() {
+    return this.assignToId;
   }
 
-  public void setAssignToIdentity(final String assignToIdentity) {
-    this.assignToIdentity = assignToIdentity;
+  public void setAssignToId(final UUID assignToId) {
+    this.assignToId = assignToId;
   }
 
-  public String getCurrentStepIdentity() {
-    return this.currentStepIdentity;
+  public UUID getCurrentStepId() {
+    return this.currentStepId;
   }
 
-  public void setCurrentStepIdentity(final String currectStepIdentity) {
-    this.currentStepIdentity = currectStepIdentity;
+  public void setCurrentStepId(final UUID currentStepId) {
+    this.currentStepId = currentStepId;
   }
 
   public String getComments() {

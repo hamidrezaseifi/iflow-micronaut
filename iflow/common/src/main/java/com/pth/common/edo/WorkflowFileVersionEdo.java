@@ -9,8 +9,8 @@ public class WorkflowFileVersionEdo {
   @NotNull(message = "id must not be null")
   protected UUID id;
 
-  @NotNull(message = "CreatedByIdentity must not be null!")
-  private String  createdByIdentity;
+  @NotNull(message = "createdById must not be null!")
+  private UUID createdById;
 
   @NotNull(message = "FilePath must not be null!")
   private String  filePath;
@@ -39,12 +39,12 @@ public class WorkflowFileVersionEdo {
     this.filePath = filePath;
   }
 
-  public String getCreatedByIdentity() {
-    return this.createdByIdentity;
+  public UUID getCreatedById() {
+    return this.createdById;
   }
 
-  public void setCreatedByIdentity(final String createdByIdentity) {
-    this.createdByIdentity = createdByIdentity;
+  public void setCreatedById(final UUID createdById) {
+    this.createdById = createdById;
   }
 
   public String getComments() {

@@ -15,7 +15,6 @@ public class SingleTaskWorkflowEdo {
   }
 
   public void setWorkflow(final WorkflowEdo workflow) {
-    workflow.setWorkflowTypeIdentity(EWorkflowType.SINGLE_TASK_WORKFLOW_TYPE.getIdentity());
     this.workflow = workflow;
   }
 

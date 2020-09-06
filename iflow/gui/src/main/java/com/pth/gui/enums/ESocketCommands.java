@@ -16,6 +16,7 @@ public enum ESocketCommands {
   IMAGE_WIDTH("imageWidth"),
   IMAGE_HEIGHT("imageHeight"),
   SELECTED_OCR_PRESET("selectedPreset"),
+  USER_LOGGED_IN("selectedPreset"),
 
   MESSAGE_RELOAD("message-reload");
 

@@ -20,17 +20,17 @@ public class WorkflowEdo {
   @NotNull(message = "Identity is not allowed to be null!")
   private String identity;
 
-  @NotNull(message = "CompanyIdentity is not allowed to be null!")
-  private String companyIdentity;
+  @NotNull(message = "CompanyId is not allowed to be null!")
+  private UUID companyId;
 
-  @NotNull(message = "WorkflowTypeIdentity is not allowed to be null!")
-  private String workflowTypeIdentity;
+  @NotNull(message = "WorkflowTypeId is not allowed to be null!")
+  private UUID workflowTypeId;
 
-  private String currentStepIdentity;
+  private UUID currentStepId;
 
-  private String controllerIdentity;
+  private UUID controllerId;
 
-  private String createdByIdentity;
+  private UUID createdById;
 
   private String comments;
 
@@ -59,59 +59,59 @@ public class WorkflowEdo {
     return this.identity;
   }
 
-  public void setIdentity(final String identity) {
+  public void setId(final String identity) {
 
     this.identity = identity;
   }
 
-  public String getCompanyIdentity() {
+  public UUID getCompanyId() {
 
-    return this.companyIdentity;
+    return this.companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
+  public void setCompanyId(final UUID companyId) {
 
-    this.companyIdentity = companyIdentity;
+    this.companyId = companyId;
   }
 
-  public String getWorkflowTypeIdentity() {
+  public UUID getWorkflowTypeId() {
 
-    return this.workflowTypeIdentity;
+    return this.workflowTypeId;
   }
 
-  public void setWorkflowTypeIdentity(final String workflowTypeIdentity) {
+  public void setWorkflowTypeId(final UUID workflowTypeId) {
 
-    this.workflowTypeIdentity = workflowTypeIdentity;
+    this.workflowTypeId = workflowTypeId;
   }
 
-  public String getCurrentStepIdentity() {
+  public UUID getCurrentStepId() {
 
-    return this.currentStepIdentity;
+    return this.currentStepId;
   }
 
-  public void setCurrentStepIdentity(final String currentStepIdentity) {
+  public void setCurrentStepId(final UUID currentStepId) {
 
-    this.currentStepIdentity = currentStepIdentity;
+    this.currentStepId = currentStepId;
   }
 
-  public String getControllerIdentity() {
+  public UUID getControllerId() {
 
-    return this.controllerIdentity;
+    return this.controllerId;
   }
 
-  public void setControllerIdentity(final String controllerIdentity) {
+  public void setControllerId(final UUID controllerId) {
 
-    this.controllerIdentity = controllerIdentity;
+    this.controllerId = controllerId;
   }
 
-  public String getCreatedByIdentity() {
+  public UUID getCreatedById() {
 
-    return this.createdByIdentity;
+    return this.createdById;
   }
 
-  public void setCreatedByIdentity(final String createdByIdentity) {
+  public void setCreatedById(final UUID createdById) {
 
-    this.createdByIdentity = createdByIdentity;
+    this.createdById = createdById;
   }
 
   public String getComments() {

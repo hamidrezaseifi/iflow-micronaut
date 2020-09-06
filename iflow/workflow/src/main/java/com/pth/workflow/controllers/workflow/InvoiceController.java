@@ -43,13 +43,12 @@ public class InvoiceController {
   }
 
   //@PreAuthorize(RestAccessRoles.InvoiceWorkflowEntity.HAS_ROLE_INVOICE_READ)
-  @Get(value = "/readbyidentity/{identity}")
-  public HttpResponse<InvoiceWorkflowEdo> readInvoice(final String identity,
-                                                      final Authentication authentication,
+  @Get(value = "/read/{id}")
+  public HttpResponse<InvoiceWorkflowEdo> readInvoice(final UUID id,
                                                       @Header String authorization) throws Exception {
 
     final Optional<InvoiceWorkflowEntity> modelOptional =
-            this.invoiceWorkflowService.getByIdentity(identity);
+            this.invoiceWorkflowService.getById(id);
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(invoiceWorkflowMapper.toEdo(modelOptional.get()));
@@ -62,7 +61,6 @@ public class InvoiceController {
   @Post(value = "/create")
   public HttpResponse<InvoiceWorkflowListEdo> createInvoice(
                                               @Body @Valid final InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo,
-                                              final Authentication authentication,
                                               @Header String authorization) throws Exception {
 
     final List<InvoiceWorkflowEntity> modelList =
@@ -76,7 +74,6 @@ public class InvoiceController {
   @Post(value = "/save")
   public HttpResponse<InvoiceWorkflowEdo>
     saveInvoice(@Body @Valid final InvoiceWorkflowSaveRequestEdo requestEdo,
-                final Authentication authentication,
                 @Header String authorization) throws Exception {
 
     final Optional<InvoiceWorkflowEntity> modelOptional =
@@ -90,7 +87,6 @@ public class InvoiceController {
 
   @Post(value = "/readbyidentitylist")
   public HttpResponse<InvoiceWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
-                                                              Authentication authentication,
                                                               @Header String authorization) throws Exception {
 
     final List<InvoiceWorkflowEntity> modelList = this.invoiceWorkflowService.getListByIdentityList(idList);
@@ -98,10 +94,9 @@ public class InvoiceController {
     return HttpResponse.ok(new InvoiceWorkflowListEdo(invoiceWorkflowMapper.toEdoList(modelList)));
   }
 
-  @Get(value = "/readbyuseridentity/{id}/{status}")
+  @Get(value = "/readbyuserid/{id}/{status}")
   public HttpResponse<InvoiceWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                      @PathVariable(defaultValue = "0") final int status,
-                                                                     Authentication authentication,
                                                                      @Header String authorization) throws Exception {
 
     final List<InvoiceWorkflowEntity> modelList =
@@ -115,7 +110,6 @@ public class InvoiceController {
   @Post(value = "/validate")
   public void
     validateInvoiceRequest(@Body @Valid final InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo,
-                           final Authentication authentication,
                            @Header String authorization) throws Exception {
 
     this.invoiceWorkflowService.validate(invoiceWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo),

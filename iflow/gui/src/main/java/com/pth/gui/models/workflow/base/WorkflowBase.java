@@ -58,7 +58,9 @@ public abstract class WorkflowBase implements IWorkflow {
     return this.workflowTypeId;
   }
 
-
+  public void setWorkflowTypeId(UUID workflowTypeId) {
+    this.workflowTypeId = workflowTypeId;
+  }
 
   @Override
   public UUID getCompanyId() {

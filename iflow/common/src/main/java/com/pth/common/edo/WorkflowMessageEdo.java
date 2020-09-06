@@ -18,18 +18,18 @@ public class WorkflowMessageEdo {
   protected UUID id;
 
   @NotNull(message = "WorkflowIdentity must not be null")
-  private String        workflowIdentity;
+  private UUID        workflowId;
 
   @NotNull(message = "StepIdentity must not be null")
-  private String        stepIdentity;
+  private UUID        stepId;
 
   @NotNull(message = "UserId must not be null")
-  private String        userIdentity;
+  private UUID        userId;
 
   private String        message;
 
   @NotNull(message = "CreatedByIdentity must not be null")
-  private String        createdByIdentity;
+  private UUID createdById;
 
   @NotNull(message = "MessageType must not be null")
   @AEnumValueValidator(enumClazz = EWorkflowMessageType.class)
@@ -56,28 +56,36 @@ public class WorkflowMessageEdo {
     this.id = id;
   }
 
-  public String getWorkflowIdentity() {
-    return this.workflowIdentity;
+  public UUID getWorkflowId() {
+    return workflowId;
   }
 
-  public void setWorkflowIdentity(final String workflowIdentity) {
-    this.workflowIdentity = workflowIdentity;
+  public void setWorkflowId(UUID workflowId) {
+    this.workflowId = workflowId;
   }
 
-  public String getStepIdentity() {
-    return this.stepIdentity;
+  public UUID getStepId() {
+    return stepId;
   }
 
-  public void setStepIdentity(final String stepIdentity) {
-    this.stepIdentity = stepIdentity;
+  public void setStepId(UUID stepId) {
+    this.stepId = stepId;
   }
 
-  public String getUserIdentity() {
-    return this.userIdentity;
+  public UUID getUserId() {
+    return userId;
   }
 
-  public void setUserIdentity(final String userIdentity) {
-    this.userIdentity = userIdentity;
+  public void setUserId(UUID userId) {
+    this.userId = userId;
+  }
+
+  public UUID getCreatedById() {
+    return createdById;
+  }
+
+  public void setCreatedById(UUID createdById) {
+    this.createdById = createdById;
   }
 
   public String getMessage() {
@@ -86,14 +94,6 @@ public class WorkflowMessageEdo {
 
   public void setMessage(final String message) {
     this.message = message;
-  }
-
-  public String getCreatedByIdentity() {
-    return this.createdByIdentity;
-  }
-
-  public void setCreatedByIdentity(final String createdByIdentity) {
-    this.createdByIdentity = createdByIdentity;
   }
 
   public Integer getMessageType() {
