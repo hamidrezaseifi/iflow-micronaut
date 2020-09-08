@@ -1,8 +1,8 @@
-package com.pth.clients.workflow.impl;
+package com.pth.clients.clients.workflow.impl;
 
-import com.pth.clients.ClientBase;
+import com.pth.clients.clients.ClientBase;
 import com.pth.clients.declaratives.workflow.IWorkflowMessageV001DeclarativeClient;
-import com.pth.clients.workflow.IWorkflowMessageClient;
+import com.pth.clients.clients.workflow.IWorkflowMessageClient;
 import com.pth.common.edo.WorkflowMessageListEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;

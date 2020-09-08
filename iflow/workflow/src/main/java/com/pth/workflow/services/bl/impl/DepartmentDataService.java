@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.pth.clients.profile.IProfile001Client;
+import com.pth.clients.clients.profile.IUserClient;
 import com.pth.common.edo.UserListEdo;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.mapper.IUserMapper;
@@ -22,13 +22,13 @@ public class DepartmentDataService implements IDepartmentDataService {
 
   private static final Logger logger = LoggerFactory.getLogger(DepartmentDataService.class);
 
-  private final IProfile001Client profileClient;
+  private final IUserClient userClient;
   private final IUserMapper userMapper;
 
-  public DepartmentDataService(IProfile001Client profileClient,
+  public DepartmentDataService(IUserClient userClient,
                                IUserMapper userMapper) {
 
-    this.profileClient = profileClient;
+    this.userClient = userClient;
     this.userMapper = userMapper;
   }
 
@@ -38,7 +38,7 @@ public class DepartmentDataService implements IDepartmentDataService {
 
     logger.debug("Request department user list");
 
-    Optional<UserListEdo> userListEdoOptional = profileClient.getAllDocumentMetaData(authorization, departmentId);
+    Optional<UserListEdo> userListEdoOptional = userClient.readDepartmentUsers(authorization, departmentId);
     if(userListEdoOptional.isPresent()){
       return userMapper.fromEdoList(userListEdoOptional.get().getUsers());
     }

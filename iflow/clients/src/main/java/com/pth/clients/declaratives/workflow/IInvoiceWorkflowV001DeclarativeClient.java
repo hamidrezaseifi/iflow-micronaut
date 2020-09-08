@@ -21,7 +21,7 @@ public interface IInvoiceWorkflowV001DeclarativeClient {
                                                  final UUID id);
 
     @Post(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_INVOICEWORKFLOW_ROOT + "/create")
-    HttpResponse<InvoiceWorkflowEdo> createInvoice(@Header String authorization,
+    HttpResponse<InvoiceWorkflowListEdo> createInvoice(@Header String authorization,
                                                    @Body InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo);
 
     @Post(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_INVOICEWORKFLOW_ROOT + "/save")

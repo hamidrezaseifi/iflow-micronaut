@@ -1,9 +1,9 @@
 package com.pth.gui.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pth.clients.profile.IProfileClient;
-import com.pth.clients.profile.IUserClient;
-import com.pth.clients.workflow.IWorkflowTypeClient;
+import com.pth.clients.clients.profile.IProfileClient;
+import com.pth.clients.clients.profile.IUserClient;
+import com.pth.clients.clients.workflow.IWorkflowTypeClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserListEdo;
 import com.pth.common.edo.WorkflowTypeListEdo;

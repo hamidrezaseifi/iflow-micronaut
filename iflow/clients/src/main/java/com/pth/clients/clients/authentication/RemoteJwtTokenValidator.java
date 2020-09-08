@@ -1,15 +1,12 @@
-package com.pth.clients.authentication;
+package com.pth.clients.clients.authentication;
 
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.SignedJWT;
-import com.pth.clients.declaratives.authentication.IAuthenticationV001DeclarativeClient;
-import com.pth.clients.profile.IProfileClient;
+import com.pth.clients.clients.profile.IProfileClient;
 import com.pth.common.edo.TokenValidationRequestEdo;
 import com.pth.common.edo.enums.EApplication;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.token.jwt.encryption.EncryptionConfiguration;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;

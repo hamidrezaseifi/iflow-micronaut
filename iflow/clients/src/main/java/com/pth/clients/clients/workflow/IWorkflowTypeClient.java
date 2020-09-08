@@ -1,4 +1,4 @@
-package com.pth.clients.workflow;
+package com.pth.clients.clients.workflow;
 
 import com.pth.common.edo.WorkflowTypeEdo;
 import com.pth.common.edo.WorkflowTypeListEdo;

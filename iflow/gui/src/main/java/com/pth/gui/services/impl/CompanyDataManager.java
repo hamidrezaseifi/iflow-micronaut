@@ -1,6 +1,6 @@
 package com.pth.gui.services.impl;
 
-import com.pth.clients.workflow.IWorkflowMessageClient;
+import com.pth.clients.clients.workflow.IWorkflowMessageClient;
 import com.pth.common.edo.WorkflowMessageListEdo;
 import com.pth.gui.mapper.IWorkflowMessageMapper;
 import com.pth.gui.models.gui.cach.CompanyCachData;

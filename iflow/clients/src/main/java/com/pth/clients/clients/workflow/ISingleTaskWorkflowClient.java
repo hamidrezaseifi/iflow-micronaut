@@ -1,4 +1,4 @@
-package com.pth.clients.workflow;
+package com.pth.clients.clients.workflow;
 
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
@@ -12,7 +12,7 @@ public interface ISingleTaskWorkflowClient {
     Optional<SingleTaskWorkflowEdo> read(String authorization,
                                          final UUID id);
 
-    Optional<SingleTaskWorkflowEdo> create(String authorization,
+    Optional<SingleTaskWorkflowListEdo> create(String authorization,
                                            SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
 
     Optional<SingleTaskWorkflowEdo> save(String authorization,
@@ -22,7 +22,6 @@ public interface ISingleTaskWorkflowClient {
                                                         final UUID id,
                                                         final int status);
 
-    Optional<?> validate(String authorization,
-                         SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
+    Optional<?> validate(String authorization, SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
     
 }

@@ -1,4 +1,4 @@
-package com.pth.clients.workflow;
+package com.pth.clients.clients.workflow;
 
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowListEdo;
@@ -9,10 +9,10 @@ import java.util.UUID;
 
 public interface IInvoiceWorkflowClient {
 
-    Optional<InvoiceWorkflowEdo> readInvoice(String authorization,
+    Optional<InvoiceWorkflowEdo> read(String authorization,
                                              final UUID id);
 
-    Optional<InvoiceWorkflowEdo> create(String authorization,
+    Optional<InvoiceWorkflowListEdo> create(String authorization,
                                         InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo);
 
     Optional<InvoiceWorkflowEdo> save(String authorization,

@@ -44,4 +44,7 @@ public interface IUserV001DeclarativeClient {
                                                                final String username);
 
 
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_DEPARTMENTID)
+    HttpResponse<UserListEdo> readDepartmentUsers(@Header("Authorization") String authorization,
+                                                         final UUID id);
 }

@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.pth.clients.workflow.IInvoiceWorkflowClient;
+import com.pth.clients.clients.workflow.IInvoiceWorkflowClient;
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
+import com.pth.common.edo.workflow.invoice.InvoiceWorkflowListEdo;
+import com.pth.gui.exception.GuiCustomizedException;
 import com.pth.gui.mapper.IInvoiceWorkflowMapper;
+import com.pth.gui.mapper.IInvoiceWorkflowSaveRequestMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.invoice.InvoiceWorkflow;
@@ -29,13 +32,16 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
 
   private final IInvoiceWorkflowClient invoiceWorkflowClient;
   private final IInvoiceWorkflowMapper invoiceWorkflowMapper;
+  private final IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper;
   private final IUploadFileManager uploadFileManager;
 
   public InvoiceWorkflowHandler(IUploadFileManager uploadFileManager,
                                 IInvoiceWorkflowClient invoiceWorkflowClient,
+                                IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper,
                                 IInvoiceWorkflowMapper invoiceWorkflowMapper) {
     this.uploadFileManager = uploadFileManager;
     this.invoiceWorkflowClient = invoiceWorkflowClient;
+    this.invoiceWorkflowSaveRequestMapper = invoiceWorkflowSaveRequestMapper;
     this.invoiceWorkflowMapper = invoiceWorkflowMapper;
   }
 
@@ -45,7 +51,7 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
     logger.debug("Read workflow {}", workflowId);
 
     Optional<InvoiceWorkflowEdo> invoiceWorkflowEdoOptional =
-            invoiceWorkflowClient.readInvoice(sessionData.getRefreshToken() , workflowId);
+            invoiceWorkflowClient.read(sessionData.getRefreshToken() , workflowId);
 
     if(invoiceWorkflowEdoOptional.isPresent()){
       final InvoiceWorkflow workflow = invoiceWorkflowMapper.fromEdo(invoiceWorkflowEdoOptional.get());
@@ -67,14 +73,20 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
       createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), createRequest);
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(createRequest));
 
     this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 
-    final List<InvoiceWorkflow> list = this.invoiceWorkflowClient.create(sessionData.getRefreshToken(), createRequest);
+    Optional<InvoiceWorkflowListEdo> invoiceWorkflowListEdoOptional =
+            this.invoiceWorkflowClient.create(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(createRequest));
 
-    return this.prepareWorkflowList(list, sessionData);
+    if(invoiceWorkflowListEdoOptional.isPresent()) {
+      final List<InvoiceWorkflow> list = invoiceWorkflowMapper.fromEdoList(invoiceWorkflowListEdoOptional.get().getWorkflows());
 
+      return this.prepareWorkflowList(list, sessionData);
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -92,12 +104,17 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), saveRequest);
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final InvoiceWorkflow result = this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), saveRequest);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    final Optional<InvoiceWorkflowEdo> resultOptional =
+            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
+
+    if(resultOptional.isPresent()) {
+      return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
+    }
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -113,10 +130,13 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
       request.setCommand(EWorkflowProcessCommand.ASSIGN);
       request.setAssignUser(sessionData.getCurrentUserId());
 
-      this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), request);
-
-      final InvoiceWorkflow result = this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), request);
-      return Optional.of(this.prepareWorkflow(result, sessionData));
+      this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+      final Optional<InvoiceWorkflowEdo> resultOptional =
+              this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+      if(resultOptional.isPresent()) {
+        return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
+      }
+      throw new GuiCustomizedException("error by saving workflow");
     }
     return Optional.empty();
 
@@ -133,12 +153,16 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), saveRequest);
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final InvoiceWorkflow result = this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), saveRequest);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    final Optional<InvoiceWorkflowEdo> resultOptional =
+            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
+    if(resultOptional.isPresent()) {
+      return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
+    }
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -149,10 +173,14 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
     final InvoiceWorkflowSaveRequest request = InvoiceWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), request);
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
 
-    final InvoiceWorkflow result = this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), request);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    final Optional<InvoiceWorkflowEdo> resultOptional =
+            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+    if(resultOptional.isPresent()) {
+      return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
+    }
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -168,7 +196,7 @@ public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflo
       return Optional.of(workflowFile);
     }
 
-    Optional.empty();
+    return Optional.empty();
   }
 
   @Override

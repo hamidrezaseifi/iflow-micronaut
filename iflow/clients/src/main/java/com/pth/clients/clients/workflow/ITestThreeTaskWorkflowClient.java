@@ -1,4 +1,4 @@
-package com.pth.clients.workflow;
+package com.pth.clients.clients.workflow;
 
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowListEdo;
@@ -12,7 +12,7 @@ public interface ITestThreeTaskWorkflowClient {
     Optional<TestThreeTaskWorkflowEdo> read(String authorization,
                                             final UUID id);
 
-    Optional<TestThreeTaskWorkflowEdo> create(String authorization,
+    Optional<TestThreeTaskWorkflowListEdo> create(String authorization,
                                               TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
 
     Optional<TestThreeTaskWorkflowEdo> save(String authorization,
@@ -22,7 +22,6 @@ public interface ITestThreeTaskWorkflowClient {
                                                            final UUID id,
                                                            final int status);
 
-    Optional<?> validate(String authorization,
-                         TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
+    Optional<?> validate(String authorization, TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
     
 }

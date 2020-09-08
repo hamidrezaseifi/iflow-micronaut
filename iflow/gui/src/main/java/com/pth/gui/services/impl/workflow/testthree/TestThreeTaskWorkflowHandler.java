@@ -1,93 +1,94 @@
 package com.pth.gui.services.impl.workflow.testthree;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import com.pth.common.edo.enums.EWorkflowProcessCommand;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
+import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowEdo;
+import com.pth.gui.mapper.ITestThreeTaskWorkflowMapper;
+import com.pth.gui.models.gui.uisession.SessionData;
+import com.pth.gui.models.workflow.WorkflowFile;
+import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflow;
+import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflowSaveRequest;
+import com.pth.gui.services.IUploadFileManager;
+import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.pth.clients.clients.workflow.ITestThreeTaskWorkflowClient;
 
-import com.pth.iflow.common.enums.EWorkflowProcessCommand;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.common.models.helper.IdentityModel;
-import com.pth.iflow.gui.exceptions.GuiCustomizedException;
-import com.pth.iflow.gui.models.WorkflowFile;
-import com.pth.iflow.gui.models.ui.SessionUserInfo;
-import com.pth.iflow.gui.models.workflow.testthree.TestThreeTaskWorkflow;
-import com.pth.iflow.gui.models.workflow.testthree.TestThreeTaskWorkflowSaveRequest;
-import com.pth.iflow.gui.services.IUploadFileManager;
-import com.pth.iflow.gui.services.IWorkflowAccess;
-import com.pth.iflow.gui.services.IWorkflowHandler;
-import com.pth.iflow.gui.services.impl.workflow.base.WorkflowHandlerHelper;
+import javax.inject.Singleton;
 
-@Service
-public class TestThreeTaskWorkflowHandler extends WorkflowHandlerHelper<TestThreeTaskWorkflow> implements IWorkflowHandler<
-    TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> {
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(TestThreeTaskWorkflowHandler.class);
+@Singleton
+public class TestThreeTaskWorkflowHandler
+        extends WorkflowHandlerHelper<TestThreeTaskWorkflow>
+        implements IWorkflowHandler<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> {
 
-  private final IWorkflowAccess<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> workflowAccess;
+  private static final Logger logger = LoggerFactory.getLogger(TestThreeTaskWorkflowHandler.class);
 
-  private final SessionUserInfo sessionUserInfo;
-
+  private final ITestThreeTaskWorkflowClient testThreeTaskWorkClient;
+  private final ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper;
   private final IUploadFileManager uploadFileManager;
 
-  public TestThreeTaskWorkflowHandler(
-      @Autowired final IWorkflowAccess<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> workflowAccess,
-      @Autowired final SessionUserInfo sessionUserInfo, @Autowired final IUploadFileManager uploadFileManager) {
+  public TestThreeTaskWorkflowHandler(ITestThreeTaskWorkflowClient testThreeTaskWorkClient,
+                                      ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper,
+                                   IUploadFileManager uploadFileManager) {
 
-    this.workflowAccess = workflowAccess;
-    this.sessionUserInfo = sessionUserInfo;
+    this.testThreeTaskWorkClient = testThreeTaskWorkClient;
+    this.testThreeTaskWorkMapper = testThreeTaskWorkMapper;
     this.uploadFileManager = uploadFileManager;
   }
 
   @Override
-  public TestThreeTaskWorkflow readWorkflow(final String workflowIdentity)
-      throws GuiCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<TestThreeTaskWorkflow> readWorkflow(final UUID workflowId, SessionData sessionData){
 
-    logger.debug("Read workflow {}", workflowIdentity);
+    logger.debug("Read workflow {}", workflowId);
 
-    final TestThreeTaskWorkflow wirkflow = this.workflowAccess.readWorkflow(workflowIdentity, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(wirkflow);
+    Optional<TestThreeTaskWorkflowEdo> workflowEdoOptional =
+            testThreeTaskWorkClient.read(sessionData.getRefreshToken() , workflowId);
+
+    if(workflowEdoOptional.isPresent()){
+      final TestThreeTaskWorkflow workflow = testThreeTaskWorkMapper.fromEdo(workflowEdoOptional.get());
+      return Optional.of(this.prepareWorkflow(workflow, sessionData));
+    }
+    return Optional.empty();
   }
 
   @Override
-  public List<TestThreeTaskWorkflow> createWorkflow(final TestThreeTaskWorkflowSaveRequest createRequest)
-      throws GuiCustomizedException, IOException, IFlowMessageConversionFailureException {
+  public List<TestThreeTaskWorkflow> createWorkflow(final TestThreeTaskWorkflowSaveRequest createRequest,
+                                                 SessionData sessionData) throws IOException {
 
     logger.debug("Create workflow");
 
     createRequest.setCommand(EWorkflowProcessCommand.CREATE);
-    if (IdentityModel.isIdentityNew(createRequest.getWorkflow().getCurrentStepIdentity())) {
-
-    }
 
     createRequest.getWorkflow().setComments(createRequest.getComments());
     if (createRequest.getWorkflow().getHasActiveAction()) {
       createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.workflowAccess.validateWorkflow(createRequest, this.sessionUserInfo.getToken());
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), createRequest);
 
-    this.prepareUploadedFiles(createRequest);
+    this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 
-    final List<TestThreeTaskWorkflow> list = this.workflowAccess.createWorkflow(createRequest, this.sessionUserInfo.getToken());
+    final List<TestThreeTaskWorkflow> list = this.testThreeTaskWorkClient.create(sessionData.getRefreshToken(), createRequest);
 
-    return this.prepareWorkflowList(list);
+    return this.prepareWorkflowList(list, sessionData);
 
   }
 
   @Override
-  public TestThreeTaskWorkflow saveWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<TestThreeTaskWorkflow> saveWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
+          IOException {
 
     logger.debug("Save workflow");
 
     if (saveRequest.getWorkflow().getHasActiveAction()) {
-      saveRequest.getWorkflow().getActiveAction().setCurrentStepIdentity(saveRequest.getWorkflow().getCurrentStepIdentity());
+      saveRequest.getWorkflow().getActiveAction().setCurrentStepId(saveRequest.getWorkflow().getCurrentStepId());
     }
 
     saveRequest.setCommand(EWorkflowProcessCommand.SAVE);
@@ -95,36 +96,39 @@ public class TestThreeTaskWorkflowHandler extends WorkflowHandlerHelper<TestThre
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.workflowAccess.validateWorkflow(saveRequest, this.sessionUserInfo.getToken());
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), saveRequest);
 
-    this.prepareUploadedFiles(saveRequest);
+    this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final TestThreeTaskWorkflow result = this.workflowAccess.saveWorkflow(saveRequest, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+    final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), saveRequest);
+    return Optional.of(this.prepareWorkflow(result, sessionData));
   }
 
   @Override
-  public TestThreeTaskWorkflow assignWorkflow(final String workflowIdentity)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<TestThreeTaskWorkflow> assignWorkflow(final UUID workflowId, SessionData sessionData){
 
     logger.debug("Assign workflow");
 
-    final TestThreeTaskWorkflow workflow = this.readWorkflow(workflowIdentity);
+    final Optional<TestThreeTaskWorkflow> workflowOptional = this.readWorkflow(workflowId, sessionData);
+    if(workflowOptional.isPresent()) {
 
-    final TestThreeTaskWorkflowSaveRequest request = TestThreeTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
-    request.setCommand(EWorkflowProcessCommand.ASSIGN);
-    request.setAssignUser(this.sessionUserInfo.getUser().getIdentity());
+      final TestThreeTaskWorkflowSaveRequest request =
+              TestThreeTaskWorkflowSaveRequest.generateNewNoExpireDays(workflowOptional.get());
+      request.setCommand(EWorkflowProcessCommand.ASSIGN);
+      request.setAssignUser(sessionData.getCurrentUserId());
 
-    this.workflowAccess.validateWorkflow(request, this.sessionUserInfo.getToken());
+      this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), request);
 
-    final TestThreeTaskWorkflow result = this.workflowAccess.saveWorkflow(request, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+      final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), request);
+      return Optional.of(this.prepareWorkflow(result, sessionData));
+    }
+    return Optional.empty();
 
   }
 
   @Override
-  public TestThreeTaskWorkflow doneWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<TestThreeTaskWorkflow> doneWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
+          IOException {
 
     logger.debug("Make workflow done");
 
@@ -133,50 +137,42 @@ public class TestThreeTaskWorkflowHandler extends WorkflowHandlerHelper<TestThre
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.workflowAccess.validateWorkflow(saveRequest, this.sessionUserInfo.getToken());
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), saveRequest);
 
-    this.prepareUploadedFiles(saveRequest);
+    this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final TestThreeTaskWorkflow result = this.workflowAccess.saveWorkflow(saveRequest, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+    final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), saveRequest);
+    return Optional.of(this.prepareWorkflow(result, sessionData));
   }
 
   @Override
-  public TestThreeTaskWorkflow archiveWorkflow(final TestThreeTaskWorkflow workflow)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<TestThreeTaskWorkflow> archiveWorkflow(final TestThreeTaskWorkflow workflow, SessionData sessionData){
 
     logger.debug("Make workflow archive");
 
     final TestThreeTaskWorkflowSaveRequest request = TestThreeTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.workflowAccess.validateWorkflow(request, this.sessionUserInfo.getToken());
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), request);
 
-    final TestThreeTaskWorkflow result = this.workflowAccess.saveWorkflow(request, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+    final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), request);
+    return Optional.of(this.prepareWorkflow(result, sessionData));
   }
 
   @Override
-  public WorkflowFile readWorkflowFile(final String workflowIdentity, final String fileIdentity)
-      throws GuiCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<WorkflowFile> readWorkflowFile(final UUID workflowId,
+                                                 final UUID fileId,
+                                                 SessionData sessionData){
 
-    TestThreeTaskWorkflow workflow = null;
-    if (this.sessionUserInfo.hasCachedWorkflowIdentity(workflowIdentity)) {
-      workflow = (TestThreeTaskWorkflow) this.sessionUserInfo.getCachedWorkflow(workflowIdentity);
+    Optional<TestThreeTaskWorkflow> workflowOptional = this.readWorkflow(workflowId, sessionData);
+
+    if(workflowOptional.isPresent()){
+      final WorkflowFile workflowFile = workflowOptional.get().getFileById(workflowId);
+
+      return Optional.of(workflowFile);
     }
-    else {
-      workflow = this.readWorkflow(workflowIdentity);
-    }
 
-    final WorkflowFile workflowFile = workflow.getFileByIdentity(fileIdentity);
-
-    return workflowFile;
-  }
-
-  @Override
-  protected SessionUserInfo getSessionUserInfo() {
-
-    return this.sessionUserInfo;
+    return Optional.empty();
   }
 
   @Override

@@ -1,4 +1,4 @@
-package com.pth.clients.profile;
+package com.pth.clients.clients.profile;
 
 import com.pth.common.edo.TokenValidationRequestEdo;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;

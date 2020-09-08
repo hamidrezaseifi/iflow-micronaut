@@ -1,4 +1,4 @@
-package com.pth.clients.workflow;
+package com.pth.clients.clients.workflow;
 
 import com.pth.common.edo.WorkflowSearchFilterEdo;
 import com.pth.common.edo.workflow.WorkflowEdo;
@@ -12,7 +12,7 @@ public interface IWorkflowClient {
     Optional<WorkflowListEdo> searchWorkflow(String authorization,
                                              WorkflowSearchFilterEdo workflowSearchFilterEdo);
 
-    Optional<WorkflowEdo> readWorkflow(String authorization,
+    Optional<WorkflowEdo> read(String authorization,
                                        final UUID id);
 
 }

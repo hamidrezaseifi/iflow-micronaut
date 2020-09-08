@@ -111,16 +111,11 @@ public class ApiUrlConstants {
         public static final String API001_GUI001_ROOT = "/api001/gui001";
         public static final String API001_GUI001_CALCACHDATA_ROOT = API001_GUI001_ROOT + "/cachdata";
 
-        public static final String CACHDATA_READ_USER_WORKFLOWMESSAGELIST =
-                API001_GUI001_CALCACHDATA_ROOT + "/user/readworkflowmessagelist/{companyid}/{userid}";
-        public static final String CACHDATA_ADD_USER_WORKFLOWMESSAGELIST =
-                API001_GUI001_CALCACHDATA_ROOT + "/user/addworkflowmessagelist/{companyid}/{useri}";
-        public static final String CACHDATA_CAL_USER_DATARESET_BY_COMPANYID =
-                API001_GUI001_CALCACHDATA_ROOT + "/user/datareset/{companyid}/{userid}";
-        public static final String CACHDATA_CAL_USERLIST_DATARESET_BY_COMPANYID =
-                API001_GUI001_CALCACHDATA_ROOT + "/userlist/datareset/{companyid}";
-        public static final String CACHDATA_CAL_WORKFLOW_DATARESET_BY_WORKFLOWID =
-                API001_GUI001_CALCACHDATA_ROOT + "/workflow/datareset/{companyid}/{id}";
+        public static final String CACHDATA_READ_USER_WORKFLOWMESSAGELIST = "/user/readworkflowmessagelist/{companyid}/{userid}";
+        public static final String CACHDATA_ADD_USER_WORKFLOWMESSAGELIST = "/user/addworkflowmessagelist/{companyid}/{useri}";
+        public static final String CACHDATA_CAL_USER_DATARESET_BY_COMPANYID = "/user/datareset/{companyid}/{userid}";
+        public static final String CACHDATA_CAL_USERLIST_DATARESET_BY_COMPANYID = "/userlist/datareset/{companyid}";
+        public static final String CACHDATA_CAL_WORKFLOW_DATARESET_BY_WORKFLOWID = "/workflow/datareset/{companyid}/{id}";
 
     }
 }

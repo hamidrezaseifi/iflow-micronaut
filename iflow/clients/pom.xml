@@ -57,16 +57,6 @@
       <scope>compile</scope>
     </dependency>
 
-    <dependency>
-      <groupId>io.micronaut</groupId>
-      <artifactId>micronaut-spring</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.micronaut.configuration</groupId>
-      <artifactId>micronaut-hibernate-jpa</artifactId>
-      <scope>compile</scope>
-    </dependency>
 
     <dependency>
       <groupId>io.micronaut</groupId>
@@ -116,11 +106,6 @@
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-security-jwt</artifactId>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-jpamodelgen</artifactId>
-      <version>5.4.5.Final</version>
     </dependency>
 
 

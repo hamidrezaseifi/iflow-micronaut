@@ -1,4 +1,4 @@
-package com.pth.clients;
+package com.pth.clients.clients;
 
 public class ClientBase {
 

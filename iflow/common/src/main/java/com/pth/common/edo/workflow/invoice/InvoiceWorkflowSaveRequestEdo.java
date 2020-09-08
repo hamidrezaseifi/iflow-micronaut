@@ -61,9 +61,7 @@ public class InvoiceWorkflowSaveRequestEdo {
     return this.assigns;
   }
 
-  /**
-   * @param assignedUsers the assignedUsers to set
-   */
+
   @JsonSetter
   public void setAssigns(final List<AssignItemEdo> assigns) {
     this.assigns = new ArrayList<>();

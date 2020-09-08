@@ -1,8 +1,0 @@
-micronaut:
-  application:
-    name: iflow
-
-
-  extensions:
-    securities:
-      passwordpepper: passwordpepper

@@ -3,90 +3,94 @@ package com.pth.gui.services.impl.workflow.singletask;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import com.pth.common.edo.enums.EWorkflowProcessCommand;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
+import com.pth.gui.mapper.IInvoiceWorkflowMapper;
+import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
+import com.pth.gui.models.gui.uisession.SessionData;
+import com.pth.gui.models.workflow.WorkflowFile;
+import com.pth.gui.models.workflow.singletask.SingleTaskWorkflow;
+import com.pth.gui.models.workflow.singletask.SingleTaskWorkflowSaveRequest;
+import com.pth.gui.services.IUploadFileManager;
+import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pth.clients.clients.workflow.ISingleTaskWorkflowClient;
 import org.springframework.stereotype.Service;
 
-import com.pth.iflow.common.enums.EWorkflowProcessCommand;
-import com.pth.iflow.common.exceptions.IFlowMessageConversionFailureException;
-import com.pth.iflow.common.models.helper.IdentityModel;
-import com.pth.iflow.gui.exceptions.GuiCustomizedException;
-import com.pth.iflow.gui.models.WorkflowFile;
-import com.pth.iflow.gui.models.ui.SessionUserInfo;
-import com.pth.iflow.gui.models.workflow.singletask.SingleTaskWorkflow;
-import com.pth.iflow.gui.models.workflow.singletask.SingleTaskWorkflowSaveRequest;
-import com.pth.iflow.gui.services.IUploadFileManager;
-import com.pth.iflow.gui.services.IWorkflowAccess;
-import com.pth.iflow.gui.services.IWorkflowHandler;
-import com.pth.iflow.gui.services.impl.workflow.base.WorkflowHandlerHelper;
+import javax.inject.Singleton;
 
-@Service
-public class SingleTaskWorkflowHandler extends WorkflowHandlerHelper<SingleTaskWorkflow> implements IWorkflowHandler<SingleTaskWorkflow,
-    SingleTaskWorkflowSaveRequest> {
 
-  private static final Logger logger = LoggerFactory
-      .getLogger(SingleTaskWorkflowHandler.class);
+@Singleton
+public class SingleTaskWorkflowHandler
+        extends WorkflowHandlerHelper<SingleTaskWorkflow>
+        implements IWorkflowHandler<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> {
 
-  private final IWorkflowAccess<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> workflowAccess;
+  private static final Logger logger = LoggerFactory.getLogger(SingleTaskWorkflowHandler.class);
 
-  private final SessionUserInfo sessionUserInfo;
-
+  private final ISingleTaskWorkflowClient singleTaskWorkflowClient;
+  private final ISingleTaskWorkflowMapper singleTaskWorkflowMapper;
   private final IUploadFileManager uploadFileManager;
 
-  public SingleTaskWorkflowHandler(@Autowired final IWorkflowAccess<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> workflowAccess,
-      @Autowired final SessionUserInfo sessionUserInfo, @Autowired final IUploadFileManager uploadFileManager) {
+  public SingleTaskWorkflowHandler(ISingleTaskWorkflowClient singleTaskWorkflowClient,
+                                   ISingleTaskWorkflowMapper singleTaskWorkflowMapper,
+                                   IUploadFileManager uploadFileManager) {
 
-    this.workflowAccess = workflowAccess;
-    this.sessionUserInfo = sessionUserInfo;
+    this.singleTaskWorkflowClient = singleTaskWorkflowClient;
+    this.singleTaskWorkflowMapper = singleTaskWorkflowMapper;
     this.uploadFileManager = uploadFileManager;
   }
 
   @Override
-  public SingleTaskWorkflow readWorkflow(final String workflowIdentity)
-      throws GuiCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflow> readWorkflow(final UUID workflowId, SessionData sessionData){
 
-    logger.debug("Read workflow {}", workflowIdentity);
+    logger.debug("Read workflow {}", workflowId);
 
-    final SingleTaskWorkflow wirkflow = this.workflowAccess.readWorkflow(workflowIdentity, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(wirkflow);
+    Optional<SingleTaskWorkflowEdo> workflowEdoOptional =
+            singleTaskWorkflowClient.read(sessionData.getRefreshToken() , workflowId);
+
+    if(workflowEdoOptional.isPresent()){
+      final SingleTaskWorkflow workflow = singleTaskWorkflowMapper.fromEdo(workflowEdoOptional.get());
+      return Optional.of(this.prepareWorkflow(workflow, sessionData));
+    }
+    return Optional.empty();
   }
 
   @Override
-  public List<SingleTaskWorkflow> createWorkflow(final SingleTaskWorkflowSaveRequest createRequest)
-      throws GuiCustomizedException, IOException, IFlowMessageConversionFailureException {
+  public List<SingleTaskWorkflow> createWorkflow(final SingleTaskWorkflowSaveRequest createRequest,
+                                              SessionData sessionData) throws IOException {
 
     logger.debug("Create workflow");
 
     createRequest.setCommand(EWorkflowProcessCommand.CREATE);
-    if (IdentityModel.isIdentityNew(createRequest.getWorkflow().getCurrentStepIdentity())) {
-
-    }
 
     createRequest.getWorkflow().setComments(createRequest.getComments());
     if (createRequest.getWorkflow().getHasActiveAction()) {
       createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.workflowAccess.validateWorkflow(createRequest, this.sessionUserInfo.getToken());
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), createRequest);
 
-    this.prepareUploadedFiles(createRequest);
+    this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 
-    final List<SingleTaskWorkflow> list = this.workflowAccess.createWorkflow(createRequest, this.sessionUserInfo.getToken());
+    final List<SingleTaskWorkflow> list = this.singleTaskWorkflowClient.create(sessionData.getRefreshToken(), createRequest);
 
-    return this.prepareWorkflowList(list);
+    return this.prepareWorkflowList(list, sessionData);
 
   }
 
   @Override
-  public SingleTaskWorkflow saveWorkflow(final SingleTaskWorkflowSaveRequest saveRequest)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflow> saveWorkflow(final SingleTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
+          IOException {
 
     logger.debug("Save workflow");
 
     if (saveRequest.getWorkflow().getHasActiveAction()) {
-      saveRequest.getWorkflow().getActiveAction().setCurrentStepIdentity(saveRequest.getWorkflow().getCurrentStepIdentity());
+      saveRequest.getWorkflow().getActiveAction().setCurrentStepId(saveRequest.getWorkflow().getCurrentStepId());
     }
 
     saveRequest.setCommand(EWorkflowProcessCommand.SAVE);
@@ -94,36 +98,39 @@ public class SingleTaskWorkflowHandler extends WorkflowHandlerHelper<SingleTaskW
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.workflowAccess.validateWorkflow(saveRequest, this.sessionUserInfo.getToken());
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), saveRequest);
 
-    this.prepareUploadedFiles(saveRequest);
+    this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final SingleTaskWorkflow result = this.workflowAccess.saveWorkflow(saveRequest, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+    final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), saveRequest);
+    return Optional.of(this.prepareWorkflow(result, sessionData));
   }
 
   @Override
-  public SingleTaskWorkflow assignWorkflow(final String workflowIdentity)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflow> assignWorkflow(final UUID workflowId, SessionData sessionData){
 
     logger.debug("Assign workflow");
 
-    final SingleTaskWorkflow workflow = this.readWorkflow(workflowIdentity);
+    final Optional<SingleTaskWorkflow> workflowOptional = this.readWorkflow(workflowId, sessionData);
+    if(workflowOptional.isPresent()) {
 
-    final SingleTaskWorkflowSaveRequest request = SingleTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
-    request.setCommand(EWorkflowProcessCommand.ASSIGN);
-    request.setAssignUser(this.sessionUserInfo.getUser().getIdentity());
+      final SingleTaskWorkflowSaveRequest request =
+              SingleTaskWorkflowSaveRequest.generateNewNoExpireDays(workflowOptional.get());
+      request.setCommand(EWorkflowProcessCommand.ASSIGN);
+      request.setAssignUser(sessionData.getCurrentUserId());
 
-    this.workflowAccess.validateWorkflow(request, this.sessionUserInfo.getToken());
+      this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), request);
 
-    final SingleTaskWorkflow result = this.workflowAccess.saveWorkflow(request, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+      final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), request);
+      return Optional.of(this.prepareWorkflow(result, sessionData));
+    }
+    return Optional.empty();
 
   }
 
   @Override
-  public SingleTaskWorkflow doneWorkflow(final SingleTaskWorkflowSaveRequest saveRequest)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflow> doneWorkflow(final SingleTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
+          IOException {
 
     logger.debug("Make workflow done");
 
@@ -132,52 +139,42 @@ public class SingleTaskWorkflowHandler extends WorkflowHandlerHelper<SingleTaskW
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.workflowAccess.validateWorkflow(saveRequest, this.sessionUserInfo.getToken());
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), saveRequest);
 
-    this.prepareUploadedFiles(saveRequest);
+    this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final SingleTaskWorkflow result = this.workflowAccess.saveWorkflow(saveRequest, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+    final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), saveRequest);
+    return Optional.of(this.prepareWorkflow(result, sessionData));
   }
 
   @Override
-  public SingleTaskWorkflow archiveWorkflow(final SingleTaskWorkflow workflow)
-      throws GuiCustomizedException, MalformedURLException, IOException, IFlowMessageConversionFailureException {
+  public Optional<SingleTaskWorkflow> archiveWorkflow(final SingleTaskWorkflow workflow, SessionData sessionData){
 
     logger.debug("Make workflow archive");
 
     final SingleTaskWorkflowSaveRequest request = SingleTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.workflowAccess.validateWorkflow(request, this.sessionUserInfo.getToken());
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), request);
 
-    // this.prepareUploadedFiles(saveRequest);
-
-    final SingleTaskWorkflow result = this.workflowAccess.saveWorkflow(request, this.sessionUserInfo.getToken());
-    return this.prepareWorkflow(result);
+    final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), request);
+    return Optional.of(this.prepareWorkflow(result, sessionData));
   }
 
   @Override
-  public WorkflowFile readWorkflowFile(final String workflowIdentity, final String fileIdentity)
-      throws GuiCustomizedException, MalformedURLException, IFlowMessageConversionFailureException {
+  public Optional<WorkflowFile> readWorkflowFile(final UUID workflowId,
+                                                 final UUID fileId,
+                                                 SessionData sessionData){
 
-    SingleTaskWorkflow workflow = null;
-    if (this.sessionUserInfo.hasCachedWorkflowIdentity(workflowIdentity)) {
-      workflow = (SingleTaskWorkflow) this.sessionUserInfo.getCachedWorkflow(workflowIdentity);
+    Optional<SingleTaskWorkflow> workflowOptional = this.readWorkflow(workflowId, sessionData);
+
+    if(workflowOptional.isPresent()){
+      final WorkflowFile workflowFile = workflowOptional.get().getFileById(workflowId);
+
+      return Optional.of(workflowFile);
     }
-    else {
-      workflow = this.readWorkflow(workflowIdentity);
-    }
 
-    final WorkflowFile workflowFile = workflow.getFileByIdentity(fileIdentity);
-
-    return workflowFile;
-  }
-
-  @Override
-  protected SessionUserInfo getSessionUserInfo() {
-
-    return this.sessionUserInfo;
+    return Optional.empty();
   }
 
   @Override

@@ -1,15 +1,12 @@
 package com.pth.workflow.services.bl.impl;
 
-import java.net.MalformedURLException;
 import java.util.Set;
 import java.util.UUID;
 
-import com.pth.clients.gui.IGui001Client;
+import com.pth.clients.clients.gui.IGuiCachDataClient;
 import com.pth.common.edo.IdListEdo;
-import com.pth.common.edo.IdentityListEdo;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.services.bl.IGuiCachDataDataService;
-import io.micronaut.security.authentication.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,11 +18,11 @@ public class GuiCachDataDataService implements IGuiCachDataDataService {
 
   private static final Logger logger = LoggerFactory.getLogger(GuiCachDataDataService.class);
 
-  private final IGui001Client gui001Client;
+  private final IGuiCachDataClient guiCachDataClient;
 
-  public GuiCachDataDataService(IGui001Client gui001Client) {
+  public GuiCachDataDataService(IGuiCachDataClient guiCachDataClient) {
 
-    this.gui001Client = gui001Client;
+    this.guiCachDataClient = guiCachDataClient;
   }
 
   @Override
@@ -34,7 +31,7 @@ public class GuiCachDataDataService implements IGuiCachDataDataService {
 
     logger.debug("Reset cach data request for user");
 
-    gui001Client.calUserDataResetByCompanyAndUserId(authorization, companyId, userId);
+    guiCachDataClient.resetUserData(companyId, userId, authorization);
   }
 
   @Override
@@ -45,7 +42,7 @@ public class GuiCachDataDataService implements IGuiCachDataDataService {
     logger.debug("Reset cach data request for user list");
 
     IdListEdo idListEdo = new IdListEdo(userIdList);
-    gui001Client.calUserListDataResetByCompanyAndUserId(authorization, companyId, idListEdo);
+    guiCachDataClient.resetUserListData(companyId, idListEdo, authorization);
 
   }
 
@@ -54,7 +51,7 @@ public class GuiCachDataDataService implements IGuiCachDataDataService {
 
     logger.debug("Reset cach data request for workflow");
 
-    gui001Client.calWorkflowDataResetByCompanyAndUserId(authorization, companyId, workflowId);
+    guiCachDataClient.resetWorkflowData(companyId, workflowId, authorization);
 
 
   }

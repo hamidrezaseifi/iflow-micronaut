@@ -1,8 +1,8 @@
-package com.pth.clients.profile.impl;
+package com.pth.clients.clients.profile.impl;
 
-import com.pth.clients.ClientBase;
+import com.pth.clients.clients.ClientBase;
 import com.pth.clients.declaratives.user.IUserV001DeclarativeClient;
-import com.pth.clients.profile.IUserClient;
+import com.pth.clients.clients.profile.IUserClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;
 import com.pth.common.edo.UserListEdo;
@@ -82,6 +82,17 @@ public class UserClient extends ClientBase implements IUserClient {
     String authorizationBearer = prepareBearerAuthorization(authorization);
     HttpResponse<ProfileResponseEdo> response =
             this.userDeclarativeClient.readUserProfileByUsername(authorizationBearer, appIdentity, username);
+    if(response.getStatus() == HttpStatus.OK){
+      return  response.getBody();
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UserListEdo> readDepartmentUsers(String authorization, UUID id) {
+    String authorizationBearer = prepareBearerAuthorization(authorization);
+    HttpResponse<UserListEdo> response = this.userDeclarativeClient.readDepartmentUsers(authorizationBearer, id);
     if(response.getStatus() == HttpStatus.OK){
       return  response.getBody();
     }
