@@ -69,7 +69,7 @@ public class UserController {
         UUID companyId = sessionData.getCompany().getCompany().getId();
         UUID userId = sessionData.getUser().getCurrentUser().getId();
 
-        return this.workflowMessageHandler.readUserMessages(companyId, userId);
+        return this.workflowMessageHandler.readUserMessages(companyId, userId, sessionData);
     }
 
     private void callUserMessageReset(SessionData sessionData){

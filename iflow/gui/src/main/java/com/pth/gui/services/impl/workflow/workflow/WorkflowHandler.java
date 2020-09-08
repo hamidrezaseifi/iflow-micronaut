@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.gui.exception.GuiCustomizedException;
-import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
 import com.pth.gui.mapper.IWorkflowMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowFile;
@@ -27,15 +26,15 @@ public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements 
 
   private static final Logger logger = LoggerFactory.getLogger(WorkflowHandler.class);
 
-  private final IWorkflowClient workflowAccess;
+  private final IWorkflowClient workflowClient;
   private final IWorkflowMapper workflowMapper;
   private final IUploadFileManager uploadFileManager;
 
-  public WorkflowHandler(IWorkflowClient workflowAccess,
+  public WorkflowHandler(IWorkflowClient workflowClient,
                          IWorkflowMapper workflowMapper,
                                    IUploadFileManager uploadFileManager) {
 
-    this.workflowAccess = workflowAccess;
+    this.workflowClient = workflowClient;
     this.workflowMapper = workflowMapper;
     this.uploadFileManager = uploadFileManager;
   }
@@ -46,7 +45,7 @@ public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements 
     logger.debug("Read workflow {}", workflowId);
 
     Optional<WorkflowEdo> workflowEdoOptional =
-            workflowAccess.read(sessionData.getRefreshToken() , workflowId);
+            workflowClient.read(sessionData.getRefreshToken() , workflowId);
 
     if(workflowEdoOptional.isPresent()){
       final Workflow workflow = workflowMapper.fromEdo(workflowEdoOptional.get());

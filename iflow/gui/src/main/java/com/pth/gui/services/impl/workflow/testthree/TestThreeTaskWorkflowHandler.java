@@ -6,9 +6,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
-import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowEdo;
+import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowListEdo;
+import com.pth.gui.exception.GuiCustomizedException;
+import com.pth.gui.mapper.ISingleTaskWorkflowSaveRequestMapper;
 import com.pth.gui.mapper.ITestThreeTaskWorkflowMapper;
+import com.pth.gui.mapper.ITestThreeTaskWorkflowSaveRequestMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflow;
@@ -32,14 +35,17 @@ public class TestThreeTaskWorkflowHandler
 
   private final ITestThreeTaskWorkflowClient testThreeTaskWorkClient;
   private final ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper;
+  private final ITestThreeTaskWorkflowSaveRequestMapper testThreeTaskWorkflowSaveRequestMapper;
   private final IUploadFileManager uploadFileManager;
 
   public TestThreeTaskWorkflowHandler(ITestThreeTaskWorkflowClient testThreeTaskWorkClient,
                                       ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper,
-                                   IUploadFileManager uploadFileManager) {
+                                      ITestThreeTaskWorkflowSaveRequestMapper testThreeTaskWorkflowSaveRequestMapper,
+                                      IUploadFileManager uploadFileManager) {
 
     this.testThreeTaskWorkClient = testThreeTaskWorkClient;
     this.testThreeTaskWorkMapper = testThreeTaskWorkMapper;
+    this.testThreeTaskWorkflowSaveRequestMapper = testThreeTaskWorkflowSaveRequestMapper;
     this.uploadFileManager = uploadFileManager;
   }
 
@@ -71,19 +77,27 @@ public class TestThreeTaskWorkflowHandler
       createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), createRequest);
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
+                                           testThreeTaskWorkflowSaveRequestMapper.toEdo(createRequest));
 
     this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 
-    final List<TestThreeTaskWorkflow> list = this.testThreeTaskWorkClient.create(sessionData.getRefreshToken(), createRequest);
+    Optional<TestThreeTaskWorkflowListEdo> singleTaskWorkflowListEdoOptional =
+            this.testThreeTaskWorkClient.create(sessionData.getRefreshToken(),
+                                                 testThreeTaskWorkflowSaveRequestMapper.toEdo(createRequest));
+    if(singleTaskWorkflowListEdoOptional.isPresent()){
+      final List<TestThreeTaskWorkflow> resultList =
+              testThreeTaskWorkMapper.fromEdoList(singleTaskWorkflowListEdoOptional.get().getWorkflows());
 
-    return this.prepareWorkflowList(list, sessionData);
+      return this.prepareWorkflowList(resultList, sessionData);
+    }
 
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
-  public Optional<TestThreeTaskWorkflow> saveWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-          IOException {
+  public Optional<TestThreeTaskWorkflow> saveWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest,
+                                                   SessionData sessionData) throws IOException {
 
     logger.debug("Save workflow");
 
@@ -96,12 +110,21 @@ public class TestThreeTaskWorkflowHandler
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), saveRequest);
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
+                                           testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), saveRequest);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    Optional<TestThreeTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+            this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
+                                               testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
+    if(singleTaskWorkflowEdoOptional.isPresent()){
+      final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+      return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -117,10 +140,18 @@ public class TestThreeTaskWorkflowHandler
       request.setCommand(EWorkflowProcessCommand.ASSIGN);
       request.setAssignUser(sessionData.getCurrentUserId());
 
-      this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), request);
+      this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
 
-      final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), request);
-      return Optional.of(this.prepareWorkflow(result, sessionData));
+      Optional<TestThreeTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+              this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
+                                                 testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
+      if(singleTaskWorkflowEdoOptional.isPresent()){
+        final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+        return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+      }
+
+      throw new GuiCustomizedException("error by saving workflow");
     }
     return Optional.empty();
 
@@ -128,7 +159,7 @@ public class TestThreeTaskWorkflowHandler
 
   @Override
   public Optional<TestThreeTaskWorkflow> doneWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-          IOException {
+                                                                                                                             IOException {
 
     logger.debug("Make workflow done");
 
@@ -137,12 +168,20 @@ public class TestThreeTaskWorkflowHandler
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), saveRequest);
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), saveRequest);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    Optional<TestThreeTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+            this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
+                                               testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
+    if(singleTaskWorkflowEdoOptional.isPresent()){
+      final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+      return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -153,10 +192,18 @@ public class TestThreeTaskWorkflowHandler
     final TestThreeTaskWorkflowSaveRequest request = TestThreeTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), request);
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
 
-    final TestThreeTaskWorkflow result = this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(), request);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    Optional<TestThreeTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+            this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
+                                               testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
+    if(singleTaskWorkflowEdoOptional.isPresent()){
+      final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+      return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override

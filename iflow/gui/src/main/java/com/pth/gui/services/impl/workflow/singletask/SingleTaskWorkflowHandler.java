@@ -8,8 +8,11 @@ import java.util.UUID;
 
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
+import com.pth.gui.exception.GuiCustomizedException;
 import com.pth.gui.mapper.IInvoiceWorkflowMapper;
 import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
+import com.pth.gui.mapper.ISingleTaskWorkflowSaveRequestMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.singletask.SingleTaskWorkflow;
@@ -34,14 +37,17 @@ public class SingleTaskWorkflowHandler
 
   private final ISingleTaskWorkflowClient singleTaskWorkflowClient;
   private final ISingleTaskWorkflowMapper singleTaskWorkflowMapper;
+  private final ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper;
   private final IUploadFileManager uploadFileManager;
 
   public SingleTaskWorkflowHandler(ISingleTaskWorkflowClient singleTaskWorkflowClient,
                                    ISingleTaskWorkflowMapper singleTaskWorkflowMapper,
+                                   ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper,
                                    IUploadFileManager uploadFileManager) {
 
     this.singleTaskWorkflowClient = singleTaskWorkflowClient;
     this.singleTaskWorkflowMapper = singleTaskWorkflowMapper;
+    this.singleTaskWorkflowSaveRequestMapper = singleTaskWorkflowSaveRequestMapper;
     this.uploadFileManager = uploadFileManager;
   }
 
@@ -73,19 +79,27 @@ public class SingleTaskWorkflowHandler
       createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), createRequest);
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(),
+                                           singleTaskWorkflowSaveRequestMapper.toEdo(createRequest));
 
     this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 
-    final List<SingleTaskWorkflow> list = this.singleTaskWorkflowClient.create(sessionData.getRefreshToken(), createRequest);
+    Optional<SingleTaskWorkflowListEdo> singleTaskWorkflowListEdoOptional =
+            this.singleTaskWorkflowClient.create(sessionData.getRefreshToken(),
+                                                 singleTaskWorkflowSaveRequestMapper.toEdo(createRequest));
+    if(singleTaskWorkflowListEdoOptional.isPresent()){
+      final List<SingleTaskWorkflow> resultList =
+              singleTaskWorkflowMapper.fromEdoList(singleTaskWorkflowListEdoOptional.get().getWorkflows());
 
-    return this.prepareWorkflowList(list, sessionData);
+      return this.prepareWorkflowList(resultList, sessionData);
+    }
 
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
-  public Optional<SingleTaskWorkflow> saveWorkflow(final SingleTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-          IOException {
+  public Optional<SingleTaskWorkflow> saveWorkflow(final SingleTaskWorkflowSaveRequest saveRequest,
+                                                   SessionData sessionData) throws IOException {
 
     logger.debug("Save workflow");
 
@@ -98,12 +112,21 @@ public class SingleTaskWorkflowHandler
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), saveRequest);
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(),
+                                           singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), saveRequest);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    Optional<SingleTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+            this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
+                                               singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
+    if(singleTaskWorkflowEdoOptional.isPresent()){
+      final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+      return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -119,10 +142,18 @@ public class SingleTaskWorkflowHandler
       request.setCommand(EWorkflowProcessCommand.ASSIGN);
       request.setAssignUser(sessionData.getCurrentUserId());
 
-      this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), request);
+      this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), singleTaskWorkflowSaveRequestMapper.toEdo(request));
 
-      final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), request);
-      return Optional.of(this.prepareWorkflow(result, sessionData));
+      Optional<SingleTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+              this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
+                                                 singleTaskWorkflowSaveRequestMapper.toEdo(request));
+      if(singleTaskWorkflowEdoOptional.isPresent()){
+        final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+        return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+      }
+
+      throw new GuiCustomizedException("error by saving workflow");
     }
     return Optional.empty();
 
@@ -139,12 +170,20 @@ public class SingleTaskWorkflowHandler
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), saveRequest);
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
-    final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), saveRequest);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    Optional<SingleTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+            this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
+                                               singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
+    if(singleTaskWorkflowEdoOptional.isPresent()){
+      final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+      return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override
@@ -155,10 +194,18 @@ public class SingleTaskWorkflowHandler
     final SingleTaskWorkflowSaveRequest request = SingleTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), request);
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), singleTaskWorkflowSaveRequestMapper.toEdo(request));
 
-    final SingleTaskWorkflow result = this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(), request);
-    return Optional.of(this.prepareWorkflow(result, sessionData));
+    Optional<SingleTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
+            this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
+                                               singleTaskWorkflowSaveRequestMapper.toEdo(request));
+    if(singleTaskWorkflowEdoOptional.isPresent()){
+      final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+
+      return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
+    }
+
+    throw new GuiCustomizedException("error by saving workflow");
   }
 
   @Override

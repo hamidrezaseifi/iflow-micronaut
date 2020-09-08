@@ -1,5 +1,6 @@
 package com.pth.gui.services;
 
+import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowMessage;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface IWorkflowMessageHandler {
                                    String authorization);
 
   public List<WorkflowMessage> readUserMessages(UUID companyId,
-                                                UUID userId);
+                                                UUID userId,
+                                                SessionData sessionData);
 
 }

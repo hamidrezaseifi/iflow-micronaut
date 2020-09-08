@@ -1,11 +1,10 @@
 package com.pth.gui.services.impl;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
+import com.pth.gui.exception.GuiCustomizedException;
+import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowMessage;
 import com.pth.gui.models.workflow.WorkflowType;
 import com.pth.gui.models.workflow.WorkflowTypeStep;
@@ -44,7 +43,8 @@ public class WorkflowMessageHandler implements IWorkflowMessageHandler {
 
   @Override
   public List<WorkflowMessage> readUserMessages(UUID companyId,
-                                                UUID userId){
+                                                UUID userId,
+                                                SessionData sessionData){
 
     final List<WorkflowMessage> readList = this.companyCachDataManager.getUserWorkflowMessages(companyId, userId);
 
@@ -58,33 +58,40 @@ public class WorkflowMessageHandler implements IWorkflowMessageHandler {
       }
     });
 
-    this.prepareWorkflowMessageList(readList);
+    this.prepareWorkflowMessageList(readList, sessionData);
 
     return readList;
   }
 
-  private List<WorkflowMessage> prepareWorkflowMessageList(final List<WorkflowMessage> messageList){
+  private List<WorkflowMessage> prepareWorkflowMessageList(final List<WorkflowMessage> messageList,
+                                                           SessionData sessionData){
 
     final List<WorkflowMessage> resultList = new ArrayList<>();
     for (final WorkflowMessage message : messageList) {
-      resultList.add(this.prepareWorkflowMessage(message));
+      resultList.add(this.prepareWorkflowMessage(message, sessionData));
     }
     return resultList;
   }
 
-  private WorkflowMessage prepareWorkflowMessage(final WorkflowMessage message){
+  private WorkflowMessage prepareWorkflowMessage(final WorkflowMessage message, SessionData sessionData){
 
-    message.setWorkflow(this.workflowHandler.readWorkflow(message.getWorkflowId()));
+    Optional<Workflow> workflowOptional = this.workflowHandler.readWorkflow(message.getWorkflowId(), sessionData);
 
-    final WorkflowType type = message.getWorkflow().getWorkflowType();
+    if(workflowOptional.isPresent()){
+      message.setWorkflow(workflowOptional.get());
 
-    for (final WorkflowTypeStep step : type.getSteps()) {
-      if (step.getId() ==  message.getStepId()) {
-        message.setStep(step);
+      final WorkflowType type = message.getWorkflow().getWorkflowType();
+
+      for (final WorkflowTypeStep step : type.getSteps()) {
+        if (step.getId() ==  message.getStepId()) {
+          message.setStep(step);
+        }
       }
+
+      return message;
     }
 
-    return message;
+    throw new GuiCustomizedException("error by reading workflow");
   }
 
 }
