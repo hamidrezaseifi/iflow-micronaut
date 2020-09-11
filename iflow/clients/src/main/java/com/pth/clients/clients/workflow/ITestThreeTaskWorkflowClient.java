@@ -22,6 +22,6 @@ public interface ITestThreeTaskWorkflowClient {
                                                            final UUID id,
                                                            final int status);
 
-    Optional<?> validate(String authorization, TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
+    void validate(String authorization, TestThreeTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
     
 }

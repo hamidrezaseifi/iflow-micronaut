@@ -12,8 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Singleton;
 
-@Service
+
+@Singleton
 public class WorkflowMessageService implements IWorkflowMessageService {
 
   private static final Logger logger = LoggerFactory.getLogger(WorkflowMessageService.class);

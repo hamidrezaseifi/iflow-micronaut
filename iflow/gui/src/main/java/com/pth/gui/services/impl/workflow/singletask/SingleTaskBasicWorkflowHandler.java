@@ -1,7 +1,6 @@
 package com.pth.gui.services.impl.workflow.singletask;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,7 +9,6 @@ import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
 import com.pth.gui.exception.GuiCustomizedException;
-import com.pth.gui.mapper.IInvoiceWorkflowMapper;
 import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
 import com.pth.gui.mapper.ISingleTaskWorkflowSaveRequestMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
@@ -18,32 +16,32 @@ import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.singletask.SingleTaskWorkflow;
 import com.pth.gui.models.workflow.singletask.SingleTaskWorkflowSaveRequest;
 import com.pth.gui.services.IUploadFileManager;
-import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.IBasicWorkflowHandler;
+import com.pth.gui.services.impl.workflow.ISingleTaskBasicWorkflowHandler;
 import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.pth.clients.clients.workflow.ISingleTaskWorkflowClient;
-import org.springframework.stereotype.Service;
 
 import javax.inject.Singleton;
 
 
 @Singleton
-public class SingleTaskWorkflowHandler
+public class SingleTaskBasicWorkflowHandler
         extends WorkflowHandlerHelper<SingleTaskWorkflow>
-        implements IWorkflowHandler<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> {
+        implements ISingleTaskBasicWorkflowHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(SingleTaskWorkflowHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(SingleTaskBasicWorkflowHandler.class);
 
   private final ISingleTaskWorkflowClient singleTaskWorkflowClient;
   private final ISingleTaskWorkflowMapper singleTaskWorkflowMapper;
   private final ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper;
   private final IUploadFileManager uploadFileManager;
 
-  public SingleTaskWorkflowHandler(ISingleTaskWorkflowClient singleTaskWorkflowClient,
-                                   ISingleTaskWorkflowMapper singleTaskWorkflowMapper,
-                                   ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper,
-                                   IUploadFileManager uploadFileManager) {
+  public SingleTaskBasicWorkflowHandler(ISingleTaskWorkflowClient singleTaskWorkflowClient,
+                                        ISingleTaskWorkflowMapper singleTaskWorkflowMapper,
+                                        ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper,
+                                        IUploadFileManager uploadFileManager) {
 
     this.singleTaskWorkflowClient = singleTaskWorkflowClient;
     this.singleTaskWorkflowMapper = singleTaskWorkflowMapper;

@@ -9,7 +9,6 @@ import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowEdo;
 import com.pth.common.edo.workflow.testthreetask.TestThreeTaskWorkflowListEdo;
 import com.pth.gui.exception.GuiCustomizedException;
-import com.pth.gui.mapper.ISingleTaskWorkflowSaveRequestMapper;
 import com.pth.gui.mapper.ITestThreeTaskWorkflowMapper;
 import com.pth.gui.mapper.ITestThreeTaskWorkflowSaveRequestMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
@@ -17,7 +16,8 @@ import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflow;
 import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflowSaveRequest;
 import com.pth.gui.services.IUploadFileManager;
-import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.IBasicWorkflowHandler;
+import com.pth.gui.services.impl.workflow.ITestThreeTaskBasicWorkflowHandler;
 import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,21 +27,21 @@ import javax.inject.Singleton;
 
 
 @Singleton
-public class TestThreeTaskWorkflowHandler
+public class TestThreeTaskBasicWorkflowHandler
         extends WorkflowHandlerHelper<TestThreeTaskWorkflow>
-        implements IWorkflowHandler<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> {
+        implements ITestThreeTaskBasicWorkflowHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(TestThreeTaskWorkflowHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(TestThreeTaskBasicWorkflowHandler.class);
 
   private final ITestThreeTaskWorkflowClient testThreeTaskWorkClient;
   private final ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper;
   private final ITestThreeTaskWorkflowSaveRequestMapper testThreeTaskWorkflowSaveRequestMapper;
   private final IUploadFileManager uploadFileManager;
 
-  public TestThreeTaskWorkflowHandler(ITestThreeTaskWorkflowClient testThreeTaskWorkClient,
-                                      ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper,
-                                      ITestThreeTaskWorkflowSaveRequestMapper testThreeTaskWorkflowSaveRequestMapper,
-                                      IUploadFileManager uploadFileManager) {
+  public TestThreeTaskBasicWorkflowHandler(ITestThreeTaskWorkflowClient testThreeTaskWorkClient,
+                                           ITestThreeTaskWorkflowMapper testThreeTaskWorkMapper,
+                                           ITestThreeTaskWorkflowSaveRequestMapper testThreeTaskWorkflowSaveRequestMapper,
+                                           IUploadFileManager uploadFileManager) {
 
     this.testThreeTaskWorkClient = testThreeTaskWorkClient;
     this.testThreeTaskWorkMapper = testThreeTaskWorkMapper;

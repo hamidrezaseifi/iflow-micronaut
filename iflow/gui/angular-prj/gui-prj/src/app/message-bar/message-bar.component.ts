@@ -213,7 +213,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 		this.stompClient.connect({}, function (frame) {
 			_this.setConnected(true);
-			_this.stompClient.subscribe('/user/socket/messages/' + currentUser.id, function (message) {
+			_this.stompClient.subscribe('/user/socket/messages/' + this.currentUser.id, function (message) {
 				_this.onReceiveMessage(message);
             });
             //_this.stompClient.reconnect_delay = 2000;

@@ -1,6 +1,5 @@
 package com.pth.gui.services.impl;
 
-import java.net.MalformedURLException;
 import java.util.*;
 
 import com.pth.gui.exception.GuiCustomizedException;
@@ -11,20 +10,21 @@ import com.pth.gui.models.workflow.WorkflowTypeStep;
 import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.models.workflow.workflow.WorkflowSaveRequest;
 import com.pth.gui.services.ICompanyCachDataManager;
-import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.IBasicWorkflowHandler;
 import com.pth.gui.services.IWorkflowMessageHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.pth.gui.services.impl.workflow.IWorkflowHandler;
+
+import javax.inject.Singleton;
 
 
-@Service
+@Singleton
 public class WorkflowMessageHandler implements IWorkflowMessageHandler {
 
-  private final IWorkflowHandler<Workflow, WorkflowSaveRequest> workflowHandler;
+  private final IWorkflowHandler workflowHandler;
 
   private final ICompanyCachDataManager companyCachDataManager;
 
-  public WorkflowMessageHandler(final IWorkflowHandler<Workflow, WorkflowSaveRequest> workflowHandler,
+  public WorkflowMessageHandler(final IWorkflowHandler workflowHandler,
                                 final ICompanyCachDataManager companyCachDataManager) {
 
     this.workflowHandler = workflowHandler;

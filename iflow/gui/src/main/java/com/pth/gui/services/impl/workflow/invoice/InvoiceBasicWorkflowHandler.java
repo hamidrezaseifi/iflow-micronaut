@@ -17,28 +17,30 @@ import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.invoice.InvoiceWorkflow;
 import com.pth.gui.models.workflow.invoice.InvoiceWorkflowSaveRequest;
 import com.pth.gui.services.IUploadFileManager;
-import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.IBasicWorkflowHandler;
+import com.pth.gui.services.impl.workflow.IInvoiceBasicWorkflowHandler;
 import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+
+import javax.inject.Singleton;
 
 
-@Service
-public class InvoiceWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflow>
-        implements IWorkflowHandler<InvoiceWorkflow, InvoiceWorkflowSaveRequest> {
+@Singleton
+public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWorkflow>
+        implements IInvoiceBasicWorkflowHandler {
 
-  private static final Logger logger = LoggerFactory.getLogger(InvoiceWorkflowHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(InvoiceBasicWorkflowHandler.class);
 
   private final IInvoiceWorkflowClient invoiceWorkflowClient;
   private final IInvoiceWorkflowMapper invoiceWorkflowMapper;
   private final IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper;
   private final IUploadFileManager uploadFileManager;
 
-  public InvoiceWorkflowHandler(IUploadFileManager uploadFileManager,
-                                IInvoiceWorkflowClient invoiceWorkflowClient,
-                                IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper,
-                                IInvoiceWorkflowMapper invoiceWorkflowMapper) {
+  public InvoiceBasicWorkflowHandler(IUploadFileManager uploadFileManager,
+                                     IInvoiceWorkflowClient invoiceWorkflowClient,
+                                     IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper,
+                                     IInvoiceWorkflowMapper invoiceWorkflowMapper) {
     this.uploadFileManager = uploadFileManager;
     this.invoiceWorkflowClient = invoiceWorkflowClient;
     this.invoiceWorkflowSaveRequestMapper = invoiceWorkflowSaveRequestMapper;

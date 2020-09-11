@@ -8,6 +8,9 @@ import com.pth.gui.mapper.IAssignItemMapper;
 import com.pth.gui.models.workflow.AssignItem;
 import com.pth.gui.models.workflow.invoice.InvoiceWorkflowSaveRequest;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class AssignItemMapper
         extends ModelEdoMapperBase<AssignItem, AssignItemEdo>
         implements IAssignItemMapper {

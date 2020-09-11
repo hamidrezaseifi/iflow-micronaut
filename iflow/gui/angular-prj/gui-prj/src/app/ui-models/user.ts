@@ -2,6 +2,7 @@ import { UserAccessType } from './user-access';
 import { UserDepartment } from './user-department';
 
 ﻿export class User {
+	id: string;
 	identity: string;
 	birthDate: string;
 	email: string;

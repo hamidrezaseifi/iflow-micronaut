@@ -22,7 +22,7 @@ public interface IInvoiceWorkflowClient {
                                                      final UUID id,
                                                      final int status);
 
-    Optional<?> validate(String authorization,
+    void validate(String authorization,
                          InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo);
     
 }

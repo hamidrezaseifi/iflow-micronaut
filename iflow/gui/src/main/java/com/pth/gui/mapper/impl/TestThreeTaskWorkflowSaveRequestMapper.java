@@ -6,6 +6,9 @@ import com.pth.common.mapping.ModelEdoMapperBase;
 import com.pth.gui.mapper.*;
 import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflowSaveRequest;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class TestThreeTaskWorkflowSaveRequestMapper
         extends ModelEdoMapperBase<TestThreeTaskWorkflowSaveRequest, TestThreeTaskWorkflowSaveRequestEdo>
         implements ITestThreeTaskWorkflowSaveRequestMapper {

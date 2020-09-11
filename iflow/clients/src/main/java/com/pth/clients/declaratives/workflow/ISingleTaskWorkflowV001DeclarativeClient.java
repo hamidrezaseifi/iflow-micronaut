@@ -1,9 +1,9 @@
 package com.pth.clients.declaratives.workflow;
 
 import com.pth.common.contants.ApiUrlConstants;
-import com.pth.common.edo.workflow.invoice.InvoiceWorkflowSaveRequestEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowSaveRequestEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Get;
@@ -21,12 +21,12 @@ public interface ISingleTaskWorkflowV001DeclarativeClient {
                                              final UUID id);
 
     @Post(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT + "/create")
-    HttpResponse<SingleTaskWorkflowEdo> create(@Header String authorization,
-                                               @Body InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo);
+    HttpResponse<SingleTaskWorkflowListEdo> create(@Header String authorization,
+                                               @Body SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
 
     @Post(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT + "/save")
     HttpResponse<SingleTaskWorkflowEdo> save(@Header String authorization,
-                                             @Body InvoiceWorkflowSaveRequestEdo requestEdo);
+                                             @Body SingleTaskWorkflowSaveRequestEdo requestEdo);
 
     @Get(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT + "/readbyuserid/{id}/{status}")
     HttpResponse<SingleTaskWorkflowListEdo> readListForUser(@Header String authorization,
@@ -35,6 +35,6 @@ public interface ISingleTaskWorkflowV001DeclarativeClient {
 
     @Post(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_SINGLETASKWORKFLOW_ROOT + "/validate")
     HttpResponse<?> validate(@Header String authorization,
-                             @Body InvoiceWorkflowSaveRequestEdo workflowCreateRequestEdo);
+                             @Body SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
 
 }

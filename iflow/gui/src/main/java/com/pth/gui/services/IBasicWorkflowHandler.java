@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-public interface IWorkflowHandler<W extends IWorkflow, WS extends IWorkflowSaveRequest<W>> {
+public interface IBasicWorkflowHandler<W extends IWorkflow, WS extends IWorkflowSaveRequest<W>> {
 
   Optional<W> readWorkflow(final UUID workflowId, SessionData sessionData);
 

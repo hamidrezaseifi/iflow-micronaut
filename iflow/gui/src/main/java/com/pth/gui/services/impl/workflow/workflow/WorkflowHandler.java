@@ -13,7 +13,8 @@ import com.pth.gui.models.workflow.WorkflowFile;
 import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.models.workflow.workflow.WorkflowSaveRequest;
 import com.pth.gui.services.IUploadFileManager;
-import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.IBasicWorkflowHandler;
+import com.pth.gui.services.impl.workflow.IWorkflowHandler;
 import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import com.pth.clients.clients.workflow.IWorkflowClient;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements IWorkflowHandler<Workflow, WorkflowSaveRequest> {
+public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements IWorkflowHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(WorkflowHandler.class);
 
@@ -32,7 +33,7 @@ public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements 
 
   public WorkflowHandler(IWorkflowClient workflowClient,
                          IWorkflowMapper workflowMapper,
-                                   IUploadFileManager uploadFileManager) {
+                         IUploadFileManager uploadFileManager) {
 
     this.workflowClient = workflowClient;
     this.workflowMapper = workflowMapper;

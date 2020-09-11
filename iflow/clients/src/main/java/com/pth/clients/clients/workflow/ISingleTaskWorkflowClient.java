@@ -22,6 +22,6 @@ public interface ISingleTaskWorkflowClient {
                                                         final UUID id,
                                                         final int status);
 
-    Optional<?> validate(String authorization, SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
+    void validate(String authorization, SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo);
     
 }

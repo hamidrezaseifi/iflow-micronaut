@@ -10,32 +10,33 @@ import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflow;
 import com.pth.gui.models.workflow.testthree.TestThreeTaskWorkflowSaveRequest;
 import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.models.workflow.workflow.WorkflowSaveRequest;
-import com.pth.gui.services.IWorkflowHandler;
+import com.pth.gui.services.IBasicWorkflowHandler;
 
 import javax.inject.Singleton;
 
 @Singleton
 public class WorkflowHandlerSelect {
 
-  private final IWorkflowHandler<Workflow, WorkflowSaveRequest> workflowHandlerBase;
+  private final IBasicWorkflowHandler<Workflow, WorkflowSaveRequest> workflowHandlerBase;
 
-  private final IWorkflowHandler<InvoiceWorkflow, InvoiceWorkflowSaveRequest>             workflowHandlerInvoice;
+  private final IBasicWorkflowHandler<InvoiceWorkflow, InvoiceWorkflowSaveRequest> workflowHandlerInvoice;
 
-  private final IWorkflowHandler<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest>       workflowHandlerSingleTask;
+  private final IBasicWorkflowHandler<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> workflowHandlerSingleTask;
 
-  private final IWorkflowHandler<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> workflowHandlerTestThreeTask;
+  private final IBasicWorkflowHandler<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest>
+          workflowHandlerTestThreeTask;
 
-  public WorkflowHandlerSelect(IWorkflowHandler<Workflow, WorkflowSaveRequest> workflowHandlerBase,
-                               IWorkflowHandler<InvoiceWorkflow, InvoiceWorkflowSaveRequest> workflowHandlerInvoice,
-                               IWorkflowHandler<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> workflowHandlerSingleTask,
-                               IWorkflowHandler<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> workflowHandlerTestThreeTask) {
+  public WorkflowHandlerSelect(IBasicWorkflowHandler<Workflow, WorkflowSaveRequest> workflowHandlerBase,
+                               IBasicWorkflowHandler<InvoiceWorkflow, InvoiceWorkflowSaveRequest> workflowHandlerInvoice,
+                               IBasicWorkflowHandler<SingleTaskWorkflow, SingleTaskWorkflowSaveRequest> workflowHandlerSingleTask,
+                               IBasicWorkflowHandler<TestThreeTaskWorkflow, TestThreeTaskWorkflowSaveRequest> workflowHandlerTestThreeTask) {
     this.workflowHandlerBase = workflowHandlerBase;
     this.workflowHandlerInvoice = workflowHandlerInvoice;
     this.workflowHandlerSingleTask = workflowHandlerSingleTask;
     this.workflowHandlerTestThreeTask = workflowHandlerTestThreeTask;
   }
 
-  public IWorkflowHandler getHandlerByType(final EWorkflowType typeEnum) {
+  public IBasicWorkflowHandler getHandlerByType(final EWorkflowType typeEnum) {
     if (typeEnum == EWorkflowType.NONE) {
       return this.workflowHandlerBase;
     }

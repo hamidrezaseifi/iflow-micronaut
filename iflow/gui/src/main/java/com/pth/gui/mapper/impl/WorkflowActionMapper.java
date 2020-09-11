@@ -8,7 +8,9 @@ import com.pth.gui.mapper.IWorkflowFileVersionMapper;
 import com.pth.gui.models.workflow.WorkflowAction;
 import com.pth.gui.models.workflow.WorkflowFileVersion;
 
+import javax.inject.Singleton;
 
+@Singleton
 public class WorkflowActionMapper extends ModelEdoMapperBase<WorkflowAction, WorkflowActionEdo>
         implements IWorkflowActionMapper {
 
