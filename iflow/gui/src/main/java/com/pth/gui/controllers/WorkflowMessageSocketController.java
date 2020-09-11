@@ -13,13 +13,13 @@ import org.reactivestreams.Publisher;
 
 import java.util.UUID;
 
-@ServerWebSocket("/user/socket/messages/{userId}")
-public class MessageSocketController {
+@ServerWebSocket("/user/socket/workflowmessages/{userId}")
+public class WorkflowMessageSocketController {
 
     private final WebSocketBroadcaster broadcaster;
     private final ISocketUserMessageManager socketUserManager;
 
-    public MessageSocketController(WebSocketBroadcaster broadcaster, ISocketUserMessageManager socketUserManager) {
+    public WorkflowMessageSocketController(WebSocketBroadcaster broadcaster, ISocketUserMessageManager socketUserManager) {
         this.broadcaster = broadcaster;
         this.socketUserManager = socketUserManager;
     }

@@ -13,6 +13,7 @@ import { User, MenuItem } from '../ui-models';
 
 import { WorkflowMessageService } from '../services/workflow/workflow-message.service';
 import { ErrorServiceService } from '../services/error-service.service';
+import { WebsocketService } from "../services/websocket.service";
 
 @Component({
   selector: 'app-message-bar',
@@ -22,9 +23,11 @@ import { ErrorServiceService } from '../services/error-service.service';
 })
 export class MessageBarComponent implements OnInit, OnDestroy {
 
-	messages: WorkflowMessage[] = [];
+  messages: WorkflowMessage[] = [];
 	viewWorkflowModel :Workflow;
 	viewWorkflow :boolean = false;
+
+	webSocket: WebSocket;
 
 	messageSearchInterval = 60000;
 	messageReloadTimeoutId = 0;
@@ -39,22 +42,16 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 	public subscribed: boolean;
 	public requesting : boolean = false;
 
-	private stompClient: any = null;
-
-
 	debugData() :string{
 		return (this.viewWorkflowModel && this.viewWorkflowModel != null) ? JSON.stringify(this.viewWorkflowModel) : 'no data';
 	}
 
 	closeMessages(){
-		//$('#message-panel-container').height(25);
 		document.getElementById("message-panel-container").style.height = "25px";
 		this.messagePanelShowed = false;
     };
 
 	showMessages(){
-		//$('#message-panel-container').height(this.messagePanelHeight);
-		//alert("show pabel");
 		document.getElementById("message-panel-container").style.height = this.messagePanelHeight + "px";
 		this.messagePanelShowed = true;
     };
@@ -80,7 +77,6 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	}
 
-
 	get isAppLogged(): boolean {
 		return this._isLogged;
 	}
@@ -88,7 +84,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	constructor(protected router: Router,
 			private messageService :WorkflowMessageService,
-			private errorService: ErrorServiceService
+			private errorService: ErrorServiceService,
 			) {
 
 	}
@@ -118,7 +114,6 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	private readMessageList(reset: boolean){
 
-		//clearTimeout(this.messageReloadTimeoutId);
 		console.log("Start Request Read message list " + (reset ? "with reset" : "without reset"));
 		if(this._isLogged === true){
 
@@ -140,9 +135,6 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 			        		this.isReloadingMessages = false;
 			        	 }, 500);
 
-			        	/*this.messageReloadTimeoutId = setTimeout(() =>{
-		  					this.reloadMessages(false);
-			        	}, this.messageSearchInterval);	*/
 			        }
 		    	);
 
@@ -206,36 +198,37 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 		      return;
 		}
 
-		let socket :SockJS = new SockJS('/iflow-guide-websocket');
-		this.stompClient = Stomp.over(socket);
+	   this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
 
-		const _this = this;
+     var _this = this;
+     this.webSocket.onopen = function() {
 
-		this.stompClient.connect({}, function (frame) {
-			_this.setConnected(true);
-			_this.stompClient.subscribe('/user/socket/messages/' + this.currentUser.id, function (message) {
-				_this.onReceiveMessage(message);
-            });
-            //_this.stompClient.reconnect_delay = 2000;
-        }, _this.errorCallBack);
+         // Web Socket is connected, send data using send()
+         //ws.send("Message to send");
+         console.log("websocket connected");
+         _this.setConnected(true);
+     };
 
-	    this.setConnected(true);
+     this.webSocket.onmessage = function (evt) {
+         console.log("Message is received..." + evt.data);
+         _this.onReceiveMessage(evt.data);
+     };
+
+     this.webSocket.onclose = function() {
+         // websocket is closed.
+         _this.setConnected(false);
+         console.log("Connection is closed...");
+     };
+
 
 	}
 
-	errorCallBack(error) {
-        console.log("errorCallBack -> " + error)
-        setTimeout(() => {
-           // this._connect();
-        }, 5000);
-    }
-
-	public onReceiveMessage = (message: Message) => {
+	public onReceiveMessage = (message: string) => {
 
 		this.requesting = false;
 
-		console.log("Socket Message: " , message.body);
-		var parsedMessage = JSON.parse(message.body);
+		console.log("Socket Message: " , message);
+		var parsedMessage = JSON.parse(message);
 		console.log("Parsed Message: " , parsedMessage);
 
 		if(parsedMessage.command && parsedMessage.command === "message-reload"){
@@ -252,13 +245,10 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 	      return;
 	    }
 
-	    if (this.stompClient !== null) {
-	    	this.stompClient.disconnect();
-	    }
+
 	    this.setConnected(false);
 	    console.log("Disconnected");
 
-	    this.setConnected(false);
 	}
 
 }
