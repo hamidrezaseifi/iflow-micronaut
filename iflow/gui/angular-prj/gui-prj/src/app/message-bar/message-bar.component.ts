@@ -2,9 +2,6 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { ResizeEvent } from 'angular-resizable-element';
 import { Observable, throwError , Subscription } from 'rxjs';
-import { Message } from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { Workflow } from '../wf-models';
@@ -119,7 +116,6 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 			this.isReloadingMessages = true;
 			this.messageService.loadMessages(reset).subscribe(
 			        (messageList: WorkflowMessage[]) => {
-			        //alert("Message List Results: " + messageList);
 
 			        	console.log("Read message list", messageList);
 
