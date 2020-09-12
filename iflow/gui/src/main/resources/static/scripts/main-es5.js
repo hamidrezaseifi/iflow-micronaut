@@ -10926,26 +10926,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             _this29.isPresent = res;
           });
           this.global.currentSessionDataSubject.asObservable().subscribe(function (res) {
+            if (res == null || res == undefined) {
+              return;
+            }
+
             _this29.menus = res.app.menus;
             _this29.cubes = res.app.dashboard.dashboardMenus;
             _this29.totalColumns = res.app.dashboard.totalColumns;
             _this29.totalRows = res.app.dashboard.totalRows;
           });
-          /*for(var r = 0; r < this.totalRows; r ++){
-            var cubelist : DashboardCube[] = [];
-            for(var c = 0; c < this.totalColumns; c ++){
-              var cube : DashboardCube = new DashboardCube();
-                cube.text = "Cube " + r + "-" + c;
-                cube.url = "/#" + r + "-" + c;
-                cube.row = r;
-                cube.column = c;
-                cube.image = "/assets/images/no-image.png";
-            
-              cubelist.push(cube);
-            }
-            
-            this.cubes.push(cubelist);
-          }*/
         }
       }, {
         key: "getMenuItemTreeData",
@@ -11979,11 +11968,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           console.log("Start Request Read message list " + (reset ? "with reset" : "without reset"));
 
           if (this._isLogged === true) {
+            this.messages = [];
             this.isReloadingMessages = true;
             this.messageService.loadMessages(reset).subscribe(function (messageList) {
+              //alert("Message List Results: " + messageList);
               console.log("Read message list", messageList);
               _this31.messages = messageList;
             }, function (response) {
+              alert("Error in read message list");
               console.log("Error in read message list", response);
               _this31.messages = [];
               _this31.isReloadingMessages = false;
@@ -12044,13 +12036,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             return;
           }
 
-          this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
+          if (this.webSocket) {
+            return;
+          }
+
+          var url = "ws://" + location.hostname + ":" + location.port + "/websocket/workflowmessages/" + this.currentUser.id;
+          alert("socket url: " + url);
+          this.webSocket = new WebSocket(url); //this.webSocket.onmessage = function (msg) { updateChat(msg); };
+          //this.webSocket.onclose = function () { alert("WebSocket connection closed") };
+          //this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
 
           var _this = this;
 
           this.webSocket.onopen = function () {
-            // Web Socket is connected, send data using send()
-            //ws.send("Message to send");
             console.log("websocket connected");
 
             _this.setConnected(true);
@@ -12063,7 +12061,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           };
 
           this.webSocket.onclose = function () {
-            // websocket is closed.
             _this.setConnected(false);
 
             console.log("Connection is closed...");
@@ -12259,15 +12256,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           this.loadingService.showLoading();
           this.global.loadAllSettingObserv().subscribe(function (generalData) {
             console.log("GET call successful generaldata", generalData);
-            var value = generalData.isLogged + "";
-            alert("checkLoginState: value : " + value);
+            var value = generalData.isLogged + ""; //alert("checkLoginState: value : " + value);
 
             if (value === "true" && generalData.user) {
               _this33.isLoggedIn = true;
 
-              _this33.currentUserSubject.next(generalData.user.currentUser);
+              _this33.currentUserSubject.next(generalData.user.currentUser); //this.global.loadAllSetting();
 
-              _this33.global.loadAllSetting();
 
               _this33.global.presensSubject.next(true);
 
@@ -13390,19 +13385,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         value: function loadAllSetting() {
           var _this39 = this;
 
-          alert("start loadAllSetting");
           this.loadingService.showLoading();
           var httpOptions = {
             headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_2__["HttpHepler"].generateFormHeader()
           };
           this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe(function (generalData) {
             console.log("GET call successful generaldata", generalData);
-            alert(generalData.isLogged);
             var islogged = generalData.isLogged + "";
             generalData.isLogged = islogged === "true";
-            alert("loaded generaldata islogged" + generalData.isLogged + "   data:" + JSON.stringify(generalData));
             _this39.loadedGeneralData = JSON.parse(JSON.stringify(generalData));
-            alert("parsed generaldata islogged" + _this39.loadedGeneralData.isLogged + "   data:" + JSON.stringify(_this39.loadedGeneralData));
 
             _this39.currentSessionDataSubject.next(generalData);
 
@@ -13417,11 +13408,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             _this39.loadingService.hideLoading();
           });
         }
-        /*setGeneralData(generalData :GeneralData){
-            this.currentSessionDataSubject.next(generalData);
-            //this.currentSessionDataSubject.complete();
-        }*/
-
       }, {
         key: "loadAllSettingObserv",
         value: function loadAllSettingObserv() {
@@ -15223,6 +15209,10 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "setMenus",
         set: function set(_menus) {
+          if (Array.isArray(_menus) == false) {
+            return;
+          }
+
           this.menus = _menus;
 
           for (var index in this.menus) {

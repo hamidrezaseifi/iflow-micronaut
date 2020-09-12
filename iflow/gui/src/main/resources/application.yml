@@ -35,6 +35,10 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
+      - pattern: /websocket/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
     token:
       jwt:
 #        enabled: true

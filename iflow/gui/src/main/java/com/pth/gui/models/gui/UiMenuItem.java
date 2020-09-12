@@ -3,6 +3,7 @@ package com.pth.gui.models.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.gui.services.IMessagesHelper;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +14,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
       "parent" }
 )
 @Component
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class UiMenuItem {
 
   private String label;
   private String url;
   private String image;
-  private List<UiMenuItem> children;
+  private List<UiMenuItem> children = new ArrayList<>();
   private String id;
   private String backColor;
   private String foreColor;
@@ -28,7 +30,6 @@ public class UiMenuItem {
 
   public UiMenuItem() {
 
-    this.children = new ArrayList<>();
     this.label = "";
     this.url = "#";
     this.image = "";

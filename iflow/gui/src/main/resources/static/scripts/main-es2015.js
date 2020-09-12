@@ -5439,26 +5439,14 @@ class HomeComponent {
             this.isPresent = res;
         });
         this.global.currentSessionDataSubject.asObservable().subscribe((res) => {
+            if (res == null || res == undefined) {
+                return;
+            }
             this.menus = res.app.menus;
             this.cubes = res.app.dashboard.dashboardMenus;
             this.totalColumns = res.app.dashboard.totalColumns;
             this.totalRows = res.app.dashboard.totalRows;
         });
-        /*for(var r = 0; r < this.totalRows; r ++){
-          var cubelist : DashboardCube[] = [];
-          for(var c = 0; c < this.totalColumns; c ++){
-            var cube : DashboardCube = new DashboardCube();
-              cube.text = "Cube " + r + "-" + c;
-              cube.url = "/#" + r + "-" + c;
-              cube.row = r;
-              cube.column = c;
-              cube.image = "/assets/images/no-image.png";
-          
-            cubelist.push(cube);
-          }
-          
-          this.cubes.push(cubelist);
-        }*/
     }
     getMenuItemTreeData() {
     }
@@ -6054,11 +6042,14 @@ class MessageBarComponent {
     readMessageList(reset) {
         console.log("Start Request Read message list " + (reset ? "with reset" : "without reset"));
         if (this._isLogged === true) {
+            this.messages = [];
             this.isReloadingMessages = true;
             this.messageService.loadMessages(reset).subscribe((messageList) => {
+                //alert("Message List Results: " + messageList);
                 console.log("Read message list", messageList);
                 this.messages = messageList;
             }, response => {
+                alert("Error in read message list");
                 console.log("Error in read message list", response);
                 this.messages = [];
                 this.isReloadingMessages = false;
@@ -6104,11 +6095,17 @@ class MessageBarComponent {
         if (this.subscribed) {
             return;
         }
-        this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
+        if (this.webSocket) {
+            return;
+        }
+        var url = "ws://" + location.hostname + ":" + location.port + "/websocket/workflowmessages/" + this.currentUser.id;
+        alert("socket url: " + url);
+        this.webSocket = new WebSocket(url);
+        //this.webSocket.onmessage = function (msg) { updateChat(msg); };
+        //this.webSocket.onclose = function () { alert("WebSocket connection closed") };
+        //this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
         var _this = this;
         this.webSocket.onopen = function () {
-            // Web Socket is connected, send data using send()
-            //ws.send("Message to send");
             console.log("websocket connected");
             _this.setConnected(true);
         };
@@ -6117,7 +6114,6 @@ class MessageBarComponent {
             _this.onReceiveMessage(evt.data);
         };
         this.webSocket.onclose = function () {
-            // websocket is closed.
             _this.setConnected(false);
             console.log("Connection is closed...");
         };
@@ -6209,11 +6205,11 @@ class AuthenticationService {
         this.global.loadAllSettingObserv().subscribe((generalData) => {
             console.log("GET call successful generaldata", generalData);
             var value = generalData.isLogged + "";
-            alert("checkLoginState: value : " + value);
+            //alert("checkLoginState: value : " + value);
             if (value === "true" && generalData.user) {
                 this.isLoggedIn = true;
                 this.currentUserSubject.next(generalData.user.currentUser);
-                this.global.loadAllSetting();
+                //this.global.loadAllSetting();
                 this.global.presensSubject.next(true);
                 this.router.navigate([returnUrl]);
             }
@@ -6723,17 +6719,13 @@ class GlobalService {
         this.loadedGeneralData = null;
     }
     loadAllSetting() {
-        alert("start loadAllSetting");
         this.loadingService.showLoading();
         const httpOptions = { headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_2__["HttpHepler"].generateFormHeader() };
         this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe((generalData) => {
             console.log("GET call successful generaldata", generalData);
-            alert(generalData.isLogged);
             var islogged = generalData.isLogged + "";
             generalData.isLogged = islogged === "true";
-            alert("loaded generaldata islogged" + generalData.isLogged + "   data:" + JSON.stringify(generalData));
             this.loadedGeneralData = JSON.parse(JSON.stringify(generalData));
-            alert("parsed generaldata islogged" + this.loadedGeneralData.isLogged + "   data:" + JSON.stringify(this.loadedGeneralData));
             this.currentSessionDataSubject.next(generalData);
             this.presensSubject.next(true);
             this.loadingService.hideLoading();
@@ -6744,10 +6736,6 @@ class GlobalService {
             this.loadingService.hideLoading();
         });
     }
-    /*setGeneralData(generalData :GeneralData){
-        this.currentSessionDataSubject.next(generalData);
-        //this.currentSessionDataSubject.complete();
-    }*/
     loadAllSettingObserv() {
         const httpOptions = { headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_2__["HttpHepler"].generateFormHeader() };
         return this.http.get(this.loadGeneralDataUrl, httpOptions);
@@ -7570,6 +7558,9 @@ class TopBarComponent {
         this.togglingPresens = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
     set setMenus(_menus) {
+        if (Array.isArray(_menus) == false) {
+            return;
+        }
         this.menus = _menus;
         for (var index in this.menus) {
             this.setMenuLabel(this.menus[index]);

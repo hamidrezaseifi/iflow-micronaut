@@ -50,15 +50,14 @@ export class AuthenticationService implements CanActivate{
 
 								var value = generalData.isLogged + "";
 
-                alert("checkLoginState: value : " + value);
+                //alert("checkLoginState: value : " + value);
 
-
-		            if(value === "true" && generalData.user){
+                if(value === "true" && generalData.user){
 
 		            	this.isLoggedIn = true;
 		            	this.currentUserSubject.next(generalData.user.currentUser);
 
-			        		this.global.loadAllSetting();
+			        		//this.global.loadAllSetting();
 			        		this.global.presensSubject.next(true);
 
 		            	this.router.navigate([returnUrl]);

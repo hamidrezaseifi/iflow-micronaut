@@ -24,7 +24,7 @@ export class GlobalService {
 
 
 	loadAllSetting(){
-	alert("start loadAllSetting");
+
 		    this.loadingService.showLoading();
 
         const httpOptions = { headers: HttpHepler.generateFormHeader() };
@@ -32,13 +32,11 @@ export class GlobalService {
 				this.http.get(this.loadGeneralDataUrl, httpOptions).subscribe(
 						(generalData :GeneralData) => {
 		            console.log("GET call successful generaldata", generalData);
-		            alert(generalData.isLogged);
+
 		            var islogged = generalData.isLogged + "";
 		            generalData.isLogged = islogged === "true";
-alert("loaded generaldata islogged" + generalData.isLogged + "   data:" + JSON.stringify(generalData));
 
 		            this.loadedGeneralData = <GeneralData> JSON.parse(JSON.stringify(generalData));
-alert("parsed generaldata islogged" + this.loadedGeneralData.isLogged + "   data:" + JSON.stringify(this.loadedGeneralData));
 
 		            this.currentSessionDataSubject.next(generalData);
 		        	  this.presensSubject.next(true);
@@ -56,22 +54,11 @@ alert("parsed generaldata islogged" + this.loadedGeneralData.isLogged + "   data
 		);
 	}
 
-	/*setGeneralData(generalData :GeneralData){
-		this.currentSessionDataSubject.next(generalData);
-		//this.currentSessionDataSubject.complete();
-	}*/
-
 	loadAllSettingObserv(){
         const httpOptions = { headers: HttpHepler.generateFormHeader() };
 
 		return this.http.get(this.loadGeneralDataUrl, httpOptions);
 	}
 
-	/*clear(){
-
-		//alert("clear global");
-		this.currentSessionDataSubject.next(null);
-		//this.currentSessionDataSubject.complete();
-	}*/
 
 }

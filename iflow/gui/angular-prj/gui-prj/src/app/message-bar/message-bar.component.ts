@@ -13,7 +13,6 @@ import { User, MenuItem } from '../ui-models';
 
 import { WorkflowMessageService } from '../services/workflow/workflow-message.service';
 import { ErrorServiceService } from '../services/error-service.service';
-import { WebsocketService } from "../services/websocket.service";
 
 @Component({
   selector: 'app-message-bar',
@@ -116,15 +115,18 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 		console.log("Start Request Read message list " + (reset ? "with reset" : "without reset"));
 		if(this._isLogged === true){
-
+      this.messages = [];
 			this.isReloadingMessages = true;
 			this.messageService.loadMessages(reset).subscribe(
-			        (messageList :WorkflowMessage[]) => {
+			        (messageList: WorkflowMessage[]) => {
+			        //alert("Message List Results: " + messageList);
+
 			        	console.log("Read message list", messageList);
 
 			        	this.messages = messageList;
 			        },
 			        response => {
+			        alert("Error in read message list");
 			        	console.log("Error in read message list", response);
 			        	this.messages = [];
 			        	this.isReloadingMessages = false;
@@ -194,17 +196,20 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	private subscribe() {
 
-		if (this.subscribed) {
+		 if (this.subscribed) {
 		      return;
-		}
+		 }
 
-	   this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
+		 if(this.webSocket){
+		    return;
+		 }
+
+     var url = "ws://" + location.hostname + ":" + location.port + "/websocket/workflowmessages/" + this.currentUser.id;
+     this.webSocket = new WebSocket(url);
 
      var _this = this;
      this.webSocket.onopen = function() {
 
-         // Web Socket is connected, send data using send()
-         //ws.send("Message to send");
          console.log("websocket connected");
          _this.setConnected(true);
      };
@@ -215,7 +220,6 @@ export class MessageBarComponent implements OnInit, OnDestroy {
      };
 
      this.webSocket.onclose = function() {
-         // websocket is closed.
          _this.setConnected(false);
          console.log("Connection is closed...");
      };
