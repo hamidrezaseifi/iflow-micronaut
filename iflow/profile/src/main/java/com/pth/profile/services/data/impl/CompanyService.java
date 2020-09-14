@@ -30,8 +30,8 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Optional<CompanyEntity> getByIdentity(String identity) {
-        return companyRepository.getByIdentity(identity);
+    public Optional<CompanyEntity> getById(final UUID id) {
+        return companyRepository.getById(id);
     }
 
     @Override
@@ -40,9 +40,9 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(String identity) {
+    public List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(UUID id) {
 
-        Optional<CompanyEntity> companyEntityOptional = getByIdentity(identity);
+        Optional<CompanyEntity> companyEntityOptional = getById(id);
         if(companyEntityOptional.isPresent()){
             CompanyEntity companyEntity = companyEntityOptional.get();
             return getCompanyWorkflowtypeItemOcrSettingList(companyEntity.getId());

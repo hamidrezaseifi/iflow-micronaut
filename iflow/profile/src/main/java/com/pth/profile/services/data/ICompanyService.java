@@ -13,11 +13,11 @@ public interface ICompanyService {
 
     Optional<CompanyEntity> save(CompanyEntity model);
 
-    Optional<CompanyEntity> getByIdentity(final String identity);
+    Optional<CompanyEntity> getById(final UUID id);
 
     List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingList(UUID companyId);
 
-    List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(String identity);
+    List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(UUID id);
 
     Optional<CompanyWorkflowTypeOcrSettingPresetEntity> saveCompanyWorkflowtypeItemOcrSetting(
           final CompanyWorkflowTypeOcrSettingPresetEntity preset);

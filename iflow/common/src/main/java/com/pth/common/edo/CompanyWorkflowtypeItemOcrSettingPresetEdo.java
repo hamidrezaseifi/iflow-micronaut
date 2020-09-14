@@ -18,11 +18,11 @@ public class CompanyWorkflowtypeItemOcrSettingPresetEdo {
   @NotNull(message = "Identity must not be null")
   private String identity;
 
-  @NotNull(message = "CompanyIdentity must not be null")
-  private String companyIdentity;
+  @NotNull(message = "CompanyId must not be null")
+  private UUID companyId;
 
-  @NotNull(message = "WorkflowTypeIdentity must not be null")
-  private String workflowTypeIdentity;
+  @NotNull(message = "WorkflowTypeId must not be null")
+  private UUID workflowTypeId;
 
   @NotNull(message = "PresetName must not be null")
   private String presetName;
@@ -54,24 +54,20 @@ public class CompanyWorkflowtypeItemOcrSettingPresetEdo {
     this.identity = identity;
   }
 
-  public String getCompanyIdentity() {
-
-    return this.companyIdentity;
+  public UUID getCompanyId() {
+    return companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
-
-    this.companyIdentity = companyIdentity;
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
-  public String getWorkflowTypeIdentity() {
-
-    return this.workflowTypeIdentity;
+  public UUID getWorkflowTypeId() {
+    return workflowTypeId;
   }
 
-  public void setWorkflowTypeIdentity(final String workflowIdentity) {
-
-    this.workflowTypeIdentity = workflowIdentity;
+  public void setWorkflowTypeId(UUID workflowTypeId) {
+    this.workflowTypeId = workflowTypeId;
   }
 
   public String getPresetName() {

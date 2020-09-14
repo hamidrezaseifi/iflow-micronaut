@@ -16,34 +16,34 @@ import { Company } from '../../ui-models';
 })
 export class CompanyEditService extends HttpErrorResponseHelper {
 
-	loadDataUrl :string = "/company/data/info";
-	updateDataUrl :string = "/company/data/update";
-	
+	loadDataUrl :string = "/company/info";
+	updateDataUrl :string = "/company/update";
+
 	constructor(
 			protected http: HttpClient,
 			protected loadingService: LoadingServiceService,
-			protected router: Router, 
+			protected router: Router,
 			protected route :ActivatedRoute,
 			protected autService: AuthenticationService,
-	) { 
+	) {
 		super(router, route, autService);
-		
+
 	}
-	
+
 	listData(){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.get(this.loadDataUrl, httpOptions);	    
-		
+
+		return this.http.get(this.loadDataUrl, httpOptions);
+
 	};
-	
+
 	updateData(company: Company){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.updateDataUrl, company, httpOptions);	    
-		
+
+		return this.http.post(this.updateDataUrl, company, httpOptions);
+
 	};
 
 }

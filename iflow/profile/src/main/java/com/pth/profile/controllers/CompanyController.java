@@ -20,6 +20,7 @@ import io.micronaut.validation.Validated;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Validated
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -41,10 +42,10 @@ public class CompanyController {
 
   @Produces(MediaType.APPLICATION_JSON)
   @Secured(SecurityRule.IS_AUTHENTICATED)
-  @Get(value = "/readbyidentity/{companyIdentity}")
-  public HttpResponse<CompanyEdo> readCompany(final String companyIdentity) throws Exception {
+  @Get(value = "/read/{id}")
+  public HttpResponse<CompanyEdo> readCompany(final UUID id) throws Exception {
 
-    final Optional<CompanyEntity> companyEntityOptional = this.companyService.getByIdentity(companyIdentity);
+    final Optional<CompanyEntity> companyEntityOptional = this.companyService.getById(id);
 
     if(companyEntityOptional.isPresent()){
 
@@ -75,12 +76,12 @@ public class CompanyController {
 
   @Produces(MediaType.APPLICATION_JSON)
   @Secured(SecurityRule.IS_AUTHENTICATED)
-  @Get(value = "/readwtoctsettings/{companyIdentity}")
+  @Get(value = "/readwtoctsettings/{id}")
   public HttpResponse<CompanyWorkflowtypeItemOcrSettingPresetListEdo>
-      readCompanyWorkflowtypeItemOcrSettings(final String companyIdentity) throws Exception {
+      readCompanyWorkflowtypeItemOcrSettings(final UUID id) throws Exception {
 
     final List<CompanyWorkflowTypeOcrSettingPresetEntity> modelList = this.companyService
-        .getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(companyIdentity);
+        .getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(id);
 
     final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList = this.presetModelEdoMapper.toEdoList(modelList);
 

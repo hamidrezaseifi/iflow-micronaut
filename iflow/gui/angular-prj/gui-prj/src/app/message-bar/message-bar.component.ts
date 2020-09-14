@@ -122,7 +122,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 			        	this.messages = messageList;
 			        },
 			        response => {
-			        alert("Error in read message list");
+
 			        	console.log("Error in read message list", response);
 			        	this.messages = [];
 			        	this.isReloadingMessages = false;

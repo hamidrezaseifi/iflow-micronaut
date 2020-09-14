@@ -11971,11 +11971,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
             this.messages = [];
             this.isReloadingMessages = true;
             this.messageService.loadMessages(reset).subscribe(function (messageList) {
-              //alert("Message List Results: " + messageList);
               console.log("Read message list", messageList);
               _this31.messages = messageList;
             }, function (response) {
-              alert("Error in read message list");
               console.log("Error in read message list", response);
               _this31.messages = [];
               _this31.isReloadingMessages = false;
@@ -12041,10 +12039,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           }
 
           var url = "ws://" + location.hostname + ":" + location.port + "/websocket/workflowmessages/" + this.currentUser.id;
-          alert("socket url: " + url);
-          this.webSocket = new WebSocket(url); //this.webSocket.onmessage = function (msg) { updateChat(msg); };
-          //this.webSocket.onclose = function () { alert("WebSocket connection closed") };
-          //this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
+          this.webSocket = new WebSocket(url);
 
           var _this = this;
 
@@ -12431,8 +12426,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         _this34.router = router;
         _this34.route = route;
         _this34.autService = autService;
-        _this34.loadDataUrl = "/company/data/info";
-        _this34.updateDataUrl = "/company/data/update";
+        _this34.loadDataUrl = "/company/info";
+        _this34.updateDataUrl = "/company/update";
         return _this34;
       }
 

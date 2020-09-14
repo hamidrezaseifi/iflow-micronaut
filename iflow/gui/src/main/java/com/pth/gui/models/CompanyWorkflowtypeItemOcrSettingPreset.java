@@ -2,15 +2,16 @@ package com.pth.gui.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CompanyWorkflowtypeItemOcrSettingPreset {
 
   private String identity;
 
-  private String companyIdentity;
+  private UUID companyId;
 
-  private String workflowTypeIdentity;
+  private UUID workflowTypeId;
 
   private String presetName;
 
@@ -30,24 +31,20 @@ public class CompanyWorkflowtypeItemOcrSettingPreset {
     this.identity = identity;
   }
 
-  public String getCompanyIdentity() {
-
-    return this.companyIdentity;
+  public UUID getCompanyId() {
+    return companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
-
-    this.companyIdentity = companyIdentity;
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
-  public String getWorkflowTypeIdentity() {
-
-    return this.workflowTypeIdentity;
+  public UUID getWorkflowTypeId() {
+    return workflowTypeId;
   }
 
-  public void setWorkflowTypeIdentity(final String workflowIdentity) {
-
-    this.workflowTypeIdentity = workflowIdentity;
+  public void setWorkflowTypeId(UUID workflowTypeId) {
+    this.workflowTypeId = workflowTypeId;
   }
 
   public String getPresetName() {

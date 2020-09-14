@@ -6045,11 +6045,9 @@ class MessageBarComponent {
             this.messages = [];
             this.isReloadingMessages = true;
             this.messageService.loadMessages(reset).subscribe((messageList) => {
-                //alert("Message List Results: " + messageList);
                 console.log("Read message list", messageList);
                 this.messages = messageList;
             }, response => {
-                alert("Error in read message list");
                 console.log("Error in read message list", response);
                 this.messages = [];
                 this.isReloadingMessages = false;
@@ -6099,11 +6097,7 @@ class MessageBarComponent {
             return;
         }
         var url = "ws://" + location.hostname + ":" + location.port + "/websocket/workflowmessages/" + this.currentUser.id;
-        alert("socket url: " + url);
         this.webSocket = new WebSocket(url);
-        //this.webSocket.onmessage = function (msg) { updateChat(msg); };
-        //this.webSocket.onclose = function () { alert("WebSocket connection closed") };
-        //this.webSocket = new WebSocket("ws://localhost:1200/user/socket/workflowmessages/" + this.currentUser.id);
         var _this = this;
         this.webSocket.onopen = function () {
             console.log("websocket connected");
@@ -6283,8 +6277,8 @@ class CompanyEditService extends _helper_http_error_response_helper__WEBPACK_IMP
         this.router = router;
         this.route = route;
         this.autService = autService;
-        this.loadDataUrl = "/company/data/info";
-        this.updateDataUrl = "/company/data/update";
+        this.loadDataUrl = "/company/info";
+        this.updateDataUrl = "/company/update";
     }
     listData() {
         const httpOptions = { headers: _helper_http_hepler__WEBPACK_IMPORTED_MODULE_1__["HttpHepler"].generateJsonHeader() };

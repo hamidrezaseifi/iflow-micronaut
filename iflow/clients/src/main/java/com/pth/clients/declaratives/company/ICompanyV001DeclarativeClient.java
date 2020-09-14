@@ -13,18 +13,22 @@ import io.micronaut.http.client.annotation.Client;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.UUID;
 
 @Client(id = "profile")
 public interface ICompanyV001DeclarativeClient {
 
-    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/readbyidentity/{companyIdentity}")
-    HttpResponse<CompanyEdo> readCompanyByIdentity(@Header String authorization,
-                                                   final String companyIdentity);
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/read/{id}")
+    HttpResponse<CompanyEdo> read(@Header String authorization, final UUID id);
 
-    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/readwtoctsettings/{companyIdentity}")
+
+    @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/save")
+    HttpResponse<CompanyEdo> save(@Header String authorization, @Body final CompanyEdo company);
+
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/readwtoctsettings/{id}")
     HttpResponse<CompanyWorkflowtypeItemOcrSettingPresetListEdo> readCompanyWorkflowtypeItemOcrSettings(
             @Header String authorization,
-            final String companyIdentity);
+            final UUID id);
 
     @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/savewtoctsettings")
     HttpResponse<CompanyWorkflowtypeItemOcrSettingPresetEdo>
