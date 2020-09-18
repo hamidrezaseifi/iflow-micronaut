@@ -21,55 +21,55 @@ export class UserEditService extends HttpErrorResponseHelper {
 	updateUserUrl :string = "/users/data/update";
 	deleteUserUrl :string = "/users/data/delete";
 	resetUserPasswordUrl :string = "/users/data/resetpassword";
- 
+
 	constructor(
 			protected http: HttpClient,
 			protected loadingService: LoadingServiceService,
-			protected router: Router, 
+			protected router: Router,
 			protected route :ActivatedRoute,
 			protected autService: AuthenticationService,
-	) { 
+	) {
 		super(router, route, autService);
-		
+
 	}
-	
+
 	listUsers(){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.get(this.loadUsersUrl, httpOptions);	    
-		
+
+		return this.http.get(this.loadUsersUrl, httpOptions);
+
 	};
-	
+
 	createUser(user: User){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.createUserUrl, user, httpOptions);	    
-		
+
+		return this.http.post(this.createUserUrl, user, httpOptions);
+
 	};
-	
+
 	updateUser(user: User){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.updateUserUrl, user, httpOptions);	    
-		
+
+		return this.http.post(this.updateUserUrl, user, httpOptions);
+
 	};
-	
+
 	deleteUser(user: User){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.deleteUserUrl, user, httpOptions);	    
-		
+
+		return this.http.post(this.deleteUserUrl, user, httpOptions);
+
 	};
-	
+
 	resetUserPassword(user: User){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.resetUserPasswordUrl, user, httpOptions);	    
-		
+
+		return this.http.post(this.resetUserPasswordUrl, user, httpOptions);
+
 	};
 }

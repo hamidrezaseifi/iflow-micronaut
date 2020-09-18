@@ -21,6 +21,6 @@ public interface IUserHandler {
 
   public List<UserDashboardMenu> saveUserDashboardMenus(String authorization,
                                                         List<UserDashboardMenu> userDashboardMenuList,
-                                                        String userIdentity);
+                                                        UUID userId);
 
 }

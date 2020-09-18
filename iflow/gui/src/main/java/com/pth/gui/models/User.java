@@ -18,7 +18,7 @@ import com.pth.gui.enums.EUiUserRole;
 public class User extends GuiBaseModel {
 
   private String identity;
-  private String companyIdentity;
+  private UUID companyId;
   private String email;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
@@ -46,14 +46,12 @@ public class User extends GuiBaseModel {
     this.isEnabled = true;
   }
 
-  public String getCompanyIdentity() {
-
-    return this.companyIdentity;
+  public UUID getCompanyId() {
+    return companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
-
-    this.companyIdentity = companyIdentity;
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
   public String getUsername() {

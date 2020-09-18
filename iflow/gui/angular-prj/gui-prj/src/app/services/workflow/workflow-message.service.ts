@@ -14,8 +14,8 @@ import { HttpHepler } from '../../helper/http-hepler';
 })
 export class WorkflowMessageService {
 
-	loadMessageUrl :string = "/users/workflowmessages";
-	assignWorkflowUrl :string = "/users/workflow/assign/";
+	loadMessageUrl :string = "/users/data/workflowmessages";
+	assignWorkflowUrl :string = "/users/data/workflow/assign/";
 
 	isReloadingMessages : boolean = false;
 

@@ -1,10 +1,9 @@
 package com.pth.gui.services.impl;
 
 import com.pth.clients.clients.profile.IUserClient;
-import com.pth.common.edo.UserEdo;
-import com.pth.common.edo.UserListEdo;
-import com.pth.common.edo.UserPasswordResetRequestEdo;
+import com.pth.common.edo.*;
 import com.pth.common.edo.enums.EApplication;
+import com.pth.gui.mapper.IUserDashboardMenuMapper;
 import com.pth.gui.mapper.IUserMapper;
 import com.pth.gui.models.User;
 import com.pth.gui.models.UserDashboardMenu;
@@ -21,11 +20,15 @@ public class UserHandler implements IUserHandler {
 
     private final IUserClient userClient;
     private final IUserMapper userMapper;
+    private final IUserDashboardMenuMapper userDashboardMenuMapper;
 
-    public UserHandler(IUserClient userClient, IUserMapper userMapper) {
+    public UserHandler(IUserClient userClient,
+                       IUserMapper userMapper,
+                       IUserDashboardMenuMapper userDashboardMenuMapper) {
 
         this.userClient = userClient;
         this.userMapper = userMapper;
+        this.userDashboardMenuMapper = userDashboardMenuMapper;
 
     }
 
@@ -44,7 +47,7 @@ public class UserHandler implements IUserHandler {
 
         Optional<UserListEdo> userListEdoOptional = this.userClient.readCompanyUsers(authorization, companyId);
         if(userListEdoOptional.isPresent()){
-            Optional.of(userMapper.fromEdoList(userListEdoOptional.get().getUsers()));
+            return userMapper.fromEdoList(userListEdoOptional.get().getUsers());
         }
         return new ArrayList<>();
     }
@@ -96,19 +99,31 @@ public class UserHandler implements IUserHandler {
     @Override
     public List<UserDashboardMenu> saveUserDashboardMenus(String authorization,
                                                           final List<UserDashboardMenu> userDashboardMenuList,
-                                                          final String userIdentity){
+                                                          final UUID userId){
 
         for (final UserDashboardMenu item : userDashboardMenuList) {
             item.setAppId(EApplication.IFLOW.getIdentity());
-            item.setUserIdentity(userIdentity);
+            item.setUserId(userId);
 
         }
 
-        final List<
-                UserDashboardMenu> resultList =
-                this.userClient.saveUserDashboardMenus(userDashboardMenuList,
-                                                       EApplication.IFLOW.getIdentity());
+        List<UserDashboardMenuEdo> userDashboardMenuEdoList = userDashboardMenuMapper.toEdoList(userDashboardMenuList);
 
-        return resultList;
+        UserDashboardMenuListEdo userDashboardMenuListEdo = new UserDashboardMenuListEdo(userDashboardMenuEdoList);
+
+        final Optional<UserDashboardMenuListEdo> resultEdoListOptional =
+                this.userClient.saveUserDashboardMenuByIdentity(authorization,
+                                                                userDashboardMenuListEdo,
+                                                                EApplication.IFLOW.getIdentity(),
+                                                                userId);
+
+        if(resultEdoListOptional.isPresent()){
+            List<UserDashboardMenu> resultUserDashboardMenuList =
+                    userDashboardMenuMapper.fromEdoList(resultEdoListOptional.get().getUserDashboardMenus());
+
+            return resultUserDashboardMenuList;
+        }
+
+        return new ArrayList<>();
     }
 }

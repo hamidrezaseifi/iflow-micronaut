@@ -14,7 +14,7 @@ public class UserDashboardMenuMapper extends ModelEdoMapperBase<UserDashboardMen
     @Override
     public UserDashboardMenu fromEdo(UserDashboardMenuEdo edo) {
         final UserDashboardMenu model = new UserDashboardMenu();
-        model.setUserIdentity(edo.getUserIdentity());
+        model.setUserId(edo.getUserId());
         model.setColumnIndex(edo.getColumnIndex());
         model.setAppId(edo.getAppId());
         model.setMenuId(edo.getMenuId());
@@ -28,7 +28,7 @@ public class UserDashboardMenuMapper extends ModelEdoMapperBase<UserDashboardMen
     @Override
     public UserDashboardMenuEdo toEdo(UserDashboardMenu model) {
         final UserDashboardMenuEdo edo = new UserDashboardMenuEdo();
-        edo.setUserIdentity(model.getUserIdentity());
+        edo.setUserId(model.getUserId());
         edo.setColumnIndex(model.getColumnIndex());
         edo.setAppId(model.getAppId());
         edo.setMenuId(model.getMenuId());

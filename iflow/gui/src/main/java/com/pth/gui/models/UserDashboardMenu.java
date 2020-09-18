@@ -3,9 +3,11 @@ package com.pth.gui.models;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.gui.models.gui.UiMenuItem;
 
+import java.util.UUID;
+
 public class UserDashboardMenu extends GuiBaseModel {
 
-  private String userIdentity;
+  private UUID userId;
 
   private String appId = EApplication.IFLOW.getIdentity();
 
@@ -21,14 +23,12 @@ public class UserDashboardMenu extends GuiBaseModel {
 
   private Integer version = 1;
 
-  public String getUserIdentity() {
-
-    return this.userIdentity;
+  public UUID getUserId() {
+    return userId;
   }
 
-  public void setUserIdentity(final String userIdentity) {
-
-    this.userIdentity = userIdentity;
+  public void setUserId(UUID userId) {
+    this.userId = userId;
   }
 
   public UiMenuItem getMenu() {

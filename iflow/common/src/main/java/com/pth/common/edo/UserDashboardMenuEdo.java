@@ -12,8 +12,8 @@ public class UserDashboardMenuEdo {
   @NotNull(message = "id must not be null")
   protected UUID id;
 
-  @NotNull(message = "UserIdentity must not be null")
-  private String userIdentity;
+  @NotNull(message = "UserId must not be null")
+  private UUID userId;;
 
   @AEnumNameValidator(enumClazz = EApplication.class)
   @NotNull(message = "AppId must not be null")
@@ -42,14 +42,12 @@ public class UserDashboardMenuEdo {
     this.id = id;
   }
 
-  public String getUserIdentity() {
-
-    return this.userIdentity;
+  public UUID getUserId() {
+    return userId;
   }
 
-  public void setUserIdentity(final String userIdentity) {
-
-    this.userIdentity = userIdentity;
+  public void setUserId(UUID userId) {
+    this.userId = userId;
   }
 
   public String getAppId() {

@@ -3,10 +3,7 @@ package com.pth.clients.clients.profile.impl;
 import com.pth.clients.clients.ClientBase;
 import com.pth.clients.declaratives.user.IUserV001DeclarativeClient;
 import com.pth.clients.clients.profile.IUserClient;
-import com.pth.common.edo.ProfileResponseEdo;
-import com.pth.common.edo.UserEdo;
-import com.pth.common.edo.UserListEdo;
-import com.pth.common.edo.UserPasswordResetRequestEdo;
+import com.pth.common.edo.*;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 
@@ -110,6 +107,38 @@ public class UserClient extends ClientBase implements IUserClient {
   public Optional<UserListEdo> readDepartmentUsers(String authorization, UUID id) {
     String authorizationBearer = prepareBearerAuthorization(authorization);
     HttpResponse<UserListEdo> response = this.userDeclarativeClient.readDepartmentUsers(authorizationBearer, id);
+    if(response.getStatus() == HttpStatus.OK){
+      return  response.getBody();
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UserDashboardMenuListEdo> readUserDashboardMenuByIdentity(String authorization,
+                                                                            String appIdentity,
+                                                                            UUID userId){
+    String authorizationBearer = prepareBearerAuthorization(authorization);
+    HttpResponse<UserDashboardMenuListEdo> response =
+            this.userDeclarativeClient.readUserDashboardMenuByIdentity(authorizationBearer, appIdentity, userId);
+    if(response.getStatus() == HttpStatus.OK){
+      return  response.getBody();
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<UserDashboardMenuListEdo> saveUserDashboardMenuByIdentity(String authorization,
+                                                                            UserDashboardMenuListEdo requestedEdoList,
+                                                                            String appIdentity,
+                                                                            UUID userId){
+    String authorizationBearer = prepareBearerAuthorization(authorization);
+    HttpResponse<UserDashboardMenuListEdo> response =
+            this.userDeclarativeClient.saveUserDashboardMenuByIdentity(authorizationBearer,
+                                                                       requestedEdoList,
+                                                                       appIdentity,
+                                                                       userId);
     if(response.getStatus() == HttpStatus.OK){
       return  response.getBody();
     }

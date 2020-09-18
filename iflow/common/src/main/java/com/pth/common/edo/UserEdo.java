@@ -29,9 +29,6 @@ public class UserEdo {
   @NotNull(message = "id must not be null")
   protected UUID id;
 
-  @NotNull(message = "CompanyIdentity must not be null")
-  private String companyIdentity;
-
   @NotNull(message = "CompanyId must not be null")
   private UUID companyId;
 
@@ -84,16 +81,6 @@ public class UserEdo {
 
   public void setId(UUID id) {
     this.id = id;
-  }
-
-  public String getCompanyIdentity() {
-
-    return this.companyIdentity;
-  }
-
-  public void setCompanyIdentity(final String companyIdentity) {
-
-    this.companyIdentity = companyIdentity;
   }
 
   public String getIdentity() {

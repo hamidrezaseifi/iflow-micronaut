@@ -43,6 +43,10 @@ public class SessionData {
         return company;
     }
 
+    public UUID getCompanyId() {
+        return company.getCompany().getId();
+    }
+
     public void setCompany(CompanySessionData company) {
         this.company = company;
     }

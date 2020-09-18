@@ -27,7 +27,7 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
         model.setVersion(edo.getVersion());
         model.setEmail(edo.getEmail());
         model.setBirthDate(edo.getBirthDate());
-        model.setCompanyIdentity(edo.getCompanyIdentity());
+        model.setCompanyId(edo.getCompanyId());
         model.setRoles(edo.getRoles());
         model.setIdentity(edo.getIdentity());
 

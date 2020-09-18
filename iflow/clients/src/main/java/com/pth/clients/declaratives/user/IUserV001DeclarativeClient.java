@@ -1,10 +1,7 @@
 package com.pth.clients.declaratives.user;
 
 import com.pth.common.contants.ApiUrlConstants;
-import com.pth.common.edo.ProfileResponseEdo;
-import com.pth.common.edo.UserEdo;
-import com.pth.common.edo.UserListEdo;
-import com.pth.common.edo.UserPasswordResetRequestEdo;
+import com.pth.common.edo.*;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Get;
@@ -53,4 +50,17 @@ public interface IUserV001DeclarativeClient {
     @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_USER_LIST_BY_DEPARTMENTID)
     HttpResponse<UserListEdo> readDepartmentUsers(@Header("Authorization") String authorization,
                                                          final UUID id);
+
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_READ_BY_USERID)
+    HttpResponse<UserDashboardMenuListEdo>
+        readUserDashboardMenuByIdentity(@Header("Authorization") String authorization,
+                                        final String appIdentity,
+                                        final UUID userId);
+
+    @Post(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_SAVE_BY_USERID)
+    public HttpResponse<UserDashboardMenuListEdo>
+        saveUserDashboardMenuByIdentity(@Header("Authorization") String authorization,
+                                        @Body @Valid final UserDashboardMenuListEdo requestedEdoList,
+                                        final String appIdentity,
+                                        final UUID userId);
 }

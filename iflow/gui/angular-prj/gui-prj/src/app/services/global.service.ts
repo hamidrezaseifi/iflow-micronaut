@@ -10,7 +10,7 @@ import { HttpHepler } from '../helper/http-hepler';
 @Injectable({ providedIn: 'root' })
 export class GlobalService {
 
-	loadGeneralDataUrl :string = "/users/sessiondata";
+	loadGeneralDataUrl :string = "/users/data/sessiondata";
 	public currentSessionDataSubject: BehaviorSubject<GeneralData> = new BehaviorSubject<GeneralData>(null);
 	//public currentSessionDataObs :Observable<GeneralData>;
 

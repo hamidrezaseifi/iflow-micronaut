@@ -13368,7 +13368,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         this.http = http;
         this.loadingService = loadingService;
-        this.loadGeneralDataUrl = "/users/sessiondata";
+        this.loadGeneralDataUrl = "/users/data/sessiondata";
         this.currentSessionDataSubject = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null); //public currentSessionDataObs :Observable<GeneralData>;
 
         this.presensSubject = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"](null);
@@ -14597,8 +14597,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         this.http = http;
         this.errorService = errorService;
-        this.loadMessageUrl = "/users/workflowmessages";
-        this.assignWorkflowUrl = "/users/workflow/assign/";
+        this.loadMessageUrl = "/users/data/workflowmessages";
+        this.assignWorkflowUrl = "/users/data/workflow/assign/";
         this.isReloadingMessages = false;
         this.workflowMessageListSubject = new rxjs__WEBPACK_IMPORTED_MODULE_1__["BehaviorSubject"]([]);
       }
