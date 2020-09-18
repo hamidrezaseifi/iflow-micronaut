@@ -6,6 +6,7 @@ import com.pth.clients.clients.profile.IUserClient;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;
 import com.pth.common.edo.UserListEdo;
+import com.pth.common.edo.UserPasswordResetRequestEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 
@@ -25,12 +26,28 @@ public class UserClient extends ClientBase implements IUserClient {
   @Override
   public Optional<UserEdo> saveUser(String authorization, UserEdo userEdo) {
 
-    HttpResponse<UserEdo> response = this.userDeclarativeClient.saveUser(prepareBearerAuthorization(authorization), userEdo);
+    HttpResponse<UserEdo> response =
+            this.userDeclarativeClient.saveUser(prepareBearerAuthorization(authorization), userEdo);
     if(response.getStatus() == HttpStatus.CREATED){
       return  response.getBody();
     }
 
     return Optional.empty();
+  }
+
+  @Override
+  public void resetPassword(String authorization,
+                            final UserPasswordResetRequestEdo userPasswordResetRequestEdo,
+                            final UUID id) {
+
+    HttpResponse<?> response =
+            this.userDeclarativeClient.resetPassword(prepareBearerAuthorization(authorization),
+                                                     userPasswordResetRequestEdo,
+                                                     id);
+    if(response.getStatus() == HttpStatus.CREATED){
+
+    }
+
   }
 
   @Override

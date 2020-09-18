@@ -1,8 +1,11 @@
 package com.pth.profile.services.data.impl;
 
+import com.pth.common.credentials.IPasswordHashGenerator;
 import com.pth.profile.authentication.entities.RefreshTokenEntity;
 import com.pth.profile.entities.*;
+import com.pth.profile.exception.UserNotFoundException;
 import com.pth.profile.models.ProfileResponse;
+import com.pth.profile.models.UserPasswordResetRequest;
 import com.pth.profile.repositories.*;
 import com.pth.profile.services.data.IUsersService;
 
@@ -20,6 +23,7 @@ public class UsersService implements IUsersService {
   private final ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository;
   private final IRefreshTokenRepository refreshTokenRepository;
   private final IUserDashboardMenuRepository userDashboardMenuRepository;
+  private final IPasswordHashGenerator passwordHashGenerator;
 
   public UsersService(IUserRepository userRepository,
                       ICompanyRepository companyRepository,
@@ -27,7 +31,8 @@ public class UsersService implements IUsersService {
                       IDepartmentRepository departmentRepository,
                       ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository,
                       IRefreshTokenRepository refreshTokenRepository,
-                      IUserDashboardMenuRepository userDashboardMenuRepository) {
+                      IUserDashboardMenuRepository userDashboardMenuRepository,
+                      IPasswordHashGenerator passwordHashGenerator) {
     this.userRepository = userRepository;
     this.companyRepository = companyRepository;
     this.userGroupRepository = userGroupRepository;
@@ -35,6 +40,7 @@ public class UsersService implements IUsersService {
     this.workflowTypeOcrSettingPresetRepository = workflowTypeOcrSettingPresetRepository;
     this.refreshTokenRepository = refreshTokenRepository;
     this.userDashboardMenuRepository = userDashboardMenuRepository;
+    this.passwordHashGenerator = passwordHashGenerator;
   }
 
   @Override
@@ -55,13 +61,43 @@ public class UsersService implements IUsersService {
   }
 
   @Override
+  public void resetPassword(UUID userId, UserPasswordResetRequest userPasswordResetRequest) {
+    Optional<UserEntity> userEntityOptional = this.userRepository.getById(userId);
+    if(userEntityOptional.isPresent()){
+      UserEntity userEntity = userEntityOptional.get();
+
+      String salt = passwordHashGenerator.produceSalt();
+      String passwordHash = passwordHashGenerator.produceHash("test", salt);
+
+      userEntity.setPasswordSalt(salt);
+      userEntity.setPasswordHash(passwordHash);
+      this.userRepository.save(userEntity);
+      Optional<RefreshTokenEntity> refreshTokenEntityOptional =
+              this.refreshTokenRepository.findByUsername(userEntity.getUsername());
+      if(refreshTokenEntityOptional.isPresent()){
+
+      }
+
+    }
+    throw new UserNotFoundException(userId.toString());
+  }
+
+  @Override
   public Optional<UserEntity> getUserById(UUID id) {
-    return this.userRepository.getById(id);
+    Optional<UserEntity> userEntityOptional = this.userRepository.getById(id);
+    if(userEntityOptional.isPresent()){
+      return userEntityOptional;
+    }
+    throw new UserNotFoundException(id.toString());
   }
 
   @Override
   public Optional<UserEntity> getUserByUsername(String userName) {
-    return this.userRepository.getUserByUsername(userName);
+    Optional<UserEntity> userEntityOptional = this.userRepository.getUserByUsername(userName);
+    if(userEntityOptional.isPresent()){
+      return userEntityOptional;
+    }
+    throw new UserNotFoundException(userName);
   }
 
   @Override
@@ -75,7 +111,7 @@ public class UsersService implements IUsersService {
       return profileResponseOptional;
     }
 
-    return Optional.empty();
+    throw new UserNotFoundException(userName);
   }
 
   @Override
@@ -88,7 +124,7 @@ public class UsersService implements IUsersService {
       return profileResponseOptional;
     }
 
-    return Optional.empty();
+    throw new UserNotFoundException(id.toString());
   }
 
   @Override
@@ -100,7 +136,7 @@ public class UsersService implements IUsersService {
       return userEntity.getGroups().stream().collect(Collectors.toList());
     }
 
-    return new ArrayList<>();
+    throw new UserNotFoundException(id.toString());
   }
 
   @Override
@@ -112,7 +148,7 @@ public class UsersService implements IUsersService {
       return userEntity.getUserDepartments().stream().map(ud -> ud.getDepartment()).collect(Collectors.toList());
     }
 
-    return new ArrayList<>();
+    throw new UserNotFoundException(id.toString());
   }
 
   @Override
@@ -124,7 +160,7 @@ public class UsersService implements IUsersService {
       return userEntity.getDeputies().stream().collect(Collectors.toList());
     }
 
-    return new ArrayList<>();
+    throw new UserNotFoundException(id.toString());
   }
 
   @Override
@@ -134,7 +170,7 @@ public class UsersService implements IUsersService {
       CompanyEntity companyEntity = companyEntityOptional.get();
       return this.userRepository.getUserListByCompanyId(companyEntity.getId());
     }
-    return new ArrayList<>();
+    throw new UserNotFoundException(companyId.toString());
   }
 
   @Override
@@ -196,7 +232,7 @@ public class UsersService implements IUsersService {
 
       return Optional.of(profileResponse);
     }
-    return Optional.empty();
+    throw new UserNotFoundException(userEntity.getId().toString());
   }
 
 }

@@ -34,6 +34,7 @@ public class UserController {
   private final IUserGroupService userGroupService;
   private final IDepartmentService departmentService;
   private final IUserMapper userMapper;
+  private final IUserPasswordResetRequestMapper userPasswordResetRequestMapper;
   private final IDepartmentMapper departmentMapper;
   private final IProfileResponseMapper profileResponseMapper;
   private final IUserDashboardMenuMapper userDashboardMenuMapper;
@@ -43,6 +44,7 @@ public class UserController {
                         IUserGroupService userGroupService,
                         IDepartmentService departmentService,
                         IUserMapper userMapper,
+                        IUserPasswordResetRequestMapper userPasswordResetRequestMapper,
                         IDepartmentMapper departmentMapper,
                         IProfileResponseMapper profileResponseMapper,
                         IUserDashboardMenuMapper userDashboardMenuMapper,
@@ -52,6 +54,7 @@ public class UserController {
     this.userGroupService = userGroupService;
     this.departmentService = departmentService;
     this.userMapper = userMapper;
+    this.userPasswordResetRequestMapper = userPasswordResetRequestMapper;
     this.departmentMapper = departmentMapper;
     this.profileResponseMapper = profileResponseMapper;
     this.userDashboardMenuMapper = userDashboardMenuMapper;
@@ -68,6 +71,16 @@ public class UserController {
       return HttpResponse.created(this.userMapper.toEdo(userOptional.get()));
     }
     return HttpResponse.badRequest();
+  }
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_PASSWORD_RESET)
+  public HttpResponse<?> resetPassword(@Body @Valid final UserPasswordResetRequestEdo userPasswordResetRequestEdo,
+                                       final UUID id) throws Exception {
+
+    this.usersService.resetPassword(id, this.userPasswordResetRequestMapper.fromEdo(userPasswordResetRequestEdo));
+
+    return HttpResponse.accepted();
   }
 
   @Secured(SecurityRule.IS_AUTHENTICATED)

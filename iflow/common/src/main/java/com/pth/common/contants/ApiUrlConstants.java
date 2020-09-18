@@ -71,6 +71,7 @@ public class ApiUrlConstants {
         public static final String USERPROFILE_READ_BY_USERID = "/readprofile/identity/{appIdentity}/{id}";
         public static final String USERDASHBOARDMENU_READ_BY_USERID = "/dashboardmenu/read/{appIdentity}/{userId}";
         public static final String USERDASHBOARDMENU_SAVE_BY_USERID = "/dashboardmenu/svae/{appIdentity}/{userId}";
+        public static final String USER_PASSWORD_RESET = "/users/resetpassword/{id}";
 
 
         public static final String DEPARTMENT_READ_BY_ID = "/readbyid/{id}";

@@ -5,6 +5,7 @@ import com.pth.profile.entities.UserDashboardMenuEntity;
 import com.pth.profile.entities.UserEntity;
 import com.pth.profile.entities.UserGroupEntity;
 import com.pth.profile.models.ProfileResponse;
+import com.pth.profile.models.UserPasswordResetRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,8 @@ public interface IUsersService {
   Optional<UserEntity> save(UserEntity model);
 
   void delete(UserEntity model);
+
+  void resetPassword(UUID userId, UserPasswordResetRequest userPasswordResetRequest);
 
   Optional<UserEntity> getUserById(UUID id);
 

@@ -3,15 +3,22 @@ package com.pth.clients.clients.profile;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;
 import com.pth.common.edo.UserListEdo;
+import com.pth.common.edo.UserPasswordResetRequestEdo;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Header;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface IUserClient {
 
   Optional<UserEdo> saveUser(String authorization, final UserEdo userEdo);
+
+  void resetPassword(String authorization,
+                     final UserPasswordResetRequestEdo userPasswordResetRequestEdo,
+                     final UUID id);
 
   void deleteUser(String authorization,
                   final UserEdo userEdo);

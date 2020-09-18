@@ -4,6 +4,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.ProfileResponseEdo;
 import com.pth.common.edo.UserEdo;
 import com.pth.common.edo.UserListEdo;
+import com.pth.common.edo.UserPasswordResetRequestEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Get;
@@ -20,6 +21,11 @@ public interface IUserV001DeclarativeClient {
     @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_SAVE)
     HttpResponse<UserEdo> saveUser(@Header("Authorization") String authorization,
                                    @Body @Valid final UserEdo userEdo);
+
+    @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_PASSWORD_RESET)
+    HttpResponse<?> resetPassword(@Header("Authorization") String authorization,
+                                   @Body @Valid final UserPasswordResetRequestEdo userPasswordResetRequestEdo,
+                                   final UUID id);
 
     @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_DELETE)
     HttpResponse<?> deleteUser(@Header("Authorization") String authorization,
