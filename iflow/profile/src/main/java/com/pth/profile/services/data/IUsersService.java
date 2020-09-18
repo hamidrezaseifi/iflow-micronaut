@@ -14,6 +14,8 @@ import java.util.UUID;
 
 public interface IUsersService {
 
+  Optional<UserEntity> create(UserEntity model);
+
   Optional<UserEntity> save(UserEntity model);
 
   void delete(UserEntity model);

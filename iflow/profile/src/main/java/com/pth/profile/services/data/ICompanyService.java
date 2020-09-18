@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface ICompanyService {
 
+    Optional<CompanyEntity> create(CompanyEntity model);
+
     Optional<CompanyEntity> save(CompanyEntity model);
 
     Optional<CompanyEntity> getById(final UUID id);

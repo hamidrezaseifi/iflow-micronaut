@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface IUserGroupService {
 
+  Optional<UserGroupEntity> create(UserGroupEntity model);
+
   Optional<UserGroupEntity> save(UserGroupEntity model);
 
   Optional<UserGroupEntity> getById(final UUID id);

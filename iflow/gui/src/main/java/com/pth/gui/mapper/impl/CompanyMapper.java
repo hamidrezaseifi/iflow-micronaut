@@ -33,7 +33,7 @@ public class CompanyMapper extends ModelEdoMapperBase<Company, CompanyEdo>
         edo.setStatus(model.getStatus());
         edo.setVersion(model.getVersion());
         edo.setCompanyType(model.getCompanyType());
-        edo.setCompanyTypeCustome(model.getCompanyTypeCustome());
+        edo.setCompanyTypeCustome(model.getCompanyTypeCustome() == null ? "" : model.getCompanyTypeCustome());
         edo.setId(model.getId());
 
         return edo;

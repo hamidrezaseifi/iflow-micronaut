@@ -38,8 +38,14 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public Optional<UserEntity> save(UserEntity model) {
+  public Optional<UserEntity> create(UserEntity model) {
     this.userRepository.save(model);
+    return this.userRepository.getById(model.getId());
+  }
+
+  @Override
+  public Optional<UserEntity> save(UserEntity model) {
+    this.userRepository.update(model);
     return this.userRepository.getById(model.getId());
   }
 

@@ -1,11 +1,15 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.common.edo.enums.ECompanyType;
 import com.pth.common.edo.validation.AEnumValidator;
+import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class CompanyEdo {
 
   @NotNull(message = "Id must not be null")

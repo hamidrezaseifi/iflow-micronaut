@@ -26,8 +26,14 @@ public class UserGroupService implements IUserGroupService {
     }
 
     @Override
-    public Optional<UserGroupEntity> save(UserGroupEntity model) {
+    public Optional<UserGroupEntity> create(UserGroupEntity model) {
         userGroupRepository.save(model);
+        return userGroupRepository.getById(model.getId());
+    }
+
+    @Override
+    public Optional<UserGroupEntity> save(UserGroupEntity model) {
+        userGroupRepository.update(model);
         return userGroupRepository.getById(model.getId());
     }
 

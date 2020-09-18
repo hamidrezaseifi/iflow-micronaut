@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface IDepartmentService {
 
+  Optional<DepartmentEntity> create(DepartmentEntity model);
+
   Optional<DepartmentEntity> save(DepartmentEntity model);
 
   void delete(DepartmentEntity model);

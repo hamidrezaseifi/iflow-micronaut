@@ -24,8 +24,14 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Optional<CompanyEntity> save(CompanyEntity model) {
+    public Optional<CompanyEntity> create(CompanyEntity model) {
         companyRepository.save(model);
+        return companyRepository.getById(model.getId());
+    }
+
+    @Override
+    public Optional<CompanyEntity> save(CompanyEntity model) {
+        companyRepository.update(model);
         return companyRepository.getById(model.getId());
     }
 
