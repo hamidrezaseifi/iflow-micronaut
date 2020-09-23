@@ -4,7 +4,6 @@ import com.pth.common.edo.enums.EWorkflowType;
 import com.pth.gui.models.Company;
 import com.pth.gui.models.CompanyWorkflowtypeItemOcrSettingPreset;
 import com.pth.gui.models.CompanyWorkflowtypeItemOcrSettingPresetItem;
-import sun.plugin.util.UIUtil;
 
 import java.net.MalformedURLException;
 import java.util.List;
