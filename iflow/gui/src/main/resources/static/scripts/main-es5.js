@@ -4856,7 +4856,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         this.editingUserDepartments = [];
         this.deleteMessageBase = "";
         this.deleteMessage = "";
-        this.delitingUser = new _ui_models__WEBPACK_IMPORTED_MODULE_5__["User"]();
+        this.deletingUser = new _ui_models__WEBPACK_IMPORTED_MODULE_5__["User"]();
         this.showDeleteModal = false;
         this.viewingUser = new _ui_models__WEBPACK_IMPORTED_MODULE_5__["User"]();
         this.showViewModal = false;
@@ -4886,10 +4886,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         translate.get('user-resetpassword-result-message').subscribe(function (res) {
           _this15.resetPasswordResultMessageBase = res;
         });
-        this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
-        this.generalDataObs.subscribe(function (data) {
-          _this15.departments = data.company.departments;
-        });
+
+        if (this.global.loadedGeneralData != null) {
+          alert("Data: " + JSON.stringify(this.global.loadedGeneralData));
+          alert("company: " + JSON.stringify(this.global.loadedGeneralData.company));
+          alert("departments: " + JSON.stringify(this.global.loadedGeneralData.company.departments));
+          this.departments = this.global.loadedGeneralData.company.departments;
+          alert(this.departments);
+        } else {
+          this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+          this.generalDataObs.subscribe(function (data) {
+            _this15.departments = data.company.departments;
+          });
+          this.global.loadAllSetting();
+        }
 
         for (var index in this.userDepartmentAccessType) {
           translate.get(this.userDepartmentAccessType[index]).subscribe(function (res) {
@@ -5001,7 +5011,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       }, {
         key: "showDeleteUser",
         value: function showDeleteUser(user) {
-          this.delitingUser = user;
+          this.deletingUser = user;
           this.deleteMessage = this.deleteMessageBase;
           this.deleteMessage = this.deleteMessage.replace("%", user.fullName);
           this.showDeleteModal = true;
@@ -5092,7 +5102,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
           var _this17 = this;
 
           this.loadingService.showLoading();
-          this.editService.deleteUser(this.delitingUser).subscribe(function (result) {
+          this.editService.deleteUser(this.deletingUser).subscribe(function (result) {
             console.log("Delete user result success.");
             _this17.showDeleteModal = false;
 

@@ -33,10 +33,10 @@ export class UserListComponent implements OnInit {
 	editingUserDepartments: UserDepartment[] = [];
 
 	userEditForm: FormGroup;
-	
+
 	deleteMessageBase :string = "";
 	deleteMessage :string = "";
-	delitingUser :User = new User;
+	deletingUser :User = new User;
 	showDeleteModal :boolean = false;
 
 	viewingUser :User = new User;
@@ -53,14 +53,14 @@ export class UserListComponent implements OnInit {
 
 	generalDataObs :Observable<GeneralData> = null;
 	departments :Department[] = [];
-	
+
 	activeTab :string = "info";
-	
-	userDepartmentAccessType :{} = { 0 : "user-department-access-no", 5 : "user-department-access-member", 
+
+	userDepartmentAccessType :{} = { 0 : "user-department-access-no", 5 : "user-department-access-member",
 			15 : "user-department-access-deputy", 20 : "user-department-access-manager"};
-	
+
 	constructor(
-		    private router: Router,
+		  private router: Router,
 			private global: GlobalService,
 			translate: TranslateService,
 			private editService :UserEditService,
@@ -69,10 +69,10 @@ export class UserListComponent implements OnInit {
 			private route :ActivatedRoute,
 			private formBuilder: FormBuilder,
 			private dateAdapter: DateAdapter<Date>,
-			
+
 	) {
 		this.dateAdapter.setLocale('de');
-		
+
         translate.get('user-delete-message').subscribe((res: string) => {
         	this.deleteMessageBase = res;
         });
@@ -85,36 +85,45 @@ export class UserListComponent implements OnInit {
         	this.resetPasswordResultMessageBase = res;
         });
 
-        this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
-		this.generalDataObs.subscribe(data => {
-			   
-			this.departments = data.company.departments;
-		});
 
-		for(var index in this.userDepartmentAccessType){
-			translate.get(this.userDepartmentAccessType[index]).subscribe((res: string) => {
-				this.userDepartmentAccessType[index] = res;
-	        });
-		}
-		
-		
+        if(this.global.loadedGeneralData != null){
+          this.departments = this.global.loadedGeneralData.company.departments;
+        }
+        else{
+
+          this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+
+          this.generalDataObs.subscribe(data => {
+            this.departments = data.company.departments;
+          });
+
+          this.global.loadAllSetting();
+        }
+
+        for(var index in this.userDepartmentAccessType){
+          translate.get(this.userDepartmentAccessType[index]).subscribe((res: string) => {
+            this.userDepartmentAccessType[index] = res;
+              });
+        }
+
+
 	}
 
 	ngOnInit() {
 		this.userEditForm = this.formBuilder.group({
-			
+
 			email: ['', Validators.email],
 			firstName: ['', Validators.required],
 		    lastName: ['', Validators.required],
 		    birthDate: ['', Validators.required],
 		    status: ['1', Validators.required],
 			userAccess: [UserAccessType.NONE, [UserAccessTypeControllValidator]],
-		
-			
+
+
         });
-		
+
 		this.global.loadAllSetting();
-		
+
 		this.reload();
 	}
 
@@ -127,27 +136,27 @@ export class UserListComponent implements OnInit {
 		}
 		return s;
 	}
-	
+
 	reload() {
 		this.loadingService.showLoading();
-		
+
 		this.editService.listUsers().subscribe(
 	        (results :User[]) => {
-	        	
+
 	            console.log("User list", results);
-	        	
+
 	            this.users = results;
 	        },
 	        response => {
 	        	console.log("Error in get user list", response);
-	        	this.loadingService.hideLoading();	 
+	        	this.loadingService.hideLoading();
 	        	this.errorService.showErrorResponse(response);
 	        },
 	        () => {
-	        	
-	        	this.loadingService.hideLoading();	            
+
+	        	this.loadingService.hideLoading();
 	        }
-		);	       	
+		);
 	}
 
 	showCreateUser() {
@@ -157,11 +166,11 @@ export class UserListComponent implements OnInit {
 		this.editingUserDepartments = [];
 
 		this.setToControlValues();
-		
+
 		this.activeTab = "info";
-		
+
 		this.showEditModal = true;
-		
+
 	}
 
 	showEditUser(user: User) {
@@ -169,19 +178,19 @@ export class UserListComponent implements OnInit {
 		this.isCreating = false;
 		this.editingUser = user;
 		this.editingUserDepartments = this.editingUser.userDepartments;
-		
+
 		this.setToControlValues();
-		
-		
+
+
 		this.activeTab = "info";
 		this.showEditModal = true;
 	}
 
 	showViewUser(user: User) {
 		this.viewingUser = user;
-				
+
 		this.viewingDepartmentMember = [];
-			
+
 		for(var index in this.viewingUser.userDepartments){
 			var userDepartment :UserDepartment = this.viewingUser.userDepartments[index];
 			var dep = this.findDepartment(userDepartment.departmentIdentity);
@@ -200,24 +209,24 @@ export class UserListComponent implements OnInit {
 		}
 		return null;
 	}
-	
+
 	hideViewUserDialog(){
 		this.showViewModal = false;
 	}
-	
+
 	showDeleteUser(user: User) {
-		
-		this.delitingUser = user;
+
+		this.deletingUser = user;
 		this.deleteMessage = this.deleteMessageBase;
 		this.deleteMessage = this.deleteMessage.replace("%" , user.fullName);
 
 		this.showDeleteModal = true;
 	}
-	
+
 	hideDeleteUserDialog(){
 		this.showDeleteModal = false;
 	}
-	
+
 	hideEditUserDialog(){
 		this.showEditModal = false;
 	}
@@ -226,9 +235,9 @@ export class UserListComponent implements OnInit {
 	hideResetPasswordUserDialog(){
 		this.showResetPasswordModal = false;
 	}
-	
+
 	showUserResetPassword(user: User) {
-		
+
 		this.passwordResetingUser = user;
 		this.resetPasswordMessage = this.resetPasswordMessageBase;
 		this.resetPasswordMessage = this.resetPasswordMessage.replace("%" , user.fullName);
@@ -238,28 +247,28 @@ export class UserListComponent implements OnInit {
 	}
 
 	isMemberOfDepartment(identity:string): boolean{
-		
+
 		if(this.editingUser == null){
 			return false;
 		}
-		
-		
+
+
 		for(var index in this.editingUserDepartments){
 			if(this.editingUserDepartments[index].departmentIdentity === identity){
 				return true;
 			}
 		}
-		
-		
+
+
 		return false;
 	}
 
 	toggleMemberOfDepartment(identity:string){
-		
+
 		if(this.editingUser == null){
 			return;
 		}
-		
+
 		if(this.isMemberOfDepartment(identity)){
 			this.editingUserDepartments = this.editingUserDepartments.filter(function(userDep){
 				return userDep.departmentIdentity != identity;
@@ -271,11 +280,11 @@ export class UserListComponent implements OnInit {
 			userDep.memberType = 5;
 			this.editingUserDepartments.push(userDep);
 		}
-		
+
 	}
-	
+
 	meberTypeOfDepartment(identity:string):string{
-		
+
 		for(var index in this.editingUserDepartments){
 			if(this.editingUserDepartments[index].departmentIdentity === identity){
 				console.log("meberTypeOfDepartment: " + identity + " , " + this.editingUserDepartments[index].memberType);
@@ -286,7 +295,7 @@ export class UserListComponent implements OnInit {
 		console.log("meberTypeOfDepartment: " + identity + " , 0");
 		return "0";
 	}
-	
+
 	onMeberTypeOfDepartmentChange(event, identity:string, value:number){
 
 		for(var index in this.editingUserDepartments){
@@ -295,113 +304,113 @@ export class UserListComponent implements OnInit {
 				return;
 			}
 		}
-		
+
 	}
-		
+
 	deleteUser(){
-		
+
 		this.loadingService.showLoading();
 
-		this.editService.deleteUser(this.delitingUser).subscribe(
-		        (result) => {		        	
+		this.editService.deleteUser(this.deletingUser).subscribe(
+		        (result) => {
 		            console.log("Delete user result success.");
 		            this.showDeleteModal = false;
 		            this.reload();
-		            
+
 		        },
 		        response => {
 		        	console.log("Error in create user", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		);	     
-		
+		);
+
 
 	}
-	
+
 	resetUserPassword(){
-		
-		this.loadingService.showLoading();	
+
+		this.loadingService.showLoading();
 
 		this.editService.resetUserPassword(this.passwordResetingUser).subscribe(
-		        (resultUser: User) => {		        	
+		        (resultUser: User) => {
 		            console.log("Reset user password result success.", resultUser);
 		            //this.showDeleteModal = false;
 		            //this.reload();
-		            
+
 		    		this.resetPasswordResultMessage = this.resetPasswordResultMessageBase;
 		    		this.resetPasswordResultMessage = this.resetPasswordResultMessage.replace("%" , resultUser.password);
 
-		            
+
 		        },
 		        response => {
 		        	console.log("Error reset user password", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		);	  
+		);
 	}
-	
+
 	saveUser() {
 		this.setFormControlValues();
-				
+
 		this.loadingService.showLoading();
-		
+
 		if(this.isCreating){
 			this.editService.createUser(this.editingUser).subscribe(
-			        (result) => {		        	
+			        (result) => {
 			            console.log("Create user result", result);
 			            this.showEditModal = false;
 			            this.reload();
-			            
+
 			        },
 			        response => {
 			        	console.log("Error in create user", response);
-			        	
+
 			        	this.errorService.showErrorResponse(response);
-			        	this.loadingService.hideLoading();	 
+			        	this.loadingService.hideLoading();
 			        },
 			        () => {
-			        	
-			        	this.loadingService.hideLoading();	 
+
+			        	this.loadingService.hideLoading();
 			        }
-			);	     
+			);
 		}
 		else{
 			this.editService.updateUser(this.editingUser).subscribe(
-			        (result) => {		        	
+			        (result) => {
 			            console.log("Update user result", result);
 			            this.showEditModal = false;
 			            this.reload();
-			            
+
 			        },
 			        response => {
 			        	console.log("Error in update user", response);
-			        	
+
 			        	this.errorService.showErrorResponse(response);
-			        	this.loadingService.hideLoading();	 
+			        	this.loadingService.hideLoading();
 			        },
 			        () => {
-			        	
-			        	this.loadingService.hideLoading();	 
+
+			        	this.loadingService.hideLoading();
 			        }
-			);	     
-			
+			);
+
 		}
-		
-		
-		
-		
+
+
+
+
 	}
 
 
@@ -411,24 +420,24 @@ export class UserListComponent implements OnInit {
 			this.userEditForm.controls["firstName"].setValue(this.editingUser.firstName);
 			this.userEditForm.controls["lastName"].setValue(this.editingUser.lastName);
 			this.userEditForm.controls["userAccess"].setValue(this.editingUser.userAccess);
-			this.userEditForm.controls["status"].setValue(this.editingUser.status + '');			
+			this.userEditForm.controls["status"].setValue(this.editingUser.status + '');
 			this.userEditForm.controls["birthDate"].setValue(parseDate(this.editingUser.birthDate, 'dd.mm.yyyy'));
 
 		}
 	}
-	
+
 	setFormControlValues(){
-				
+
 		this.editingUser.email = this.userEditForm.controls["email"].value;
 		this.editingUser.firstName = this.userEditForm.controls["firstName"].value;
 		this.editingUser.lastName = this.userEditForm.controls["lastName"].value;
 		this.editingUser.userAccess = this.userEditForm.controls["userAccess"].value;
-		this.editingUser.status = this.userEditForm.controls["status"].value;			
+		this.editingUser.status = this.userEditForm.controls["status"].value;
 		this.editingUser.birthDate = formatDate(this.userEditForm.controls["birthDate"].value, 'dd.mm.yyyy');
-		
+
 		this.editingUser.userDepartments = this.editingUserDepartments;
 
 	}
-	
-	
+
+
 }

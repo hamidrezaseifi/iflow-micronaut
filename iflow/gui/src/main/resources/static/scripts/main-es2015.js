@@ -2407,7 +2407,7 @@ class UserListComponent {
         this.editingUserDepartments = [];
         this.deleteMessageBase = "";
         this.deleteMessage = "";
-        this.delitingUser = new _ui_models__WEBPACK_IMPORTED_MODULE_5__["User"];
+        this.deletingUser = new _ui_models__WEBPACK_IMPORTED_MODULE_5__["User"];
         this.showDeleteModal = false;
         this.viewingUser = new _ui_models__WEBPACK_IMPORTED_MODULE_5__["User"];
         this.showViewModal = false;
@@ -2433,10 +2433,20 @@ class UserListComponent {
         translate.get('user-resetpassword-result-message').subscribe((res) => {
             this.resetPasswordResultMessageBase = res;
         });
-        this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
-        this.generalDataObs.subscribe(data => {
-            this.departments = data.company.departments;
-        });
+        if (this.global.loadedGeneralData != null) {
+            alert("Data: " + JSON.stringify(this.global.loadedGeneralData));
+            alert("company: " + JSON.stringify(this.global.loadedGeneralData.company));
+            alert("departments: " + JSON.stringify(this.global.loadedGeneralData.company.departments));
+            this.departments = this.global.loadedGeneralData.company.departments;
+            alert(this.departments);
+        }
+        else {
+            this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+            this.generalDataObs.subscribe(data => {
+                this.departments = data.company.departments;
+            });
+            this.global.loadAllSetting();
+        }
         for (var index in this.userDepartmentAccessType) {
             translate.get(this.userDepartmentAccessType[index]).subscribe((res) => {
                 this.userDepartmentAccessType[index] = res;
@@ -2516,7 +2526,7 @@ class UserListComponent {
         this.showViewModal = false;
     }
     showDeleteUser(user) {
-        this.delitingUser = user;
+        this.deletingUser = user;
         this.deleteMessage = this.deleteMessageBase;
         this.deleteMessage = this.deleteMessage.replace("%", user.fullName);
         this.showDeleteModal = true;
@@ -2584,7 +2594,7 @@ class UserListComponent {
     }
     deleteUser() {
         this.loadingService.showLoading();
-        this.editService.deleteUser(this.delitingUser).subscribe((result) => {
+        this.editService.deleteUser(this.deletingUser).subscribe((result) => {
             console.log("Delete user result success.");
             this.showDeleteModal = false;
             this.reload();

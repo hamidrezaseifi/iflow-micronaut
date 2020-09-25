@@ -42,14 +42,14 @@ INSERT INTO departments(id, identity, company_id, title) VALUES
 
 INSERT INTO public.user_departments (user_id, department_id, member_type)
 VALUES
-('d94c7d98-0240-4633-b300-0777d5b30c12', '12ae03f5-81b8-44bc-ac85-4b985d0af7d1', 20),
-('d94c7d98-0240-4633-b300-0777d5b30c12', '12ae03f5-81b8-44bc-ac85-4b985d0af7d2', 20),
-('d94c7d98-0240-4633-b300-0777d5b30c12', '12ae03f5-81b8-44bc-ac85-4b985d0af7d3', 15),
+('12ae03f5-81b8-44bc-ac85-4b985d0af79f', '12ae03f5-81b8-44bc-ac85-4b985d0af7d1', 20),
+('12ae03f5-81b8-44bc-ac85-4b985d0af79f', '12ae03f5-81b8-44bc-ac85-4b985d0af7d2', 20),
+('12ae03f5-81b8-44bc-ac85-4b985d0af79f', '12ae03f5-81b8-44bc-ac85-4b985d0af7d3', 15),
 ('2cde5028-f047-4dbb-a593-157e0b89dc6d', '12ae03f5-81b8-44bc-ac85-4b985d0af7d1', 5),
 ('2cde5028-f047-4dbb-a593-157e0b89dc6d', '12ae03f5-81b8-44bc-ac85-4b985d0af7d2', 5),
 ('2cde5028-f047-4dbb-a593-157e0b89dc6d', '12ae03f5-81b8-44bc-ac85-4b985d0af7d3', 5);
 
-INSERT INTO user_deputy(user_id, deputy_id) VALUES ('d94c7d98-0240-4633-b300-0777d5b30c12','2cde5028-f047-4dbb-a593-157e0b89dc6d');
+INSERT INTO user_deputy(user_id, deputy_id) VALUES ('12ae03f5-81b8-44bc-ac85-4b985d0af79f','2cde5028-f047-4dbb-a593-157e0b89dc6d');
 
 INSERT INTO user_group(id, identity, title, company_id)
 VALUES
@@ -59,9 +59,9 @@ VALUES
 
 INSERT INTO user_usergroup
 VALUES
-('d94c7d98-0240-4633-b300-0777d5b30c12','12ae03f5-81b8-44bc-ac85-4b985d0af7c1'),
-('d94c7d98-0240-4633-b300-0777d5b30c12','12ae03f5-81b8-44bc-ac85-4b985d0af7c2'),
-('d94c7d98-0240-4633-b300-0777d5b30c12','12ae03f5-81b8-44bc-ac85-4b985d0af7c3');
+('12ae03f5-81b8-44bc-ac85-4b985d0af79f','12ae03f5-81b8-44bc-ac85-4b985d0af7c1'),
+('12ae03f5-81b8-44bc-ac85-4b985d0af79f','12ae03f5-81b8-44bc-ac85-4b985d0af7c2'),
+('12ae03f5-81b8-44bc-ac85-4b985d0af79f','12ae03f5-81b8-44bc-ac85-4b985d0af7c3');
 
 INSERT INTO iflow_roles (id, title) VALUES ('22ae03f5-81b8-44bc-ac85-4b985d0af711', 'Role 1');
 INSERT INTO iflow_roles (id, title) VALUES ('22ae03f5-81b8-44bc-ac85-4b985d0af712', 'Role 2');
