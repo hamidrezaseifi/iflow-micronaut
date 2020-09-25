@@ -51,8 +51,16 @@ public class UsersService implements IUsersService {
 
   @Override
   public Optional<UserEntity> save(UserEntity model) {
-    this.userRepository.update(model);
-    return this.userRepository.getById(model.getId());
+    Optional<UserEntity> foundUserOptional = getUserById(model.getId());
+
+    if(foundUserOptional.isPresent()){
+      model.setPasswordHash(foundUserOptional.get().getPasswordHash());
+      model.setPasswordSalt(foundUserOptional.get().getPasswordSalt());
+      this.userRepository.update(model);
+      return this.userRepository.getById(model.getId());
+    }
+
+    return Optional.empty();
   }
 
   @Override

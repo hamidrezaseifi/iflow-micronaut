@@ -259,6 +259,11 @@ public class UserEntity extends BaseEntity {
         userDepartments.add(userDepartmentEntity);
     }
 
+    public void addUserDepartment(UserDepartmentEntity userDepartmentEntity) {
+        userDepartmentEntity.setUser(this);
+        userDepartments.add(userDepartmentEntity);
+    }
+
     public void setUserDepartments(Set<UserDepartmentEntity> userDepartments) {
         this.userDepartments = userDepartments;
     }

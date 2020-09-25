@@ -16104,6 +16104,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
       this.userDepartments = [];
       this.groups = [];
       this.deputies = [];
+      this.roles = [];
     };
     /***/
 

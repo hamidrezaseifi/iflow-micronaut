@@ -35,4 +35,15 @@ public enum EUserAcces {
 
     return null;
   }
+
+  public static EUserAcces fromPermissionString(final String permission) {
+
+    for (final EUserAcces item : values()) {
+      if (item.toString().equalsIgnoreCase(permission)) {
+        return item;
+      }
+    }
+
+    return null;
+  }
 }

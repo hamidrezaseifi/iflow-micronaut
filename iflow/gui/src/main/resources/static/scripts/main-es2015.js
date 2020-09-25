@@ -8071,6 +8071,7 @@ class User {
         this.userDepartments = [];
         this.groups = [];
         this.deputies = [];
+        this.roles = [];
     }
 }
 

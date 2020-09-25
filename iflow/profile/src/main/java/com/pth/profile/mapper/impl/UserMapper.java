@@ -18,14 +18,28 @@ public class UserMapper extends ModelEdoMapperBase<UserEntity, UserEdo>
         implements IUserMapper {
     @Override
     public UserEntity fromEdo(UserEdo edo) {
-        UserEntity model = MappingUtils.copyProperties(edo, new UserEntity());
 
-        return model;
+        return fromEdoPrivate(edo, true);
+
     }
 
     @Override
     public UserEdo toEdo(UserEntity model) {
-        UserEdo edo = MappingUtils.copyProperties(model, new UserEdo());
+        UserEdo edo = new UserEdo();
+
+        edo.setFirstName(model.getFirstName());
+        edo.setLastName(model.getLastName());
+        edo.setPermission(model.getPermission());
+        edo.setStatus(model.getStatus());
+        edo.setVersion(model.getVersion());
+        edo.setEmail(model.getEmail());
+        edo.setBirthDate(model.getBirthDate());
+        edo.setCompanyId(model.getCompanyId());
+        edo.setRoles(model.getRoles());
+        edo.setIdentity(model.getIdentity());
+        edo.setRoles(model.getRoles());
+        edo.setId(model.getId());
+        edo.setUsername(model.getUsername());
 
         for(UserDepartmentEntity ud: model.getUserDepartments()){
             UserDepartmentEdo udEdo = MappingUtils.copyProperties(ud, new UserDepartmentEdo());
@@ -43,6 +57,47 @@ public class UserMapper extends ModelEdoMapperBase<UserEntity, UserEdo>
             edo.addGroup(udEdo);
         }
         return edo;
+    }
+
+    private UserEntity fromEdoPrivate(UserEdo edo, boolean mapDetails) {
+        final UserEntity model = new UserEntity();
+
+        model.setFirstName(edo.getFirstName());
+        model.setLastName(edo.getLastName());
+        model.setPermission(edo.getPermission());
+        model.setStatus(edo.getStatus());
+        model.setVersion(edo.getVersion());
+        model.setEmail(edo.getEmail());
+        model.setBirthDate(edo.getBirthDate());
+        model.setCompanyId(edo.getCompanyId());
+        model.setRoles(edo.getRoles());
+        model.setIdentity(edo.getIdentity());
+        model.setRoles(edo.getRoles());
+        model.setId(edo.getId());
+        model.setUsername(edo.getUsername());
+
+        if(mapDetails){
+            for(UserDepartmentEdo udEdo: edo.getUserDepartments()){
+                //UserDepartment udE = MappingUtils.copyProperties(udEdo, new UserDepartment());
+                UserDepartmentEntity udE = new UserDepartmentEntity();
+                udE.setMemberType(udEdo.getMemberType());
+                udE.setDepartmentId(udEdo.getDepartmentId());
+                model.addUserDepartment(udE);
+            }
+
+            for(UserEdo udEdo: edo.getDeputies()){
+                UserEntity udE = fromEdoPrivate(udEdo, false);
+                model.addDeputy(udE);
+            }
+
+
+            for(UserGroupEdo udEdo: edo.getGroups()){
+                UserGroupEntity udE = MappingUtils.copyProperties(udEdo, new UserGroupEntity());
+                model.addUserGroup(udE);
+            }
+        }
+
+        return model;
     }
 
 }

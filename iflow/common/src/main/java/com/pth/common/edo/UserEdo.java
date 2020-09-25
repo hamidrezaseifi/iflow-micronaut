@@ -35,6 +35,9 @@ public class UserEdo {
   @NotNull(message = "Identity must not be null")
   private String identity;
 
+  @NotNull(message = "Username must not be null")
+  private String username;
+
   @NotNull(message = "Email must not be null")
   private String email;
 
@@ -91,6 +94,14 @@ public class UserEdo {
   public void setIdentity(final String identity) {
 
     this.identity = identity;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getEmail() {
@@ -226,7 +237,7 @@ public class UserEdo {
   }
 
   @JsonSetter
-  public void setRoles(final Set<String> roles) {
+  public void setRoles(final Collection<String> roles) {
 
     this.roles.clear();
     if (roles != null) {

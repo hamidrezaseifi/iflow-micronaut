@@ -19,6 +19,7 @@ public class User extends GuiBaseModel {
 
   private String identity;
   private UUID companyId;
+  private String username;
   private String email;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
@@ -56,7 +57,11 @@ public class User extends GuiBaseModel {
 
   public String getUsername() {
 
-    return this.email;
+    return this.username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getEmail() {
@@ -193,6 +198,19 @@ public class User extends GuiBaseModel {
 
   public void setPermission(EUserAcces permission) {
     this.permission = permission;
+  }
+
+  @JsonSetter
+  public void setPermission(String permission) {
+    this.permission = EUserAcces.fromPermissionString(permission);
+  }
+
+  public void setUserAccess(String permission){
+    this.permission = EUserAcces.fromPermissionString(permission);
+  }
+
+  public String getUserAccess(){
+    return this.permission.toString();
   }
 
   public void setPermission(Integer permission) {

@@ -24,7 +24,21 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
 
     @Override
     public UserEdo toEdo(User model) {
-        UserEdo edo = MappingUtils.copyProperties(model, new UserEdo());
+        UserEdo edo = new UserEdo();
+
+        edo.setFirstName(model.getFirstName());
+        edo.setLastName(model.getLastName());
+        edo.setPermission(model.getPermission().getPermission());
+        edo.setStatus(model.getStatus());
+        edo.setVersion(model.getVersion());
+        edo.setEmail(model.getEmail());
+        edo.setBirthDate(model.getBirthDate());
+        edo.setCompanyId(model.getCompanyId());
+        edo.setRoles(model.getRoles());
+        edo.setIdentity(model.getIdentity());
+        edo.setRoles(model.getRoles());
+        edo.setId(model.getId());
+        edo.setUsername(model.getUsername());
 
         for(UserDepartment ud: model.getUserDepartments()){
             UserDepartmentEdo udEdo = MappingUtils.copyProperties(ud, new UserDepartmentEdo());
@@ -57,6 +71,9 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
         model.setCompanyId(edo.getCompanyId());
         model.setRoles(edo.getRoles());
         model.setIdentity(edo.getIdentity());
+        model.setRoles(edo.getRoles());
+        model.setId(edo.getId());
+        model.setUsername(edo.getUsername());
 
         if(mapDetails){
             for(UserDepartmentEdo udEdo: edo.getUserDepartments()){
