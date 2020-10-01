@@ -85,7 +85,7 @@ public class CompanyController {
 
     final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> edoList = this.presetModelEdoMapper.toEdoList(modelList);
 
-    return HttpResponse.ok( new CompanyWorkflowtypeItemOcrSettingPresetListEdo(edoList));
+    return HttpResponse.ok(new CompanyWorkflowtypeItemOcrSettingPresetListEdo(edoList));
   }
 
   @Produces(MediaType.APPLICATION_JSON)
