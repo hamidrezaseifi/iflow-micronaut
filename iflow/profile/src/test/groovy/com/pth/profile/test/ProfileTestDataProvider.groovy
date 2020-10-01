@@ -1,5 +1,6 @@
 package com.pth.profile.test
 
+import com.pth.common.edo.CompanyEdo
 import com.pth.common.edo.enums.ECompanyType
 import com.pth.profile.entities.CompanyEntity
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
@@ -46,7 +47,7 @@ class ProfileTestDataProvider extends Specification {
         return generatedString
     }
 
-    protected CompanyEntity createTestCompany(ICompanyRepository companyRepository) {
+    protected CompanyEntity createTestCompanyEntity(ICompanyRepository companyRepository) {
 
         def companyEntityOptional = companyRepository.getById(testCompanyId)
         if(companyEntityOptional.isPresent()){
@@ -65,7 +66,7 @@ class ProfileTestDataProvider extends Specification {
         return testCompany
     }
 
-    protected CompanyEntity createTestCompany(int identifier) {
+    protected CompanyEntity createTestCompanyEntity(int identifier) {
 
 
         def company = new CompanyEntity()
@@ -75,6 +76,22 @@ class ProfileTestDataProvider extends Specification {
         company.companyTypeCustome = "Test-Company" + identifier
         company.status = 1
         company.id = testCompanyId
+        company.version = 1
+
+        return company
+    }
+
+    protected CompanyEdo createTestCompanyEdo(int identifier) {
+
+
+        def company = new CompanyEdo()
+        company.companyName = "Test-Company" + identifier
+        company.identity = "Test-Company" + identifier
+        company.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
+        company.companyTypeCustome = "Test-Company" + identifier
+        company.status = 1
+        company.id = testCompanyId
+        company.version = 1
 
         return company
     }

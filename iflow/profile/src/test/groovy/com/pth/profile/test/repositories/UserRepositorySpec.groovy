@@ -29,7 +29,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
         departmentRepository = embeddedServer.applicationContext.createBean(DepartmentRepository)
 
         if(testCompany == null){
-            createTestCompany(companyRepository)
+            createTestCompanyEntity(companyRepository)
         }
 
         if(testDepartment1 == null){
