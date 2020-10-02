@@ -1,9 +1,14 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.micronaut.core.annotation.Introspected;
+
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class UserPasswordResetRequestEdo {
 
     @NotNull(message = "UserId must not be null")

@@ -62,11 +62,15 @@ public class CompanyController {
   public HttpResponse<CompanyEdo> saveCompany(@Body @Valid final CompanyEdo requestCompany)
       throws Exception {
 
-    final Optional<CompanyEntity> savedCompanyEntityOptional = this.companyService.save(companyModelEdoMapper.fromEdo(requestCompany));
+    CompanyEntity companyEntity = companyModelEdoMapper.fromEdo(requestCompany);
+
+    final Optional<CompanyEntity> savedCompanyEntityOptional =
+            this.companyService.save(companyEntity);
 
     if(savedCompanyEntityOptional.isPresent()){
 
-      CompanyEdo companyEdo = this.companyModelEdoMapper.toEdo(savedCompanyEntityOptional.get());
+      CompanyEdo companyEdo =
+              this.companyModelEdoMapper.toEdo(savedCompanyEntityOptional.get());
 
       return HttpResponse.created(companyEdo);
     }
@@ -97,8 +101,8 @@ public class CompanyController {
 
     final CompanyWorkflowTypeOcrSettingPresetEntity modelInput = this.presetModelEdoMapper.fromEdo(presetEdo);
 
-    final Optional<CompanyWorkflowTypeOcrSettingPresetEntity> modelSavedOptional = this.companyService
-        .saveCompanyWorkflowtypeItemOcrSetting(modelInput);
+    final Optional<CompanyWorkflowTypeOcrSettingPresetEntity> modelSavedOptional =
+            this.companyService.saveCompanyWorkflowtypeItemOcrSetting(modelInput);
 
     if(modelSavedOptional.isPresent()){
 
@@ -114,7 +118,7 @@ public class CompanyController {
   @Produces(MediaType.APPLICATION_JSON)
   @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = "/deletewtoctsettings")
-  public void
+  public HttpResponse<?>
     deleteCompanyWorkflowtypeItemOcrSettings(@Body @Valid final CompanyWorkflowtypeItemOcrSettingPresetEdo presetEdo)
           throws Exception {
 
@@ -122,6 +126,7 @@ public class CompanyController {
 
     this.companyService.deleteCompanyWorkflowtypeItemOcrSetting(modelInput);
 
+    return HttpResponse.accepted();
   }
 
 }

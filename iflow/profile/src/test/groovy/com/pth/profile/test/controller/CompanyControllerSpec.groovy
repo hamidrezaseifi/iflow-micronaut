@@ -79,7 +79,7 @@ class CompanyControllerSpec extends ProfileTestDataProvider {
     }
 
 
-    void "verify readCompany is ok and resturn correct company"() {
+    void "verify readCompany is ok and return correct company"() {
 
         given:
             def companyEntity = createTestCompanyEntity(1)
@@ -245,6 +245,38 @@ class CompanyControllerSpec extends ProfileTestDataProvider {
 
     }
 
+
+    void "verify saveCompanyWorkflowtypeItemOcrSettings ok and return savedEdo"() {
+
+        given:
+            def preset =  createTestCompanyWorkflowtypeItemOcrSettingPresetEdo(1)
+            def modelInput = createTestCompanyWorkflowTypeOcrSettingPresetEntity(1)
+
+        when:
+
+        def documentUploadRequest = HttpRequest.
+                POST(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/savewtoctsettings",
+                        preset)
+                .bearerAuth(authenticationToken)
+
+        def documentMetaDataResponse = lowLevelClient.toBlocking()
+                .exchange(documentUploadRequest, CompanyEdo)
+
+        then:
+
+        noExceptionThrown()
+        documentMetaDataResponse != null
+        documentMetaDataResponse.status == HttpStatus.CREATED
+        documentMetaDataResponse.body() != null
+
+        def modelEdoSaved = documentMetaDataResponse.body()
+        //verifyCompanyEdoAndEntity(modelEdoSaved, modelInput)
+
+        and:
+        1 * companyService.saveCompanyWorkflowtypeItemOcrSetting(_) >> Optional.of(modelInput )
+
+    }
+
     void "verify deleteCompanyWorkflowtypeItemOcrSettings fails and is unauthenticated"() {
 
         given:
@@ -268,6 +300,31 @@ class CompanyControllerSpec extends ProfileTestDataProvider {
 
     }
 
+    void "verify deleteCompanyWorkflowtypeItemOcrSettings ok"() {
+
+        given:
+        def preset =  createTestCompanyWorkflowtypeItemOcrSettingPresetEdo(1)
+        def modelInput = createTestCompanyWorkflowTypeOcrSettingPresetEntity(1)
+
+        when:
+
+        def documentUploadRequest = HttpRequest.
+                POST(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_COMPANY + "/deletewtoctsettings", preset)
+                .bearerAuth(authenticationToken)
+
+        def documentMetaDataResponse = lowLevelClient.toBlocking()
+                .exchange(documentUploadRequest, CompanyEdo)
+
+        then:
+
+        noExceptionThrown()
+        documentMetaDataResponse != null
+        documentMetaDataResponse.status == HttpStatus.ACCEPTED
+
+        and:
+        1 * companyService.deleteCompanyWorkflowtypeItemOcrSetting(_)
+
+    }
 
 
     private void verifyCompany(CompanyEntity testCompanyEntity,

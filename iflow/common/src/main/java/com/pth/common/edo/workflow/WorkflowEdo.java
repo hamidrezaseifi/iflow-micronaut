@@ -8,10 +8,14 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.pth.common.edo.WorkflowActionEdo;
 import com.pth.common.edo.WorkflowFileEdo;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class WorkflowEdo {
 
   @NotNull(message = "Id is not allowed to be null!")

@@ -5,12 +5,16 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.common.edo.contants.IsoFormats;
 import com.pth.common.edo.enums.EInvoiceType;
 import com.pth.common.edo.enums.EWorkflowType;
 import com.pth.common.edo.validation.AEnumValueValidator;
 import com.pth.common.edo.workflow.WorkflowEdo;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class InvoiceWorkflowEdo {
 
   @NotNull(message = "Workflow is not allowed to be null!")

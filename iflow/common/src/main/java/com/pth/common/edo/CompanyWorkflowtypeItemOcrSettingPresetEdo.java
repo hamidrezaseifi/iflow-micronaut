@@ -6,9 +6,12 @@ import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import io.micronaut.core.annotation.Introspected;
 
-
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class CompanyWorkflowtypeItemOcrSettingPresetEdo {
 
 

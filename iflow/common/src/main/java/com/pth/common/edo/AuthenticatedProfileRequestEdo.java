@@ -1,10 +1,14 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.common.edo.validation.AEnumNameValidator;
+import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotNull;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class AuthenticatedProfileRequestEdo {
 
   @NotNull

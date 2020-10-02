@@ -3,11 +3,16 @@ package com.pth.common.edo.workflow.singletask;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.pth.common.edo.AssignItemEdo;
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.validation.AEnumNameValidator;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class SingleTaskWorkflowSaveRequestEdo {
 
   @NotNull(message = "Command is not allowed to be null!")
