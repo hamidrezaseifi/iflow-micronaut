@@ -1,10 +1,14 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.common.edo.enums.EWorkflowActionStatus;
+import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class WorkflowActionEdo {
 
 

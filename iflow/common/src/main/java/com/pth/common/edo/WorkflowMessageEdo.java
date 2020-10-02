@@ -6,11 +6,15 @@ import java.util.UUID;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.common.edo.contants.IsoFormats;
 import com.pth.common.edo.enums.EWorkflowMessageStatus;
 import com.pth.common.edo.enums.EWorkflowMessageType;
 import com.pth.common.edo.validation.AEnumValueValidator;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class WorkflowMessageEdo {
 
 

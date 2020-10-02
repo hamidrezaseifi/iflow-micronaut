@@ -1,10 +1,15 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.micronaut.core.annotation.Introspected;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class UserAuthenticationResponseEdo {
 
   @NotNull

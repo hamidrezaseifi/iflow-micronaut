@@ -27,7 +27,7 @@ class CompanyWorkflowTypeOcrSettingPresetRepositorySpec extends ProfileTestDataP
         presetRepository = embeddedServer.applicationContext.createBean(CompanyWorkflowTypeOcrSettingPresetRepository)
 
         if(testCompany == null){
-            createTestCompany(companyRepository)
+            createTestCompanyEntity(companyRepository)
         }
 
 

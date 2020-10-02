@@ -1,12 +1,16 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pth.common.edo.enums.EAssignType;
 import com.pth.common.edo.validation.AEnumNameValidator;
+import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class AssignItemEdo {
 
   @NotNull(message = "ItemId must not be null")

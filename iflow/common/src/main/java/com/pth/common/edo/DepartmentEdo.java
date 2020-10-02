@@ -1,9 +1,14 @@
 package com.pth.common.edo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.micronaut.core.annotation.Introspected;
+
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class DepartmentEdo {
 
   @NotNull(message = "id must not be null")

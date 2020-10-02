@@ -245,7 +245,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
     void "verify by calling getCompanyUsers "() {
 
         given:
-            def companyEntity = createTestCompany(1)
+            def companyEntity = createTestCompanyEntity(1)
 
         when:
             def userList = userService.getCompanyUsers(UUID.randomUUID())

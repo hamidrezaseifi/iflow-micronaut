@@ -9,11 +9,16 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.pth.common.edo.AssignItemEdo;
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.validation.AEnumNameValidator;
+import io.micronaut.core.annotation.Introspected;
 
+@Introspected
+@JsonInclude(JsonInclude.Include.ALWAYS)
 public class TestThreeTaskWorkflowSaveRequestEdo {
 
   @NotNull(message = "Command is not allowed to be null!")

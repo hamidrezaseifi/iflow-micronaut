@@ -1,5 +1,7 @@
 package com.pth.profile.test
 
+import com.pth.common.edo.CompanyEdo
+import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo
 import com.pth.common.edo.enums.ECompanyType
 import com.pth.profile.entities.CompanyEntity
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
@@ -46,7 +48,7 @@ class ProfileTestDataProvider extends Specification {
         return generatedString
     }
 
-    protected CompanyEntity createTestCompany(ICompanyRepository companyRepository) {
+    protected CompanyEntity createTestCompanyEntity(ICompanyRepository companyRepository) {
 
         def companyEntityOptional = companyRepository.getById(testCompanyId)
         if(companyEntityOptional.isPresent()){
@@ -65,7 +67,7 @@ class ProfileTestDataProvider extends Specification {
         return testCompany
     }
 
-    protected CompanyEntity createTestCompany(int identifier) {
+    protected CompanyEntity createTestCompanyEntity(int identifier) {
 
 
         def company = new CompanyEntity()
@@ -75,6 +77,22 @@ class ProfileTestDataProvider extends Specification {
         company.companyTypeCustome = "Test-Company" + identifier
         company.status = 1
         company.id = testCompanyId
+        company.version = 1
+
+        return company
+    }
+
+    protected CompanyEdo createTestCompanyEdo(int identifier) {
+
+
+        def company = new CompanyEdo()
+        company.companyName = "Test-Company" + identifier
+        company.identity = "Test-Company" + identifier
+        company.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
+        company.companyTypeCustome = "Test-Company" + identifier
+        company.status = 1
+        company.id = testCompanyId
+        company.version = 1
 
         return company
     }
@@ -199,6 +217,31 @@ class ProfileTestDataProvider extends Specification {
         setting.companyId = testCompanyId
         setting.workflowTypeId = UUID.randomUUID()
         setting.presetName = "test-name" + identifier
+        return setting
+    }
+
+    protected CompanyWorkflowTypeOcrSettingPresetEntity createTestCompanyWorkflowTypeOcrSettingPresetEdo(int identifier){
+        def setting = new CompanyWorkflowTypeOcrSettingPresetEntity()
+        setting.identity = "test-identity" + identifier
+        setting.companyId = testCompanyId
+        setting.workflowTypeId = UUID.randomUUID()
+        setting.presetName = "test-name" + identifier
+        setting.status = 1
+        setting.version = 1
+
+        return setting
+    }
+
+    protected CompanyWorkflowtypeItemOcrSettingPresetEdo createTestCompanyWorkflowtypeItemOcrSettingPresetEdo(int identifier){
+        def setting = new CompanyWorkflowtypeItemOcrSettingPresetEdo()
+        setting.id = UUID.randomUUID()
+        setting.identity = "test-identity" + identifier
+        setting.companyId = testCompanyId
+        setting.workflowTypeId = UUID.randomUUID()
+        setting.presetName = "test-name" + identifier
+        setting.status = 1
+        setting.version = 1
+
         return setting
     }
 

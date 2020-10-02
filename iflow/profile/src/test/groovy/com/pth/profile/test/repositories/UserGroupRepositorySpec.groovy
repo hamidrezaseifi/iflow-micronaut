@@ -27,7 +27,7 @@ class UserGroupRepositorySpec extends ProfileTestDataProvider {
         userGroupRepository = embeddedServer.applicationContext.createBean(UserGroupRepository)
 
         if(testCompany == null){
-            createTestCompany(companyRepository)
+            createTestCompanyEntity(companyRepository)
         }
 
 

@@ -1,7 +1,6 @@
 package com.pth.profile.test.repositories
 
 import com.pth.profile.entities.DepartmentEntity
-import com.pth.profile.entities.UserEntity
 import com.pth.profile.repositories.ICompanyRepository
 import com.pth.profile.repositories.IDepartmentRepository
 import com.pth.profile.repositories.impl.CompanyRepository
@@ -27,7 +26,7 @@ class DepartmentRepositorySpec extends ProfileTestDataProvider {
         departmentRepository = embeddedServer.applicationContext.createBean(DepartmentRepository)
 
         if(testCompany == null){
-            createTestCompany(companyRepository)
+            createTestCompanyEntity(companyRepository)
         }
 
 

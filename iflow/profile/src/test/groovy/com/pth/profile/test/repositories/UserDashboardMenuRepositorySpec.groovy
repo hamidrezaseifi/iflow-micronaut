@@ -31,7 +31,7 @@ class UserDashboardMenuRepositorySpec extends ProfileTestDataProvider {
         userRepository = embeddedServer.applicationContext.createBean(UserRepository)
 
         if(testCompany == null){
-            createTestCompany(companyRepository)
+            createTestCompanyEntity(companyRepository)
         }
         if(testUser1 == null){
             createTestUser(userRepository)
