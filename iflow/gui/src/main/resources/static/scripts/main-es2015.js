@@ -2434,11 +2434,7 @@ class UserListComponent {
             this.resetPasswordResultMessageBase = res;
         });
         if (this.global.loadedGeneralData != null) {
-            alert("Data: " + JSON.stringify(this.global.loadedGeneralData));
-            alert("company: " + JSON.stringify(this.global.loadedGeneralData.company));
-            alert("departments: " + JSON.stringify(this.global.loadedGeneralData.company.departments));
             this.departments = this.global.loadedGeneralData.company.departments;
-            alert(this.departments);
         }
         else {
             this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
@@ -6759,7 +6755,7 @@ GlobalService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInj
 /*!***********************************!*\
   !*** ./src/app/services/index.ts ***!
   \***********************************/
-/*! exports provided: AuthenticationService, GlobalService, GlobalSocket, UserService */
+/*! exports provided: AuthenticationService, GlobalService, UserService, GlobalSocket */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

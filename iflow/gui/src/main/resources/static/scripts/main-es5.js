@@ -4888,11 +4888,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
         });
 
         if (this.global.loadedGeneralData != null) {
-          alert("Data: " + JSON.stringify(this.global.loadedGeneralData));
-          alert("company: " + JSON.stringify(this.global.loadedGeneralData.company));
-          alert("departments: " + JSON.stringify(this.global.loadedGeneralData.company.departments));
           this.departments = this.global.loadedGeneralData.company.departments;
-          alert(this.departments);
         } else {
           this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
           this.generalDataObs.subscribe(function (data) {
@@ -13461,7 +13457,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     !*** ./src/app/services/index.ts ***!
     \***********************************/
 
-  /*! exports provided: AuthenticationService, GlobalService, GlobalSocket, UserService */
+  /*! exports provided: AuthenticationService, GlobalService, UserService, GlobalSocket */
 
   /***/
   function srcAppServicesIndexTs(module, __webpack_exports__, __webpack_require__) {
