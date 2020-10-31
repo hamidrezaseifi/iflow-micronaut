@@ -88,13 +88,15 @@ export class UserListComponent implements OnInit {
 
         if(this.global.loadedGeneralData != null){
           this.departments = this.global.loadedGeneralData.company.departments;
+          console.log("department list form loaded data:", this.departments);
         }
         else{
-
+          console.log("loading department list...");
           this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
 
           this.generalDataObs.subscribe(data => {
             this.departments = data.company.departments;
+            console.log("loading department list:", this.departments);
           });
 
           this.global.loadAllSetting();

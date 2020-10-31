@@ -16,8 +16,8 @@ import { Company } from '../../ui-models';
 })
 export class CompanyEditService extends HttpErrorResponseHelper {
 
-	loadDataUrl :string = "/company/info";
-	updateDataUrl :string = "/company/update";
+	loadDataUrl :string = "http://localhost:1200/company/info";
+	updateDataUrl :string = "http://localhost:1200/company/update";
 
 	constructor(
 			protected http: HttpClient,

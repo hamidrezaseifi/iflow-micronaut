@@ -41,8 +41,8 @@ body.overdialog
 
 .loading-toolbar
 {
-  width: 30px; 
-  height: 30px; 
+  width: 30px;
+  height: 30px;
   background-image: url(/assets/images/loading200.gif);
   background-repeat: no-repeat;
   background-position: center;
@@ -51,8 +51,8 @@ body.overdialog
 
 .loading-toolbar-22
 {
-  width: 22px; 
-  height: 22px; 
+  width: 22px;
+  height: 22px;
   background-image: url(/assets/images/loading200.gif);
   background-repeat: no-repeat;
   background-position: center;
@@ -66,7 +66,7 @@ body.overdialog
 
 .navbar-user-detail
 {
-  float: right;  
+  float: right;
   margin-right: 30px;
 }
 
@@ -83,30 +83,30 @@ body.overdialog
 
 .navbar-user-detail .user-detail button.btn
 {
-  
+
   padding-top: 3px;
 
 }
 
 .user-dropdown-menu span.glyphicon
 {
-  margin-right: 8px;  
+  margin-right: 8px;
 }
 
 .dropdown-menu>li>a
 {
-  font-size: 12px !important;  
+  font-size: 12px !important;
 }
 
 .close-right-menu
 {
-  position:absolute !important; 
-  bottom:10px !important;  
+  position:absolute !important;
+  bottom:10px !important;
 }
 
 md-menu-bar
 {
-  margin-top: 12px;  
+  margin-top: 12px;
 }
 
 md-menu:not(.submenu)
@@ -155,61 +155,61 @@ md-chips button i.material-icons, button.remove i.material-icons
 
 md-chip-template div
 {
-  float: left;  
-  margin-right: 5px !important;  
+  float: left;
+  margin-right: 5px !important;
 }
 
 md-chip-template button.md-chip-remove
 {
   float: right !important;
   height: 25px !important;
-  margin-right: -8px !important;  
-  margin-top: 3px !important;  
+  margin-right: -8px !important;
+  margin-top: 3px !important;
 }
 
 md-chip-template button.md-chip-remove:after
 {
-  clear: both;  
+  clear: both;
 }
 
 .md-scroll-mask
 {
-  
+
   position: fixed !important;
-  
+
 }
 
 div.page-maincontent
 {
-  margin: 30px 40px 0px 40px;  
+  margin: 30px 40px 0px 40px;
   padding: 20px;
   background-color: #fafaf7;
   min-height: calc(100vh - 140px);
 }
 
-.top-toolbar md-select.md-default-theme .md-select-value.md-select-placeholder, 
+.top-toolbar md-select.md-default-theme .md-select-value.md-select-placeholder,
 .top-toolbar md-select .md-select-value.md-select-placeholder
 {
   color: #f4f4bb;
-  
+
 }
 
 .top-toolbar md-input-container input.md-input
 {
   color: #f4f4bb;
-  
+
 }
 
 .top-toolbar md-input-container.md-input-focused .md-text, .top-toolbar md-input-container.md-input-focused span
 {
   color: #fe8d8d;
-  
+
 }
 
 .top-toolbar .search-button
 {
   margin-left: 40px;
-  
+
 }
 
 .breadcrumb
@@ -258,25 +258,25 @@ textarea:disabled, input:disabled
 
 .padd-5
 {
-  padding: 5px;  
+  padding: 5px;
 }
 
 .padd-10
 {
-  padding: 10px;  
+  padding: 10px;
 }
 
 .margin-5
 {
-  margin: 5px;  
+  margin: 5px;
 }
 
 div.dialogbox-container
 {
-  top: 0px; 
-  height: 100vh; 
+  top: 0px;
+  height: 100vh;
   background-color: rgba(70, 70, 70, 0.4);
-  z-index: 10000;  
+  z-index: 10000;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -286,23 +286,23 @@ div.dialogbox-container
     width: 0 !important;
     height: 0 !important;
   }
-  
+
 }
 
 div.error-box-noaccess
 {
-  margin:100px; 
-  margin-left: calc(50vw - 400px); 
-  border: 1px solid gray; 
-  padding: 20px; 
-  width: 800px; 
-  background-color: #fbe8cc; 
+  margin:100px;
+  margin-left: calc(50vw - 400px);
+  border: 1px solid gray;
+  padding: 20px;
+  width: 800px;
+  background-color: #fbe8cc;
 }
 
 footer.footer
 {
   background-color: rgb(63,81,181);
-  color: rgba(255,255,255,0.87);  
+  color: rgba(255,255,255,0.87);
   position: fixed;
   width: 100vw;
   bottom: 0;
@@ -313,8 +313,8 @@ footer.footer
 
 i.material-icons.type-icon
 {
-  width: 22px;  
-  height: 22px;  
+  width: 22px;
+  height: 22px;
 }
 
 button.md-ink-ripple div
@@ -331,7 +331,7 @@ button.md-ink-ripple i
 
 i.material-icons.inlist-icon
 {
-  font-size: 16px !important;  
+  font-size: 16px !important;
 }
 
 .login-container-parent
@@ -344,7 +344,7 @@ i.material-icons.inlist-icon
 {
   width: 400px;
   background: rgba(200, 200, 200, 0.5);
-  padding: 20px;
+  padding: 0px;
   border: 1px solid gray;
   border-radius: 6px;
   margin: 0 auto;
@@ -359,7 +359,7 @@ i.material-icons.inlist-icon
 
 .login-container label
 {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   width: 119px;
   font-size: 14px;
   font-weight: normal;
@@ -390,17 +390,17 @@ i.material-icons.inlist-icon
 
 .full-width
 {
-	width: 100%;	
+	width: 100%;
 }
 
-.ng-hide 
+.ng-hide
 {
 	opacity: 0;
 }
 
 div.notic-div, div.notic-div label, div.notic-div div
 {
-	color: #e24d4d;	
+	color: #e24d4d;
 }
 
 .mdm-right-sidenav .md-accordion-content {
@@ -470,7 +470,7 @@ div.notic-div, div.notic-div label, div.notic-div div
 }
 
 
-.ok-message.oneline 
+.ok-message.oneline
 {
     height: 40px;
     overflow: hidden;
@@ -522,7 +522,7 @@ div.notic-div, div.notic-div label, div.notic-div div
 
 .toolbar-link{
     display: inline-block;
-	
+
 	border: none;
     background-color: gray;
     color: white;
@@ -583,7 +583,7 @@ div.notic-div, div.notic-div label, div.notic-div div
     background: transparent;
 	float: right;
 	height: 28px;
-    
+
 }
 
 .iflow-dialog .dialog-toolbar .dialog-toolbar-button i.material-icons{
@@ -636,16 +636,16 @@ div.notic-div, div.notic-div label, div.notic-div div
 }
 
 .step-button:hover{
-    color: #ffffb7;    
+    color: #ffffb7;
 }
 
 .step-button.button-save{
-	background-color: #4559ba;	
+	background-color: #4559ba;
     border: outset 2px #4559ba;
 }
 
 .step-button.button-done{
-	background-color: #28a745;	
+	background-color: #28a745;
     border: outset 2px #28a745;
 }
 
@@ -675,12 +675,12 @@ div.notic-div, div.notic-div label, div.notic-div div
 
 
 .file-container{
-	border:gray 1px solid; 
+	border:gray 1px solid;
 	padding: 6px;
 }
 
 .file-container .file-row{
-	border:gray 1px solid; 
+	border:gray 1px solid;
 	padding: 2px 2px;
 	margin: 4px 6px;
 	margin-right: 0;
@@ -730,13 +730,13 @@ ul.list-item-container{
     margin-block-end: 10px;
     padding-inline-start: 15px;
 }
-    
+
 .list-group-item-title {
     color: #494949 !important;
     background-color: #eee !important;
     font-weight: bold !important;
 }
-    
+
 .list-group a.link-out {
     background-image: url(/assets/images/icons/arrow-forward.png);
     background-position: right 15px bottom 10px;
@@ -745,7 +745,7 @@ ul.list-item-container{
 }
 
 .ui-datepicker-month, .ui-datepicker-year{
-	color: #555 !important;	
+	color: #555 !important;
 }
 
 .item-content input.ng-invalid.ng-touched,
@@ -757,7 +757,7 @@ ul.list-item-container{
 
 .item-content input:required,
 .item-content select:required{
-	
+
 	border-left: 2px inset red;
 }
 
@@ -799,7 +799,7 @@ button.user-meu-button{
 }
 
 .modal.show{
-    display: block !important; 
+    display: block !important;
     padding-right: 17px;
     background-color: #808080D0;
 }
@@ -824,11 +824,11 @@ button.user-meu-button{
 .mat-datepicker-toggle button.mat-icon-button{
 	width: 20px;
 	height: 20px;
-	line-height: 22px;	
+	line-height: 22px;
 }
 
 span.mat-icon-button{
-	line-height: 22px;	
+	line-height: 22px;
 }
 
 .mat-datepicker-toggle button.mat-icon-button .mat-button-wrapper svg.mat-datepicker-toggle-default-icon{
@@ -836,11 +836,11 @@ span.mat-icon-button{
 	fill: #555555;
 }
 
-::-webkit-input-placeholder { 
+::-webkit-input-placeholder {
   color: #c8c6c6 !important;
 }
 
-:-ms-input-placeholder { 
+:-ms-input-placeholder {
   color: #c8c6c6 !important;
 }
 
@@ -888,7 +888,7 @@ a.tool-link:hover{
 
 .workflowview-dialog-content-container div.item-row div.item-content {
     float: left;
-    
+
     padding-left: 0px;
     width: calc(100% - 135px);
 }
@@ -896,9 +896,9 @@ a.tool-link:hover{
 
 .loading-upload-icon
 {
-  width: 100%; 
-  height: 40px; 
-  top:0 !important; 
+  width: 100%;
+  height: 40px;
+  top:0 !important;
   background-image: url(/assets/images/loading200.gif);
   background-repeat: no-repeat;
   background-position: center;
@@ -931,7 +931,7 @@ a.tool-link:hover{
 }
 
 .cdk-overlay-container{
-	z-index: 99999 !important;		
+	z-index: 99999 !important;
 }
 
 .custome-ander-text{
@@ -963,7 +963,7 @@ a.nav-link.active[role=tab]{
   margin-right: 5px;
 }
 
-.iflow-switch input { 
+.iflow-switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -1006,7 +1006,7 @@ input:checked + .iflow-slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
-   
+
 }
 
 /* Rounded sliders */

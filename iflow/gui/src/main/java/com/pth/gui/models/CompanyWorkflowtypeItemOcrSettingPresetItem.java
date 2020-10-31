@@ -3,7 +3,11 @@ package com.pth.gui.models;
 import com.pth.common.edo.enums.EOcrType;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.UUID;
+
 public class CompanyWorkflowtypeItemOcrSettingPresetItem {
+
+  private UUID id;
 
   private String propertyName;
 
@@ -14,6 +18,14 @@ public class CompanyWorkflowtypeItemOcrSettingPresetItem {
   private Integer status;
 
   private Integer version;
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getPropertyName() {
 

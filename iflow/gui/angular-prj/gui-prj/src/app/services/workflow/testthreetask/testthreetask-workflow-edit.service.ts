@@ -22,45 +22,45 @@ export class TestthreetaskWorkflowEditService extends WorkflowEditBaseService {
 	public workflowSaveRequestInitSubject: BehaviorSubject<WorkflowSaveRequestInit> = new BehaviorSubject<WorkflowSaveRequestInit>(null);
 
 	workflowSaveRequestInit :WorkflowSaveRequestInit = null;
-	
+
 	getInitCreateUrl() :string{
-		return "/workflow/testthreetask/data/initcreate";
-	}
-	
-	getCreateWorkflowUrl() :string{
-		return "/workflow/testthreetask/data/create";
-	}
-	
-	getUploadFileUrl() :string{
-		return "/workflow/testthreetask/data/createfile";
-	}
-	
-	getSaveWorkflowUrl() :string{
-		return "/workflow/testthreetask/data/save";
-	}
-	
-	getDoneWorkflowUrl() :string{
-		return "/workflow/testthreetask/data/done";
-	}
-	
-	getArchiveWorkflowUrl() :string{
-		return "/workflow/testthreetask/data/archive";
-	}
-	
-	getInitEditUrl(identity :string) :string{
-		return "/workflow/testthreetask/data/initedit/" + identity;
+		return "http://localhost:1200/workflow/testthreetask/data/initcreate";
 	}
 
-	
+	getCreateWorkflowUrl() :string{
+		return "http://localhost:1200/workflow/testthreetask/data/create";
+	}
+
+	getUploadFileUrl() :string{
+		return "http://localhost:1200/workflow/testthreetask/data/createfile";
+	}
+
+	getSaveWorkflowUrl() :string{
+		return "http://localhost:1200/workflow/testthreetask/data/save";
+	}
+
+	getDoneWorkflowUrl() :string{
+		return "http://localhost:1200/workflow/testthreetask/data/done";
+	}
+
+	getArchiveWorkflowUrl() :string{
+		return "http://localhost:1200/workflow/testthreetask/data/archive";
+	}
+
+	getInitEditUrl(identity :string) :string{
+		return "http://localhost:1200/workflow/testthreetask/data/initedit/" + identity;
+	}
+
+
 	constructor(
 			protected http: HttpClient,
 			protected loadingService: LoadingServiceService,
-			protected router: Router, 
+			protected router: Router,
 			protected route :ActivatedRoute,
 			protected autService: AuthenticationService,
-	) { 
+	) {
 		super(http, loadingService, router, route, autService);
-		
+
 	}
 
 }

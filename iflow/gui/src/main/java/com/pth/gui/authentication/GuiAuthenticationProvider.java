@@ -112,10 +112,6 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                 return Flowable.just(userDetails);
             }
 
-
-
-
-
         }
         return Flowable.just(new AuthenticationFailed());
     }

@@ -3,6 +3,28 @@ micronaut:
     name: gui
   server:
     port: 1200
+  cors:
+    enabled: true
+    single-header: true
+    configurations:
+      web:
+        allowCredentials: true
+        allowedOrigins:
+          - http://localhost:4200
+        allowedMethods:
+          - OPTIONS
+          - POST
+          - PUT
+          - GET
+        exposedHeaders:
+          - Access-Control-Allow-Origin
+          - Access-Control-Allow-Headers
+          - Access-Control-Request-Method
+          - Access-Control-Request-Headers
+          - Origin
+          - Cache-Control
+          - Content-Type
+          - Authorization
 
   security:
     enabled: true
@@ -41,7 +63,7 @@ micronaut:
           - isAnonymous()
     token:
       jwt:
-#        enabled: true
+        #        enabled: true
         generator:
           access-token-expiration: 3600
           refresh-token-expiration: 172800
@@ -56,19 +78,18 @@ micronaut:
         enabled: true
       oauth:
         enabled: true
-    session:
-      enabled: true
-      login-success-target-url: /
-      login-failure-target-url: /auth/authFailed
+#    session:
+#      enabled: true
+#      login-success-target-url: /users/data/sessiondata
+#      login-failure-target-url: /auth/authFailed
       #logout-targetUrl: '/auth/login'
       #login-targetUrl: '/auth/authenticate'
-      unauthorized-target-url: '/auth/login'
+#      unauthorized-target-url: '/auth/login'
 
-  session:
-    http:
-      cookie-path: /
-  #    cookie-secure: true
-      cookie-name: iflow
+  #session:
+  #  http:
+  #    cookie-path: /
+  #    cookie-name: iflow
 
 
   router:

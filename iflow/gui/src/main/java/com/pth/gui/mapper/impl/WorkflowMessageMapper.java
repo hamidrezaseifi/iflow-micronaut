@@ -26,6 +26,7 @@ public class WorkflowMessageMapper extends ModelEdoMapperBase<WorkflowMessage, W
         model.setMessage(edo.getMessage());
         model.setCreatedAt(edo.getCreatedAt());
         model.setStepId(edo.getStepId());
+        model.setId(edo.getId());
 
         return model;
     }
@@ -43,6 +44,7 @@ public class WorkflowMessageMapper extends ModelEdoMapperBase<WorkflowMessage, W
         edo.setMessage(model.getMessage());
         edo.setCreatedAt(model.getCreatedAt());
         edo.setStepId(model.getStepId());
+        edo.setId(model.getId());
 
         return edo;
     }

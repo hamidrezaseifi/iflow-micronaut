@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 
 import { HomeComponent } from './home';
+import { HomeTestComponent } from './hometest/home-test.component';
 import { AboutComponent } from './about';
+import { LoginComponent } from './login/login.component';
 
 import { WorkflowListComponent } from './wm-components/workflow-list/workflow-list.component';
 import { WorkflowCreateComponent } from './wm-components/create/workflow-create/workflow-create.component';
@@ -22,7 +24,9 @@ import { OcrPresetsComponent } from './company-components/ocr-presets/ocr-preset
 
 
 const routes: Routes = [
+    //{ path: '', component: HomeTestComponent },
     { path: '', component: HomeComponent, canActivate: [AuthenticationService] },
+    { path: 'auth/login', component: LoginComponent },
     { path: 'about', component: AboutComponent, canActivate: [AuthenticationService] },
     { path: 'workflow/list', component: WorkflowListComponent, canActivate: [AuthenticationService] },
     { path: 'workflow/create', component: WorkflowCreateComponent, canActivate: [AuthenticationService] },
@@ -33,14 +37,14 @@ const routes: Routes = [
     { path: 'workflow/edit/singletaskworkflowtype/:identity', component: EditSingleTaskComponent, canActivate: [AuthenticationService] },
     { path: 'workflow/edit/threetaskworkflowtype/:identity', component: EditTestthreeTaskComponent, canActivate: [AuthenticationService] },
     { path: 'workflow/edit/invoiceworkflowtype/:identity', component: EditInvoiceComponent, canActivate: [AuthenticationService] },
-    
+
     { path: 'users/list', component: UserListComponent, canActivate: [AuthenticationService] },
-    
+
     { path: 'departments/list', component: DepartmentsListComponent, canActivate: [AuthenticationService] },
-    
+
     { path: 'company/info', component: CompanyInfoComponent, canActivate: [AuthenticationService] },
     { path: 'company/ocrpresets', component: OcrPresetsComponent, canActivate: [AuthenticationService] },
-    
+
     // otherwise redirect to home
     { path: '**', redirectTo: '', canActivate: [AuthenticationService] }
 ];

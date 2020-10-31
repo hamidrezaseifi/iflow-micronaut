@@ -16,54 +16,54 @@ import { Department } from '../../ui-models';
 	})
 export class DepartmentEditService extends HttpErrorResponseHelper {
 
-	loadDepartmentsUrl :string = "/departments/data/list";
-	createDepartmentUrl :string = "/departments/data/create";
-	updateDepartmentUrl :string = "/departments/data/update";
-	deleteDepartmentUrl :string = "/departments/data/delete";
- 
+	loadDepartmentsUrl :string = "http://localhost:1200/departments/data/list";
+	createDepartmentUrl :string = "http://localhost:1200/departments/data/create";
+	updateDepartmentUrl :string = "http://localhost:1200/departments/data/update";
+	deleteDepartmentUrl :string = "http://localhost:1200/departments/data/delete";
+
 	constructor(
 			protected http: HttpClient,
 			protected loadingService: LoadingServiceService,
-			protected router: Router, 
+			protected router: Router,
 			protected route :ActivatedRoute,
 			protected autService: AuthenticationService,
-	) { 
+	) {
 		super(router, route, autService);
-		
+
 	}
-	
+
 	listDepartments(){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.get(this.loadDepartmentsUrl, httpOptions);	    
-		
+
+		return this.http.get(this.loadDepartmentsUrl, httpOptions);
+
 	};
-	
+
 	createDepartment(department: Department){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.createDepartmentUrl, department, httpOptions);	    
-		
+
+		return this.http.post(this.createDepartmentUrl, department, httpOptions);
+
 	};
-	
+
 	updateDepartment(department: Department){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.updateDepartmentUrl, department, httpOptions);	    
-		
+
+		return this.http.post(this.updateDepartmentUrl, department, httpOptions);
+
 	};
-	
+
 	deleteDepartment(department: Department){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-		return this.http.post(this.deleteDepartmentUrl, department, httpOptions);	    
-		
+
+		return this.http.post(this.deleteDepartmentUrl, department, httpOptions);
+
 	};
-	
+
 
 }
 

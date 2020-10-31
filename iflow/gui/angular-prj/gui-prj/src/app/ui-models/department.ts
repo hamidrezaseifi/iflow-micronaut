@@ -2,6 +2,7 @@
 import { User } from './user';
 
 export class Department {
+	id: string;
 	companyIdentity: string;
 	identity: string;
 	title: string;

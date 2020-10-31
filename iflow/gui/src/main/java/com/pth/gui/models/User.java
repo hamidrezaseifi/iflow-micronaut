@@ -45,6 +45,8 @@ public class User extends GuiBaseModel {
   public User() {
     super();
     this.isEnabled = true;
+    this.status = 0;
+    this.permission = EUserAcces.NONE;
   }
 
   public UUID getCompanyId() {

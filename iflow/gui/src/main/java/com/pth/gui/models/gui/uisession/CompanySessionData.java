@@ -5,6 +5,7 @@ import com.pth.gui.models.Department;
 import com.pth.gui.models.User;
 import com.pth.gui.models.UserGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompanySessionData {
@@ -14,6 +15,10 @@ public class CompanySessionData {
     private List<User> users;
 
     public CompanySessionData() {
+        this.company = new Company();
+        this.departments = new ArrayList<>();
+        this.userGroups = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
     public CompanySessionData(Company company,

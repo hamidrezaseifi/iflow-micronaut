@@ -37,6 +37,7 @@ public class WorkflowMapper extends ModelEdoMapperBase<Workflow, WorkflowEdo>
         model.setId(edo.getId());
         model.setWorkflowTypeId(edo.getWorkflowTypeId());
         model.setCompanyId(edo.getCompanyId());
+        model.setId(edo.getId());
 
         model.setFiles(workflowFileMapper.fromEdoList(edo.getFiles()));
         model.setActions(workflowActionMapper.fromEdoList(edo.getActions()));
@@ -56,6 +57,7 @@ public class WorkflowMapper extends ModelEdoMapperBase<Workflow, WorkflowEdo>
         edo.setId(model.getId());
         edo.setWorkflowTypeId(model.getWorkflowTypeId());
         edo.setCompanyId(model.getCompanyId());
+        edo.setId(model.getId());
 
         edo.setFiles(workflowFileMapper.toEdoList(model.getFiles()));
         edo.setActions(workflowActionMapper.toEdoList(model.getActions()));

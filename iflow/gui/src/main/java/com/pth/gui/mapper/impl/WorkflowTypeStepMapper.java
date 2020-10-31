@@ -26,6 +26,7 @@ public class WorkflowTypeStepMapper extends ModelEdoMapperBase<WorkflowTypeStep,
         model.setStatus(edo.getStatus());
         model.setVersion(edo.getVersion());
         model.setIdentity(edo.getIdentity());
+        model.setId(edo.getId());
 
         return model;
     }
@@ -41,6 +42,7 @@ public class WorkflowTypeStepMapper extends ModelEdoMapperBase<WorkflowTypeStep,
         edo.setStatus(model.getStatus());
         edo.setIdentity(model.getIdentity());
         edo.setVersion(model.getVersion());
+        edo.setId(model.getId());
 
         return edo;
     }

@@ -11,6 +11,7 @@ public class UserSessionData {
     private User currentUser;
 
     public UserSessionData() {
+        currentUser = new User();
     }
 
     public UserSessionData(User currentUser) {

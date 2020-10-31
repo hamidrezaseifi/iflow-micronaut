@@ -2435,11 +2435,14 @@ class UserListComponent {
         });
         if (this.global.loadedGeneralData != null) {
             this.departments = this.global.loadedGeneralData.company.departments;
+            console.log("department list form loaded data:", this.departments);
         }
         else {
+            console.log("loading department list...");
             this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
             this.generalDataObs.subscribe(data => {
                 this.departments = data.company.departments;
+                console.log("loading department list:", this.departments);
             });
             this.global.loadAllSetting();
         }
@@ -6755,7 +6758,7 @@ GlobalService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInj
 /*!***********************************!*\
   !*** ./src/app/services/index.ts ***!
   \***********************************/
-/*! exports provided: AuthenticationService, GlobalService, UserService, GlobalSocket */
+/*! exports provided: AuthenticationService, GlobalService, GlobalSocket, UserService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

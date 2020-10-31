@@ -22,6 +22,7 @@ public class WorkflowActionMapper extends ModelEdoMapperBase<WorkflowAction, Wor
         model.setStatus(edo.getStatus());
         model.setCurrentStepId(edo.getCurrentStepId());
         model.setAssignToId(edo.getAssignToId());
+        model.setId(edo.getId());
 
         return model;
     }
@@ -33,6 +34,7 @@ public class WorkflowActionMapper extends ModelEdoMapperBase<WorkflowAction, Wor
         edo.setStatus(model.getStatus().getValue().intValue());
         edo.setCurrentStepId(model.getCurrentStepId());
         edo.setAssignToId(model.getAssignToId());
+        edo.setId(model.getId());
 
         return edo;
     }

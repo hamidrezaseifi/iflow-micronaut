@@ -4889,10 +4889,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
         if (this.global.loadedGeneralData != null) {
           this.departments = this.global.loadedGeneralData.company.departments;
+          console.log("department list form loaded data:", this.departments);
         } else {
+          console.log("loading department list...");
           this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
           this.generalDataObs.subscribe(function (data) {
             _this15.departments = data.company.departments;
+            console.log("loading department list:", _this15.departments);
           });
           this.global.loadAllSetting();
         }
@@ -13457,7 +13460,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
     !*** ./src/app/services/index.ts ***!
     \***********************************/
 
-  /*! exports provided: AuthenticationService, GlobalService, UserService, GlobalSocket */
+  /*! exports provided: AuthenticationService, GlobalService, GlobalSocket, UserService */
 
   /***/
   function srcAppServicesIndexTs(module, __webpack_exports__, __webpack_require__) {

@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 public class CompanyWorkflowtypeItemOcrSettingPreset {
 
+  private UUID id;
+
   private String identity;
 
   private UUID companyId;
@@ -20,6 +22,14 @@ public class CompanyWorkflowtypeItemOcrSettingPreset {
   private Integer version;
 
   private List<CompanyWorkflowtypeItemOcrSettingPresetItem> items = new ArrayList<>();
+
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
   public String getIdentity() {
 

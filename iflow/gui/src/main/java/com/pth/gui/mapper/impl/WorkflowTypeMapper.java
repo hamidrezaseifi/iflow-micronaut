@@ -38,6 +38,7 @@ public class WorkflowTypeMapper extends ModelEdoMapperBase<WorkflowType, Workflo
         model.setIncreaseStepAutomatic(edo.getIncreaseStepAutomatic());
         model.setVersion(edo.getVersion());
         model.setSteps(workflowTypeStepMapper.fromEdoList(edo.getSteps().stream().collect(Collectors.toList())));
+        model.setId(edo.getId());
 
         return model;
     }
@@ -55,6 +56,7 @@ public class WorkflowTypeMapper extends ModelEdoMapperBase<WorkflowType, Workflo
         edo.setAllowAssign(model.getAllowAssign());
         edo.setSteps(workflowTypeStepMapper.toEdoList(model.getSteps()).stream().collect(Collectors.toSet()));
         edo.setVersion(model.getVersion());
+        edo.setId(model.getId());
 
         return edo;
     }

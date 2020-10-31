@@ -15,53 +15,53 @@ import { CompanyWorkflowtypeItemOcrSettingPreset, GeneralData } from '../../ui-m
   providedIn: 'root'
 })
 export class WorkflowtypePropertySettingService extends HttpErrorResponseHelper {
-  listPresetsUrl :string = "/company/data/readocrpresets";
-	updatePresetUrl :string = "/company/data/savereadocrpreset";
-  listPresetItemsUrl :string = "/company/data/readpresetallitems/";
-	listWorkflowTypeItemsUrl :string = "/company/data/readworkflowtypeitems/";
+  listPresetsUrl :string = "http://localhost:1200/company/data/readocrpresets";
+	updatePresetUrl :string = "http://localhost:1200/company/data/savereadocrpreset";
+  listPresetItemsUrl :string = "http://localhost:1200/company/data/readpresetallitems/";
+	listWorkflowTypeItemsUrl :string = "http://localhost:1200/company/data/readworkflowtypeitems/";
 
 	constructor(
 			protected http: HttpClient,
 			protected loadingService: LoadingServiceService,
-			protected router: Router, 
+			protected router: Router,
 			protected route :ActivatedRoute,
 			protected autService: AuthenticationService,
-	) { 
+	) {
 		super(router, route, autService);
-		
+
 	}
-	
+
 	listPresets(){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-			return this.http.get(this.listPresetsUrl, httpOptions);	    
-		
+
+			return this.http.get(this.listPresetsUrl, httpOptions);
+
 	};
-	
+
 	listPresetItems(presetName:string){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-			return this.http.get(this.listPresetItemsUrl + presetName, httpOptions);	    
-		
+
+			return this.http.get(this.listPresetItemsUrl + presetName, httpOptions);
+
 	};
-	
+
 	listWorkflowTypeItems(presetName:string){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-			return this.http.get(this.listWorkflowTypeItemsUrl + presetName, httpOptions);	    
-		
+
+			return this.http.get(this.listWorkflowTypeItemsUrl + presetName, httpOptions);
+
 	};
 
 
 	updatePreset(presetToSave: CompanyWorkflowtypeItemOcrSettingPreset){
-		
+
 			const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-	    
-			return this.http.post(this.updatePresetUrl, presetToSave, httpOptions);	    
-		
+
+			return this.http.post(this.updatePresetUrl, presetToSave, httpOptions);
+
 	};
-	
+
 }

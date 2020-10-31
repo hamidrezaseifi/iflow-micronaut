@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 
 import { User, LoginResponse, GeneralData } from '../ui-models';
 
@@ -16,13 +16,14 @@ export class AuthenticationService implements CanActivate{
     private currentUserSubject: BehaviorSubject<User>;
     isLoggedIn :boolean = false;
 
-    authenticateUrl :string = "/auth/authenticate";
-    logoutUrl :string = "/auth/logout";
+    authenticateUrl :string = "http://localhost:1200/auth/authenticate";
+    logoutUrl :string = "http://localhost:1200/auth/logout";
 
     constructor(
     		private http: HttpClient,
     		private global: GlobalService,
     		private router: Router,
+    		private route: ActivatedRoute,
     		private loadingService: LoadingServiceService,
     ) {
         this.currentUserSubject = new BehaviorSubject<User>(null);
@@ -40,7 +41,8 @@ export class AuthenticationService implements CanActivate{
 
 
       if(this.global.loadedGeneralData == null){
-        this.global.loadAllSetting();
+        //this.global.loadAllSetting();
+        this.router.navigate(['auth/login'], { relativeTo: this.route });
       }
 
     	this.loadingService.showLoading();
@@ -49,8 +51,6 @@ export class AuthenticationService implements CanActivate{
 		            console.log("GET call successful generaldata", generalData);
 
 								var value = generalData.isLogged + "";
-
-                //alert("checkLoginState: value : " + value);
 
                 if(value === "true" && generalData.user){
 

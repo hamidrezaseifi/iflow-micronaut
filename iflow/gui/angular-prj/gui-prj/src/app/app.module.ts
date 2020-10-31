@@ -53,6 +53,8 @@ import { DepartmentsListComponent } from './company-components/departments-list/
 import { WorkflowtypePropertySettingComponent } from './company-components/workflowtype-property-setting/workflowtype-property-setting.component';
 import { TextListComponent } from './components/text-list/text-list.component';
 import { OcrPresetsComponent } from './company-components/ocr-presets/ocr-presets.component';
+import { HomeTestComponent } from './hometest/home-test.component';
+import { LoginComponent } from './login/login.component';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -110,14 +112,16 @@ export function createTranslateLoader(http: HttpClient) {
     WorkflowtypePropertySettingComponent,
     TextListComponent,
     OcrPresetsComponent,
-    
+    HomeTestComponent,
+    LoginComponent,
+
   ],
   providers: [
-	  GlobalService, 
-	  AuthenticationService, 
-	  WorkflowMessageService, 
+	  GlobalService,
+	  AuthenticationService,
+	  WorkflowMessageService,
 	  fakeBackendProvider,
-	    
+
   ],
   bootstrap: [ AppComponent ]
 })

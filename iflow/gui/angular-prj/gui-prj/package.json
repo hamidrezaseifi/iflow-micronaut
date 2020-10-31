@@ -29,6 +29,7 @@
     "angular-data-table": "^0.8.1",
     "angular-resizable-element": "^3.2.6",
     "bootstrap": "^4.4.1",
+    "help": "^3.0.2",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "net": "^1.0.2",

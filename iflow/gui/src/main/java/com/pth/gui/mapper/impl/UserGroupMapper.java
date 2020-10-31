@@ -20,6 +20,7 @@ public class UserGroupMapper extends ModelEdoMapperBase<UserGroup, UserGroupEdo>
         model.setIdentity(edo.getIdentity());
         model.setCompanyIdentity(edo.getCompanyIdentity());
         model.setVersion(edo.getVersion());
+        model.setId(edo.getId());
 
         return model;
     }
@@ -32,6 +33,7 @@ public class UserGroupMapper extends ModelEdoMapperBase<UserGroup, UserGroupEdo>
         edo.setIdentity(model.getIdentity());
         edo.setCompanyIdentity(model.getCompanyIdentity());
         edo.setVersion(model.getVersion());
+        edo.setId(model.getId());
 
         return edo;
     }

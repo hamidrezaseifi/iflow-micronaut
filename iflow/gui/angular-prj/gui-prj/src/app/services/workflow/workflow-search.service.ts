@@ -18,39 +18,39 @@ import { WorkflowSearchFilter, WorkflowListInitialData, Workflow, WorkflowSearch
 export class WorkflowSearchService extends HttpErrorResponseHelper {
 
 	public searchInitialDataSubject: BehaviorSubject<WorkflowListInitialData> = new BehaviorSubject<WorkflowListInitialData>(null);
-	
-	loadInitialUrl :string = "/workflow/general/data/initsearch";
-	searchUrl :string = "/workflow/general/data/search";
+
+	loadInitialUrl :string = "http://localhost:1200/workflow/general/data/initsearch";
+	searchUrl :string = "http://localhost:1200/workflow/general/data/search";
 	listInitialData :WorkflowListInitialData = null;
 
 	constructor(
 			protected http: HttpClient,
 			protected loadingService: LoadingServiceService,
-			protected router: Router, 
+			protected router: Router,
 			protected route :ActivatedRoute,
 			protected autService: AuthenticationService,
-	) { 
+	) {
 		super(router, route, autService);
-		
+
 	}
-	
+
 
     loadInitialData() {
-    	        
+
     	this.loadingService.showLoading();
-    	
+
         const httpOptions = { headers: HttpHepler.generateFormHeader() };
-        
+
     	this.http.post(this.loadInitialUrl, new HttpParams(), httpOptions).subscribe(
 		        (initialData :WorkflowListInitialData) => {
-		        	
+
 		            console.log("GET successful search inital data", initialData);
-		            
+
 		            this.listInitialData = <WorkflowListInitialData> JSON.parse(JSON.stringify(initialData));
-		            
+
 		            this.searchInitialDataSubject.next(initialData);
-		        	
-		            
+
+
 		        },
 		        response => {
 		        	console.log("Error in read search inital data", response);
@@ -59,20 +59,20 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 		        },
 		        () => {
 		        	this.searchInitialDataSubject.complete();
-		        	this.loadingService.hideLoading();	            
+		        	this.loadingService.hideLoading();
 		        }
-		    );	       	
-    	
+		    );
+
     }
-    
+
 	search(searchFilter: WorkflowSearchFilter){
-		
+
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-      
-		return this.http.post(this.searchUrl, searchFilter, httpOptions);	    
-		
+
+		return this.http.post(this.searchUrl, searchFilter, httpOptions);
+
 	};
-    
+
 
 }
