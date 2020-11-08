@@ -16,11 +16,11 @@ import { User } from '../../ui-models';
 })
 export class UserEditService extends HttpErrorResponseHelper {
 
-	loadUsersUrl :string = "http://localhost:1200/users/data/list";
-	createUserUrl :string = "http://localhost:1200/users/data/create";
-	updateUserUrl :string = "http://localhost:1200/users/data/update";
-	deleteUserUrl :string = "http://localhost:1200/users/data/delete";
-	resetUserPasswordUrl :string = "http://localhost:1200/users/data/resetpassword";
+	loadUsersUrl :string = HttpHepler.dataServer + "/users/data/list";
+	createUserUrl :string = HttpHepler.dataServer + "/users/data/create";
+	updateUserUrl :string = HttpHepler.dataServer + "/users/data/update";
+	deleteUserUrl :string = HttpHepler.dataServer + "/users/data/delete";
+	resetUserPasswordUrl :string = HttpHepler.dataServer + "/users/data/resetpassword";
 
 	constructor(
 			protected http: HttpClient,

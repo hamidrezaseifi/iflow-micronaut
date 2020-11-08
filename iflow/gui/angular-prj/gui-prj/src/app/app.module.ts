@@ -13,8 +13,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { CookieService } from 'ngx-cookie-service';
 
 import {IFlowMaterialModules} from './material-module';
+
+
 
 import { fakeBackendProvider } from './helper';
 
@@ -55,6 +58,7 @@ import { TextListComponent } from './components/text-list/text-list.component';
 import { OcrPresetsComponent } from './company-components/ocr-presets/ocr-presets.component';
 import { HomeTestComponent } from './hometest/home-test.component';
 import { LoginComponent } from './login/login.component';
+
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -121,6 +125,7 @@ export function createTranslateLoader(http: HttpClient) {
 	  AuthenticationService,
 	  WorkflowMessageService,
 	  fakeBackendProvider,
+	  CookieService,
 
   ],
   bootstrap: [ AppComponent ]

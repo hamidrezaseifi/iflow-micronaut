@@ -15,7 +15,7 @@ import org.reactivestreams.Subscription;
 import java.util.Optional;
 
 @Singleton
-@Filter("/**/data/**")
+@Filter(value = {"/**/data/**", "/login"})
 public class CorsHttpServerFilter implements HttpServerFilter
 {
     @Override
@@ -27,11 +27,14 @@ public class CorsHttpServerFilter implements HttpServerFilter
         return Flowable.fromPublisher(publisher)
                        .doOnNext(response -> {
 
-                           if(request.getPath().contains("/data/")){
-                               //response.getHeaders().add("Access-Control-Allow-Origin","http://localhost:4200");
-                               response.getHeaders().add("Access-Control-Allow-Methods", "GET,POST,PUT,OPTIONS");
-                               response.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Host");
-                           }
+
+                           //if(request.getPath().contains("/data/")){
+
+                           response.getHeaders().add("Access-Control-Allow-Origin","http://localhost:4200");
+                           response.getHeaders().add("Access-Control-Allow-Credentials","true");
+                           response.getHeaders().add("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
+                           response.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Host");
+                           //}
 
                        });
 

@@ -16,10 +16,10 @@ import { Department } from '../../ui-models';
 	})
 export class DepartmentEditService extends HttpErrorResponseHelper {
 
-	loadDepartmentsUrl :string = "http://localhost:1200/departments/data/list";
-	createDepartmentUrl :string = "http://localhost:1200/departments/data/create";
-	updateDepartmentUrl :string = "http://localhost:1200/departments/data/update";
-	deleteDepartmentUrl :string = "http://localhost:1200/departments/data/delete";
+	loadDepartmentsUrl :string = HttpHepler.dataServer + "/departments/data/list";
+	createDepartmentUrl :string = HttpHepler.dataServer + "/departments/data/create";
+	updateDepartmentUrl :string = HttpHepler.dataServer + "/departments/data/update";
+	deleteDepartmentUrl :string = HttpHepler.dataServer + "/departments/data/delete";
 
 	constructor(
 			protected http: HttpClient,

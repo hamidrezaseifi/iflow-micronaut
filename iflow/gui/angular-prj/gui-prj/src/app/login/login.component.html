@@ -1,0 +1,40 @@
+<div class="login-container-parent" layout="row" layout-align="center center">
+  <div class="login-container">
+    <div class="login-photo"></div>
+
+    <div class="login-form-container">
+      <form action="/login" method="POST" style="margin: 0;">
+
+        <div class="form-group">
+          <label for="username">{{ 'common.username' | translate }}</label>
+          <input class="form-control" id="username"  type="text" name="username" [(ngModel)]="username" >
+        </div>
+
+        <div class="form-group">
+          <label for="password">{{ 'common.password' | translate }}</label>
+          <input class="form-control" id="password"  type="password" name="password" [(ngModel)]="password">
+        </div>
+
+        <div class="form-group">
+          <input class="btn btn-primary" type="button" value="{{ 'common.login' | translate }}" (click)="login()" />
+        </div>
+
+        <div class="" *ngIf="isFailed">
+          <div class="alert alert-danger" role="alert">{{ logginMessage }}</div>
+        </div>
+
+        <input type="hidden" name="returnUrl" [(ngModel)]="returnUrl">
+
+        <li *ngIf="isFailed" id="errors">
+          <span style="color: red;">Login Failed</span>
+        </li>
+
+      </form>
+
+    </div>
+
+
+
+  </div>
+</div>
+

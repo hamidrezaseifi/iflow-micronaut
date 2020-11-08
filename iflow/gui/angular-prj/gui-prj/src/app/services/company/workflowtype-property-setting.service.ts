@@ -15,10 +15,10 @@ import { CompanyWorkflowtypeItemOcrSettingPreset, GeneralData } from '../../ui-m
   providedIn: 'root'
 })
 export class WorkflowtypePropertySettingService extends HttpErrorResponseHelper {
-  listPresetsUrl :string = "http://localhost:1200/company/data/readocrpresets";
-	updatePresetUrl :string = "http://localhost:1200/company/data/savereadocrpreset";
-  listPresetItemsUrl :string = "http://localhost:1200/company/data/readpresetallitems/";
-	listWorkflowTypeItemsUrl :string = "http://localhost:1200/company/data/readworkflowtypeitems/";
+  listPresetsUrl :string = HttpHepler.dataServer + "/company/data/readocrpresets";
+	updatePresetUrl :string = HttpHepler.dataServer + "/company/data/savereadocrpreset";
+  listPresetItemsUrl :string = HttpHepler.dataServer + "/company/data/readpresetallitems/";
+	listWorkflowTypeItemsUrl :string = HttpHepler.dataServer + "/company/data/readworkflowtypeitems/";
 
 	constructor(
 			protected http: HttpClient,

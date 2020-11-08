@@ -9,13 +9,23 @@ micronaut:
     configurations:
       web:
         allowCredentials: true
+        allowedHeaders:
+          - Origin
+          - Host
+          - Authorization
+          - Content-Type
+          - Accept
+          - X-PINGOTHER
+          - Set-Cookie
+          - myxyz
         allowedOrigins:
-          - http://localhost:4200
+          - "http://localhost:4200"
         allowedMethods:
           - OPTIONS
           - POST
           - PUT
           - GET
+          - DELETE
         exposedHeaders:
           - Access-Control-Allow-Origin
           - Access-Control-Allow-Headers
@@ -25,6 +35,8 @@ micronaut:
           - Cache-Control
           - Content-Type
           - Authorization
+          - Set-Cookie
+          - myxyz
 
   security:
     enabled: true
@@ -57,7 +69,15 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
+      - pattern: /login
+        httpMethod: POST
+        access:
+          - isAnonymous()
       - pattern: /websocket/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /users/data/sessiondata
         httpMethod: GET
         access:
           - isAnonymous()
@@ -78,18 +98,18 @@ micronaut:
         enabled: true
       oauth:
         enabled: true
-#    session:
-#      enabled: true
-#      login-success-target-url: /users/data/sessiondata
-#      login-failure-target-url: /auth/authFailed
-      #logout-targetUrl: '/auth/login'
+    session:
+      enabled: true
+      login-success-target-url: /users/data/sessiondata
+      login-failure-target-url: /auth/authFailed
+      #logout-targetUrl: '/auth/logout'
       #login-targetUrl: '/auth/authenticate'
 #      unauthorized-target-url: '/auth/login'
 
-  #session:
-  #  http:
-  #    cookie-path: /
-  #    cookie-name: iflow
+  session:
+    http:
+      cookie-path: /
+      cookie-name: iflow
 
 
   router:

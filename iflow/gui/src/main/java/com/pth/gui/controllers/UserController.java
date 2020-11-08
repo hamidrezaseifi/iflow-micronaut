@@ -11,10 +11,7 @@ import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowMessage;
 import com.pth.gui.services.IUserHandler;
 import com.pth.gui.services.IWorkflowMessageHandler;
-import io.micronaut.http.HttpResponse;
-import io.micronaut.http.HttpStatus;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.MutableHttpHeaders;
+import io.micronaut.http.*;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
@@ -40,7 +37,7 @@ public class UserController {
 
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Get("/sessiondata")
-    public HttpResponse<SessionData> sessionData(Session session){
+    public HttpResponse<SessionData> sessionData(Session session, HttpRequest<?> request){
         SessionData sessionData = new SessionData();
 
         Optional<SessionData> sessionDataOptional = SessionDataHelper.getSessionData(session);

@@ -14,10 +14,9 @@ import { HttpHepler } from '../helper/http-hepler';
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService implements CanActivate{
     private currentUserSubject: BehaviorSubject<User>;
-    isLoggedIn :boolean = false;
 
-    authenticateUrl :string = "http://localhost:1200/auth/authenticate";
-    logoutUrl :string = "http://localhost:1200/auth/logout";
+    authenticateUrl :string = HttpHepler.dataServer + "/auth/authenticate";
+    logoutUrl :string = HttpHepler.dataServer + "/auth/logout";
 
     constructor(
     		private http: HttpClient,
@@ -39,13 +38,14 @@ export class AuthenticationService implements CanActivate{
 
     checkLoginState(returnUrl :string, ) {
 
+      alert(JSON.stringify(this.global.loadedGeneralData));
 
       if(this.global.loadedGeneralData == null){
         //this.global.loadAllSetting();
         this.router.navigate(['auth/login'], { relativeTo: this.route });
       }
 
-    	this.loadingService.showLoading();
+    	/*this.loadingService.showLoading();
     	this.global.loadAllSettingObserv().subscribe(
 		        (generalData :GeneralData) => {
 		            console.log("GET call successful generaldata", generalData);
@@ -85,7 +85,7 @@ export class AuthenticationService implements CanActivate{
 
 		            //this.loadingService.hideLoading();
 		        }
-		);
+		);*/
 
     }
 
@@ -96,7 +96,12 @@ export class AuthenticationService implements CanActivate{
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-        if (this.isLoggedIn === true) {
+        //sessionStorage.setItem("session", loginData["session"]);
+        //sessionStorage.setItem("session-data", loginData["session-data"]);
+        //sessionStorage.setItem("session-id", loginData["session-id"]);
+
+alert(JSON.stringify(this.global.loadedGeneralData));
+        if (sessionStorage.getItem("session") !== null) {
 
             return true;
         }

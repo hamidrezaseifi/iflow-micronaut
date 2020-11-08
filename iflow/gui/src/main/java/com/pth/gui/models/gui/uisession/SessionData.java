@@ -22,6 +22,8 @@ public class SessionData {
 
     private String refreshToken;
 
+    private String sessionId = "";
+
 
     public SessionData() {
         isLogged = false;
@@ -85,6 +87,14 @@ public class SessionData {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public User findUser(UUID id){

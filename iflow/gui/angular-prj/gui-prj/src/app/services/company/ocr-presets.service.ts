@@ -15,11 +15,11 @@ import { CompanyWorkflowtypeItemOcrSettingPreset, GeneralData } from '../../ui-m
   providedIn: 'root'
 })
 export class OcrPresetsService extends HttpErrorResponseHelper {
-  listPresetsUrl :string = "http://localhost:1200/ocrpreset/data/list";
-  updatePresetUrl :string = "http://localhost:1200/ocrpreset/data/save";
-  deletePresetUrl :string = "http://localhost:1200/ocrpreset/data/delete";
-  listPresetItemsUrl :string = "http://localhost:1200/ocrpreset/data/read/";
-	pageInitUrl :string = "http://localhost:1200/ocrpreset/data/initpage";
+  listPresetsUrl :string = HttpHepler.dataServer + "/ocrpreset/data/list";
+  updatePresetUrl :string = HttpHepler.dataServer + "/ocrpreset/data/save";
+  deletePresetUrl :string = HttpHepler.dataServer + "/ocrpreset/data/delete";
+  listPresetItemsUrl :string = HttpHepler.dataServer + "/ocrpreset/data/read/";
+	pageInitUrl :string = HttpHepler.dataServer + "/ocrpreset/data/initpage";
 
 	constructor(
 			protected http: HttpClient,
