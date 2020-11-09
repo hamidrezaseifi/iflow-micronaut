@@ -18,8 +18,6 @@ export class GlobalService {
 
 	public presensSubject :BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
-	public loadedGeneralData : GeneralData = null;
-	public sessionId : string = "";
 
 	constructor(private http:HttpClient,
 	            private loadingService: LoadingServiceService,
@@ -28,28 +26,36 @@ export class GlobalService {
 
 	}
 
+	public getSessionData():GeneralData{
+	  return <GeneralData> JSON.parse(JSON.stringify(sessionStorage.getItem("session-data")));
+	}
+
+	public setSessionData(data:GeneralData){
+	  sessionStorage.setItem("session-data", JSON.stringify(data));
+	}
+
+	public getSessionId():string{
+	  return sessionStorage.getItem("session-id");
+	}
+
+	public setSessionId(data:string){
+	  sessionStorage.setItem("session-id", data);
+	}
+
 
 	loadAllSetting(){
-//alert(JSON.stringify(sessionStorage));
-//this._cookieService.set('iflow1', 'my-data')
-//alert(JSON.stringify(this._cookieService.getAll()));
-//alert(this._cookieService.get('iflow1'));
+
 
 		    this.loadingService.showLoading();
 
-//generalData :GeneralData
-//.map((res: Response) => res.json())
 				this.http.get(this.loadGeneralDataUrl, {withCredentials: true}).subscribe(
 						(generalData: GeneralData) => {
-		            //console.log("GET call successful generaldata", data);
-		            //console.log("Response Header cookie", data.headers.get("myxyz"));
+		            console.log("GET call successful generaldata", generalData);
 
-		           // var generalData = data.body;
-//SESSION
 		            var islogged = generalData.isLogged + "";
 		            generalData.isLogged = islogged === "true";
 
-		            this.loadedGeneralData = <GeneralData> JSON.parse(JSON.stringify(generalData));
+		            this.setSessionData(<GeneralData> JSON.parse(JSON.stringify(generalData)));
 
 		            this.currentSessionDataSubject.next(generalData);
 		        	  this.presensSubject.next(true);

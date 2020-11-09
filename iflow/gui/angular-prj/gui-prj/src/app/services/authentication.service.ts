@@ -38,9 +38,9 @@ export class AuthenticationService implements CanActivate{
 
     checkLoginState(returnUrl :string, ) {
 
-      alert(JSON.stringify(this.global.loadedGeneralData));
+      alert(JSON.stringify(this.global.getSessionData()));
 
-      if(this.global.loadedGeneralData == null){
+      if(this.global.getSessionData() == null){
         //this.global.loadAllSetting();
         this.router.navigate(['auth/login'], { relativeTo: this.route });
       }
@@ -96,12 +96,7 @@ export class AuthenticationService implements CanActivate{
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-        //sessionStorage.setItem("session", loginData["session"]);
-        //sessionStorage.setItem("session-data", loginData["session-data"]);
-        //sessionStorage.setItem("session-id", loginData["session-id"]);
-
-alert(JSON.stringify(this.global.loadedGeneralData));
-        if (sessionStorage.getItem("session") !== null) {
+        if (sessionStorage.getItem("session-data") !== null) {
 
             return true;
         }

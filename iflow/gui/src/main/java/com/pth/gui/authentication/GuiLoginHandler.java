@@ -53,7 +53,6 @@ public class GuiLoginHandler extends SessionLoginHandler {
 
         Map<String, Object> attrs =  userDetails.getAttributes("roles", "uname");
         attrs.put("sessionId", session.getId());
-        attrs.put("session", session);
         SessionData sessionData = (SessionData)attrs.get(GuiAuthenticationProvider.SESSION_DATA_KEY);
         sessionData.setSessionId(session.getId());
         attrs.put(GuiAuthenticationProvider.SESSION_DATA_KEY, sessionData);
@@ -61,9 +60,6 @@ public class GuiLoginHandler extends SessionLoginHandler {
         String cookieValue = cookieHttpSessionIdGenerator.cookieValueFromSession(session);
         attrs.put("session-cookie-data", cookieValue);
         attrs.put("session-cookie-name", configuration.getCookieName());
-
-        //io.netty.handler.codec.http.cookie.ClientCookieEncoder
-        //HttpResponse resp = HttpResponse.ok(attrs);
 
         return HttpResponse.ok(attrs);
     }

@@ -42,11 +42,8 @@ export class LoginComponent implements OnInit {
                                                     		        (loginData :any) => {
                                                     		            console.log("Login successful data", loginData);
                                                       		        	this.loadingService.hideLoading();
-                                                      		        	this.global.loadedGeneralData = loginData["session-data"];
-
-                                                      		        	sessionStorage.setItem("session", loginData["session"]);
-                                                      		        	sessionStorage.setItem("session-data", loginData["session-data"]);
-                                                      		        	sessionStorage.setItem("session-id", loginData["session-id"]);
+                                                      		        	this.global.setSessionData(loginData["session-data"]);
+                                                                    this.global.setSessionId(loginData["session-id"]);
 
                                                       		        	this.cookieService.set(loginData["session-cookie-name"], loginData["session-cookie-data"] );
                                                       		        	this.cookieService.set('Path', "/" );

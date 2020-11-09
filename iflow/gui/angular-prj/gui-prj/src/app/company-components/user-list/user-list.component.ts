@@ -86,8 +86,8 @@ export class UserListComponent implements OnInit {
         });
 
 
-        if(this.global.loadedGeneralData != null){
-          this.departments = this.global.loadedGeneralData.company.departments;
+        if(this.global.getSessionData() != null){
+          this.departments = this.global.getSessionData().company.departments;
           console.log("department list form loaded data:", this.departments);
         }
         else{
