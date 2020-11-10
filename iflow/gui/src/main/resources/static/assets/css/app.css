@@ -334,60 +334,6 @@ i.material-icons.inlist-icon
   font-size: 16px !important;  
 }
 
-.login-container-parent
-{
-  height: 400px;
-  margin-top: 20px;
-}
-
-.login-container
-{
-  width: 400px;
-  background: rgba(200, 200, 200, 0.5);
-  padding: 20px;
-  border: 1px solid gray;
-  border-radius: 6px;
-  margin: 0 auto;
-}
-
-.login-container .login-title
-{
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.login-container label
-{
-  margin-bottom: 10px;
-  width: 119px;
-  font-size: 14px;
-  font-weight: normal;
-}
-
-.login-container .message
-{
-  height: 40px;
-  line-height: 30px;
-  color: red;
-  margin-top: 10px;
-}
-
-.login-container .submit
-{
-  width: 90px;
-  height: 30px;
-  line-height: 20px;
-  margin-top: 10px;
-}
-
-
-.login-container .passwordreset
-{
-  font-size: 10px;
-  float: right;
-}
-
 .full-width
 {
 	width: 100%;	

@@ -7,7 +7,7 @@
 						<img class="navbar-logo" src="/assets/images/logo2.png">
 						<span class="logo-title">Business Edition</span>
 					</a>
-          <button (click)="logout()" *ngIf="isLogged"  class="dropdown-item" type="button">Logout</button>
+          <button (click)="logout()"  class="dropdown-item" type="button">Logout</button>
 				</div>
 
 				<div class="iflow-navbar-bar">
@@ -32,15 +32,16 @@
 						</li>
 					</ul>
 
-					<div class="navbar-item" *ngIf="isLogged" >
-					  <button type="button" class="btn user-toggle-button" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
+					<div class="navbar-item btn-group" *ngIf="isLogged" >
+					  <button type="button" class="btn btn-primary dropdown-toggle user-button" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					  	<i class="material-icons">account_circle</i>
 					    <span>{{currentUser.fullName}}</span>
 					  </button>
-					  <div class="dropdown-menu dropdown-menu-lg-right">
-					    <button (click)="showProfile()" class="dropdown-item" type="button">Profile</button>
-					    <div class="dropdown-divider"></div>
-					    <button (click)="logout()"  class="dropdown-item" type="button">Logout</button>
+					  <div class="dropdown-menu">
+              <a (click)="showProfile()" class="dropdown-item" href="#">Profile</a>
+              <div class="dropdown-divider"></div>
+              <a (click)="logout()" class="dropdown-item" href="#">Logout</a>
+
 					  </div>
 					</div>
 
