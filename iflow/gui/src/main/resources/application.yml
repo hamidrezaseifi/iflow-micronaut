@@ -69,7 +69,15 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
-      - pattern: /login
+      - pattern: /auth/login
+        httpMethod: POST
+        access:
+          - isAnonymous()
+      - pattern: /auth/logout
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /auth/logout
         httpMethod: POST
         access:
           - isAnonymous()
@@ -96,6 +104,11 @@ micronaut:
     endpoints:
       login:
         enabled: true
+        path: /auth/login
+      logout:
+        enabled: true
+        path: /auth/logout
+        get-allowed: true
       oauth:
         enabled: true
     session:

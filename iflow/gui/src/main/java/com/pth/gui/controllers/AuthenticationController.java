@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Get(value = "/login")
+    @Get(value = "/loginpage")
     public ModelAndView login(@QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
 
         LoginModel model = new LoginModel();
@@ -37,50 +37,4 @@ public class AuthenticationController {
         return new ModelAndView("/auth/login", model);
     }
 
-    @Secured(SecurityRule.IS_AUTHENTICATED)
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Post(value = "/authenticate")
-    public ModelAndView authenticate(@Body LoginModel loginModel,
-                                     @QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
-
-        LoginModel model = new LoginModel();
-        if(loginModel != null){
-            model.setCompanyId(loginModel.getCompanyId() + "-authed");
-            model.setPassword(loginModel.getPassword() + "-authed");
-            model.setUsername(loginModel.getUsername() + "-authed");
-        }
-
-        model.setFailed(false);
-
-        return new ModelAndView("/auth/login", model);
-    }
-
-    @Produces(MediaType.TEXT_HTML)
-    @Get("/authFailed") // <5>
-    public ModelAndView authFailed(Optional<String> companyid,
-                                   Optional<String> password,
-                                   Optional<String> username,
-                                   @CookieValue(value = "company-id", defaultValue = "") String companyId,
-                                   @QueryValue(value="returnUrl" , defaultValue="") String returnUrl,
-                                   HttpRequest request,
-                                   HttpResponse response) {
-
-        LoginModel model = new LoginModel();
-        if(companyid.isPresent()){
-            model.setCompanyId(companyid.get());
-            response.setAttribute("Set-Cookie" , Arrays.asList("company-id=" + companyid.get()));
-        }
-        if(password.isPresent()){
-            model.setPassword(password.get());
-        }
-        if(username.isPresent()){
-            model.setUsername(username.get());
-        }
-        if(model.getCompanyId().isEmpty() && companyId.isEmpty() == false){
-            model.setCompanyId(companyId);
-        }
-        model.setFailed(true);
-
-        return new ModelAndView("/auth/login", model);
-    }
 }

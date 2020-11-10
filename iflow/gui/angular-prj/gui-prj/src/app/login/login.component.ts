@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit {
                                                       		        	this.global.setSessionData(loginData["session-data"]);
                                                                     this.global.setSessionId(loginData["session-id"]);
 
-                                                      		        	this.cookieService.set(loginData["session-cookie-name"], loginData["session-cookie-data"] );
-                                                      		        	this.cookieService.set('Path', "/" );
+                                                      		        	//this.cookieService.set(loginData["session-cookie-name"], loginData["session-cookie-data"] );
+                                                      		        	//this.cookieService.set('Path', "/" );
 
                                                       		        	this.router.navigate(['/']);
                                                     		        },

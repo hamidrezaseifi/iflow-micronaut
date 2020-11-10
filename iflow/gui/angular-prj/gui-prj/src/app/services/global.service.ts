@@ -32,6 +32,12 @@ export class GlobalService {
 
 	public setSessionData(data:GeneralData){
 	  sessionStorage.setItem("session-data", JSON.stringify(data));
+	  this.currentSessionDataSubject.next(data);
+	}
+
+	public removeSessionData(){
+	  sessionStorage.removeItem("session-data");
+	  this.currentSessionDataSubject.next(null);
 	}
 
 	public getSessionId():string{
@@ -42,13 +48,22 @@ export class GlobalService {
 	  sessionStorage.setItem("session-id", data);
 	}
 
+	public removeSessionId(){
+	  sessionStorage.removeItem("session-id");
+	}
+
 
 	loadAllSetting(){
 
+        if(sessionStorage.getItem("session-data") != null){
+
+            this.currentSessionDataSubject.next(this.getSessionData());
+            return;
+        }
 
 		    this.loadingService.showLoading();
 
-				this.http.get(this.loadGeneralDataUrl, {withCredentials: true}).subscribe(
+				this.http.get(this.loadGeneralDataUrl).subscribe(
 						(generalData: GeneralData) => {
 		            console.log("GET call successful generaldata", generalData);
 
@@ -57,7 +72,6 @@ export class GlobalService {
 
 		            this.setSessionData(<GeneralData> JSON.parse(JSON.stringify(generalData)));
 
-		            this.currentSessionDataSubject.next(generalData);
 		        	  this.presensSubject.next(true);
 
 		        	  this.loadingService.hideLoading();

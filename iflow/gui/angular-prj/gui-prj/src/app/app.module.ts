@@ -14,6 +14,8 @@ import { MatTableModule } from '@angular/material/table';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import {IFlowMaterialModules} from './material-module';
 
@@ -126,6 +128,11 @@ export function createTranslateLoader(http: HttpClient) {
 	  WorkflowMessageService,
 	  fakeBackendProvider,
 	  CookieService,
+	  {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true,
+    }
 
   ],
   bootstrap: [ AppComponent ]

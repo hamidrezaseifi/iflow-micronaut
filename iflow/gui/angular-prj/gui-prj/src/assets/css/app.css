@@ -802,6 +802,7 @@ button.user-meu-button{
     display: block !important;
     padding-right: 17px;
     background-color: #808080D0;
+    opacity: 1;
 }
 
 .modal-footer{

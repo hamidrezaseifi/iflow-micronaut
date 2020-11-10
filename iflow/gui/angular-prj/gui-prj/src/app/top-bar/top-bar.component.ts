@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-
-import { AuthenticationService } from '../services';
+import { LoginService, LoadingServiceService, AuthenticationService, GlobalService } from '../services';
 import { User, MenuItem } from '../ui-models';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-top-bar',
@@ -13,9 +13,9 @@ import { User, MenuItem } from '../ui-models';
 export class TopBarComponent implements OnInit {
 
 	menus: MenuItem[] = [];
-	@Input('currentUser') currentUser: User;
-	@Input('isLogged') isLogged: boolean;
-	@Input('isPresent') isPresent : boolean;
+	currentUser: User=null;
+	isLogged: boolean=false;
+	isPresent : boolean=false;
 
 	@Input('menus')
 	set setMenus(_menus: MenuItem[]) {
@@ -36,9 +36,34 @@ export class TopBarComponent implements OnInit {
 
 	constructor(
 		    private router: Router,
+		    private global: GlobalService,
 		    private translate: TranslateService,
+		    private loginService: LoginService,
+		    private loadingService: LoadingServiceService,
+		    private cookieService: CookieService
 		) {
 
+      this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
+                                                                                    if(generalData != null){
+                                                                                      console.log("generaldata in topbar", generalData);
+                                                                                      if(generalData.user != null){
+                                                                                        this.currentUser = generalData.user.currentUser;
+                                                                                      }
+                                                                                      this.isLogged = generalData.isLogged;
+                                                                                      if(generalData.app != null){
+                                                                                        this.menus=generalData.app.menus;
+                                                                                      }
+                                                                                      this.isPresent = false;
+                                                                                    }
+                                                                                    else{
+                                                                                      console.log("generaldata in topbar is null");
+                                                                                      this.currentUser = null;
+                                                                                      this.isLogged = false;
+                                                                                      this.menus = [];
+                                                                                      this.isPresent = false;
+                                                                                    }
+
+                                                                     		        });
  	}
 
 	ngOnInit() {
@@ -57,7 +82,37 @@ export class TopBarComponent implements OnInit {
 	}
 
 	logout(){
-		this.loggingOut.emit(true);
+
+    this.global.removeSessionData();
+    this.global.removeSessionId();
+
+    this.cookieService.delete("iflow");
+    this.cookieService.delete('Path');
+
+	  this.loadingService.showLoading();
+    this.loginService.logout().subscribe(
+                                          (data :any) => {
+                                              console.log("Logout successful data", data);
+                                              this.loadingService.hideLoading();
+                                              this.global.removeSessionData();
+                                              this.global.removeSessionId();
+
+                                              this.cookieService.delete(data["session-cookie-name"]);
+                                              this.cookieService.delete('Path');
+
+                                              this.router.navigate(['/auth/login']);
+                                          },
+                                          response => {
+                                            console.log("Error in logout", response);
+                                            this.loadingService.hideLoading();
+                                          },
+                                          () => {
+                                            this.loadingService.hideLoading();
+                                          }
+                                      );
+
+
+		//this.loggingOut.emit(true);
 
 	}
 

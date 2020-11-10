@@ -1,14 +1,15 @@
 <header>
 
 		<nav class="iflow-navbar">
-			
+
 				<div class="navbar-header">
 					<a class="navbar-brand" [routerLink]="['/']">
 						<img class="navbar-logo" src="/assets/images/logo2.png">
 						<span class="logo-title">Business Edition</span>
 					</a>
+          <button (click)="logout()" *ngIf="isLogged"  class="dropdown-item" type="button">Logout</button>
 				</div>
-				
+
 				<div class="iflow-navbar-bar">
 					<ul class="navbar-nav" *ngIf="isLogged">
 						<li class="nav-item" *ngFor="let menu of menus;" [ngClass]="{'dropdown' : menu.children.length > 0}">
@@ -29,8 +30,8 @@
 								</a>
 							</div>
 						</li>
-					</ul>	
-							
+					</ul>
+
 					<div class="navbar-item" *ngIf="isLogged" >
 					  <button type="button" class="btn user-toggle-button" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false">
 					  	<i class="material-icons">account_circle</i>
@@ -42,23 +43,22 @@
 					    <button (click)="logout()"  class="dropdown-item" type="button">Logout</button>
 					  </div>
 					</div>
-							
+
 					<div class="navbar-item padding-top-7" *ngIf="isLogged" >
 						<label class="iflow-switch">
 							<input type="checkbox" (change)="togglePresens()" [checked]="isPresent">
 							<span class="iflow-slider iflow-round"></span>
-							
+
 						</label>
 						<label>{{ 'common.present' | translate }}</label>
 					</div>
 
-					
+
 					<div class="clear"></div>
 				</div>
-						
-			
-		</nav>    			    
-		
-	        
+
+
+		</nav>
+
+
 </header>
-	
