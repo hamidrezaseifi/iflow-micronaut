@@ -113,11 +113,11 @@ micronaut:
         enabled: true
     session:
       enabled: true
-      login-success-target-url: /users/data/sessiondata
+      login-success-target-url: /
       login-failure-target-url: /auth/authFailed
-      #logout-targetUrl: '/auth/logout'
+      logout-targetUrl: '/auth/logout'
       #login-targetUrl: '/auth/authenticate'
-#      unauthorized-target-url: '/auth/login'
+      unauthorized-target-url: '/auth/login'
 
   session:
     http:

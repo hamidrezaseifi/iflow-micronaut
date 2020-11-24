@@ -1,18 +1,18 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org" ng-app="iflowApp" >
     <head>
     
-    <title tiles:fragment="title" th:text="#{site.title}"></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
-    
-    <link rel="shortcut icon" th:href="@{/images/icon.png}">
-    
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+		<title tiles:fragment="title" th:text="#{site.title}"></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="UTF-8">
 
-    <link th:href="@{/css/login.css}" rel="stylesheet" />
+		<link rel="shortcut icon" th:href="@{/images/icon.png}">
 
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.js}"></script>
+		<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+		<link th:href="@{/css/login.css}" rel="stylesheet" />
+
+		<script th:src="@{/js/jquery.min.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
     	
     </head>
     <body ng-controller="LoginController">
@@ -22,7 +22,7 @@
 	        <div class="login-photo"></div>
 	        
 	        <div class="login-form-container">
-		        <form action="/login" method="POST" style="margin: 0;">
+		        <form action="/auth/login" method="POST" style="margin: 0;">
 
 					<div class="form-group">
 					    <label for="username" th:text="#{common.username}"></label>

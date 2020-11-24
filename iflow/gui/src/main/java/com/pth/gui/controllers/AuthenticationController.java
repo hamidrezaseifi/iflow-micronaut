@@ -27,7 +27,7 @@ public class AuthenticationController {
     }
 
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    @Get(value = "/loginpage")
+    @Get(value = "/login")
     public ModelAndView login(@QueryValue(value="returnUrl" , defaultValue="") String returnUrl) {
 
         LoginModel model = new LoginModel();
