@@ -1,0 +1,65 @@
+<header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <nav class="iflow-navbar">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                <img class="navbar-logo" src="/assets/images/logo2.png">
+                <span class="logo-title">Business Edition</span>
+            </a>
+            <button ng-click="logout()"  class="dropdown-item" type="button">Logout</button>
+        </div>
+
+        <div class="iflow-navbar-bar">
+            <ul class="navbar-nav" *ngIf="isLogged">
+                <li class="nav-item" th:each="menu: ${pageMenuList}" th:if="${menu.isEnabled()}" th:class="${menu.hasChildren()}? 'dropdown' : ''">
+                    <a class="nav-link" th:if="${!menu.hasChildren()}" th:href="${menu.getUrl()}">
+                        <span th:text="${menu.getLabel()}"></span>
+                        <img th:src="${menu.getImage()}" class="navbar-image" />
+                    </a>
+                    <a class="nav-link dropdown-toggle" th:if="${menu.hasChildren()}" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span th:text="${menu.getLabel()}"></span>
+                        <img th:src="${menu.getImage()}" class="navbar-image" />
+                        <span class="navbar-item-text" class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu" th:if="${menu.hasChildren()}">
+                        <a th:href="${submenu.getUrl()}" th:each="submenu: ${menu.getChildren()}" class="dropdown-item">
+                            <span  class="navbar-item-text"th:text="${submenu.getLabel()}"></span>
+                            <img th:src="${submenu.getImage()}" class="navbar-image" />
+                            <div class="clear"></div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="navbar-item btn-group" *ngIf="isLogged" >
+                <button type="button" class="btn btn-primary dropdown-toggle user-button" style="padding: 3px 10px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">account_circle</i>
+                    <span>{{currentUser.fullName}}</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a (click)="showProfile()" class="dropdown-item" href="#">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a (click)="logout()" class="dropdown-item" href="#">Logout</a>
+
+                </div>
+            </div>
+
+            <div class="navbar-item padding-top-7" *ngIf="isLogged" >
+                <label class="iflow-switch">
+                    <input type="checkbox" (change)="togglePresens()" [checked]="isPresent">
+                    <span class="iflow-slider iflow-round"></span>
+
+                </label>
+                <label>{{ 'common.present' | translate }}</label>
+            </div>
+
+
+            <div class="clear"></div>
+        </div>
+
+
+    </nav>
+
+
+</header>
