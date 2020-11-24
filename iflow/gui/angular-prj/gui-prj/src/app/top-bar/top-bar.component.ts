@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoginService, LoadingServiceService, AuthenticationService, GlobalService } from '../services';
-import { User, MenuItem } from '../ui-models';
+import { User, MenuItem, GeneralData } from '../ui-models';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({

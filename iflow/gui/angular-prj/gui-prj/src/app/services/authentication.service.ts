@@ -45,48 +45,6 @@ export class AuthenticationService implements CanActivate{
         this.router.navigate(['auth/login'], { relativeTo: this.route });
       }
 
-    	/*this.loadingService.showLoading();
-    	this.global.loadAllSettingObserv().subscribe(
-		        (generalData :GeneralData) => {
-		            console.log("GET call successful generaldata", generalData);
-
-								var value = generalData.isLogged + "";
-
-                if(value === "true" && generalData.user){
-
-		            	this.isLoggedIn = true;
-		            	this.currentUserSubject.next(generalData.user.currentUser);
-
-			        		//this.global.loadAllSetting();
-			        		this.global.presensSubject.next(true);
-
-		            	this.router.navigate([returnUrl]);
-		            }
-		            else{
-		            	this.isLoggedIn = false;
-		            	this.currentUserSubject.next(null);
-
-			        		//this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
-
-			        		//window.location.assign("/auth/login?returnUrl=" + returnUrl);
-
-		            }
-
-		        },
-		        response => {
-		            console.log("Error in read menu list", response);
-	            	this.isLoggedIn = false;
-	            	this.currentUserSubject.next(null);
-		        	this.currentUserSubject.complete();
-
-		            this.router.navigate(['auth/login'], { queryParams: { returnUrl: returnUrl } });
-		        },
-		        () => {
-
-		            //this.loadingService.hideLoading();
-		        }
-		);*/
-
     }
 
     logout(returnUrl :string) {

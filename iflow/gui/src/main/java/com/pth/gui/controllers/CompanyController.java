@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
-@Controller("/company")
+@Controller("/company/data")
 public class CompanyController {
 
     private final ICompanyHandler companyHandler;

@@ -16,8 +16,8 @@ import { Company } from '../../ui-models';
 })
 export class CompanyEditService extends HttpErrorResponseHelper {
 
-	loadDataUrl :string = HttpHepler.dataServer + "/company/info";
-	updateDataUrl :string = HttpHepler.dataServer + "/company/update";
+	loadDataUrl :string = HttpHepler.dataServer + "/company/data/info";
+	updateDataUrl :string = HttpHepler.dataServer + "/company/data/update";
 
 	constructor(
 			protected http: HttpClient,
@@ -34,15 +34,15 @@ export class CompanyEditService extends HttpErrorResponseHelper {
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-		return this.http.get(this.loadDataUrl, httpOptions);
+		return this.http.get(this.loadDataUrl);
 
 	};
 
 	updateData(company: Company){
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-
-		return this.http.post(this.updateDataUrl, company, httpOptions);
+      const headers = new HttpHeaders().set("Content-Type", "application/json;");
+	    return this.http.post(this.updateDataUrl, company, {headers});
 
 	};
 

@@ -10,6 +10,7 @@ import { User, MenuItem } from '../ui-models';
 
 import { WorkflowMessageService } from '../services/workflow/workflow-message.service';
 import { ErrorServiceService } from '../services/error-service.service';
+import { HttpHepler } from '../helper/http-hepler';
 
 @Component({
   selector: 'app-message-bar',
@@ -200,7 +201,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 		    return;
 		 }
 
-     var url = "ws://" + location.hostname + ":" + location.port + "/websocket/workflowmessages/" + this.currentUser.id;
+     var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowmessages/" + this.currentUser.id;
      this.webSocket = new WebSocket(url);
 
      var _this = this;

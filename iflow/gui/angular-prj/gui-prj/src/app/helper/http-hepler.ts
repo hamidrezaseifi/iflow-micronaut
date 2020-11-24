@@ -6,6 +6,7 @@ export const InterceptorUseHeader = 'X-Use-Interceptor';
 
 export class HttpHepler {
 
+  public static serverPort: string = "localhost:1200";
   public static dataServer: string = "http://localhost:1200";
 
 	public static generateFormHeader(): HttpHeaders{
@@ -25,13 +26,7 @@ export class HttpHepler {
 	public static generateJsonHeader(): HttpHeaders{
 
 		var header :HttpHeaders  = new HttpHeaders({
-			'Content-Type':  'application/json; charset=UTF-8',
-      //'Authorization': 'my-auth-token',
-      'Cache-Control': 'no-cache',
-      //'Pragma': 'no-cache',
-      //'X-Host-Override': 'http://localhost:4200',
-      //'Host': 'http://localhost:4200',
-      'Accept': 'application/json; charset=UTF-8'
+			'Content-Type':  'application/json; charset=UTF-8'
 		});
 
 		return header;
