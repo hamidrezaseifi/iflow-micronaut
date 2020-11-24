@@ -38,12 +38,16 @@ export class AuthenticationService implements CanActivate{
 
     checkLoginState(returnUrl :string, ) {
 
-      alert(JSON.stringify(this.global.getSessionData()));
+      const geberalData:GeneralData = this.global.getSessionData();
 
-      if(this.global.getSessionData() == null){
-        //this.global.loadAllSetting();
+      //alert("authentication.service: " + JSON.stringify(geberalData));
+
+      if(geberalData == null || geberalData.isLogged == false){
+        //alert("goto login");
         this.router.navigate(['auth/login'], { relativeTo: this.route });
+        return false;
       }
+       //alert("isLogged: " + geberalData["isLogged"]);
 
     }
 

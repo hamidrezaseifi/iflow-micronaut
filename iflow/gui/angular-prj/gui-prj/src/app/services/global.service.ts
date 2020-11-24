@@ -27,7 +27,7 @@ export class GlobalService {
 	}
 
 	public getSessionData():GeneralData{
-	  return <GeneralData> JSON.parse(JSON.stringify(sessionStorage.getItem("session-data")));
+	  return <GeneralData> JSON.parse(sessionStorage.getItem("session-data"));
 	}
 
 	public setSessionData(data:GeneralData){

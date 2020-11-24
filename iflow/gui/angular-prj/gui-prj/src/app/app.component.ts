@@ -36,6 +36,8 @@ export class AppComponent implements OnInit  {
 
 	) {
 
+    autService.checkLoginState("/");
+
 		translate.setDefaultLang('de');
 
 		translate.use('de');
