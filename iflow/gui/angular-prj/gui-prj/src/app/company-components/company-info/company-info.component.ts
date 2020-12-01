@@ -26,7 +26,7 @@ export class CompanyInfoComponent implements OnInit {
 	companyEditForm: FormGroup;
 	companyTypeList : string[] = ["CUSTOME", "EINZELUNTERNEHMEN", "GBR", "OHG", "KG", "GMBH", "UG"];
 	companyTypeTitle : {} = {};
-	
+
 	isEditing :boolean= false;
 
 	constructor(
@@ -39,104 +39,100 @@ export class CompanyInfoComponent implements OnInit {
 			private route :ActivatedRoute,
 			private formBuilder: FormBuilder,
 			private dateAdapter: DateAdapter<Date>,
-			
+
 	) {
 		this.dateAdapter.setLocale('de');
-		
-        //translate.get('user-delete-message').subscribe((res: string) => {
-        //	this.deleteMessageBase = res;
-        //});
-		
+
 		for(var index in this.companyTypeList){
-			translate.get('company-type-' + this.companyTypeList[index]).subscribe((res: string) => {
-	        	this.companyTypeTitle[this.companyTypeList[index]] = res;
-	        });
+      const key = this.companyTypeList[index];
+			translate.get('company-type-' + key).subscribe((res: string) => {
+	        	this.companyTypeTitle[key] = res;
+	    });
 		}
-		
-		
+
 	}
-	
+
 	ngOnInit() {
-		
+
 		this.companyEditForm = this.formBuilder.group({
-			
+
 			companyName: ['', Validators.email],
 			companyType: ['', Validators.required],
 			companyTypeCustome: [''],
-		    status: ['1', Validators.required],
-        });
+		  status: ['1', Validators.required],
+     });
 
 		this.reload();
 	}
-	
+
 	debug(): string {
 		var str = "";
 		for(var name in this.companyEditForm.controls){
 			str += name + " : " + this.companyEditForm.controls[name].value + " , ";
 		}
-		
+
 		str += '-----------------------------------------------------,  ' + JSON.stringify(this.companyInfo);
-		
+
 		return str;
 	}
-	
+
 	reload() {
-		
+
 		this.loadingService.showLoading();
-		
+
 		this.editService.listData().subscribe(
 		        (result :Company) => {
-		        	
+
 		            console.log("Company Info", result);
-		        	
+
 		            this.companyInfo = result;
-		            
+
 		            this.isEditing = false;
 		        },
 		        response => {
 		        	console.log("Error in get company Info", response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        	this.errorService.showErrorResponse(response);
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	            
+
+		        	this.loadingService.hideLoading();
 		        }
-			);	       	
+			);
 	}
-	
+
 	startEditing(){
-		this.setToControlValues();
+	  this.setToControlValues();
 		this.isEditing = true;
 	}
-	
+
 	save(){
 		this.setFormControlValues();
-		
+
 		this.loadingService.showLoading();
-		
+
 		this.editService.updateData(this.companyInfo).subscribe(
 		        (result :Company) => {
-		        	
+
 		            console.log("Save Company", result);
-		        	
+
 		            this.companyInfo = result;
-		            
+
 		            this.isEditing = false;
 		        },
 		        response => {
 		        	console.log("Error in saving company", response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        	this.errorService.showErrorResponse(response);
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	            
+
+		        	this.loadingService.hideLoading();
 		        }
-			);	 
-		
+			);
+
 	}
-	
+
 
 	setToControlValues(){
 		if(this.companyInfo){
@@ -146,18 +142,18 @@ export class CompanyInfoComponent implements OnInit {
 
 		}
 	}
-	
+
 	setFormControlValues(){
-				
+
 		this.companyInfo.companyName = this.companyEditForm.controls["companyName"].value;
 		this.companyInfo.companyType = this.companyEditForm.controls["companyType"].value;
 		this.companyInfo.companyTypeCustome = this.companyEditForm.controls["companyTypeCustome"].value;
 
 	}
-	
+
 	getTitleForCompanyType(type: string):string{
 		//console.log("company-type-title", type + " : " + this.companyTypeTitle[type]);
 		return this.companyTypeTitle[type];
 	}
-	
+
 }

@@ -11,7 +11,7 @@
     <maven.compiler.source>${jdk.version}</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <exec.mainClass>com.pth.profile.CoreApplication</exec.mainClass>
+    <exec.mainClass>com.pth.gui.GuiApplication</exec.mainClass>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
   </properties>
