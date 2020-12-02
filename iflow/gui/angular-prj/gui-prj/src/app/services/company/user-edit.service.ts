@@ -45,7 +45,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-		return this.http.post(this.createUserUrl, user, httpOptions);
+		  return this.http.post(this.createUserUrl, user, httpOptions);
 
 	};
 
@@ -53,7 +53,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-		return this.http.post(this.updateUserUrl, user, httpOptions);
+		  return this.http.post(this.updateUserUrl, user, httpOptions);
 
 	};
 
@@ -61,7 +61,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-		return this.http.post(this.deleteUserUrl, user, httpOptions);
+		  return this.http.post(this.deleteUserUrl, user, httpOptions);
 
 	};
 
@@ -69,7 +69,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-		return this.http.post(this.resetUserPasswordUrl, user, httpOptions);
+		  return this.http.post(this.resetUserPasswordUrl, user, httpOptions);
 
 	};
 }

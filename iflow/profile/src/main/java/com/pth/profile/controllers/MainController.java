@@ -42,7 +42,6 @@ public class MainController {
 
         UserEntity response = new UserEntity();
         response.setCompanyId(TestDataConstants.TEST_COMPANY_ID);
-        response.setIdentity("test-iflow-1");
         response.setUsername("test@iflow.de");
         response.setPasswordHash(passwordHashGenerator.produceHash("test", salt));
         response.setPasswordSalt(salt);

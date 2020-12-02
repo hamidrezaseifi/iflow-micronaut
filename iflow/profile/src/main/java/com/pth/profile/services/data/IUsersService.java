@@ -43,7 +43,7 @@ public interface IUsersService {
 
   List<UserEntity> getAllUserListByDepartmentId(UUID id);
 
-  List<UserEntity> getUserListByIdentityList(Set<String> identityList);
+  List<UserEntity> getUserListByIdList(Set<UUID> idList);
 
   List<UserDashboardMenuEntity> getUserDashboardMenuListByUserId(String appIdentity,
                                                                  UUID userId);

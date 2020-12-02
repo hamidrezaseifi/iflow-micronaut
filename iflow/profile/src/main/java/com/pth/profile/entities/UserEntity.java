@@ -16,9 +16,6 @@ import java.util.*;
 })
 public class UserEntity extends BaseEntity {
 
-    @Column(length = 50, nullable = false)
-    private String identity;
-
     @Column(length = 50, nullable = false , name = "company_id")
     private UUID companyId;
 
@@ -100,14 +97,6 @@ public class UserEntity extends BaseEntity {
         this.username = username;
         this.passwordHash = passwordHash;
         this.passwordSalt = passwordSalt;
-    }
-
-    public String getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(String identity) {
-        this.identity = identity;
     }
 
     public UUID getCompanyId() {

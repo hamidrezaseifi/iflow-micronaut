@@ -62,6 +62,18 @@ public class UserController {
   }
 
   @Secured(SecurityRule.IS_AUTHENTICATED)
+  @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_CREATE)
+  public HttpResponse<UserEdo> createUser(@Body @Valid final UserEdo userEdo) throws Exception {
+
+    final Optional<UserEntity> userOptional = this.usersService.create(this.userMapper.fromEdo(userEdo));
+
+    if(userOptional.isPresent()){
+      return HttpResponse.created(this.userMapper.toEdo(userOptional.get()));
+    }
+    return HttpResponse.badRequest();
+  }
+
+  @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_SAVE)
   public HttpResponse<UserEdo> saveUser(@Body @Valid final UserEdo userEdo) throws Exception {
 
@@ -72,7 +84,6 @@ public class UserController {
     }
     return HttpResponse.badRequest();
   }
-
   @Secured(SecurityRule.IS_AUTHENTICATED)
   @Post(value = ApiUrlConstants.ProfileUrlConstants.USER_PASSWORD_RESET)
   public HttpResponse<?> resetPassword(@Body @Valid final UserPasswordResetRequestEdo userPasswordResetRequestEdo,

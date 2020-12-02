@@ -179,8 +179,8 @@ public class UsersService implements IUsersService {
   }
 
   @Override
-  public List<UserEntity> getUserListByIdentityList(Set<String> identityList) {
-    return this.userRepository.getUserListByIdentityList(identityList);
+  public List<UserEntity> getUserListByIdList(Set<UUID> idList) {
+    return this.userRepository.getUserListByIdList(idList);
   }
 
   @Override

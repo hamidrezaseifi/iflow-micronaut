@@ -97,7 +97,7 @@ public class WorkflowAction extends GuiBaseModel {
   }
 
   public String getAssignToUserName() {
-    return this.assignToUser != null ? this.assignToUser.getIdentity() : "";
+    return this.assignToUser != null ? this.assignToUser.getUsername() : null;
   }
 
   public boolean isAssignTo(final UUID userId) {

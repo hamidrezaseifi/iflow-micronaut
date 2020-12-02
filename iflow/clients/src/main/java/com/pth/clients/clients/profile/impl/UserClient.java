@@ -21,6 +21,18 @@ public class UserClient extends ClientBase implements IUserClient {
   }
 
   @Override
+  public Optional<UserEdo> createUser(String authorization, UserEdo userEdo) {
+
+    HttpResponse<UserEdo> response =
+            this.userDeclarativeClient.createUser(prepareBearerAuthorization(authorization), userEdo);
+    if(response.getStatus() == HttpStatus.CREATED){
+      return  response.getBody();
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
   public Optional<UserEdo> saveUser(String authorization, UserEdo userEdo) {
 
     HttpResponse<UserEdo> response =

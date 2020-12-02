@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface IUserClient {
 
+  Optional<UserEdo> createUser(String authorization, UserEdo userEdo);
+
   Optional<UserEdo> saveUser(String authorization, UserEdo userEdo);
 
   void resetPassword(String authorization,

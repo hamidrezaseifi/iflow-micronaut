@@ -10,10 +10,10 @@ import java.util.UUID;
 
 public interface IUserRepository extends IEntityRepository<UserEntity> {
     Optional<UserEntity> getByUsername(String username);
-    Optional<UserEntity> getByIdentity(String identity);
+    Optional<UserEntity> getById(UUID id);
     Optional<UserEntity> getUserByUsername(String email);
     List<UserEntity> getUserListByCompanyId(UUID companyId);
     List<UserEntity> getUserListByDepartmentId(UUID departmentId);
-    List<UserEntity> getUserListByIdentityList(Set<String> identityList);
+    List<UserEntity> getUserListByIdList(Set<UUID> idList);
 
 }

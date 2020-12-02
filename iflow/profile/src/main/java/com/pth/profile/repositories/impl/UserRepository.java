@@ -40,8 +40,8 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<UserEntity> getByIdentity(String identity) {
-        return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.identity), identity)));
+    public Optional<UserEntity> getById(UUID id) {
+        return queryScala((cb, root) -> (cb.equal(root.get(UserEntity_.id), id)));
     }
 
     @Override
@@ -78,8 +78,8 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserEntity> getUserListByIdentityList(Set<String> identityList) {
-        return queryCollection((cb, root) -> ( root.get(UserEntity_.identity).in(identityList)));
+    public List<UserEntity> getUserListByIdList(Set<UUID> idList) {
+        return queryCollection((cb, root) -> ( root.get(UserEntity_.id).in(idList)));
 
     }
 

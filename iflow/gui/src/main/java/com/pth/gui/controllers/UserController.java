@@ -82,7 +82,7 @@ public class UserController {
         SessionData sessionData = getSessionData(session);
 
         requestUser.setCompanyId(sessionData.getCompanyId());
-        final Optional<User> userOptional = this.userHandler.saveUser(sessionData.getRefreshToken(), requestUser);
+        final Optional<User> userOptional = this.userHandler.createUser(sessionData.getRefreshToken(), requestUser);
         if(userOptional.isPresent()){
             final String generatedPassword =
                     this.userHandler.saveUserPassword(sessionData.getRefreshToken(),

@@ -17,7 +17,6 @@ import com.pth.gui.enums.EUiUserRole;
 @JsonIgnoreProperties(value = { "authorities", "enabled", })
 public class User extends GuiBaseModel {
 
-  private String identity;
   private UUID companyId;
   private String username;
   private String email;
@@ -344,16 +343,6 @@ public class User extends GuiBaseModel {
   public String getUserTitle() {
 
     return this.lastName + ", " + this.firstName;
-  }
-
-  public String getIdentity() {
-
-    return this.identity;
-  }
-
-  public void setIdentity(final String identity) {
-
-    this.identity = identity;
   }
 
 }

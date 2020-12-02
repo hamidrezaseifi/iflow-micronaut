@@ -59,6 +59,7 @@ public class ApiUrlConstants {
         public static final String API001_CORE001_USERGROUP = API001_PROFILE001_ROOT + "/usergroup";
 
 
+        public static final String USER_CREATE = "/users/create";
         public static final String USER_SAVE = "/users/save";
         public static final String USER_DELETE = "/users/delete";
         public static final String USER_READ_BY_ID = "/readbyidentity/{id}";

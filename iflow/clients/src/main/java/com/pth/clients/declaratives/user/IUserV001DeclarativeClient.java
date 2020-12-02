@@ -15,6 +15,10 @@ import java.util.UUID;
 @Client(id = "profile")
 public interface IUserV001DeclarativeClient {
 
+    @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_CREATE)
+    HttpResponse<UserEdo> createUser(@Header("Authorization") String authorization,
+                                   @Body @Valid final UserEdo userEdo);
+
     @Post(ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USER_SAVE)
     HttpResponse<UserEdo> saveUser(@Header("Authorization") String authorization,
                                    @Body @Valid final UserEdo userEdo);

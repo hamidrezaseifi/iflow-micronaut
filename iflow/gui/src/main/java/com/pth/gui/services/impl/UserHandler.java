@@ -33,6 +33,16 @@ public class UserHandler implements IUserHandler {
     }
 
     @Override
+    public Optional<User> createUser(String authorization, final User user) {
+
+        final Optional<UserEdo> savedUserOptional = this.userClient.createUser(authorization, userMapper.toEdo(user));
+        if(savedUserOptional.isPresent()){
+            return Optional.of(userMapper.fromEdo(savedUserOptional.get()));
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<User> saveUser(String authorization, final User user) {
 
         final Optional<UserEdo> savedUserOptional = this.userClient.saveUser(authorization, userMapper.toEdo(user));

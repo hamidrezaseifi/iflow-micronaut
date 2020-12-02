@@ -11,15 +11,17 @@ import java.util.UUID;
 
 public interface IUserHandler {
 
-  public Optional<User> saveUser(String authorization, final User user);
+  Optional<User> createUser(String authorization, final User user);
 
-  public List<User> getCompanyUserList(String authorization, final UUID companyId);
+  Optional<User> saveUser(String authorization, final User user);
 
-  public void deleteUser(String authorization, User user);
+  List<User> getCompanyUserList(String authorization, final UUID companyId);
 
-  public String saveUserPassword(String authorization, UUID userId, String password , boolean resetPassword);
+  void deleteUser(String authorization, User user);
 
-  public List<UserDashboardMenu> saveUserDashboardMenus(String authorization,
+  String saveUserPassword(String authorization, UUID userId, String password , boolean resetPassword);
+
+  List<UserDashboardMenu> saveUserDashboardMenus(String authorization,
                                                         List<UserDashboardMenu> userDashboardMenuList,
                                                         UUID userId);
 
