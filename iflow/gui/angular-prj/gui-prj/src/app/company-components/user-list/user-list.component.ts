@@ -176,6 +176,9 @@ export class UserListComponent implements OnInit {
 		this.isCreating = false;
 		this.editingUser = user;
 		this.editingUserDepartments = this.editingUser.userDepartments;
+		if(this.editingUserDepartments === undefined){
+		  this.editingUserDepartments = [];
+		}
 
 		this.setToControlValues();
 

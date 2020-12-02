@@ -22,11 +22,11 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
         implements IEntityRepository<TEntity> {
 
     @PersistenceContext
-    private final EntityManager entityManager;
+    protected final EntityManager entityManager;
 
-    private final Class<TEntity> entityType;
+    protected final Class<TEntity> entityType;
 
-    private final HibernatePredicateQueryAdapter hibernatePredicateQueryAdapter;
+    protected final HibernatePredicateQueryAdapter hibernatePredicateQueryAdapter;
 
     public AEntityRdbmsHibernateRepository(Class<TEntity> entityType,
                                            EntityManager entityManager) {

@@ -13,7 +13,8 @@ public class UserDepartmentEntity {
 
   @Id
   @Column(name = "id")
-  protected long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  protected Long id;
 
   @Column(name = "department_id")
   private UUID departmentId;

@@ -14,10 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 @Repository
@@ -83,6 +80,22 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
     @Transactional(readOnly = true)
     public List<UserEntity> getUserListByIdentityList(Set<String> identityList) {
         return queryCollection((cb, root) -> ( root.get(UserEntity_.identity).in(identityList)));
+
+    }
+
+    @Override
+    public void update(UserEntity model){
+
+        Optional<UserEntity> foundUserOptional = getById(model.getId());
+        if(foundUserOptional.isPresent()){
+            UserEntity foundModel = foundUserOptional.get();
+
+            model.setPasswordHash(foundModel.getPasswordHash());
+            model.setPasswordSalt(foundModel.getPasswordSalt());
+
+            super.update(model);
+        }
+
 
     }
 

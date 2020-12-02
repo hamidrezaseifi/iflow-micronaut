@@ -43,8 +43,7 @@ public class UserGroupEntity extends BaseEntity {
   @Column(name = "updated_at", insertable = false, updatable = false)
   private Date updatedAt;
 
-  @ManyToMany(mappedBy = "groups", fetch = FetchType.EAGER)
-  private Set<UserEntity> users = new HashSet<>();
+
 
   public UserGroupEntity() {
 
@@ -131,16 +130,6 @@ public class UserGroupEntity extends BaseEntity {
   public void setUpdatedAt(final Date updatedAt) {
 
     this.updatedAt = updatedAt;
-  }
-
-  public Set<UserEntity> getUsers() {
-
-    return users;
-  }
-
-  public void setUsers(final Set<UserEntity> users) {
-
-    this.users = users;
   }
 
 }

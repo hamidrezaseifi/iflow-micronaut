@@ -65,21 +65,21 @@ public class UserEntity extends BaseEntity {
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<String> roles;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "user_usergroup", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "user_group") }
     )
     private Set<UserGroupEntity> groups;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinTable(
             name = "user_deputy", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "deputy_id") }
     )
     private Set<UserEntity> deputies;
 
     @ElementCollection
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "user")
+    //@Fetch(value = FetchMode.SUBSELECT)
     private Set<UserDepartmentEntity> userDepartments;
 
     public UserEntity() {

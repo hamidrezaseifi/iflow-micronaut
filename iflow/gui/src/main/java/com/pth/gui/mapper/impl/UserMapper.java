@@ -24,6 +24,30 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
 
     @Override
     public UserEdo toEdo(User model) {
+        UserEdo edo = extractUserEdo(model);
+
+        for(UserDepartment ud: model.getUserDepartments()){
+            UserDepartmentEdo udEdo = new UserDepartmentEdo();
+            udEdo.setDepartmentId(ud.getDepartmentId());
+            udEdo.setMemberType(ud.getMemberType().getValue());
+            udEdo.setUserId(model.getId());
+            edo.addUserDepartment(udEdo);
+        }
+
+        for(User ue: model.getDeputies()){
+            UserEdo udEdo = extractUserEdo(ue);
+            edo.addDeputy(udEdo);
+        }
+
+
+        for(UserGroup ue: model.getGroups()){
+            UserGroupEdo udEdo = MappingUtils.copyProperties(ue, new UserGroupEdo());
+            edo.addGroup(udEdo);
+        }
+        return edo;
+    }
+
+    private UserEdo extractUserEdo(User model) {
         UserEdo edo = new UserEdo();
 
         edo.setFirstName(model.getFirstName());
@@ -39,22 +63,6 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
         edo.setRoles(model.getRoles());
         edo.setId(model.getId());
         edo.setUsername(model.getUsername());
-
-        for(UserDepartment ud: model.getUserDepartments()){
-            UserDepartmentEdo udEdo = MappingUtils.copyProperties(ud, new UserDepartmentEdo());
-            edo.addUserDepartment(udEdo);
-        }
-
-        for(User ue: model.getDeputies()){
-            UserEdo udEdo = MappingUtils.copyProperties(ue, new UserEdo());
-            edo.addDeputy(udEdo);
-        }
-
-
-        for(UserGroup ue: model.getGroups()){
-            UserGroupEdo udEdo = MappingUtils.copyProperties(ue, new UserGroupEdo());
-            edo.addGroup(udEdo);
-        }
         return edo;
     }
 
