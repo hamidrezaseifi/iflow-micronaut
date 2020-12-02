@@ -93,18 +93,21 @@ export class UserListComponent implements OnInit {
         this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
                                                                                             if(generalData != null){
                                                                                               this.departments = generalData.company.departments;
-                                                                                              console.log("department list form loaded data:", this.departments);
                                                                                             }
                                                                                         });
 
         for(var index in this.userDepartmentAccessType){
           const key = this.userDepartmentAccessType[index];
-          translate.get(key).subscribe((res: string) => {
-            this.userDepartmentAccessType[index] = res;
-          });
+          this.setUserDepartmentAccessTypeLabel(index , key, translate);
         }
 
 
+	}
+
+	private setUserDepartmentAccessTypeLabel(index: number, key: string, translate:TranslateService){
+	    translate.get(key).subscribe((res: string) => {
+          this.userDepartmentAccessType[index] = res;
+      });
 	}
 
 	ngOnInit() {
@@ -140,9 +143,6 @@ export class UserListComponent implements OnInit {
 
 		this.editService.listUsers().subscribe(
 	        (results :User[]) => {
-
-	            console.log("User list", results);
-
 	            this.users = results;
 	        },
 	        response => {
@@ -191,7 +191,7 @@ export class UserListComponent implements OnInit {
 
 		for(var index in this.viewingUser.userDepartments){
 			var userDepartment :UserDepartment = this.viewingUser.userDepartments[index];
-			var dep = this.findDepartment(userDepartment.departmentIdentity);
+			var dep = this.findDepartment(userDepartment.departmentId);
 			this.viewingDepartmentMember.push({"title" : dep != null ? dep.title : "not found!" , "type":this.userDepartmentAccessType[userDepartment.memberType]});
 		}
 
@@ -199,9 +199,9 @@ export class UserListComponent implements OnInit {
 		this.showViewModal = true;
 	}
 
-	findDepartment(identity: string):Department{
+	findDepartment(id: string):Department{
 		for(var index in this.departments){
-			if(this.departments[index].identity === identity){
+			if(this.departments[index].id === id){
 				return this.departments[index];
 			}
 		}
@@ -285,12 +285,9 @@ export class UserListComponent implements OnInit {
 
 		for(var index in this.editingUserDepartments){
 			if(this.editingUserDepartments[index].departmentIdentity === identity){
-				console.log("meberTypeOfDepartment: " + identity + " , " + this.editingUserDepartments[index].memberType);
-
 				return this.editingUserDepartments[index].memberType + "";
 			}
 		}
-		console.log("meberTypeOfDepartment: " + identity + " , 0");
 		return "0";
 	}
 
@@ -311,7 +308,6 @@ export class UserListComponent implements OnInit {
 
 		this.editService.deleteUser(this.deletingUser).subscribe(
 		        (result) => {
-		            console.log("Delete user result success.");
 		            this.showDeleteModal = false;
 		            this.reload();
 

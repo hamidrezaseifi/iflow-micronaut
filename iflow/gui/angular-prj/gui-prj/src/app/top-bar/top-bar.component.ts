@@ -50,7 +50,6 @@ export class TopBarComponent implements OnInit {
 
       this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
                                                                                     if(generalData != null){
-                                                                                      console.log("generaldata in topbar", generalData);
                                                                                       if(generalData.user != null){
                                                                                         this.currentUser = generalData.user.currentUser;
                                                                                       }
@@ -98,7 +97,6 @@ export class TopBarComponent implements OnInit {
 	  this.loadingService.showLoading();
     this.loginService.logout().subscribe(
                                           (data :any) => {
-                                              console.log("Logout successful data", data);
                                               this.loadingService.hideLoading();
                                               this.global.removeSessionData();
                                               this.global.removeSessionId();
