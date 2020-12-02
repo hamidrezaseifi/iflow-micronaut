@@ -49,8 +49,8 @@ public class UserController {
     }
 
 
-    @Post(value = "/workflowmessages{?reset}" , produces = MediaType.APPLICATION_JSON)
-    public HttpResponse<List<WorkflowMessage>> listWorkflowMessages(Optional<String> reset, Session session){
+    @Get(value = "/workflowmessages")
+    public HttpResponse<List<WorkflowMessage>> listWorkflowMessages(@QueryValue(value = "reset" , defaultValue = "") String reset, Session session){
 
         List<WorkflowMessage> messageList = new ArrayList<>();
 

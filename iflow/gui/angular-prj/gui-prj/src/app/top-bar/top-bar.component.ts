@@ -20,6 +20,11 @@ export class TopBarComponent implements OnInit {
 	@Input('menus')
 	set setMenus(_menus: MenuItem[]) {
 
+      loadMenus(_menus);
+	}
+
+	private loadMenus(_menus: MenuItem[]) {
+
 	    if(Array.isArray(_menus) == false){
 	      return;
 	    }
@@ -51,7 +56,8 @@ export class TopBarComponent implements OnInit {
                                                                                       }
                                                                                       this.isLogged = generalData.isLogged;
                                                                                       if(generalData.app != null){
-                                                                                        this.menus=generalData.app.menus;
+                                                                                        this.loadMenus(generalData.app.menus);
+
                                                                                       }
                                                                                       this.isPresent = false;
                                                                                     }
@@ -59,7 +65,7 @@ export class TopBarComponent implements OnInit {
                                                                                       console.log("generaldata in topbar is null");
                                                                                       this.currentUser = null;
                                                                                       this.isLogged = false;
-                                                                                      this.menus = [];
+                                                                                      this.loadMenus([]);
                                                                                       this.isPresent = false;
                                                                                     }
 
@@ -74,7 +80,7 @@ export class TopBarComponent implements OnInit {
 
 		this.translate.get(menu.id).subscribe((res: string) => {
 			menu.label = res;
-	    });
+	  });
 
 		for(var index in menu.children){
 			this.setMenuLabel(menu.children[index]);

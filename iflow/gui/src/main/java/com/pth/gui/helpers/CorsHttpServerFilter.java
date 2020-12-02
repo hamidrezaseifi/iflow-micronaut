@@ -1,5 +1,6 @@
 package com.pth.gui.helpers;
 
+import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.http.HttpMethod;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.MutableHttpResponse;
@@ -19,6 +20,12 @@ import java.util.Optional;
 @Filter(value = {"/**/data/**", "/auth/**"})
 public class CorsHttpServerFilter implements HttpServerFilter
 {
+    private GuiAppProperties guiAppProperties;
+
+    public CorsHttpServerFilter(GuiAppProperties guiAppProperties) {
+        this.guiAppProperties = guiAppProperties;
+    }
+
     @Override
     public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request,
                                                       ServerFilterChain chain) {
@@ -28,7 +35,7 @@ public class CorsHttpServerFilter implements HttpServerFilter
         return Flowable.fromPublisher(publisher)
                        .doOnNext(response -> {
 
-                           response.getHeaders().add("Access-Control-Allow-Origin","http://localhost:4200");
+                           response.getHeaders().add("Access-Control-Allow-Origin", guiAppProperties.getCliServer());
                            response.getHeaders().add("Access-Control-Allow-Credentials","true");
                            response.getHeaders().add("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
                            response.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Host");
@@ -43,4 +50,5 @@ public class CorsHttpServerFilter implements HttpServerFilter
 
         //return chain.proceed(request);
     }
+
 }

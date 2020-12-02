@@ -19,7 +19,7 @@
 		    <label for="companyTypeCustomeView">{{ 'company-type-custome' | translate }}</label>
 		    <input class="form-control" value="{{ companyInfo.companyTypeCustome }}" readonly id="companyTypeCustomeView">
 		  </div>
-	
+
 	</div>
 	<div class="fade data-form-group editing-form-group" [ngClass]="{'show' : isEditing}">
 		<form id="company-form" name="companyEditForm" [formGroup]="companyEditForm">
@@ -34,18 +34,15 @@
 				<option *ngFor="let type of companyTypeList" value="{{ type }}">{{ getTitleForCompanyType(type) }}</option>
 			</select>
 		    <div class="invalid-message" *ngIf="companyEditForm.controls.companyType.touched && companyEditForm.controls.companyType.hasError('required')">{{ 'company-type-error-message' | translate }}</div>
-		    
+
 		  </div>
 		  <div class="form-group" *ngIf="companyEditForm.controls.companyType.value === 'CUSTOME'">
 		    <label for="companyTypeCustome">{{ 'company-type-custome' | translate }}</label>
 		    <input type="text" name="companyTypeCustome" formControlName="companyTypeCustome" class="form-control" id="companyTypeCustome">
 		  </div>
-		  
-		</form>			
+
+		</form>
 	</div>
 
-					
-	<div style="padding: 5px; border: solid gray 1px; margin-top: 10px;">{{ debug() | json}}</div>
-							
-							
-							
+
+

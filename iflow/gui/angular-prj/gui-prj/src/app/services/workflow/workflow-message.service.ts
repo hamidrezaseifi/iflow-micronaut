@@ -15,7 +15,7 @@ import { HttpHepler } from '../../helper/http-hepler';
 export class WorkflowMessageService {
 
 	loadMessageUrl :string = HttpHepler.dataServer + "/users/data/workflowmessages";
-	assignWorkflowUrl :string = "http://localhost:1200/users/data/workflow/assign/";
+	assignWorkflowUrl :string = HttpHepler.dataServer + "/users/data/workflow/assign/";
 
 	isReloadingMessages : boolean = false;
 
@@ -30,6 +30,7 @@ export class WorkflowMessageService {
 	}
 
     public get workflowMessageList(): WorkflowMessage[] {
+
         return this.workflowMessageListSubject.value;
     }
 
@@ -38,10 +39,9 @@ export class WorkflowMessageService {
     	this.isReloadingMessages = true;
     	var url = this.loadMessageUrl + "?reset=" + (resetCach ? "1" : "0");
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+      const headers = new HttpHeaders();
 
-    	return this.http.post(url, new HttpParams());
-
+      return this.http.get(url);
 	}
 
 	assignMe(workflowIdentity: string){

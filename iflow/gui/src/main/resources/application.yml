@@ -1,3 +1,11 @@
+iflow:
+  gui:
+    uploadfile:
+      temp-base-dir: c:/upload/temp
+      archive-base-dir: c:/upload/archive
+    cli-port: 4200
+    cli-server: "http://localhost:4200"
+
 micronaut:
   application:
     name: gui
@@ -19,7 +27,7 @@ micronaut:
           - Set-Cookie
           - myxyz
         allowedOrigins:
-          - "http://localhost:4200"
+          - ${iflow.gui.cli-server}
         allowedMethods:
           - OPTIONS
           - POST
@@ -149,8 +157,3 @@ micronaut:
     securities:
       passwordpepper: passwordpepper
 
-iflow:
-  gui:
-    uploadfile:
-      temp-base-dir: c:/upload/temp
-      archive-base-dir: c:/upload/archive
