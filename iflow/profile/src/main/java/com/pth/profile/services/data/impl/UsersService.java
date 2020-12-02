@@ -225,8 +225,8 @@ public class UsersService implements IUsersService {
     if(refreshTokenEntityOptional.isPresent()){
       RefreshTokenEntity tokenEntity = refreshTokenEntityOptional.get();
       CompanyEntity companyEntity = userEntity.getCompany();
-      List<DepartmentEntity> departments = userEntity.getUserDepartments().stream().map(ud -> ud.getDepartment()).collect(Collectors.toList());
-      List<UserGroupEntity> userGroups = userEntity.getGroups().stream().collect(Collectors.toList());
+      List<DepartmentEntity> departments = departmentRepository.getListByIdCompanyId(companyEntity.getId());
+      List<UserGroupEntity> userGroups = userGroupRepository.getListByIdCompanyId(companyEntity.getId());
       List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings = this.workflowTypeOcrSettingPresetRepository.getByCompanyId(userEntity.getCompanyId());
       List<UserDashboardMenuEntity> userDashboardMenus = this.userDashboardMenuRepository.getByUserId(userEntity.getId(), appId);
 

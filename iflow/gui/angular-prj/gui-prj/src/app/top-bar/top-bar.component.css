@@ -86,7 +86,7 @@ ul.navbar-nav li.nav-item {
     padding: 3px 5px;
 }
 
-div.iflow-navbar-bar{
+.iflow-navbar{
 	background: #0169be;
 	color: white;
 }
@@ -96,6 +96,7 @@ div.iflow-navbar-bar{
   height: 36px;
   float: left;
   margin-left: 20px;
+  background-color: white;
 }
 
 a.navbar-brand{
