@@ -131,11 +131,11 @@
 								<span class="department-item-label">{{dep.title}}</span>
 
 								<div class="custom-control custom-checkbox custom-control-inline dep-member">
-								  <input type="checkbox" [checked]="isMemberOfDepartment(dep.identity)" (change)="toggleMemberOfDepartment(dep.identity)" class="custom-control-input" id="dep{{dep.identity}}">
-								  <label class="custom-control-label" for="dep{{dep.identity}}"></label>
+								  <input type="checkbox" [checked]="isMemberOfDepartment(dep.id)" (change)="toggleMemberOfDepartment(dep.id)" class="custom-control-input" id="dep{{dep.id}}">
+								  <label class="custom-control-label" for="dep{{dep.id}}"></label>
 								</div>
 
-								<select #select [ngModel]="meberTypeOfDepartment(dep.identity)" name="meberTypeOfDepartment" (change)="onMeberTypeOfDepartmentChange($event, dep.identity, select.value)" class="dep-membertype" *ngIf="isMemberOfDepartment(dep.identity)">
+								<select #select [ngModel]="meberTypeOfDepartment(dep.id)" name="meberTypeOfDepartment" (change)="onMeberTypeOfDepartmentChange($event, dep.id, select.value)" class="dep-membertype" *ngIf="isMemberOfDepartment(dep.id)">
 									<option *ngFor="let item of userDepartmentAccessType | keyvalue" value="{{item.key}}">{{ item.value }}</option>
 								</select>
 								<div class="clear"></div>

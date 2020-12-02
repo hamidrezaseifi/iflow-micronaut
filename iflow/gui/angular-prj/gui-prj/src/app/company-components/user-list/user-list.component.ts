@@ -104,7 +104,7 @@ export class UserListComponent implements OnInit {
 
 	}
 
-	private setUserDepartmentAccessTypeLabel(index: number, key: string, translate:TranslateService){
+	private setUserDepartmentAccessTypeLabel(index: string, key: string, translate:TranslateService){
 	    translate.get(key).subscribe((res: string) => {
           this.userDepartmentAccessType[index] = res;
       });
@@ -244,7 +244,7 @@ export class UserListComponent implements OnInit {
 		this.showResetPasswordModal = true;
 	}
 
-	isMemberOfDepartment(identity:string): boolean{
+	isMemberOfDepartment(id:string): boolean{
 
 		if(this.editingUser == null){
 			return false;
@@ -252,7 +252,7 @@ export class UserListComponent implements OnInit {
 
 
 		for(var index in this.editingUserDepartments){
-			if(this.editingUserDepartments[index].departmentIdentity === identity){
+			if(this.editingUserDepartments[index].departmentId === id){
 				return true;
 			}
 		}
@@ -261,40 +261,40 @@ export class UserListComponent implements OnInit {
 		return false;
 	}
 
-	toggleMemberOfDepartment(identity:string){
+	toggleMemberOfDepartment(id:string){
 
 		if(this.editingUser == null){
 			return;
 		}
 
-		if(this.isMemberOfDepartment(identity)){
+		if(this.isMemberOfDepartment(id)){
 			this.editingUserDepartments = this.editingUserDepartments.filter(function(userDep){
-				return userDep.departmentIdentity != identity;
+				return userDep.departmentId != id;
 			});
 		}
 		else{
 			var userDep = new UserDepartment;
-			userDep.departmentIdentity = identity;
+			userDep.departmentId = id;
 			userDep.memberType = 5;
 			this.editingUserDepartments.push(userDep);
 		}
 
 	}
 
-	meberTypeOfDepartment(identity:string):string{
+	meberTypeOfDepartment(id:string):string{
 
 		for(var index in this.editingUserDepartments){
-			if(this.editingUserDepartments[index].departmentIdentity === identity){
+			if(this.editingUserDepartments[index].departmentId === id){
 				return this.editingUserDepartments[index].memberType + "";
 			}
 		}
 		return "0";
 	}
 
-	onMeberTypeOfDepartmentChange(event, identity:string, value:number){
+	onMeberTypeOfDepartmentChange(event, id:string, value:number){
 
 		for(var index in this.editingUserDepartments){
-			if(this.editingUserDepartments[index].departmentIdentity === identity){
+			if(this.editingUserDepartments[index].departmentId === id){
 				this.editingUserDepartments[index].memberType = value;
 				return;
 			}
