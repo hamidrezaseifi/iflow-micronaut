@@ -56,8 +56,12 @@ export class UserListComponent implements OnInit {
 
 	activeTab :string = "info";
 
-	userDepartmentAccessType :{} = { 0 : "user-department-access-no", 5 : "user-department-access-member",
-			15 : "user-department-access-deputy", 20 : "user-department-access-manager"};
+	userDepartmentAccessType :{} = {
+	  0 : "user-department-access-no",
+	  5 : "user-department-access-member",
+		15 : "user-department-access-deputy",
+		20 : "user-department-access-manager"
+	};
 
 	constructor(
 		  private router: Router,
@@ -86,26 +90,18 @@ export class UserListComponent implements OnInit {
         });
 
 
-        if(this.global.getSessionData() != null){
-          this.departments = this.global.getSessionData().company.departments;
-          console.log("department list form loaded data:", this.departments);
-        }
-        else{
-          console.log("loading department list...");
-          this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
-
-          this.generalDataObs.subscribe(data => {
-            this.departments = data.company.departments;
-            console.log("loading department list:", this.departments);
-          });
-
-          this.global.loadAllSetting();
-        }
+        this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
+                                                                                            if(generalData != null){
+                                                                                              this.departments = generalData.company.departments;
+                                                                                              console.log("department list form loaded data:", this.departments);
+                                                                                            }
+                                                                                        });
 
         for(var index in this.userDepartmentAccessType){
-          translate.get(this.userDepartmentAccessType[index]).subscribe((res: string) => {
+          const key = this.userDepartmentAccessType[index];
+          translate.get(key).subscribe((res: string) => {
             this.userDepartmentAccessType[index] = res;
-              });
+          });
         }
 
 

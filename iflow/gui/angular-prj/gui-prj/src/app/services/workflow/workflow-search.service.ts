@@ -19,8 +19,8 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 
 	public searchInitialDataSubject: BehaviorSubject<WorkflowListInitialData> = new BehaviorSubject<WorkflowListInitialData>(null);
 
-	loadInitialUrl :string = "http://localhost:1200/workflow/general/data/initsearch";
-	searchUrl :string = "http://localhost:1200/workflow/general/data/search";
+	loadInitialUrl :string = HttpHepler.dataServer + "/workflow/general/data/initsearch";
+	searchUrl :string = HttpHepler.dataServer + "/workflow/general/data/search";
 	listInitialData :WorkflowListInitialData = null;
 
 	constructor(

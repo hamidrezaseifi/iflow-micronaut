@@ -51,7 +51,7 @@ export class WorkflowEditBaseService extends HttpErrorResponseHelper implements 
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return "http://localhost:1200/general/data/uploadtempfile";
+		return HttpHepler.dataServer + "/general/data/uploadtempfile";
 	}
 
 	getInitEditUrl(identity :string) :string{

@@ -20,7 +20,7 @@ import { User, MenuItem, GeneralData } from './ui-models';
 })
 export class AppComponent implements OnInit  {
 
-	generalDataObs :Observable<GeneralData> = null;
+	generalData: GeneralData = new GeneralData;
 
   appShowLoading: boolean = false;
 
@@ -53,16 +53,15 @@ export class AppComponent implements OnInit  {
 		this.router.events.subscribe((evt) => {
  	        if (evt instanceof NavigationEnd) {
 
- 	        	//if(this.autService.isLoggedIn === true && this.appCurrentUser === null){
- 	        		//this.subscribeToGeneralData();
- 	        		//this.global.loadAllSetting(null);
- 	        		//alert("nav end from app-comp");
- 	        	//}
 
  	        }
 		});
 
-		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+    this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
+                                                                                        if(generalData != null){
+                                                                                          this.generalData = generalData;
+                                                                                        }
+                                                                                    });
 
 	}
 

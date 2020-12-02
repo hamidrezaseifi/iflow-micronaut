@@ -20,7 +20,7 @@ export class TopBarComponent implements OnInit {
 	@Input('menus')
 	set setMenus(_menus: MenuItem[]) {
 
-      loadMenus(_menus);
+      this.loadMenus(_menus);
 	}
 
 	private loadMenus(_menus: MenuItem[]) {

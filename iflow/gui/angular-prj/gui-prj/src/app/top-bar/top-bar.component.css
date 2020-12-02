@@ -30,18 +30,21 @@ button.user-toggle-button i.material-icons {
 	background: #0169be;
   color: white;
   margin: 0;
+  padding: 0;
+  padding-top: 5px;
 }
 
 .iflow-navbar .dropdown-menu:hover{
 	background: #0169be;
-    color: #ffffd7;
+  color: #ffffd7;
 }
 
 .iflow-navbar .dropdown-item{
 	color: white;
 	width: 220px !important;
 	background: #0169be;
-
+  padding: 2px 5px;
+  display: inline-block;
 }
 
 .iflow-navbar .navbar-item .dropdown-item{

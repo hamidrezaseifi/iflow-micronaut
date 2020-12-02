@@ -7,7 +7,7 @@
 
 </div>
 
-<app-message-bar [currentUser]="(generalDataObs | async)?.user.currentUser" [isLogged]="(generalDataObs | async)?.isLogged" *ngIf="(generalDataObs | async)?.isLogged"></app-message-bar>
+<app-message-bar [currentUser]="generalData.user.currentUser" [isLogged]="generalData.isLogged" *ngIf="generalData.isLogged"></app-message-bar>
 
 <app-error-dialog></app-error-dialog>
 

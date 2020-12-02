@@ -24,31 +24,31 @@ export class TestthreetaskWorkflowEditService extends WorkflowEditBaseService {
 	workflowSaveRequestInit :WorkflowSaveRequestInit = null;
 
 	getInitCreateUrl() :string{
-		return "http://localhost:1200/workflow/testthreetask/data/initcreate";
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/initcreate";
 	}
 
 	getCreateWorkflowUrl() :string{
-		return "http://localhost:1200/workflow/testthreetask/data/create";
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/create";
 	}
 
 	getUploadFileUrl() :string{
-		return "http://localhost:1200/workflow/testthreetask/data/createfile";
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/createfile";
 	}
 
 	getSaveWorkflowUrl() :string{
-		return "http://localhost:1200/workflow/testthreetask/data/save";
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/save";
 	}
 
 	getDoneWorkflowUrl() :string{
-		return "http://localhost:1200/workflow/testthreetask/data/done";
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/done";
 	}
 
 	getArchiveWorkflowUrl() :string{
-		return "http://localhost:1200/workflow/testthreetask/data/archive";
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/archive";
 	}
 
 	getInitEditUrl(identity :string) :string{
-		return "http://localhost:1200/workflow/testthreetask/data/initedit/" + identity;
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/initedit/" + identity;
 	}
 
 
