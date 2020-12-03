@@ -86,7 +86,7 @@ public class UserController {
         if(userOptional.isPresent()){
             final String generatedPassword =
                     this.userHandler.saveUserPassword(sessionData.getRefreshToken(),
-                                                      userOptional.get().getId(),
+                                                      userOptional.get(),
                                                       "",
                                                       true);
             return HttpResponse.created(userOptional.get());
@@ -117,12 +117,17 @@ public class UserController {
     }
 
     @Post(value = "/resetpassword")
-    public HttpResponse<User> resetUserPassword(@Body final User user, Session session) {
+    public HttpResponse<Map<String, Object>> resetUserPassword(@Body final User user, Session session) {
 
         SessionData sessionData = getSessionData(session);
 
-        final String changedPassword = this.userHandler.saveUserPassword(sessionData.getRefreshToken(), user.getId() ,"", true);
-        return HttpResponse.created(user);
+        final String changedPassword = this.userHandler.saveUserPassword(sessionData.getRefreshToken(), user ,"", true);
+        Map<String, Object> map = new HashMap<>();
+        map.put("res" , "ok");
+        map.put("password" , changedPassword);
+        map.put("user" , user);
+
+        return HttpResponse.created(map);
     }
 
     @Post(value = "/saveuserdashboardmenu")

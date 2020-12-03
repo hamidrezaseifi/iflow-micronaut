@@ -45,6 +45,9 @@ public class UsersService implements IUsersService {
 
   @Override
   public Optional<UserEntity> create(UserEntity model) {
+
+    model.setPasswordHash("");
+    model.setPasswordSalt("");
     this.userRepository.save(model);
     return this.userRepository.getById(model.getId());
   }
@@ -67,19 +70,16 @@ public class UsersService implements IUsersService {
       UserEntity userEntity = userEntityOptional.get();
 
       String salt = passwordHashGenerator.produceSalt();
-      String passwordHash = passwordHashGenerator.produceHash("test", salt);
-
-      userEntity.setPasswordSalt(salt);
+      String passwordHash = passwordHashGenerator.produceHash(userPasswordResetRequest.getPassword(), salt);
       userEntity.setPasswordHash(passwordHash);
-      this.userRepository.save(userEntity);
-      Optional<RefreshTokenEntity> refreshTokenEntityOptional =
-              this.refreshTokenRepository.findByUsername(userEntity.getUsername());
-      if(refreshTokenEntityOptional.isPresent()){
+      userEntity.setPasswordSalt(salt);
 
-      }
+
+      this.userRepository.updatePassword(userEntity);
 
     }
-    throw new UserNotFoundException(userId.toString());
+    else
+      throw new UserNotFoundException(userId.toString());
   }
 
   @Override
@@ -235,4 +235,13 @@ public class UsersService implements IUsersService {
     throw new UserNotFoundException(userEntity.getId().toString());
   }
 
+  private UserEntity setPasswordHash(UserEntity model, String password) {
+
+    String salt = passwordHashGenerator.produceSalt();
+    String passwordHash = passwordHashGenerator.produceHash(password, salt);
+    model.setPasswordHash(passwordHash);
+    model.setPasswordSalt(salt);
+
+    return model;
+  }
 }

@@ -75,8 +75,7 @@ public class UserEntity extends BaseEntity {
     private Set<UserEntity> deputies;
 
     @ElementCollection
-    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, orphanRemoval = true, mappedBy = "user")
-    //@Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "user")
     private Set<UserDepartmentEntity> userDepartments;
 
     public UserEntity() {

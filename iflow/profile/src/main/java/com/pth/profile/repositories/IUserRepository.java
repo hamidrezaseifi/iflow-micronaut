@@ -11,6 +11,7 @@ import java.util.UUID;
 public interface IUserRepository extends IEntityRepository<UserEntity> {
     Optional<UserEntity> getByUsername(String username);
     Optional<UserEntity> getById(UUID id);
+    void updatePassword(UserEntity model);
     Optional<UserEntity> getUserByUsername(String email);
     List<UserEntity> getUserListByCompanyId(UUID companyId);
     List<UserEntity> getUserListByDepartmentId(UUID departmentId);

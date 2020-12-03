@@ -35,11 +35,18 @@ public class UserHandler implements IUserHandler {
     @Override
     public Optional<User> createUser(String authorization, final User user) {
 
+        initialUserData(user);
+
         final Optional<UserEdo> savedUserOptional = this.userClient.createUser(authorization, userMapper.toEdo(user));
         if(savedUserOptional.isPresent()){
             return Optional.of(userMapper.fromEdo(savedUserOptional.get()));
         }
         return Optional.empty();
+    }
+
+    private void initialUserData(User user) {
+        user.setUsername(user.getEmail());
+
     }
 
     @Override
@@ -71,22 +78,19 @@ public class UserHandler implements IUserHandler {
 
     @Override
     public String saveUserPassword(String authorization,
-                                           UUID userId,
-                                           String password ,
-                                           boolean resetPassword) {
+                                   User user,
+                                   String password ,
+                                   boolean resetPassword) {
 
         if (resetPassword) {
-            Optional<UserEdo> edoOptional = this.userClient.readUserById(authorization, userId);
-            if(edoOptional.isPresent()){
-                password = this.getResetedPassword(edoOptional.get());
-            }
+            password = this.getResetedPassword(user);
         }
 
         UserPasswordResetRequestEdo userPasswordResetRequestEdo = new UserPasswordResetRequestEdo();
         userPasswordResetRequestEdo.setAppId(EApplication.IFLOW.getIdentity());
-        userPasswordResetRequestEdo.setUserId(userId);
+        userPasswordResetRequestEdo.setUserId(user.getId());
         userPasswordResetRequestEdo.setPassword(password);
-        this.userClient.resetPassword(authorization, userPasswordResetRequestEdo, userId);
+        this.userClient.resetPassword(authorization, userPasswordResetRequestEdo, user.getId());
 
         return password;
     }
@@ -100,9 +104,9 @@ public class UserHandler implements IUserHandler {
         return preparedText;
     }
 
-    private String getResetedPassword(UserEdo userEdo){
-        return this.getStringFirstUpper(userEdo.getFirstName()) +
-               this.getStringFirstUpper(userEdo.getLastName()) +
+    private String getResetedPassword(User user){
+        return this.getStringFirstUpper(user.getFirstName()) +
+               this.getStringFirstUpper(user.getLastName()) +
                "12345!#";
     }
 

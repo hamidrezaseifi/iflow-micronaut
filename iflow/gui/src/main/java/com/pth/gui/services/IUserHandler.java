@@ -19,7 +19,7 @@ public interface IUserHandler {
 
   void deleteUser(String authorization, User user);
 
-  String saveUserPassword(String authorization, UUID userId, String password , boolean resetPassword);
+  String saveUserPassword(String authorization, User user, String password , boolean resetPassword);
 
   List<UserDashboardMenu> saveUserDashboardMenus(String authorization,
                                                         List<UserDashboardMenu> userDashboardMenuList,

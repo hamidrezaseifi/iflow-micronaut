@@ -27,7 +27,6 @@ public class User extends GuiBaseModel {
   private String firstName;
   private String lastName;
   private Integer status;
-  private Integer version;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
   private final Set<UserGroup> groups = new HashSet<>();
@@ -38,8 +37,6 @@ public class User extends GuiBaseModel {
   private EUserAcces permission;
 
   private boolean isEnabled;
-
-  private String password;
 
   public User() {
     super();
@@ -141,24 +138,6 @@ public class User extends GuiBaseModel {
   public boolean isActive() {
 
     return this.status == EUserStatus.ACTIVE.getValue().intValue();
-  }
-
-  /**
-   * @return the version
-   */
-
-  public Integer getVersion() {
-
-    return this.version;
-  }
-
-  /**
-   * @param version the version to set
-   */
-
-  public void setVersion(final Integer version) {
-
-    this.version = version;
   }
 
   /**
@@ -317,16 +296,6 @@ public class User extends GuiBaseModel {
       name += (name.isEmpty() ? "" : ", ") + role.getAuthority().toUpperCase();
     }
     return name;
-  }
-
-  public String getPassword() {
-
-    return this.password;
-  }
-
-  public void setPassword(final String password) {
-
-    this.password = password;
   }
 
   public boolean isEnabled() {

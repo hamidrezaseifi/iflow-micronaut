@@ -335,13 +335,13 @@ export class UserListComponent implements OnInit {
 		this.loadingService.showLoading();
 
 		this.editService.resetUserPassword(this.passwordResetingUser).subscribe(
-		        (resultUser: User) => {
-		            console.log("Reset user password result success.", resultUser);
+		        (result: any) => {
+		            console.log("Reset user password result success.", result);
 		            //this.showDeleteModal = false;
 		            //this.reload();
 
 		    		this.resetPasswordResultMessage = this.resetPasswordResultMessageBase;
-		    		this.resetPasswordResultMessage = this.resetPasswordResultMessage.replace("%" , resultUser.password);
+		    		this.resetPasswordResultMessage = this.resetPasswordResultMessage.replace("%" , result.password);
 
 
 		        },

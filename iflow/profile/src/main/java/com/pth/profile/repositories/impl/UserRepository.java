@@ -84,6 +84,7 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void update(UserEntity model){
 
         Optional<UserEntity> foundUserOptional = getById(model.getId());
@@ -97,6 +98,15 @@ public class UserRepository extends AEntityRdbmsHibernateRepository<UserEntity>
         }
 
 
+    }
+
+
+    @Override
+    @Transactional(readOnly = false)
+    public void updatePassword(UserEntity model){
+
+        //UserEntity mergedModel = this.entityManager.merge(model);
+        super.update(model);
     }
 
 

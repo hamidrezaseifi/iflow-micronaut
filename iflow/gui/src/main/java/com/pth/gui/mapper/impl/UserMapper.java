@@ -62,6 +62,7 @@ public class UserMapper extends ModelEdoMapperBase<User, UserEdo>
         edo.setRoles(model.getRoles());
         edo.setId(model.getId());
         edo.setUsername(model.getUsername());
+
         return edo;
     }
 
