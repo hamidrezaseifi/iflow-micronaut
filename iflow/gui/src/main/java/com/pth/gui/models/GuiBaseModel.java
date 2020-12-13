@@ -5,7 +5,7 @@ import java.util.UUID;
 public class GuiBaseModel {
 
     protected UUID id;
-    private Integer version;
+    protected Integer version;
 
     public GuiBaseModel() {
         this.id = UUID.randomUUID();

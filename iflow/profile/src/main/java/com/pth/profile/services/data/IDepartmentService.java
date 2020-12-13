@@ -13,7 +13,7 @@ public interface IDepartmentService {
 
   Optional<DepartmentEntity> create(DepartmentEntity model);
 
-  Optional<DepartmentEntity> save(DepartmentEntity model);
+  Optional<DepartmentEntity> update(DepartmentEntity model);
 
   void delete(DepartmentEntity model);
 

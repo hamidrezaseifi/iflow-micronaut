@@ -34,4 +34,8 @@ public class SessionDataHelper {
         return sessionDataOptional;
     }
 
+    public static void setSessionData(Session session, SessionData sessionData){
+        session.put(MICRONAUT_AUTHENTICATION_SESSION_KEY, sessionData);
+    }
+
 }

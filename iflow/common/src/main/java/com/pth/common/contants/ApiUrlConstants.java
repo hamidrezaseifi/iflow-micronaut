@@ -75,18 +75,19 @@ public class ApiUrlConstants {
         public static final String USER_PASSWORD_RESET = "/users/resetpassword/{id}";
 
 
-        public static final String DEPARTMENT_READ_BY_ID = "/readbyid/{id}";
-        public static final String DEPARTMENT_SAVE = "/save";
+        public static final String DEPARTMENT_READ_BY_ID = "/read/{id}";
+        public static final String DEPARTMENT_CREATE = "/create";
+        public static final String DEPARTMENT_UPDATE = "/update";
         public static final String DEPARTMENT_DELETE = "/delete";
         public static final String DEPARTMENT_READ_LIST = "/list";
-        public static final String DEPARTMENT_READ_LIST_BY_COMPANYID = "/company/list/{companyid}";
+        public static final String DEPARTMENT_READ_LIST_BY_COMPANYID = "/company/list/{companyId}";
         public static final String DEPARTMENT_READ_ALLUSERLIST_BY_DEPARTMENTID = "/alluser/list/{id}";
         public static final String DEPARTMENT_GET_MANAGER = "/manager/read/{id}";
         public static final String DEPARTMENT_GET_DEPUTY = "/deputy/read/{id}";
 
         public static final String USERGROUP_READ_BY_ID = "/readbyid/{id}";
         public static final String USERGROUP_READ_LIST = "/list";
-        public static final String USERGROUP_READ_LIST_BY_COMPANYID = "/company/list/{companyid}";
+        public static final String USERGROUP_READ_LIST_BY_COMPANYID = "/company/list/{companyId}";
 
 
     }

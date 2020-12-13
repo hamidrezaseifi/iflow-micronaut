@@ -11,14 +11,13 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class DepartmentEdo {
 
-  @NotNull(message = "id must not be null")
   protected UUID id;
 
   @NotNull(message = "Identity must not be null")
   private String identity;
 
-  @NotNull(message = "CompanyIdentity must not be null")
-  private String companyIdentity;
+  @NotNull(message = "CompanyId must not be null")
+  private UUID companyId;
 
   @NotNull
   private String title;
@@ -47,14 +46,12 @@ public class DepartmentEdo {
     this.identity = identity;
   }
 
-  public String getCompanyIdentity() {
-
-    return this.companyIdentity;
+  public UUID getCompanyId() {
+    return companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
-
-    this.companyIdentity = companyIdentity;
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
   public String getTitle() {

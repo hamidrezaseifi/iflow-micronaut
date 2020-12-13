@@ -19,7 +19,7 @@ public class DepartmentMapper extends ModelEdoMapperBase<Department, DepartmentE
         model.setStatus(edo.getStatus());
         model.setIdentity(edo.getIdentity());
         model.setVersion(edo.getVersion());
-        model.setCompanyIdentity(edo.getCompanyIdentity());
+        model.setCompanyId(edo.getCompanyId());
         model.setId(edo.getId());
 
         return model;
@@ -32,7 +32,7 @@ public class DepartmentMapper extends ModelEdoMapperBase<Department, DepartmentE
         edo.setStatus(model.getStatus());
         edo.setIdentity(model.getIdentity());
         edo.setVersion(model.getVersion());
-        edo.setCompanyIdentity(model.getCompanyIdentity());
+        edo.setCompanyId(model.getCompanyId());
         edo.setId(model.getId());
 
         return edo;

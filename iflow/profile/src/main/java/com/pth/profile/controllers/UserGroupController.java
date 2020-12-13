@@ -60,9 +60,9 @@ public class UserGroupController {
 
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_LIST_BY_COMPANYID)
-  public HttpResponse<UserGroupListEdo> readUserGroupListByCompany(final UUID companyid) throws Exception {
+  public HttpResponse<UserGroupListEdo> readUserGroupListByCompany(final UUID companyId) throws Exception {
 
-    final List<UserGroupEntity> modelList = this.userGroupService.getListByIdCompanyId(companyid);
+    final List<UserGroupEntity> modelList = this.userGroupService.getListByIdCompanyId(companyId);
 
     return HttpResponse.ok(new UserGroupListEdo(this.userGroupMapper.toEdoList(modelList)));
   }

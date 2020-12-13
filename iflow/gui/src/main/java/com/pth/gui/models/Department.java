@@ -2,26 +2,17 @@ package com.pth.gui.models;
 
 import java.util.UUID;
 
-public class Department {
+public class Department extends GuiBaseModel {
 
-  private UUID id;
-  private String companyIdentity;
+  private UUID companyId;
   private String identity;
   private String title;
   private Integer status;
-  private Integer version;
   private User manager;
   private User deputy;
 
   public Department() {
-  }
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
+    super();
   }
 
   public String getIdentity() {
@@ -34,14 +25,14 @@ public class Department {
     this.identity = identity;
   }
 
-  public String getCompanyIdentity() {
+  public UUID getCompanyId() {
 
-    return this.companyIdentity;
+    return this.companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
+  public void setCompanyId(final UUID companyId) {
 
-    this.companyIdentity = companyIdentity;
+    this.companyId = companyId;
   }
 
   public String getTitle() {
@@ -62,16 +53,6 @@ public class Department {
   public void setStatus(final Integer status) {
 
     this.status = status;
-  }
-
-  public Integer getVersion() {
-
-    return this.version;
-  }
-
-  public void setVersion(final Integer version) {
-
-    this.version = version;
   }
 
   public User getManager() {

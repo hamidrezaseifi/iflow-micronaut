@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class CompanyWorkflowtypeItemOcrSettingPreset {
-
-  private UUID id;
+public class CompanyWorkflowtypeItemOcrSettingPreset extends GuiBaseModel {
 
   private String identity;
 
@@ -19,16 +17,10 @@ public class CompanyWorkflowtypeItemOcrSettingPreset {
 
   private Integer status;
 
-  private Integer version;
-
   private List<CompanyWorkflowtypeItemOcrSettingPresetItem> items = new ArrayList<>();
 
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
+  public CompanyWorkflowtypeItemOcrSettingPreset() {
+    super();
   }
 
   public String getIdentity() {
@@ -75,16 +67,6 @@ public class CompanyWorkflowtypeItemOcrSettingPreset {
   public void setStatus(final Integer status) {
 
     this.status = status;
-  }
-
-  public Integer getVersion() {
-
-    return this.version;
-  }
-
-  public void setVersion(final Integer version) {
-
-    this.version = version;
   }
 
   public List<CompanyWorkflowtypeItemOcrSettingPresetItem> getItems() {

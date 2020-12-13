@@ -41,7 +41,7 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
             documentEntity.status = 1
 
         when:
-            def companyOptional = departmentService.save(documentEntity)
+            def companyOptional = departmentService.update(documentEntity)
 
         then:
             companyOptional.isPresent()

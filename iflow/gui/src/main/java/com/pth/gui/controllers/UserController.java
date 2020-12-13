@@ -3,6 +3,7 @@ package com.pth.gui.controllers;
 import com.pth.common.edo.enums.EModule;
 import com.pth.common.edo.enums.EUserAcces;
 import com.pth.common.exceptions.EIFlowErrorType;
+import com.pth.gui.controllers.helper.AuthenticatedController;
 import com.pth.gui.exception.GuiCustomizedException;
 import com.pth.gui.helpers.SessionDataHelper;
 import com.pth.gui.models.User;
@@ -25,7 +26,7 @@ import java.util.*;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller("/users/data")
-public class UserController {
+public class UserController extends AuthenticatedController {
 
     private final IWorkflowMessageHandler workflowMessageHandler;
     private final IUserHandler userHandler;
@@ -50,7 +51,8 @@ public class UserController {
 
 
     @Get(value = "/workflowmessages")
-    public HttpResponse<List<WorkflowMessage>> listWorkflowMessages(@QueryValue(value = "reset" , defaultValue = "") String reset, Session session){
+    public HttpResponse<List<WorkflowMessage>>
+    listWorkflowMessages(@QueryValue(value = "reset" , defaultValue = "") String reset, Session session){
 
         List<WorkflowMessage> messageList = new ArrayList<>();
 
@@ -166,15 +168,6 @@ public class UserController {
         return this.workflowMessageHandler;
     }
 
-    private SessionData getSessionData(Session session){
-        Optional<SessionData> sessionDataOptional = SessionDataHelper.getSessionData(session);
-        if(sessionDataOptional.isPresent()){
-            return sessionDataOptional.get();
-        }
 
-        throw new GuiCustomizedException("Invalid Session!",
-                                         EModule.GUI.getModuleName(),
-                                         EIFlowErrorType.GUI_INVALID_SESSION);
-    }
 
 }

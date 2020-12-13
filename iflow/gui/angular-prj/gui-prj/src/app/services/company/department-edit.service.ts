@@ -44,7 +44,7 @@ export class DepartmentEditService extends HttpErrorResponseHelper {
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-		return this.http.post(this.createDepartmentUrl, department, httpOptions);
+		  return this.http.post(this.createDepartmentUrl, department, httpOptions);
 
 	};
 

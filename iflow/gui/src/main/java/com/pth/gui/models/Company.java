@@ -5,7 +5,7 @@ import io.micronaut.core.annotation.Introspected;
 import java.util.UUID;
 
 @Introspected
-public class Company {
+public class Company extends GuiBaseModel {
 
   private UUID id;
   private String identity;
@@ -16,6 +16,7 @@ public class Company {
   private Integer version;
 
   public Company() {
+    super();
   }
 
   public UUID getId() {

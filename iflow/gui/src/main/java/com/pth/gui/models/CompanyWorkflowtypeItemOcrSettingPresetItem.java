@@ -5,9 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
 
-public class CompanyWorkflowtypeItemOcrSettingPresetItem {
+public class CompanyWorkflowtypeItemOcrSettingPresetItem extends GuiBaseModel {
 
-  private UUID id;
 
   private String propertyName;
 
@@ -17,14 +16,8 @@ public class CompanyWorkflowtypeItemOcrSettingPresetItem {
 
   private Integer status;
 
-  private Integer version;
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
+  public CompanyWorkflowtypeItemOcrSettingPresetItem() {
+    super();
   }
 
   public String getPropertyName() {
@@ -70,16 +63,6 @@ public class CompanyWorkflowtypeItemOcrSettingPresetItem {
   public void setStatus(final Integer status) {
 
     this.status = status;
-  }
-
-  public Integer getVersion() {
-
-    return this.version;
-  }
-
-  public void setVersion(final Integer version) {
-
-    this.version = version;
   }
 
   public boolean hasValue() {

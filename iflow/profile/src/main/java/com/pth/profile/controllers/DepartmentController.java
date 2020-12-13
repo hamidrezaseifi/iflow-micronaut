@@ -58,10 +58,22 @@ public class DepartmentController {
     return HttpResponse.notFound();
   }
 
-  @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_SAVE)
-  public HttpResponse<DepartmentEdo> saveDepartment(@Body @Valid final DepartmentEdo edo) throws Exception {
+  @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_CREATE)
+  public HttpResponse<DepartmentEdo> create(@Body @Valid final DepartmentEdo edo) throws Exception {
 
-    final Optional<DepartmentEntity> modelOptional = this.departmentService.save(this.departmentMapper.fromEdo(edo));
+    final Optional<DepartmentEntity> modelOptional = this.departmentService.create(this.departmentMapper.fromEdo(edo));
+
+    if(modelOptional.isPresent()){
+      return HttpResponse.created(this.departmentMapper.toEdo(modelOptional.get()));
+    }
+
+    return HttpResponse.notFound();
+  }
+
+  @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_UPDATE)
+  public HttpResponse<DepartmentEdo> update(@Body @Valid final DepartmentEdo edo) throws Exception {
+
+    final Optional<DepartmentEntity> modelOptional = this.departmentService.update(this.departmentMapper.fromEdo(edo));
 
     if(modelOptional.isPresent()){
       return HttpResponse.ok(this.departmentMapper.toEdo(modelOptional.get()));
@@ -90,9 +102,9 @@ public class DepartmentController {
 
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_LIST_BY_COMPANYID)
-  public HttpResponse<DepartmentListEdo> readDepartmentListByCompany(final UUID companyid) throws Exception {
+  public HttpResponse<DepartmentListEdo> readDepartmentListByCompany(final UUID companyId) throws Exception {
 
-    final List<DepartmentEntity> modelList = this.departmentService.getListByIdCompanyId(companyid);
+    final List<DepartmentEntity> modelList = this.departmentService.getListByIdCompanyId(companyId);
 
     return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(modelList)));
   }
