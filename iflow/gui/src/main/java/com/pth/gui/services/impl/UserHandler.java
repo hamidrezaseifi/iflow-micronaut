@@ -8,12 +8,10 @@ import com.pth.gui.mapper.IUserMapper;
 import com.pth.gui.models.User;
 import com.pth.gui.models.UserDashboardMenu;
 import com.pth.gui.services.IUserHandler;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class UserHandler implements IUserHandler {
@@ -95,19 +93,11 @@ public class UserHandler implements IUserHandler {
         return password;
     }
 
-    private String getStringFirstUpper(final String substring) {
-
-        String res = substring.toLowerCase();
-        res = res.length() > 3 ? res.substring(0, 3) : res;
-
-        final String preparedText = res.substring(0, 1).toUpperCase() + res.substring(1);
-        return preparedText;
-    }
-
     private String getResetedPassword(User user){
-        return this.getStringFirstUpper(user.getFirstName()) +
-               this.getStringFirstUpper(user.getLastName()) +
-               "12345!#";
+
+        String generatedString1 = RandomStringUtils.randomAlphanumeric(4);
+        String generatedString2 = RandomStringUtils.randomAlphanumeric(4);
+        return generatedString1.toUpperCase() + "!"+ generatedString2.toLowerCase() + "#";
     }
 
     @Override
