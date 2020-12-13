@@ -87,8 +87,8 @@ export class OcrPresetsComponent implements OnInit {
 
               console.log("OcrSetting init data", results);
 
-              this.workflowTypes = results.workflowTypes;
-              this.workflowTypeItems = results.workflowTypeItems;
+              this.workflowTypes = results['worlflowTypes'];
+              this.workflowTypeItems = results['worlflowTypeItems'];
 
               console.log("workflowTypes", this.workflowTypes);
               console.log("workflowTypeItems", this.workflowTypeItems);

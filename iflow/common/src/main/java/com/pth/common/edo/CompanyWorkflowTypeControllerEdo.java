@@ -13,11 +13,11 @@ public class CompanyWorkflowTypeControllerEdo {
   @NotNull(message = "Id must not be null")
   private UUID id;
 
-  @NotNull(message = "WorkflowTypeIdentity must not be null")
-  private String workflowTypeIdentity;
+  @NotNull(message = "WorkflowTypeId must not be null")
+  private UUID workflowTypeId;
 
-  @NotNull(message = "UserIdentity must not be null")
-  private String userIdentity;
+  @NotNull(message = "UserId must not be null")
+  private UUID userId;
 
   @NotNull(message = "Priority must not be null")
   private Integer priority;
@@ -26,10 +26,10 @@ public class CompanyWorkflowTypeControllerEdo {
 
   }
 
-  public CompanyWorkflowTypeControllerEdo(final String workflowTypeIdentity, final String userIdentity, final Integer priority) {
-
-    this.workflowTypeIdentity = workflowTypeIdentity;
-    this.userIdentity = userIdentity;
+  public CompanyWorkflowTypeControllerEdo(UUID id, UUID workflowTypeId, UUID userId, Integer priority) {
+    this.id = id;
+    this.workflowTypeId = workflowTypeId;
+    this.userId = userId;
     this.priority = priority;
   }
 
@@ -41,24 +41,20 @@ public class CompanyWorkflowTypeControllerEdo {
     this.id = id;
   }
 
-  public String getWorkflowTypeIdentity() {
-
-    return this.workflowTypeIdentity;
+  public UUID getWorkflowTypeId() {
+    return workflowTypeId;
   }
 
-  public void setWorkflowTypeIdentity(final String workflowTypeIdentity) {
-
-    this.workflowTypeIdentity = workflowTypeIdentity;
+  public void setWorkflowTypeId(UUID workflowTypeId) {
+    this.workflowTypeId = workflowTypeId;
   }
 
-  public String getUserIdentity() {
-
-    return this.userIdentity;
+  public UUID getUserId() {
+    return userId;
   }
 
-  public void setUserIdentity(final String userIdentity) {
-
-    this.userIdentity = userIdentity;
+  public void setUserId(UUID userId) {
+    this.userId = userId;
   }
 
   public Integer getPriority() {

@@ -115,7 +115,8 @@ public class CompanyHandler implements ICompanyHandler {
 
     }
 
-    private List<String> readWorkflowtypeItems(final EWorkflowType workflowType) {
+    @Override
+    public List<String> readWorkflowtypeItems(final EWorkflowType workflowType) {
 
         final List<String> items = new ArrayList<>();
 
@@ -130,8 +131,8 @@ public class CompanyHandler implements ICompanyHandler {
     @Override
     public Map<String, CompanyWorkflowtypeItemOcrSettingPresetItem> readPresetAllItems(final String presetName,
                                                                                        final UUID CompanyId,
-                                                                                       final String token,
-                                                                                       EWorkflowType workflowType) {
+                                                                                       EWorkflowType workflowType,
+                                                                                       final String token) {
 
         final List<CompanyWorkflowtypeItemOcrSettingPreset> presetList =
                 this.readCompanyWorkflowtypeItemOcrSettings(CompanyId, token);

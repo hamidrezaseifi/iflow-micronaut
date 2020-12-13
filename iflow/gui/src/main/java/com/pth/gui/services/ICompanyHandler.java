@@ -25,12 +25,12 @@ public interface ICompanyHandler {
     saveCompanyWorkflowtypeItemOcrSetting(CompanyWorkflowtypeItemOcrSettingPreset preset,
                                           final String token);
 
-  //List<String> readWorkflowtypeItems(final UUID workflowtypeId);
+  List<String> readWorkflowtypeItems(final EWorkflowType workflowType);
 
   Map<String, CompanyWorkflowtypeItemOcrSettingPresetItem> readPresetAllItems(final String presetName,
-                                                                                     UUID CompanyId,
-                                                                                     final String token,
-                                                                              EWorkflowType workflowType);
+                                                                              final UUID CompanyId,
+                                                                              EWorkflowType workflowType,
+                                                                              final String token);
 
   Map<String, CompanyWorkflowtypeItemOcrSettingPresetItem>
     readPresetAllItemsFromSession(final String presetName,

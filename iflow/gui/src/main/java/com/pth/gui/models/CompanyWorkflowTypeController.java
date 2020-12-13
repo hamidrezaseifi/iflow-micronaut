@@ -1,10 +1,16 @@
 package com.pth.gui.models;
 
+import javax.validation.constraints.NotNull;
+import java.util.UUID;
+
 public class CompanyWorkflowTypeController {
 
-  private String workflowTypeIdentity;
+  private UUID id;
 
-  private String userIdentity;
+   private UUID workflowTypeId;
+
+  private UUID userId;
+
 
   private Integer priority;
 
@@ -12,41 +18,45 @@ public class CompanyWorkflowTypeController {
 
   }
 
-  public CompanyWorkflowTypeController(final String workflowTypeIdentity, final String userIdentity, final Integer priority) {
-
-    this.workflowTypeIdentity = workflowTypeIdentity;
-    this.userIdentity = userIdentity;
+  public CompanyWorkflowTypeController(UUID id,
+                                       UUID workflowTypeId,
+                                       UUID userId,
+                                       Integer priority) {
+    this.id = id;
+    this.workflowTypeId = workflowTypeId;
+    this.userId = userId;
     this.priority = priority;
   }
 
-  public String getWorkflowTypeIdentity() {
-
-    return this.workflowTypeIdentity;
+  public UUID getId() {
+    return id;
   }
 
-  public void setWorkflowTypeIdentity(final String workflowTypeIdentity) {
-
-    this.workflowTypeIdentity = workflowTypeIdentity;
+  public void setId(UUID id) {
+    this.id = id;
   }
 
-  public String getUserIdentity() {
-
-    return this.userIdentity;
+  public UUID getWorkflowTypeId() {
+    return workflowTypeId;
   }
 
-  public void setUserIdentity(final String userIdentity) {
+  public void setWorkflowTypeId(UUID workflowTypeId) {
+    this.workflowTypeId = workflowTypeId;
+  }
 
-    this.userIdentity = userIdentity;
+  public UUID getUserId() {
+    return userId;
+  }
+
+  public void setUserId(UUID userId) {
+    this.userId = userId;
   }
 
   public Integer getPriority() {
-
-    return this.priority;
+    return priority;
   }
 
-  public void setPriority(final Integer priority) {
-
+  public void setPriority(Integer priority) {
     this.priority = priority;
   }
-
 }

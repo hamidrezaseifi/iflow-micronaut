@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pth.clients.clients.profile.IProfileClient;
 import com.pth.clients.clients.profile.IUserClient;
 import com.pth.clients.clients.workflow.IWorkflowTypeClient;
-import com.pth.common.edo.ProfileResponseEdo;
-import com.pth.common.edo.UserListEdo;
-import com.pth.common.edo.WorkflowTypeListEdo;
+import com.pth.common.edo.*;
 import com.pth.common.edo.enums.EApplication;
 import com.pth.gui.mapper.*;
 import com.pth.gui.models.*;
@@ -37,6 +35,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
     private final IUserMapper userMapper;
     private final ICompanyMapper companyMapper;
     private final ICompanyWorkflowTypeOcrSettingPresetMapper companyWorkflowTypeOcrSettingPresetMapper;
+    private final ICompanyWorkflowTypeControllerMapper companyWorkflowTypeControllerMapper;
     private final IDepartmentMapper departmentMapper;
     private final IUserGroupMapper userGroupMapper;
     private final IUserDashboardMenuMapper dashboardMenuMapper;
@@ -52,6 +51,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                                      IUserMapper userMapper,
                                      ICompanyMapper companyMapper,
                                      ICompanyWorkflowTypeOcrSettingPresetMapper companyWorkflowTypeOcrSettingPresetMapper,
+                                     ICompanyWorkflowTypeControllerMapper companyWorkflowTypeControllerMapper,
                                      IDepartmentMapper departmentMapper,
                                      IUserGroupMapper userGroupMapper,
                                      IUserDashboardMenuMapper dashboardMenuMapper,
@@ -66,6 +66,7 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
         this.userMapper = userMapper;
         this.companyMapper = companyMapper;
         this.companyWorkflowTypeOcrSettingPresetMapper = companyWorkflowTypeOcrSettingPresetMapper;
+        this.companyWorkflowTypeControllerMapper = companyWorkflowTypeControllerMapper;
         this.departmentMapper = departmentMapper;
         this.userGroupMapper = userGroupMapper;
         this.dashboardMenuMapper = dashboardMenuMapper;
@@ -141,6 +142,16 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
             List<UserGroup> userGroups =
                     this.userGroupMapper.fromEdoList(profileResponseEdo.getCompanyProfile().getUserGroups());
 
+            List<CompanyWorkflowTypeControllerEdo> workflowTypeControllerEdoList =
+                    profileResponseEdo.getCompanyProfile().getWorkflowTypeControllers();
+            List<CompanyWorkflowTypeController> workflowTypeControllers =
+                    this.companyWorkflowTypeControllerMapper.fromEdoList(workflowTypeControllerEdoList);
+
+            List<CompanyWorkflowtypeItemOcrSettingPresetEdo> ocrPresetsEdoList =
+                    profileResponseEdo.getCompanyProfile().getOcrPresets();
+            List<CompanyWorkflowtypeItemOcrSettingPreset> ocrPresets =
+                    this.companyWorkflowTypeOcrSettingPresetMapper.fromEdoList(ocrPresetsEdoList);
+
             List<UiMenuItem> menuItemList = this.menuService.getAllMenus();
             List<List<UserDashboardMenu>> preparedDashboardMenuList =
                     DashboardSessionData.getPreparedUserDashboardMenus(dashboardMenuList, menuItemList);
@@ -150,13 +161,20 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
                                                      profileResponseEdo.getCompanyProfile().getCompany().getId());
             List<User> users = this.userMapper.fromEdoList(userEdoListOptional.get().getUsers());
 
-                    sessionData.setCompany(new CompanySessionData(company, departments, userGroups, users));
+            sessionData.setCompany(new CompanySessionData(company,
+                                                          departments,
+                                                          userGroups,
+                                                          users,
+                                                          workflowTypeControllers,
+                                                          ocrPresets));
             sessionData.setApp(
                     new AppSessionData(menuItemList, new DashboardSessionData(preparedDashboardMenuList)));
 
             Optional<WorkflowTypeListEdo> workflowTypeListEdoOptional =
                     this.workflowTypeClient.readByCompanyId(refreshToken,
                                                             profileResponseEdo.getCompanyProfile().getCompany().getId());
+
+
             if(workflowTypeListEdoOptional.isPresent()){
                 WorkflowTypeListEdo workflowTypeListEdo = workflowTypeListEdoOptional.get();
                 List<WorkflowType> workflowTypes =

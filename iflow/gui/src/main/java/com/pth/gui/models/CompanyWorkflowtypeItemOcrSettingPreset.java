@@ -1,5 +1,7 @@
 package com.pth.gui.models;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +54,11 @@ public class CompanyWorkflowtypeItemOcrSettingPreset extends GuiBaseModel {
   public String getPresetName() {
 
     return this.presetName;
+  }
+
+  public boolean hasPresetName(String presetName) {
+
+    return StringUtils.equals(this.presetName, presetName);
   }
 
   public void setPresetName(final String presetName) {

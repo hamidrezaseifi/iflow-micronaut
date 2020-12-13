@@ -2,9 +2,11 @@ package com.pth.gui.models.gui.uisession;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pth.gui.models.CompanyWorkflowtypeItemOcrSettingPreset;
 import com.pth.gui.models.User;
 import com.pth.gui.models.workflow.WorkflowType;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @JsonIgnoreProperties(value = {})
@@ -43,6 +45,10 @@ public class SessionData {
 
     public CompanySessionData getCompany() {
         return company;
+    }
+
+    public Optional<CompanyWorkflowtypeItemOcrSettingPreset> findOcrPresetByName(String presetName){
+        return this.getCompany().findOcrPresetByName(presetName);
     }
 
     public UUID getCompanyId() {
