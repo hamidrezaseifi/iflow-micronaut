@@ -194,7 +194,7 @@ export class OcrPresetsComponent implements OnInit {
 	}
 
 	setPresetWorkflowIdentity(newVal:string){
-	  this.selectedPreset.workflowTypeIdentity = newVal;
+	  this.selectedPreset.workflowTypeId = newVal;
 
 	  this.selectedPresetItems = this.resetPresetItems(this.selectedPreset);
 	}
@@ -203,8 +203,8 @@ export class OcrPresetsComponent implements OnInit {
 
 	  var items:CompanyWorkflowtypeItemOcrSettingPresetItem[] = []; //preset.items
 
-	  for(var index in this.workflowTypeItems[preset.workflowTypeIdentity]){
-	  	var itemName = this.workflowTypeItems[preset.workflowTypeIdentity][index];
+	  for(var index in this.workflowTypeItems[preset.workflowTypeId]){
+	  	var itemName = this.workflowTypeItems[preset.workflowTypeId][index];
 	  	var item :CompanyWorkflowtypeItemOcrSettingPresetItem = this.findItemByName(preset, itemName);
 	  	if(item === null){
 	  	  item = new CompanyWorkflowtypeItemOcrSettingPresetItem();
@@ -350,10 +350,10 @@ export class OcrPresetsComponent implements OnInit {
 		this.showTextListDialog = false;
 	}
 
-	getWorkflowTypeTitle(identity:string):string{
+	getWorkflowTypeTitle(id:string):string{
 
 	  for(var index in this.workflowTypes){
-	    if(this.workflowTypes[index].identity === identity){
+	    if(this.workflowTypes[index].id === id){
 	      return this.workflowTypes[index].title;
 	    }
 	  }
@@ -365,7 +365,7 @@ export class OcrPresetsComponent implements OnInit {
 	}
 
 	isSelectedPresetValid():boolean{
-	  return this.selectedPreset.presetName !== "" && this.selectedPreset.workflowTypeIdentity !== "";
+	  return this.selectedPreset.presetName !== "" && this.selectedPreset.workflowTypeId !== "";
 	}
 
 

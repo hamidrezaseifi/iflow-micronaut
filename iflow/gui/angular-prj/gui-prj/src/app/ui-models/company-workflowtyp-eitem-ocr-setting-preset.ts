@@ -5,7 +5,7 @@ export class CompanyWorkflowtypeItemOcrSettingPreset {
 	id: string;
 	identity: string = "";
 	companyIdentity: string = "";
-	workflowTypeIdentity: string = "";
+	workflowTypeId: string = "";
 	presetName: string = "";
 	status: number = 1;
 	version: number = 1;
