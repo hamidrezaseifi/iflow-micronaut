@@ -8,6 +8,9 @@ import com.pth.gui.mapper.IInvoiceWorkflowMapper;
 import com.pth.gui.mapper.IInvoiceWorkflowSaveRequestMapper;
 import com.pth.gui.models.workflow.invoice.InvoiceWorkflowSaveRequest;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class InvoiceWorkflowSaveRequestMapper
         extends ModelEdoMapperBase<InvoiceWorkflowSaveRequest, InvoiceWorkflowSaveRequestEdo>
         implements IInvoiceWorkflowSaveRequestMapper {

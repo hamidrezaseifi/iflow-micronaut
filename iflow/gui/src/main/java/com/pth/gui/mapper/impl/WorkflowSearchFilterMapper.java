@@ -7,6 +7,9 @@ import com.pth.gui.mapper.IWorkflowSearchFilterMapper;
 import com.pth.gui.models.User;
 import com.pth.gui.models.workflow.WorkflowSearchFilter;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class WorkflowSearchFilterMapper
         extends ModelEdoMapperBase<WorkflowSearchFilter, WorkflowSearchFilterEdo>
         implements IWorkflowSearchFilterMapper {
@@ -27,6 +30,6 @@ public class WorkflowSearchFilterMapper
         edo.setWorkflowStepeIdSet(model.getWorkflowStepIdSet());
         edo.setWorkflowTypeIdSet(model.getWorkflowTypeIdSet());
 
-        return null;
+        return edo;
     }
 }

@@ -19,8 +19,8 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 
 	public searchInitialDataSubject: BehaviorSubject<WorkflowListInitialData> = new BehaviorSubject<WorkflowListInitialData>(null);
 
-	loadInitialUrl :string = HttpHepler.dataServer + "/workflow/general/data/initsearch";
-	searchUrl :string = HttpHepler.dataServer + "/workflow/general/data/search";
+	loadInitialUrl :string = HttpHepler.dataServer + "/workflow/data/general/initsearch";
+	searchUrl :string = HttpHepler.dataServer + "/workflow/data/general/search";
 	listInitialData :WorkflowListInitialData = null;
 
 	constructor(
@@ -39,9 +39,9 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 
     	this.loadingService.showLoading();
 
-        const httpOptions = { headers: HttpHepler.generateFormHeader() };
+        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-    	this.http.post(this.loadInitialUrl, new HttpParams(), httpOptions).subscribe(
+    	  this.http.post(this.loadInitialUrl, null, httpOptions).subscribe(
 		        (initialData :WorkflowListInitialData) => {
 
 		            console.log("GET successful search inital data", initialData);

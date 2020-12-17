@@ -15,6 +15,7 @@ import com.pth.workflow.services.bl.IWorkflowProcessService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -27,7 +28,7 @@ public class WorkflowProcessService implements IWorkflowProcessService<WorkflowE
   private final IWorkflowPrepare<WorkflowEntity> workflowPrepare;
 
   public WorkflowProcessService(IWorkflowRepository workflowRepository,
-      IWorkflowPrepare<WorkflowEntity> workflowPrepare) {
+                                @Named("workflowPrepare") IWorkflowPrepare<WorkflowEntity> workflowPrepare) {
 
     this.workflowRepository = workflowRepository;
     this.workflowPrepare = workflowPrepare;

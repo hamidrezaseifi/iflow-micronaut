@@ -30,8 +30,8 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   private final IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare;
 
   public SingleTaskWorkflowProcessService(ISingleTaskWorkflowRepository singleTaskWorkflowRepository,
-      IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
-      IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare) {
+                                          IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
+                                          IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare) {
 
     this.singleTaskWorkflowRepository = singleTaskWorkflowRepository;
     this.workStrategyFactory = workStrategyFactory;

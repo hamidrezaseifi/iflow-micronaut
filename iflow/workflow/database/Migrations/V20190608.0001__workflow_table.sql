@@ -37,7 +37,7 @@ CREATE TABLE workflow (
   identity varchar(45) DEFAULT NULL,
   workflow_type_id uuid NOT NULL,
   current_step uuid NOT NULL,
-  status uuid NOT NULL,
+  status int NOT NULL,
   comments text,
   controller uuid NOT NULL,
   created_by uuid DEFAULT NULL,

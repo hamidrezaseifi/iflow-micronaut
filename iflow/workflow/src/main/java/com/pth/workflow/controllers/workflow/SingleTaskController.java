@@ -22,6 +22,7 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
+import javax.inject.Named;
 import javax.validation.Valid;
 
 
@@ -33,7 +34,7 @@ public class SingleTaskController {
   private final ISingleTaskWorkflowMapper singleTaskWorkflowMapper;
   private final ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper;
 
-  public SingleTaskController(IWorkflowProcessService<SingleTaskWorkflowEntity> singleTaskWorkflowService,
+  public SingleTaskController(@Named("singleTaskWorkflowProcessService") IWorkflowProcessService<SingleTaskWorkflowEntity> singleTaskWorkflowService,
                            ISingleTaskWorkflowMapper singleTaskWorkflowMapper,
                            ISingleTaskWorkflowSaveRequestMapper singleTaskWorkflowSaveRequestMapper) {
 

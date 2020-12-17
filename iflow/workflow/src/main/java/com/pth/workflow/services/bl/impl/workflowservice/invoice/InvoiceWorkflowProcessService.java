@@ -31,8 +31,8 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
   private final IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare;
 
   public InvoiceWorkflowProcessService(IInvoiceWorkflowRepository invoiceWorkflowRepository,
-      IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
-      IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare) {
+                                        IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
+                                        IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare) {
 
     this.invoiceWorkflowRepository = invoiceWorkflowRepository;
     this.workStrategyFactory = workStrategyFactory;

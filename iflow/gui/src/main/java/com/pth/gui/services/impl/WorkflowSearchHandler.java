@@ -18,8 +18,10 @@ import com.pth.gui.services.impl.workflow.ITestThreeTaskBasicWorkflowHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Singleton;
 import java.util.*;
 
+@Singleton
 public class WorkflowSearchHandler implements IWorkflowSearchHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(WorkflowSearchHandler.class);

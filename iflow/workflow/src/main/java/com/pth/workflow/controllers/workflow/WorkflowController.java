@@ -15,6 +15,7 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
+import javax.inject.Named;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +30,7 @@ public class WorkflowController {
   private final IWorkflowMapper workflowMapper;
 
   public WorkflowController(IWorkflowSearchService workflowSearchService,
-                            IWorkflowProcessService<WorkflowEntity> workflowService,
+                            @Named("workflowProcessService") IWorkflowProcessService<WorkflowEntity> workflowService,
                             IWorkflowMapper workflowMapper) {
 
     this.workflowSearchService = workflowSearchService;

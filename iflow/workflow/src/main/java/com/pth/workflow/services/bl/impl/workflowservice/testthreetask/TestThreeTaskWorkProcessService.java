@@ -31,8 +31,8 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
   private final IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare;
 
   public TestThreeTaskWorkProcessService(ITestThreeTaskWorkflowRepository testThreeTaskWorkflowRepository,
-      IWorkflowSaveStrategyFactory<TestThreeTaskWorkflowEntity> workStrategyFactory,
-      IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare) {
+                                        IWorkflowSaveStrategyFactory<TestThreeTaskWorkflowEntity> workStrategyFactory,
+                                        IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare) {
 
     this.testThreeTaskWorkflowRepository = testThreeTaskWorkflowRepository;
     this.workStrategyFactory = workStrategyFactory;

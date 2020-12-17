@@ -22,6 +22,7 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.authentication.Authentication;
 import io.micronaut.security.rules.SecurityRule;
 
+import javax.inject.Named;
 import javax.validation.Valid;
 
 
@@ -33,7 +34,7 @@ public class InvoiceController {
   private final IInvoiceWorkflowMapper invoiceWorkflowMapper;
   private final IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper;
   
-  public InvoiceController(IWorkflowProcessService<InvoiceWorkflowEntity> invoiceWorkflowService, 
+  public InvoiceController(@Named("invoiceWorkflowProcessService") IWorkflowProcessService<InvoiceWorkflowEntity> invoiceWorkflowService,
                            IInvoiceWorkflowMapper invoiceWorkflowMapper,
                            IInvoiceWorkflowSaveRequestMapper invoiceWorkflowSaveRequestMapper) {
 

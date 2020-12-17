@@ -8,9 +8,12 @@ import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.entities.WorkflowEntity_;
 import com.pth.workflow.models.WorkflowSearchFilter;
 import com.pth.workflow.repositories.IWorkflowRepository;
+import io.micronaut.context.annotation.Bean;
 import io.micronaut.spring.tx.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 
+import javax.inject.Named;
+import javax.inject.Qualifier;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -20,6 +23,7 @@ import java.util.*;
 @Singleton
 @Repository
 @Transactional
+@Named("workflowRepository")
 //@Requires(property = "micronaut.extensions.repositories.type", value = "RdbmsHibernate")
 public class WorkflowRepository extends AEntityRdbmsHibernateRepository<WorkflowEntity> implements IWorkflowRepository {
 
@@ -142,8 +146,8 @@ public class WorkflowRepository extends AEntityRdbmsHibernateRepository<Workflow
 
         final TypedQuery<WorkflowEntity> typedQuery = getEntityManager().createQuery(query);
 
-        // final String qr = typedQuery.unwrap(org.hibernate.query.Query.class).getQueryString();
-        // System.out.println("search workflow query: " + qr);
+        final String qr = typedQuery.unwrap(org.hibernate.query.Query.class).getQueryString();
+        System.out.println("search workflow query: " + qr);
         final List<WorkflowEntity> list = typedQuery.getResultList();
         return list;
     }
