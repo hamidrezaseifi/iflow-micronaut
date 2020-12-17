@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pth.gui.models.CompanyWorkflowtypeItemOcrSettingPreset;
 import com.pth.gui.models.User;
 import com.pth.gui.models.workflow.WorkflowType;
+import com.pth.gui.models.workflow.WorkflowTypeStep;
+import com.pth.gui.models.workflow.workflow.Workflow;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -129,6 +131,27 @@ public class SessionData {
         for(WorkflowType workflowType: workflow.getWorkflowTypes()){
             if(workflowType.hasId(id)){
                 return workflowType;
+            }
+        }
+        return null;
+    }
+
+    public WorkflowType getWorkflowTypeById(UUID workflowTypeId) {
+        for(WorkflowType workflowType: this.getWorkflow().getWorkflowTypes()){
+            if(workflowType.getId() == workflowTypeId ){
+                return workflowType;
+            }
+        }
+        return null;
+    }
+
+    public WorkflowTypeStep getWorkflowStepTypeById(UUID workflowTypeId,
+                                                    UUID currentStepId) {
+        for(WorkflowType workflowType: this.getWorkflow().getWorkflowTypes()){
+            for(WorkflowTypeStep workflowTypeStep: workflowType.getSteps()){
+                if(workflowTypeStep.getId() == workflowTypeId ){
+                    return workflowTypeStep;
+                }
             }
         }
         return null;

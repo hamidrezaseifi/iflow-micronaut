@@ -2,6 +2,7 @@ package com.pth.workflow.services.bl.impl.workflowservice.workflow;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.models.WorkflowSearchFilter;
@@ -33,12 +34,6 @@ public class WorkflowSearchService implements IWorkflowSearchService {
     return this.workflowRepository.search(workflowSearchFilter);
   }
 
-  @Override
-  public List<WorkflowEntity> readWorkflowListByIdentityList(final Set<String> identityList){
 
-    logger.debug("Read workflow List");
-
-    return this.workflowRepository.getListByIdentityList(identityList);
-  }
 
 }

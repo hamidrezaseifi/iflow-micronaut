@@ -1,5 +1,6 @@
 package com.pth.gui.controllers;
 
+import com.pth.gui.controllers.helper.AuthenticatedController;
 import com.pth.gui.helpers.SessionDataHelper;
 import com.pth.gui.models.Company;
 import com.pth.gui.models.gui.uisession.SessionData;
@@ -15,7 +16,7 @@ import java.util.Optional;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @Controller("/company/data")
-public class CompanyController {
+public class CompanyController extends AuthenticatedController {
 
     private final ICompanyHandler companyHandler;
 
@@ -26,15 +27,13 @@ public class CompanyController {
     @Get(value ="/info")
     public HttpResponse<Company> readCompanyInfo(Session session) {
 
-        Optional<SessionData> sessionDataOptional = SessionDataHelper.getSessionData(session);
-        if(sessionDataOptional.isPresent()){
-            Optional<Company> companyOptional = this.companyHandler.read(
-                    sessionDataOptional.get().getCompany().getCompany().getId(),
-                    sessionDataOptional.get().getRefreshToken());
-            if(companyOptional.isPresent()){
-                return HttpResponse.ok(companyOptional.get());
-            }
+        SessionData sessionData = getSessionData(session);
 
+        Optional<Company> companyOptional = this.companyHandler.read(
+                sessionData.getCompany().getCompany().getId(),
+                sessionData.getRefreshToken());
+        if(companyOptional.isPresent()){
+            return HttpResponse.ok(companyOptional.get());
         }
 
         return HttpResponse.notFound();
@@ -43,14 +42,14 @@ public class CompanyController {
     @Post("/update")
     public HttpResponse<Company> saveCompany(@Body @Valid Company requestCompany, Session session) {
 
-        Optional<SessionData> sessionDataOptional = SessionDataHelper.getSessionData(session);
-        if(sessionDataOptional.isPresent()) {
-            final Optional<Company> savedCompanyOptional = this.companyHandler.save(requestCompany,
-                                                                  sessionDataOptional.get().getRefreshToken());
-            if(savedCompanyOptional.isPresent()){
-                return HttpResponse.created(savedCompanyOptional.get());
-            }
+        SessionData sessionData = getSessionData(session);
+
+        final Optional<Company> savedCompanyOptional =
+                this.companyHandler.save(requestCompany, sessionData.getRefreshToken());
+        if(savedCompanyOptional.isPresent()){
+            return HttpResponse.created(savedCompanyOptional.get());
         }
+
         return HttpResponse.notFound();
     }
 

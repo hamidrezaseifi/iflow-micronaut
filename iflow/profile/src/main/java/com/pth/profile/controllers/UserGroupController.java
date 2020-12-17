@@ -1,7 +1,6 @@
 package com.pth.profile.controllers;
 
 import com.pth.common.contants.ApiUrlConstants;
-import com.pth.common.edo.IdentityListEdo;
 import com.pth.common.edo.UserGroupEdo;
 import com.pth.common.edo.UserGroupListEdo;
 import com.pth.profile.entities.UserGroupEntity;
@@ -48,16 +47,14 @@ public class UserGroupController {
     return HttpResponse.notFound();
   }
 
-  
-  @Post(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_LIST)
+  /*@Post(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_LIST)
   public HttpResponse<UserGroupListEdo> readUserGroupList(@Body @Valid final IdentityListEdo idList) throws Exception {
 
     final List<UserGroupEntity> modelList = idList.getIdentityList().isEmpty() ? new ArrayList<>()
         : this.userGroupService.getListByIdentityList(idList.getIdentityList());
 
     return HttpResponse.ok(new UserGroupListEdo(this.userGroupMapper.toEdoList(modelList)));
-  }
-
+  }*/
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.USERGROUP_READ_LIST_BY_COMPANYID)
   public HttpResponse<UserGroupListEdo> readUserGroupListByCompany(final UUID companyId) throws Exception {

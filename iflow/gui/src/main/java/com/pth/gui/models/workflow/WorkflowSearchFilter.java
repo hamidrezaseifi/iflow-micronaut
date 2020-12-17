@@ -1,30 +1,42 @@
 package com.pth.gui.models.workflow;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.pth.common.edo.enums.EWorkflowStatus;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WorkflowSearchFilter {
 
-  private Set<String> assignedUserIdentitySet = new HashSet<>();
+  private boolean meAssigned;
+
+  private Set<UUID> assignedUserIdSet = new HashSet<>();
 
   private Set<Integer> statusSet = new HashSet<>();
 
-  private Set<String> workflowTypeIdentitySet = new HashSet<>();
+  private Set<UUID> workflowTypeIdSet = new HashSet<>();
 
-  private Set<String> workflowStepIdentitySet = new HashSet<>();
+  private Set<UUID> workflowStepIdSet = new HashSet<>();
 
-  private String companyIdentity;
+  private UUID companyId;
 
-  public Set<String> getAssignedUserIdentitySet() {
-
-    return this.assignedUserIdentitySet;
+  public boolean isMeAssigned() {
+    return meAssigned;
   }
 
-  public void setAssignedUserIdentitySet(final Set<String> assignedUserIdSet) {
+  public void setMeAssigned(boolean meAssigned) {
+    this.meAssigned = meAssigned;
+  }
 
-    this.assignedUserIdentitySet = new HashSet<>();
+  public Set<UUID> getAssignedUserIdSet() {
+
+    return this.assignedUserIdSet;
+  }
+
+  public void setAssignedUserIdSet(final Set<UUID> assignedUserIdSet) {
+
+    this.assignedUserIdSet = new HashSet<>();
     if (assignedUserIdSet != null) {
-      this.assignedUserIdentitySet.addAll(assignedUserIdSet);
+      this.assignedUserIdSet.addAll(assignedUserIdSet);
     }
   }
 
@@ -41,40 +53,59 @@ public class WorkflowSearchFilter {
     }
   }
 
-  public Set<String> getWorkflowTypeIdentitySet() {
+  public Set<UUID> getWorkflowTypeIdSet() {
 
-    return this.workflowTypeIdentitySet;
+    return this.workflowTypeIdSet;
   }
 
-  public void setWorkflowTypeIdentitySet(final Set<String> workflowTypeIdSet) {
+  public void setWorkflowTypeIdSet(final Set<UUID> workflowTypeIdSet) {
 
-    this.workflowTypeIdentitySet = new HashSet<>();
+    this.workflowTypeIdSet = new HashSet<>();
     if (workflowTypeIdSet != null) {
-      this.workflowTypeIdentitySet.addAll(workflowTypeIdSet);
+      this.workflowTypeIdSet.addAll(workflowTypeIdSet);
     }
   }
 
-  public Set<String> getWorkflowStepIdentitySet() {
+  public Set<UUID> getWorkflowStepIdSet() {
 
-    return this.workflowStepIdentitySet;
+    return this.workflowStepIdSet;
   }
 
-  public void setWorkflowStepIdentitySet(final Set<String> workflowStepIdSet) {
+  public void setWorkflowStepIdSet(final Set<UUID> workflowStepIdSet) {
 
-    this.workflowStepIdentitySet = new HashSet<>();
+    this.workflowStepIdSet = new HashSet<>();
     if (workflowStepIdSet != null) {
-      this.workflowStepIdentitySet.addAll(workflowStepIdSet);
+      this.workflowStepIdSet.addAll(workflowStepIdSet);
     }
   }
 
-  public String getCompanyIdentity() {
 
-    return companyIdentity;
+  public UUID getCompanyId() {
+    return companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
-
-    this.companyIdentity = companyIdentity;
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
+  public void addAssignedUserId(final UUID assignedUserId) {
+
+    this.assignedUserIdSet.add(assignedUserId);
+
+  }
+
+  public static WorkflowSearchFilter generateNew(final Collection<WorkflowType> workflowTypes) {
+
+    final WorkflowSearchFilter workflowSearchFilter = new WorkflowSearchFilter();
+
+    workflowSearchFilter.setMeAssigned(true);
+    workflowSearchFilter
+            .setStatusSet(Arrays.stream(EWorkflowStatus.values())
+                                .filter(e -> e != EWorkflowStatus.ARCHIVED)
+                                .map(e -> e.getValue()).collect(Collectors.toSet()));
+
+    workflowSearchFilter.setWorkflowTypeIdSet(workflowTypes.stream().map(t -> t.getId()).collect(Collectors.toSet()));
+
+    return workflowSearchFilter;
+  }
 }

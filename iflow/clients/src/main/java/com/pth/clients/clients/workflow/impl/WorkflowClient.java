@@ -29,7 +29,7 @@ public class WorkflowClient extends ClientBase implements IWorkflowClient {
     public Optional<WorkflowListEdo> searchWorkflow(String authorization,
                                                     WorkflowSearchFilterEdo workflowSearchFilterEdo) {
         HttpResponse<WorkflowListEdo> response =
-                this.workflowDeclarativeClient.searchWorkflow(prepareBearerAuthorization(authorization),
+                this.workflowDeclarativeClient.search(prepareBearerAuthorization(authorization),
                                                               workflowSearchFilterEdo);
         if(response.getStatus() == HttpStatus.OK){
             return response.getBody();
@@ -41,7 +41,7 @@ public class WorkflowClient extends ClientBase implements IWorkflowClient {
     @Override
     public Optional<WorkflowEdo> read(String authorization, UUID id) {
         HttpResponse<WorkflowEdo> response =
-                this.workflowDeclarativeClient.readWorkflow(prepareBearerAuthorization(authorization), id);
+                this.workflowDeclarativeClient.read(prepareBearerAuthorization(authorization), id);
         if(response.getStatus() == HttpStatus.OK){
             return response.getBody();
         }

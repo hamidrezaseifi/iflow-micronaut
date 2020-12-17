@@ -90,16 +90,14 @@ public class DepartmentController {
 
   }
 
-  
-  @Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_LIST)
-  public HttpResponse<DepartmentListEdo> readDepartmentList(@Body @Valid final IdentityListEdo idList) throws Exception {
+  /*@Post(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_LIST)
+  public HttpResponse<DepartmentListEdo> readDepartmentList(@Body @Valid final IdListEdo idList) throws Exception {
 
-    final List<DepartmentEntity> modelList = idList.getIdentityList().isEmpty() ? new ArrayList<>()
-        : this.departmentService.getListByIdentityList(idList.getIdentityList());
+    final List<DepartmentEntity> modelList = idList.getIdList().isEmpty() ? new ArrayList<>()
+        : this.departmentService.getListByIdentityList(idList.getIdList());
 
     return HttpResponse.ok(new DepartmentListEdo(this.departmentMapper.toEdoList(modelList)));
-  }
-
+  }*/
   
   @Get(value = ApiUrlConstants.ProfileUrlConstants.DEPARTMENT_READ_LIST_BY_COMPANYID)
   public HttpResponse<DepartmentListEdo> readDepartmentListByCompany(final UUID companyId) throws Exception {

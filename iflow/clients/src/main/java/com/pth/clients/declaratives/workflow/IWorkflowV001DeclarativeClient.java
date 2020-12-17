@@ -17,10 +17,10 @@ import java.util.UUID;
 public interface IWorkflowV001DeclarativeClient {
 
     @Post(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_WORKFLOW_ROOT + "/search")
-    HttpResponse<WorkflowListEdo> searchWorkflow(@Header String authorization,
+    HttpResponse<WorkflowListEdo> search(@Header String authorization,
                                                  @Body final WorkflowSearchFilterEdo workflowSearchFilterEdo);
 
     @Get(ApiUrlConstants.WorkflowUrlConstants.API001_WORKFLOW001_WORKFLOW_ROOT + "/read/{id}")
-    HttpResponse<WorkflowEdo> readWorkflow(@Header String authorization,
+    HttpResponse<WorkflowEdo> read(@Header String authorization,
                                            final UUID id);
 }

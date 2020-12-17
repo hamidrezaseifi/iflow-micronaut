@@ -2,6 +2,7 @@ package com.pth.common.edo;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 
@@ -13,32 +14,32 @@ import io.micronaut.core.annotation.Introspected;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class WorkflowSearchFilterEdo {
 
-  @NotNull(message = "AssignedUserIdentitySet must not be null")
-  private Set<String> assignedUserIdentitySet = new HashSet<>();
+  @NotNull(message = "AssignedUserIdSet must not be null")
+  private Set<UUID> assignedUserIdSet = new HashSet<>();
 
   @NotNull(message = "StatusSet must not be null")
   private Set<Integer> statusSet = new HashSet<>();
 
-  @NotNull(message = "WorkflowTypeIdentitySet must not be null")
-  private Set<String> workflowTypeIdentitySet = new HashSet<>();
+  @NotNull(message = "WorkflowTypeIdSet must not be null")
+  private Set<UUID> workflowTypeIdSet = new HashSet<>();
 
-  @NotNull(message = "WorkflowStepIdentitySet must not be null")
-  private Set<String> workflowStepeIdentitySet = new HashSet<>();
+  @NotNull(message = "WorkflowStepIdSet must not be null")
+  private Set<UUID> workflowStepeIdSet = new HashSet<>();
 
-  @NotNull(message = "CompanyIdentity must not be null")
-  private String companyIdentity;
+  @NotNull(message = "CompanyId must not be null")
+  private UUID companyId;
 
-  public Set<String> getAssignedUserIdentitySet() {
+  public Set<UUID> getAssignedUserIdSet() {
 
-    return this.assignedUserIdentitySet;
+    return this.assignedUserIdSet;
   }
 
   @JsonSetter
-  public void setAssignedUserIdentitySet(final Set<String> assignedUserIdentitySet) {
+  public void setAssignedUserIdSet(final Set<UUID> assignedUserIdSet) {
 
-    this.assignedUserIdentitySet = new HashSet<>();
-    if (assignedUserIdentitySet != null) {
-      this.assignedUserIdentitySet.addAll(assignedUserIdentitySet);
+    this.assignedUserIdSet = new HashSet<>();
+    if (assignedUserIdSet != null) {
+      this.assignedUserIdSet.addAll(assignedUserIdSet);
     }
   }
 
@@ -56,42 +57,42 @@ public class WorkflowSearchFilterEdo {
     }
   }
 
-  public Set<String> getWorkflowTypeIdentitySet() {
+  public Set<UUID> getWorkflowTypeIdSet() {
 
-    return this.workflowTypeIdentitySet;
+    return this.workflowTypeIdSet;
   }
 
   @JsonSetter
-  public void setWorkflowTypeIdentitySet(final Set<String> workflowTypeIdentitySet) {
+  public void setWorkflowTypeIdSet(final Set<UUID> workflowTypeIdSet) {
 
-    this.workflowTypeIdentitySet = new HashSet<>();
-    if (workflowTypeIdentitySet != null) {
-      this.workflowTypeIdentitySet.addAll(workflowTypeIdentitySet);
+    this.workflowTypeIdSet = new HashSet<>();
+    if (workflowTypeIdSet != null) {
+      this.workflowTypeIdSet.addAll(workflowTypeIdSet);
     }
   }
 
-  public Set<String> getWorkflowStepeIdentitySet() {
+  public Set<UUID> getWorkflowStepeIdSet() {
 
-    return this.workflowStepeIdentitySet;
+    return this.workflowStepeIdSet;
   }
 
   @JsonSetter
-  public void setWorkflowStepeIdentitySet(final Set<String> workflowStepeIdentitySet) {
+  public void setWorkflowStepeIdSet(final Set<UUID> workflowStepeIdSet) {
 
-    this.workflowStepeIdentitySet = new HashSet<>();
-    if (workflowStepeIdentitySet != null) {
-      this.workflowStepeIdentitySet.addAll(workflowStepeIdentitySet);
+    this.workflowStepeIdSet = new HashSet<>();
+    if (workflowStepeIdSet != null) {
+      this.workflowStepeIdSet.addAll(workflowStepeIdSet);
     }
   }
 
-  public String getCompanyIdentity() {
+  public UUID getCompanyId() {
 
-    return this.companyIdentity;
+    return this.companyId;
   }
 
-  public void setCompanyIdentity(final String companyIdentity) {
+  public void setCompanyId(final UUID companyId) {
 
-    this.companyIdentity = companyIdentity;
+    this.companyId = companyId;
   }
 
 }

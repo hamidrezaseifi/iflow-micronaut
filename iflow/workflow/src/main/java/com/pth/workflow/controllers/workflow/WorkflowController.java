@@ -2,7 +2,6 @@ package com.pth.workflow.controllers.workflow;
 
 
 import com.pth.common.contants.ApiUrlConstants;
-import com.pth.common.edo.IdentityListEdo;
 import com.pth.common.edo.WorkflowSearchFilterEdo;
 import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.common.edo.workflow.WorkflowListEdo;
@@ -44,16 +43,6 @@ public class WorkflowController {
 
     final List<WorkflowEntity>
             modelList = this.workflowSearchService.search(workflowMapper.fromEdo(workflowSearchFilterEdo));
-
-    return HttpResponse.ok(new WorkflowListEdo(workflowMapper.toEdoList(modelList)));
-  }
-
-  @Post(value = "/readbyidentitylist")
-  public HttpResponse<WorkflowListEdo> readWorkflowList(@Body @Valid final IdentityListEdo identityList,
-                                                        @Header String authorization) throws Exception {
-
-    final List<WorkflowEntity> modelList =
-            this.workflowSearchService.readWorkflowListByIdentityList(identityList.getIdentityList());
 
     return HttpResponse.ok(new WorkflowListEdo(workflowMapper.toEdoList(modelList)));
   }
