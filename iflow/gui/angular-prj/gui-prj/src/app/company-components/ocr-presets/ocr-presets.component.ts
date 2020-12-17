@@ -389,7 +389,7 @@ export class OcrPresetsComponent implements OnInit {
     return "";
   }
 
-  getOcrItemValueAsList(value:string):[]{
+  getOcrItemValueAsList(value:string):string[]{
     var list = value.split(";");
     if(list.length == 1 && list[0] == ""){
       return [];
