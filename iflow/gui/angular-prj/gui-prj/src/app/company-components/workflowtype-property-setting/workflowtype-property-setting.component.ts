@@ -68,10 +68,10 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 
 			for(var id in this.workflowTypes){
 				var type:WorkflowType = this.workflowTypes[id];
-				//this.workflowtypeItemNames[type.identity] = null;
+				//this.workflowtypeItemNames[type.id] = null;
 
-				if(this.ocrSettingPresets[type.identity] === undefined){
-					this.ocrSettingPresets[type.identity] = [];
+				if(this.ocrSettingPresets[type.id] === undefined){
+					this.ocrSettingPresets[type.id] = [];
 				}
 			}
 		});
@@ -147,28 +147,28 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 	  this.selectedPreset.presetName = newVal;
 	}
 
-	setPresetWorkflowIdentity(newVal:string){
-	  this.selectedPreset.workflowTypeIdentity = newVal;
+	setPresetWorkflowId(newVal:string){
+	  this.selectedPreset.workflowTypeId = newVal;
 
 	  this.verifyWorlflowTypeItems(newVal);
 	}
 
-	verifyWorlflowTypeItems(workflowTypeIdentity: string){
-		if(this.worlflowTypeItems[workflowTypeIdentity] === undefined){
+	verifyWorlflowTypeItems(workflowTypeId: string){
+		if(this.worlflowTypeItems[workflowTypeId] === undefined){
 
 	    this.loadingService.showLoading();
 
-			this.editService.listWorkflowTypeItems(workflowTypeIdentity).subscribe(
+			this.editService.listWorkflowTypeItems(workflowTypeId).subscribe(
 		        (results :string[]) => {
 
-		            console.log("Workflowtype Items for " + workflowTypeIdentity, results);
+		            console.log("Workflowtype Items for " + workflowTypeId, results);
 
-		            this.worlflowTypeItems[workflowTypeIdentity] = results;
+		            this.worlflowTypeItems[workflowTypeId] = results;
 
 		            this.selectedPresetItems = this.resetPresetItems(this.selectedPreset);
 		        },
 		        response => {
-		        	console.log("Error in get Workflowtype Items for " + workflowTypeIdentity, response);
+		        	console.log("Error in get Workflowtype Items for " + workflowTypeId, response);
 		        	this.loadingService.hideLoading();
 		        	this.errorService.showErrorResponse(response);
 		        },
@@ -186,8 +186,8 @@ export class WorkflowtypePropertySettingComponent implements OnInit {
 
 	  var items: CompanyWorkflowtypeItemOcrSettingPresetItem[] = [];
 
-	  for(var index in this.worlflowTypeItems[preset.workflowTypeIdentity]){
-	  	var itemName = this.worlflowTypeItems[preset.workflowTypeIdentity][index];
+	  for(var index in this.worlflowTypeItems[preset.workflowTypeId]){
+	  	var itemName = this.worlflowTypeItems[preset.workflowTypeId][index];
 	  	var item :CompanyWorkflowtypeItemOcrSettingPresetItem = this.findItemByName(preset, itemName);
 	  	if(item === null){
 	  	  item = new CompanyWorkflowtypeItemOcrSettingPresetItem();

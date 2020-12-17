@@ -46,7 +46,8 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public List<CompanyWorkflowTypeOcrSettingPresetEntity> getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(UUID id) {
+    public List<CompanyWorkflowTypeOcrSettingPresetEntity>
+        getCompanyWorkflowtypeItemOcrSettingListByCompanyIdentity(UUID id) {
 
         Optional<CompanyEntity> companyEntityOptional = getById(id);
         if(companyEntityOptional.isPresent()){
@@ -57,8 +58,18 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Optional<CompanyWorkflowTypeOcrSettingPresetEntity> saveCompanyWorkflowtypeItemOcrSetting(CompanyWorkflowTypeOcrSettingPresetEntity preset) {
-        this.workflowTypeOcrSettingPresetRepository.save(preset);
+    public Optional<CompanyWorkflowTypeOcrSettingPresetEntity>
+        saveCompanyWorkflowtypeItemOcrSetting(CompanyWorkflowTypeOcrSettingPresetEntity preset) {
+        Optional<CompanyWorkflowTypeOcrSettingPresetEntity> existsOptional =
+                workflowTypeOcrSettingPresetRepository.getById(preset.getId());
+
+        if(existsOptional.isPresent()){
+            this.workflowTypeOcrSettingPresetRepository.update(preset);
+        }
+        else{
+            this.workflowTypeOcrSettingPresetRepository.save(preset);
+        }
+
         return this.workflowTypeOcrSettingPresetRepository.getById(preset.getId());
     }
 

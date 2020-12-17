@@ -175,7 +175,7 @@ export class WorkflowListComponent implements OnInit {
 	editWorkflow(workflow: Workflow){
 
 		this.hideViewModal();
-		this.router.navigate(['/workflow/edit/' + workflow.workflowType.identity + '/' + workflow.identity]);
+		this.router.navigate(['/workflow/edit/' + workflow.workflowType.id + '/' + workflow.id]);
 
 
   	}

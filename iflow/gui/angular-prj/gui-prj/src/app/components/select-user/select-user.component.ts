@@ -21,55 +21,55 @@ export class SelectUserComponent implements OnInit {
 	assignTypeDepartment :AssignType = AssignType.DEPARTMENT;
 
 	constructor() { }
-	
+
 
 	ngOnInit() {
-		
+
 	}
 
 	applyUserSelect(){
 		var assigns :AssignItem[] = [];
-		
+
 		for(var type in this.selectAssign){
-			for(var identity in this.selectAssign[type]){
-				
-				if(this.selectAssign[type][identity]){
+			for(var id in this.selectAssign[type]){
+
+				if(this.selectAssign[type][id]){
 					var assign = new AssignItem;
-					assign.itemIdentity = <string>identity;
+					assign.itemId = <string>id;
 					assign.itemType = <AssignType>type;
-					
+
 					assigns.push(assign);
-					
+
 				}
-			}			
+			}
 		}
-		
+
 		this.onUsersSelected.emit(assigns);
 	}
 
-	
-	isItemAssigned(identity :string , type: AssignType){
-		
+
+	isItemAssigned(id :string , type: AssignType){
+
 		if(this.selectAssign[type] === undefined){
 			this.selectAssign[type] = [];
 		}
-		if(this.selectAssign[type][identity] === undefined){
-			this.selectAssign[type][identity] = false;
+		if(this.selectAssign[type][id] === undefined){
+			this.selectAssign[type][id] = false;
 		}
-	
-		return this.selectAssign[type][identity];
+
+		return this.selectAssign[type][id];
 	}
-	
+
 	hideAssignSelect(){
 		this.showAssignModal = false;
 	}
-	
-	toggleAssign(identity :string , type: AssignType, isChecked: boolean){
+
+	toggleAssign(id :string , type: AssignType, isChecked: boolean){
 		if(this.selectAssign[type] === undefined){
 			this.selectAssign[type] = [];
 		}
-		this.selectAssign[type][identity] = isChecked;
-		
+		this.selectAssign[type][id] = isChecked;
+
 	}
-	
+
 }

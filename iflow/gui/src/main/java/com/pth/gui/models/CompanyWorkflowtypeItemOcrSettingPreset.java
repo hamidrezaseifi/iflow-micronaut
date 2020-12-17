@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class CompanyWorkflowtypeItemOcrSettingPreset extends GuiBaseModel {
 
-  private String identity;
+  //private String identity;
 
   private UUID companyId;
 
@@ -25,7 +25,7 @@ public class CompanyWorkflowtypeItemOcrSettingPreset extends GuiBaseModel {
     super();
   }
 
-  public String getIdentity() {
+  /*public String getIdentity() {
 
     return this.identity;
   }
@@ -33,7 +33,7 @@ public class CompanyWorkflowtypeItemOcrSettingPreset extends GuiBaseModel {
   public void setIdentity(final String identity) {
 
     this.identity = identity;
-  }
+  }*/
 
   public UUID getCompanyId() {
     return companyId;

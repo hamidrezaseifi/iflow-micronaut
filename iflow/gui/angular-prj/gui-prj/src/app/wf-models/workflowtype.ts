@@ -1,7 +1,8 @@
 import { WorkflowTypeStep } from './workflowtypestep';
 ﻿
 export class WorkflowType {
-	public identity: string;
+	public id: string;
+	//public identity: string;
 	public status: Number;
 	public title: string;
 	public comments: string;

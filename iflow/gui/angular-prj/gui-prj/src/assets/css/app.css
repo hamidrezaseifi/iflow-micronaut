@@ -468,13 +468,11 @@ div.notic-div, div.notic-div label, div.notic-div div
 
 .toolbar-link{
     display: inline-block;
-
-	border: none;
+	  border: none;
     background-color: gray;
-    color: white;
     padding: 0 3px;
     padding-top: 3px;
-    margin-right: 10px;
+    margin-right: 0px;
     height: 24px;
 }
 

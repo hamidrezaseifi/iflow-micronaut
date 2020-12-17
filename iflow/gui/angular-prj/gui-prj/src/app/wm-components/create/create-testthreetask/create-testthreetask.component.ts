@@ -10,7 +10,7 @@ import { LoadingServiceService } from '../../../services/loading-service.service
 import { ErrorServiceService } from '../../../services/error-service.service';
 
 import { User, Department, GeneralData, UploadedFile, UploadedResult } from '../../../ui-models';
-import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, WorkflowUploadedFile } 
+import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, WorkflowUploadedFile }
 	from '../../../wf-models';
 import { WorkflowSaveRequest } from '../../../wf-models/workflow-save-request';
 import { WorkflowSaveRequestInit } from '../../../wf-models/workflow-save-request-init';
@@ -27,10 +27,10 @@ export class CreateTestthreetaskComponent implements OnInit {
 
 	workflowSaveRequest :WorkflowSaveRequest = null;
 	generalDataObs :Observable<GeneralData> = null;
-	
+
 	showDebug : boolean = false;
-	
-	uploadedFiles :UploadedFile[] = [];	
+
+	uploadedFiles :UploadedFile[] = [];
 
 	get expireDays() : number{
 		if(this.workflowSaveRequest != null){
@@ -42,16 +42,16 @@ export class CreateTestthreetaskComponent implements OnInit {
 		if(this.workflowSaveRequest != null){
 			this.workflowSaveRequest.expireDays = days;
 		}
-		
+
 	}
-	
+
 	get assignedUsers() : AssignItem[]{
 		if(this.workflowSaveRequest != null){
 			return this.workflowSaveRequest.assigns;
 		}
 		return [];
 	}
-	
+
 	get comments() : string{
 		if(this.workflowSaveRequest != null){
 			return this.workflowSaveRequest.comments;
@@ -62,16 +62,16 @@ export class CreateTestthreetaskComponent implements OnInit {
 		if(this.workflowSaveRequest != null){
 			this.workflowSaveRequest.comments = value;
 		}
-		
+
 	}
-	
-	
+
+
 	get debugData() :string{
 		var ssignstr : string =  (this.workflowSaveRequest && this.workflowSaveRequest.assigns) ? JSON.stringify(this.workflowSaveRequest.assigns) : '--';
 		return ssignstr;
 	}
-	
-	
+
+
 	constructor(
 		    private router: Router,
 			private global: GlobalService,
@@ -81,94 +81,94 @@ export class CreateTestthreetaskComponent implements OnInit {
 			private http: HttpClient,
 			private errorService: ErrorServiceService,
 	) {
-		
+
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
 		    	this.loadInitialData();
 			}
 		});
-		
+
 		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
 	}
-	
+
 	ngOnInit() {
-		
+
 		this.loadInitialData();
-	
+
 	}
-	
+
 	onUploadedFilesChanged(uploadedFileList: UploadedFile[]) {
-		
+
 		this.uploadedFiles = uploadedFileList;
 	}
-	
+
 	private loadInitialData(){
 	 	if(this.editService.workflowSaveRequestInit !== null){
 	 		this.workflowSaveRequest = this.editService.workflowSaveRequestInit.workflowSaveRequest;
-	 		
+
 	 	}
 	 	else{
 	 		this.subscribeToSearchInitialData();
 	 		this.editService.loadCreateInitialData();
 	 	}
-	 	
+
 	}
-	
+
 	private subscribeToSearchInitialData(){
 		this.editService.workflowSaveRequestInitSubject.subscribe((data : WorkflowSaveRequestInit) => {
-	    	
+
 			console.log("set gloabl-data from workflow-create. : ", data);
 			//alert("from app-comp: \n" + JSON.stringify(data));
-	 		
+
 			if(data && data !== null){
 				this.workflowSaveRequest = data.workflowSaveRequest;
-				
+
 			}
 			else{
 				this.workflowSaveRequest = null;
 			}
 		  });
-		
+
 	}
-			
+
 	save(){
-		
+
 		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
 		this.loadingService.showLoading();
-		
+
         this.editService.createWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {		        	
+		        (result) => {
 		            console.log("Create workflow result", result);
-		            
+
 		            this.router.navigate([this.workflowListUrl]);
 		        },
 		        response => {
 		        	console.log("Error in create workflow", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		    );	       	
-		
+		    );
+
 	}
-			
-	
+
+
 	onUsersSelected(assigns: AssignItem[]) {
 		this.workflowSaveRequest.assigns = [];
-		
+
 		for(var item in assigns){
 			var assign = new AssignItem;
-			assign.itemIdentity = assigns[item].itemIdentity;
+			assign.itemId = assigns[item].itemId;
 			assign.itemType = assigns[item].itemType;
-			
-			this.workflowSaveRequest.assigns.push(assign);						
+
+			this.workflowSaveRequest.assigns.push(assign);
 		}
-		
-	}	
-		
+
+	}
+
 }

@@ -18,7 +18,7 @@ public class CompanyWorkflowtypeItemOcrSettingPresetEdo {
   @NotNull(message = "id must not be null")
   protected UUID id;
 
-  @NotNull(message = "Identity must not be null")
+  //@NotNull(message = "Identity must not be null")
   private String identity;
 
   @NotNull(message = "CompanyId must not be null")

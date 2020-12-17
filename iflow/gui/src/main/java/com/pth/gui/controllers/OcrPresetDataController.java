@@ -35,9 +35,9 @@ public class OcrPresetDataController extends AuthenticatedController {
 
     final Collection<WorkflowType> workflowTypes = sessionData.getWorkflow().getWorkflowTypes();
     map.put("worlflowTypes", workflowTypes);
-    final Map<String, List<String>> workflowTypeItems = new HashMap<>();
+    final Map<UUID, List<String>> workflowTypeItems = new HashMap<>();
     for (final WorkflowType type : workflowTypes) {
-      workflowTypeItems.put(type.getIdentity(), this.companyHandler.readWorkflowtypeItems(type.getTypeEnum()));
+      workflowTypeItems.put(type.getId(), this.companyHandler.readWorkflowtypeItems(type.getTypeEnum()));
     }
     map.put("worlflowTypeItems", workflowTypeItems);
 

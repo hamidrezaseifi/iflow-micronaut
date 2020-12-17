@@ -16,29 +16,29 @@
 								<div id="tabusers" class="tab-pane fade in active show">
 									<ul class="list-item-container">
 										<li class="list-item" *ngFor="let item of users;">
-											<input [attr.data-assigntitle]="item.fullName" type="checkbox" #inputEl class="assign-checkbox" [checked]="isItemAssigned(item.identity, assignTypeUser)" (change)="toggleAssign(item.identity, assignTypeUser, inputEl.checked)"  value="{{item.identity}}"/> 
-											<span class="user-select-item-label">{{item.fullName}}</span>										
+											<input [attr.data-assigntitle]="item.fullName" type="checkbox" #inputEl class="assign-checkbox" [checked]="isItemAssigned(item.id, assignTypeUser)" (change)="toggleAssign(item.id, assignTypeUser, inputEl.checked)"  value="{{item.id}}"/>
+											<span class="user-select-item-label">{{item.fullName}}</span>
 										</li>
 									</ul>
 								</div>
 								<div id="tabdepartments" class="tab-pane fade">
 									<ul class="list-item-container">
 										<li *ngFor="let dep of departments;" class="list-item">
-											<input type="checkbox" [attr.data-assigntitle]="dep.title" #inputEl class="assign-checkbox" [checked]="isItemAssigned(dep.identity, assignTypeDepartment)" (change)="toggleAssign(dep.identity, assignTypeDepartment, inputEl.checked)" value="{{dep.identity}}"/> 
+											<input type="checkbox" [attr.data-assigntitle]="dep.title" #inputEl class="assign-checkbox" [checked]="isItemAssigned(dep.id, assignTypeDepartment)" (change)="toggleAssign(dep.id, assignTypeDepartment, inputEl.checked)" value="{{dep.id}}"/>
 											<span class="user-select-item-label">{{dep.title}}</span>
 										</li>
 									</ul>
-								
+
 								</div>
 							</div>
-				      
-		    				
+
+
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" (click)="hideAssignSelect()"><i class="material-icons">close</i></button>
 				        <button type="button" class="btn btn-primary" (click)="applyUserSelect();"><i class="material-icons">check</i></button>
 				      </div>
 				    </div>
-				  </div>		    
-		    	
+				  </div>
+
 		    </div>

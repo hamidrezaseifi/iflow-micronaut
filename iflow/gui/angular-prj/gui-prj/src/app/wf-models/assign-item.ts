@@ -2,7 +2,7 @@
 import { AssignType } from '../wf-models';
 
 export class AssignItem {
-	public itemIdentity: string;
+	public itemId: string;
 	public itemType: AssignType;
 
 }

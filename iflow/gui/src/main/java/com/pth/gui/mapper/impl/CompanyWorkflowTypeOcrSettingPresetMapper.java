@@ -29,7 +29,6 @@ public class CompanyWorkflowTypeOcrSettingPresetMapper
         model.setWorkflowTypeId(edo.getWorkflowTypeId());
         model.setCompanyId(edo.getCompanyId());
         model.setItems(companyWorkflowTypeOcrSettingPresetItemMapper.fromEdoList(edo.getItems()));
-        model.setIdentity(edo.getIdentity());
         model.setId(edo.getId());
 
         return model;
@@ -44,7 +43,6 @@ public class CompanyWorkflowTypeOcrSettingPresetMapper
         edo.setWorkflowTypeId(model.getWorkflowTypeId());
         edo.setCompanyId(model.getCompanyId());
         edo.setItems(companyWorkflowTypeOcrSettingPresetItemMapper.toEdoList(model.getItems()));
-        edo.setIdentity(model.getIdentity());
         edo.setId(model.getId());
 
         return edo;

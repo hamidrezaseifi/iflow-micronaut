@@ -35,6 +35,8 @@ export class OcrPresetsComponent implements OnInit {
 
   showEditDialog: boolean = false;
 
+  showViewDialog: boolean = false;
+
 	showDeleteDialog: boolean = false;
 
 	deleteMessage: string = "";
@@ -67,9 +69,7 @@ export class OcrPresetsComponent implements OnInit {
     });
 
     for(var type=0; type<3; type++){
-      translate.get('ocr-preset.ocrtype-' + type).subscribe((res: string) => {
-      	this.ocrTypeList.push({value: type, title: res});
-      });
+      this.addOcrType(translate, type);
     }
 
     translate.get('ocr-preset-delete-message').subscribe((res: string) => {
@@ -78,6 +78,12 @@ export class OcrPresetsComponent implements OnInit {
 
 
 	}
+
+  addOcrType(translate: TranslateService, type: any){
+    translate.get('ocr-preset.ocrtype-' + type).subscribe((res: string) => {
+      this.ocrTypeList.push({value: type, title: res});
+    });
+  }
 
 	ngOnInit() {
 
@@ -144,6 +150,7 @@ export class OcrPresetsComponent implements OnInit {
 		this.showEditDialog = true;
 		this.selectedPresetChanged = true;
 	  this.createNewPreset = true;
+	  this.showViewDialog = false;
 	}
 
 	showEditPreset(preset :CompanyWorkflowtypeItemOcrSettingPreset){
@@ -155,6 +162,7 @@ export class OcrPresetsComponent implements OnInit {
 		this.showEditDialog = true;
 		this.selectedPresetChanged = false;
 		this.createNewPreset = false;
+		this.showViewDialog = false;
 	}
 
 	showPreset(preset :CompanyWorkflowtypeItemOcrSettingPreset){
@@ -166,6 +174,8 @@ export class OcrPresetsComponent implements OnInit {
 		this.showEditDialog = false;
 		this.selectedPresetChanged = false;
 		this.createNewPreset = false;
+		this.showViewDialog = true;
+
 	}
 
 	showDeletePreset(preset :CompanyWorkflowtypeItemOcrSettingPreset){
@@ -176,6 +186,7 @@ export class OcrPresetsComponent implements OnInit {
 		this.deleteMessage = this.deleteMessage.replace("%" , preset.presetName);
 
 		this.showDeleteDialog = true;
+		this.showViewDialog = false;
 	}
 
 	hideEditPresetDialog(){
@@ -193,7 +204,7 @@ export class OcrPresetsComponent implements OnInit {
 	  this.selectedPreset.presetName = newVal;
 	}
 
-	setPresetWorkflowIdentity(newVal:string){
+	setPresetWorkflowId(newVal:string){
 	  this.selectedPreset.workflowTypeId = newVal;
 
 	  this.selectedPresetItems = this.resetPresetItems(this.selectedPreset);
@@ -202,9 +213,10 @@ export class OcrPresetsComponent implements OnInit {
 	resetPresetItems(preset :CompanyWorkflowtypeItemOcrSettingPreset): CompanyWorkflowtypeItemOcrSettingPresetItem[]{
 
 	  var items:CompanyWorkflowtypeItemOcrSettingPresetItem[] = []; //preset.items
+    var workflowtypeitems = this.workflowTypeItems[preset.workflowTypeId];
 
-	  for(var index in this.workflowTypeItems[preset.workflowTypeId]){
-	  	var itemName = this.workflowTypeItems[preset.workflowTypeId][index];
+	  for(var index in workflowtypeitems){
+	  	var itemName = workflowtypeitems[index];
 	  	var item :CompanyWorkflowtypeItemOcrSettingPresetItem = this.findItemByName(preset, itemName);
 	  	if(item === null){
 	  	  item = new CompanyWorkflowtypeItemOcrSettingPresetItem();
@@ -368,6 +380,21 @@ export class OcrPresetsComponent implements OnInit {
 	  return this.selectedPreset.presetName !== "" && this.selectedPreset.workflowTypeId !== "";
 	}
 
+  getOcrTypeTitle(type:any):string{
+    for(var index in this.ocrTypeList){
+      if(this.ocrTypeList[index].value == type){
+        return this.ocrTypeList[index].title;
+      }
+    }
+    return "";
+  }
 
+  getOcrItemValueAsList(value:string):[]{
+    var list = value.split(";");
+    if(list.length == 1 && list[0] == ""){
+      return [];
+    }
+    return list;
+  }
 
 }

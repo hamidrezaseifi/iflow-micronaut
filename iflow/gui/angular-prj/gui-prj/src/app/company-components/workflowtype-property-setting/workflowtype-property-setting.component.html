@@ -25,7 +25,7 @@
 
 			<div>
 				<label class="property-label">WorkflowType</label>
-				<select class="property-value" (ngModelChange)="setPresetWorkflowIdentity($event)" [ngModel]="selectedPreset.workflowTypeIdentity">
+				<select class="property-value" (ngModelChange)="setPresetWorkflowId($event)" [ngModel]="selectedPreset.workflowTypeId">
 					<option *ngFor="let worlflowType of workflowTypes;" value="{{worlflowType.identity}}">{{worlflowType.title}}</option>
 				</select>
 			</div>

@@ -44,10 +44,10 @@
 
 
 	    <div class="modal fade" [ngClass]="{'show' : showEditDialog}" tabindex="-1" id="editpresetdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-centered-presetedit" role="document">
+			  <div class="modal-dialog modal-dialog-centered modal-dialog-centered-presetedit" role="document">
 			    <div class="modal-content preset-edit-modal-content" >
 			      <div class="modal-header">
-			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ createNewPreset ? ('ocr-preset-create-modal-title' | translate) : ('ocr-preset-edit-modal-title' | translate) }}</h5>
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitleEdit">{{ createNewPreset ? ('ocr-preset-create-modal-title' | translate) : ('ocr-preset-edit-modal-title' | translate) }}</h5>
 			        <button class="dialog-toolbar-button close" (click)="hideEditPresetDialog()">
 			        	<i class="material-icons">close</i>
 			        </button>
@@ -56,7 +56,7 @@
 
 					<div class="row-item">
 						<label class="property-label">{{ 'workflow-type' | translate }}</label>
-						<select class="property-value" (ngModelChange)="setPresetWorkflowIdentity($event)" [ngModel]="selectedPreset.workflowTypeId">
+						<select class="property-value" (ngModelChange)="setPresetWorkflowId($event)" [ngModel]="selectedPreset.workflowTypeId">
 							<option *ngFor="let worlflowType of workflowTypes;" value="{{worlflowType.id}}">{{worlflowType.title}}</option>
 						</select>
 					</div>
@@ -66,7 +66,6 @@
 					</div>
 					<div class="row-item padd-top-40">
 						<h3>{{ 'ocr-preset.items' | translate }}</h3>
-            <div>{{selectedPreset| json}}</div>
 					</div>
 					<div class="preset-items-container">
 					  	<div *ngFor="let prop of selectedPresetItems;" class="row-item" >
@@ -85,8 +84,6 @@
 
 					</div>
 
-
-
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-secondary" (click)="hideEditPresetDialog()"><i class="material-icons">close</i></button>
@@ -97,6 +94,56 @@
 
 	    </div>
 
+
+    <div class="modal fade" [ngClass]="{'show' : showViewDialog}" tabindex="-1" id="viewpresetdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-centered-presetedit" role="document">
+        <div class="modal-content preset-edit-modal-content" >
+          <div class="modal-header">
+            <h5 class="modal-title dialog-title" id="exampleModalLongTitleView">{{ createNewPreset ? ('ocr-preset-create-modal-title' | translate) : ('ocr-preset-edit-modal-title' | translate) }}</h5>
+            <button class="dialog-toolbar-button close" (click)="showViewDialog = false">
+              <i class="material-icons">close</i>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="row-item">
+              <label class="property-label">{{ 'workflow-type' | translate }}</label>
+              <div class="datacontent full">{{getWorkflowTypeTitle(selectedPreset.workflowTypeId)}}</div>
+            </div>
+            <div class="row-item">
+              <label class="property-label">{{ 'ocr-preset.name' | translate }}</label>
+              <div class="datacontent full">{{selectedPreset.presetName}}</div>
+            </div>
+            <div class="row-item padd-top-40">
+              <h3>{{ 'ocr-preset.items' | translate }}</h3>
+            </div>
+            <div class="preset-items-container">
+              <div *ngFor="let prop of selectedPresetItems;" class="row-item"  >
+                <div *ngIf="prop.ocrType!= 0">
+                  <label class="property-label">{{ prop.propertyName | translate  }}</label>
+                  <div class="datacontent 200w ocr-item-view">{{getOcrTypeTitle(prop.ocrType)}}</div>
+                  <div class="datacontent full2 ocr-item-view">
+                    <span *ngFor="let valueItem of getOcrItemValueAsList(prop.value);" style="display: inline-block; border: 1px solid gray; padding: 0 4px; margin: 0 3px; border-radius: 3px;" >
+                      {{valueItem}}
+                    </span>
+
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="selectedPresetItems.length === 0" class="row-item" >
+                <span>{{ 'ocr-preset.no-items' | translate  }}</span>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="showViewDialog = false"><i class="material-icons">close</i></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
 
 
 	    <div class="modal fade" [ngClass]="{'show' : showDeleteDialog}" tabindex="-1" id="deletepresetdialog" role="dialog" aria-labelledby="exampleModalCenterTitle">
