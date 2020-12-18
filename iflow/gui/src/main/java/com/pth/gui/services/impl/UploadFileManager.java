@@ -47,7 +47,7 @@ public class UploadFileManager implements IUploadFileManager {
   }
 
   @Override
-  public List<FileSavingData> moveFromTempToArchive(final List<UploadededFile> files) throws IOException {
+  public List<FileSavingData> moveFromTempToArchive(final List<UploadededFile> files) {
 
     final List<FileSavingData> list = new ArrayList<>();
 

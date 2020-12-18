@@ -66,7 +66,7 @@ public class TestThreeTaskBasicWorkflowHandler
 
   @Override
   public List<TestThreeTaskWorkflow> createWorkflow(final TestThreeTaskWorkflowSaveRequest createRequest,
-                                                 SessionData sessionData) throws IOException {
+                                                    SessionData sessionData){
 
     logger.debug("Create workflow");
 
@@ -97,7 +97,7 @@ public class TestThreeTaskBasicWorkflowHandler
 
   @Override
   public Optional<TestThreeTaskWorkflow> saveWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest,
-                                                   SessionData sessionData) throws IOException {
+                                                      SessionData sessionData){
 
     logger.debug("Save workflow");
 
@@ -119,7 +119,8 @@ public class TestThreeTaskBasicWorkflowHandler
             this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
                                                testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
     if(singleTaskWorkflowEdoOptional.isPresent()){
-      final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+      final TestThreeTaskWorkflow resultWorkflow =
+              testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
       return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
     }
@@ -140,13 +141,15 @@ public class TestThreeTaskBasicWorkflowHandler
       request.setCommand(EWorkflowProcessCommand.ASSIGN);
       request.setAssignUser(sessionData.getCurrentUserId());
 
-      this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
+      this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
+                                            testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
 
       Optional<TestThreeTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
               this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
                                                  testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
       if(singleTaskWorkflowEdoOptional.isPresent()){
-        final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+        final TestThreeTaskWorkflow resultWorkflow =
+                testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
         return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
       }
@@ -158,8 +161,8 @@ public class TestThreeTaskBasicWorkflowHandler
   }
 
   @Override
-  public Optional<TestThreeTaskWorkflow> doneWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-                                                                                                                             IOException {
+  public Optional<TestThreeTaskWorkflow> doneWorkflow(final TestThreeTaskWorkflowSaveRequest saveRequest,
+                                                      SessionData sessionData) {
 
     logger.debug("Make workflow done");
 
@@ -168,7 +171,8 @@ public class TestThreeTaskBasicWorkflowHandler
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
+                                          testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
@@ -176,7 +180,8 @@ public class TestThreeTaskBasicWorkflowHandler
             this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
                                                testThreeTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
     if(singleTaskWorkflowEdoOptional.isPresent()){
-      final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+      final TestThreeTaskWorkflow resultWorkflow =
+              testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
       return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
     }
@@ -185,20 +190,24 @@ public class TestThreeTaskBasicWorkflowHandler
   }
 
   @Override
-  public Optional<TestThreeTaskWorkflow> archiveWorkflow(final TestThreeTaskWorkflow workflow, SessionData sessionData){
+  public Optional<TestThreeTaskWorkflow> archiveWorkflow(final TestThreeTaskWorkflow workflow,
+                                                         SessionData sessionData){
 
     logger.debug("Make workflow archive");
 
-    final TestThreeTaskWorkflowSaveRequest request = TestThreeTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
+    final TestThreeTaskWorkflowSaveRequest request =
+            TestThreeTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(), testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
+    this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
+                                          testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
 
     Optional<TestThreeTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
             this.testThreeTaskWorkClient.save(sessionData.getRefreshToken(),
                                                testThreeTaskWorkflowSaveRequestMapper.toEdo(request));
     if(singleTaskWorkflowEdoOptional.isPresent()){
-      final TestThreeTaskWorkflow resultWorkflow = testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+      final TestThreeTaskWorkflow resultWorkflow =
+              testThreeTaskWorkMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
       return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
     }

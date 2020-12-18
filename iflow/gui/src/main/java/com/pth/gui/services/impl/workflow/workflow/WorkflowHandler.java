@@ -57,13 +57,12 @@ public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements 
 
   @Override
   public List<Workflow> createWorkflow(final WorkflowSaveRequest createRequest,
-                                                 SessionData sessionData) throws IOException {
+                                                 SessionData sessionData) {
     throw new GuiCustomizedException("not implemented");
   }
 
   @Override
-  public Optional<Workflow> saveWorkflow(final WorkflowSaveRequest saveRequest, SessionData sessionData) throws
-          IOException {
+  public Optional<Workflow> saveWorkflow(final WorkflowSaveRequest saveRequest, SessionData sessionData) {
 
     logger.debug("Save workflow");
 
@@ -80,8 +79,7 @@ public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements 
   }
 
   @Override
-  public Optional<Workflow> doneWorkflow(final WorkflowSaveRequest saveRequest, SessionData sessionData) throws
-          IOException {
+  public Optional<Workflow> doneWorkflow(final WorkflowSaveRequest saveRequest, SessionData sessionData) {
 
     logger.debug("Make workflow done");
 

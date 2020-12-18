@@ -63,8 +63,7 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
   }
 
   @Override
-  public List<InvoiceWorkflow> createWorkflow(final InvoiceWorkflowSaveRequest createRequest,
-                                              SessionData sessionData) throws IOException {
+  public List<InvoiceWorkflow> createWorkflow(final InvoiceWorkflowSaveRequest createRequest, SessionData sessionData) {
 
     logger.debug("Create workflow");
 
@@ -75,15 +74,18 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
       createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(createRequest));
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(),
+                                        invoiceWorkflowSaveRequestMapper.toEdo(createRequest));
 
     this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 
     Optional<InvoiceWorkflowListEdo> invoiceWorkflowListEdoOptional =
-            this.invoiceWorkflowClient.create(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(createRequest));
+            this.invoiceWorkflowClient.create(sessionData.getRefreshToken(),
+                                              invoiceWorkflowSaveRequestMapper.toEdo(createRequest));
 
     if(invoiceWorkflowListEdoOptional.isPresent()) {
-      final List<InvoiceWorkflow> list = invoiceWorkflowMapper.fromEdoList(invoiceWorkflowListEdoOptional.get().getWorkflows());
+      final List<InvoiceWorkflow> list =
+              invoiceWorkflowMapper.fromEdoList(invoiceWorkflowListEdoOptional.get().getWorkflows());
 
       return this.prepareWorkflowList(list, sessionData);
     }
@@ -92,8 +94,7 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
   }
 
   @Override
-  public Optional<InvoiceWorkflow> saveWorkflow(final InvoiceWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-                                                                                                                       IOException {
+  public Optional<InvoiceWorkflow> saveWorkflow(final InvoiceWorkflowSaveRequest saveRequest, SessionData sessionData){
 
     logger.debug("Save workflow");
 
@@ -106,12 +107,14 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(),
+                                        invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
     final Optional<InvoiceWorkflowEdo> resultOptional =
-            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
+            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(),
+                                            invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     if(resultOptional.isPresent()) {
       return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
@@ -132,9 +135,11 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
       request.setCommand(EWorkflowProcessCommand.ASSIGN);
       request.setAssignUser(sessionData.getCurrentUserId());
 
-      this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+      this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(),
+                                          invoiceWorkflowSaveRequestMapper.toEdo(request));
       final Optional<InvoiceWorkflowEdo> resultOptional =
-              this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+              this.invoiceWorkflowClient.save(sessionData.getRefreshToken(),
+                                              invoiceWorkflowSaveRequestMapper.toEdo(request));
       if(resultOptional.isPresent()) {
         return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
       }
@@ -145,8 +150,7 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
   }
 
   @Override
-  public Optional<InvoiceWorkflow> doneWorkflow(final InvoiceWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-                                                                                                                       IOException {
+  public Optional<InvoiceWorkflow> doneWorkflow(final InvoiceWorkflowSaveRequest saveRequest, SessionData sessionData){
 
     logger.debug("Make workflow done");
 
@@ -155,12 +159,14 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(),
+                                        invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
     final Optional<InvoiceWorkflowEdo> resultOptional =
-            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
+            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(),
+                                            invoiceWorkflowSaveRequestMapper.toEdo(saveRequest));
     if(resultOptional.isPresent()) {
       return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
     }
@@ -175,10 +181,12 @@ public class InvoiceBasicWorkflowHandler extends WorkflowHandlerHelper<InvoiceWo
     final InvoiceWorkflowSaveRequest request = InvoiceWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+    this.invoiceWorkflowClient.validate(sessionData.getRefreshToken(),
+                                        invoiceWorkflowSaveRequestMapper.toEdo(request));
 
     final Optional<InvoiceWorkflowEdo> resultOptional =
-            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(), invoiceWorkflowSaveRequestMapper.toEdo(request));
+            this.invoiceWorkflowClient.save(sessionData.getRefreshToken(),
+                                            invoiceWorkflowSaveRequestMapper.toEdo(request));
     if(resultOptional.isPresent()) {
       return Optional.of(this.prepareWorkflow(invoiceWorkflowMapper.fromEdo(resultOptional.get()) , sessionData));
     }

@@ -19,11 +19,11 @@ public interface IBasicWorkflowHandler<W extends IWorkflow, WS extends IWorkflow
                                           final UUID fileId,
                                           SessionData sessionData);
 
-  List<W> createWorkflow(final WS createRequest, SessionData sessionData) throws IOException;
+  List<W> createWorkflow(final WS createRequest, SessionData sessionData);
 
-  Optional<W> saveWorkflow(final WS saveRequest, SessionData sessionData) throws IOException;
+  Optional<W> saveWorkflow(final WS saveRequest, SessionData sessionData);
 
-  Optional<W> doneWorkflow(final WS saveRequest, SessionData sessionData) throws IOException;
+  Optional<W> doneWorkflow(final WS saveRequest, SessionData sessionData);
 
   Optional<W> archiveWorkflow(final W workflow, SessionData sessionData);
 

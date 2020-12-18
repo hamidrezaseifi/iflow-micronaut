@@ -85,9 +85,9 @@ export class WorkflowEditBaseService extends HttpErrorResponseHelper implements 
 	loadCreateInitialData(){
     	this.loadingService.showLoading();
 
-        const httpOptions = { headers: HttpHepler.generateFormHeader() };
+        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        this.http.post(this.getInitCreateUrl(), new HttpParams(), httpOptions).subscribe(
+        this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
 		        (initialData :WorkflowSaveRequestInit) => {
 
 		            console.log("GET successful edit inital data", initialData);

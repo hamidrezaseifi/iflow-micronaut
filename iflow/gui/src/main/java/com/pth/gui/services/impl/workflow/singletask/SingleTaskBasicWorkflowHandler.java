@@ -66,7 +66,7 @@ public class SingleTaskBasicWorkflowHandler
 
   @Override
   public List<SingleTaskWorkflow> createWorkflow(final SingleTaskWorkflowSaveRequest createRequest,
-                                              SessionData sessionData) throws IOException {
+                                                 SessionData sessionData){
 
     logger.debug("Create workflow");
 
@@ -97,7 +97,7 @@ public class SingleTaskBasicWorkflowHandler
 
   @Override
   public Optional<SingleTaskWorkflow> saveWorkflow(final SingleTaskWorkflowSaveRequest saveRequest,
-                                                   SessionData sessionData) throws IOException {
+                                                   SessionData sessionData){
 
     logger.debug("Save workflow");
 
@@ -119,7 +119,8 @@ public class SingleTaskBasicWorkflowHandler
             this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
                                                singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
     if(singleTaskWorkflowEdoOptional.isPresent()){
-      final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+      final SingleTaskWorkflow resultWorkflow =
+              singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
       return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
     }
@@ -140,13 +141,15 @@ public class SingleTaskBasicWorkflowHandler
       request.setCommand(EWorkflowProcessCommand.ASSIGN);
       request.setAssignUser(sessionData.getCurrentUserId());
 
-      this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), singleTaskWorkflowSaveRequestMapper.toEdo(request));
+      this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(),
+                                             singleTaskWorkflowSaveRequestMapper.toEdo(request));
 
       Optional<SingleTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
               this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
                                                  singleTaskWorkflowSaveRequestMapper.toEdo(request));
       if(singleTaskWorkflowEdoOptional.isPresent()){
-        final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+        final SingleTaskWorkflow resultWorkflow =
+                singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
         return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
       }
@@ -158,8 +161,8 @@ public class SingleTaskBasicWorkflowHandler
   }
 
   @Override
-  public Optional<SingleTaskWorkflow> doneWorkflow(final SingleTaskWorkflowSaveRequest saveRequest, SessionData sessionData) throws
-          IOException {
+  public Optional<SingleTaskWorkflow> doneWorkflow(final SingleTaskWorkflowSaveRequest saveRequest,
+                                                   SessionData sessionData){
 
     logger.debug("Make workflow done");
 
@@ -168,7 +171,8 @@ public class SingleTaskBasicWorkflowHandler
       saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(),
+                                           singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
 
     this.prepareUploadedFiles(saveRequest, sessionData.getCurrentUserId());
 
@@ -176,7 +180,8 @@ public class SingleTaskBasicWorkflowHandler
             this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),
                                                singleTaskWorkflowSaveRequestMapper.toEdo(saveRequest));
     if(singleTaskWorkflowEdoOptional.isPresent()){
-      final SingleTaskWorkflow resultWorkflow = singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
+      final SingleTaskWorkflow resultWorkflow =
+              singleTaskWorkflowMapper.fromEdo(singleTaskWorkflowEdoOptional.get());
 
       return Optional.of(this.prepareWorkflow(resultWorkflow, sessionData));
     }
@@ -192,7 +197,8 @@ public class SingleTaskBasicWorkflowHandler
     final SingleTaskWorkflowSaveRequest request = SingleTaskWorkflowSaveRequest.generateNewNoExpireDays(workflow);
     request.setCommand(EWorkflowProcessCommand.ARCHIVE);
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), singleTaskWorkflowSaveRequestMapper.toEdo(request));
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(),
+                                           singleTaskWorkflowSaveRequestMapper.toEdo(request));
 
     Optional<SingleTaskWorkflowEdo> singleTaskWorkflowEdoOptional =
             this.singleTaskWorkflowClient.save(sessionData.getRefreshToken(),

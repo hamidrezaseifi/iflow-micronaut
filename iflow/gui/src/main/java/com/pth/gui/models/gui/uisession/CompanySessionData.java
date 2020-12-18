@@ -5,6 +5,8 @@ import com.pth.gui.models.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CompanySessionData {
     private Company company;
@@ -88,5 +90,12 @@ public class CompanySessionData {
 
     public Optional<CompanyWorkflowtypeItemOcrSettingPreset> findOcrPresetByName(String presetName){
         return this.ocrPresets.stream().filter( p -> p.hasPresetName(presetName)).findFirst();
+    }
+
+    public List<CompanyWorkflowTypeController> getControllerForWorkflowType(UUID workflowTypeId){
+        return this.workflowTypeControllers.
+                                           stream().
+                                           filter(c -> c.getWorkflowTypeId() == workflowTypeId).
+                                           collect(Collectors.toList());
     }
 }

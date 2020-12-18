@@ -12,6 +12,6 @@ public interface IUploadFileManager {
 
   String saveSingleMultipartInTemp(final CompletedFileUpload stream) throws IOException;
 
-  List<FileSavingData> moveFromTempToArchive(List<UploadededFile> files) throws IOException;
+  List<FileSavingData> moveFromTempToArchive(List<UploadededFile> files);
 
 }

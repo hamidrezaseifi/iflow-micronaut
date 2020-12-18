@@ -17,7 +17,7 @@ public abstract class WorkflowHandlerHelper<W extends IWorkflow> {
 
   // private static final boolean MANAGE_UPLOADFILES_IS_DISABLED = false;
 
-  protected void prepareUploadedFiles(final IWorkflowSaveRequest<W> createRequest, UUID userId) throws IOException {
+  protected void prepareUploadedFiles(final IWorkflowSaveRequest<W> createRequest, UUID userId) {
 
     final List<FileSavingData> archiveList = this.getUploadFileManager().moveFromTempToArchive(createRequest.getUploadedFiles());
 

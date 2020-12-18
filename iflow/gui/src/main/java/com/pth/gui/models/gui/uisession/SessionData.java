@@ -2,12 +2,15 @@ package com.pth.gui.models.gui.uisession;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pth.common.edo.enums.EWorkflowType;
+import com.pth.gui.models.CompanyWorkflowTypeController;
 import com.pth.gui.models.CompanyWorkflowtypeItemOcrSettingPreset;
 import com.pth.gui.models.User;
 import com.pth.gui.models.workflow.WorkflowType;
 import com.pth.gui.models.workflow.WorkflowTypeStep;
 import com.pth.gui.models.workflow.workflow.Workflow;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,6 +54,10 @@ public class SessionData {
 
     public Optional<CompanyWorkflowtypeItemOcrSettingPreset> findOcrPresetByName(String presetName){
         return this.getCompany().findOcrPresetByName(presetName);
+    }
+
+    public List<CompanyWorkflowTypeController> getControllerForWorkflowType(UUID workflowTypeId){
+        return this.getCompany().getControllerForWorkflowType(workflowTypeId);
     }
 
     public UUID getCompanyId() {
@@ -152,6 +159,15 @@ public class SessionData {
                 if(workflowTypeStep.getId() == workflowTypeId ){
                     return workflowTypeStep;
                 }
+            }
+        }
+        return null;
+    }
+
+    public WorkflowType getWorkflowTypeByEnumType(EWorkflowType type) {
+        for(WorkflowType workflowType: this.getWorkflow().getWorkflowTypes()){
+            if(workflowType.getTypeEnum() == type){
+                return workflowType;
             }
         }
         return null;

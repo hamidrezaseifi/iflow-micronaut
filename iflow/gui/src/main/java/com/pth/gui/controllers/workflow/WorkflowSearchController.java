@@ -8,6 +8,7 @@ import com.pth.gui.models.workflow.WorkflowSearchFilter;
 import com.pth.gui.models.workflow.WorkflowType;
 import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.services.IWorkflowSearchHandler;
+import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Post;
@@ -33,7 +34,7 @@ public class WorkflowSearchController extends AuthenticatedController {
   }
 
   @Post("/initsearch")
-  public Map<String, Object> loadWorkflowListInitialData(Session session) {
+  public HttpResponse<Map<String, Object>> loadWorkflowListInitialData(Session session) {
 
     final Map<String, Object> map = new HashMap<>();
     SessionData sessionData = getSessionData(session);
@@ -45,11 +46,11 @@ public class WorkflowSearchController extends AuthenticatedController {
     map.put("workflowStatusList", EWorkflowStatus.values());
     map.put("searchFilter", workflowSearchFilter);
 
-    return map;
+    return HttpResponse.ok(map);
   }
 
   @Post("/search")
-  public Map<String, Object> searchWorkflow(@Body final WorkflowSearchFilter workflowSearchFilter, Session session) {
+  public HttpResponse<Map<String, Object>> searchWorkflow(@Body final WorkflowSearchFilter workflowSearchFilter, Session session) {
 
     SessionData sessionData = getSessionData(session);
 
@@ -59,7 +60,7 @@ public class WorkflowSearchController extends AuthenticatedController {
     mapped.put("res", "ok");
     mapped.put("list", workflowList);
 
-    return mapped;
+    return HttpResponse.ok(mapped);
   }
 
 }
