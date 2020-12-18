@@ -1,0 +1,251 @@
+#
+# Constants for E2E tests
+#
+
+export IFLOW_E2E_RUN_PAUSE_LARGE=${IFLOW_E2E_RUN_PAUSE_MEDIUM:-50s}
+export IFLOW_E2E_RUN_PAUSE_MEDIUM=${IFLOW_E2E_RUN_PAUSE_MEDIUM:-20s}
+export IFLOW_E2E_RUN_PAUSE_SMALL=${IFLOW_E2E_RUN_PAUSE_MEDIUM:-5s}
+
+export PORT_WORKFLOW=1030
+export MODULE_WORKFLOW="workflow"
+
+export PORT_CORE=1010
+export MODULE_CORE="core"
+
+export PORT_PROFILE=1020
+export MODULE_PROFILE="profile"
+
+export PORT_GUI=1200
+export MODULE_GUI="gui"
+
+
+export ALL_PORTS_NO_UI="${PORT_CORE} ${PORT_WORKFLOW} ${PORT_PROFILE}"
+export ALL_PORTS="${ALL_PORTS_NO_UI} ${PORT_GUI}"
+export MODULES_NO_COMMON_DB_UI="${MODULE_CORE} ${MODULE_WORKFLOW} ${MODULE_PROFILE}"
+
+##########################
+
+# DB 
+export IFLOW_CORE_DB_URL=${IFLOW_CORE_DB_URL:-jdbc:mysql://localhost:3306/}
+export IFLOW_RELENG_DB_PREFIX=${IFLOW_RELENG_DB_PREFIX:-e2e_tests_}
+
+
+export MAVEN_QUIET="--quiet"
+export SKIP_TESTS="-DskipTests"
+
+#########################
+## Function for E2E tests
+
+function initShell() {
+    set -o errtrace
+    enableErrorExit
+}
+
+function enableErrorExit() {
+    trap handleError ERR
+}
+
+function disableErrorExit() {
+    trap - ERR
+}
+
+function syntax() {
+    echo
+    echo "$0 {-t] [-v]"
+    echo -e "\th|?: show syntax"
+    echo -e "\tt: run tests"
+    echo -e "\tv: show maven output"
+    echo
+}
+
+function parseArguments()  {
+    while getopts "tvc" opt; do
+        case "$opt" in
+        h|\?)
+            syntax
+            exit 0
+            ;;
+        t)  export SKIP_TESTS=""
+            ;;
+        v)  export MAVEN_QUIET=""
+            ;;
+        c)  export MAVEN_CLEAN="true"
+            ;;
+        esac
+    done
+}
+
+function setDbEnvVars(){
+    local module=$1
+    export IFLOW_RELENG_DB_MODULE=${IFLOW_RELENG_DB_PREFIX}$module
+    export IFLOW_MODULE_DB_DATABASE="${IFLOW_RELENG_DB_MODULE:0:64}"
+    export IFLOW_MODULE_DB_OWNER=${IFLOW_RELENG_DB_MODULE}_owner
+    export IFLOW_MODULE_DB_OWNER_PASSWORD=${IFLOW_RELENG_DB_MODULE}_owner_pwd
+    export IFLOW_MODULE_DB_USER=${IFLOW_RELENG_DB_MODULE}_user
+    export IFLOW_MODULE_DB_USER_PASSWORD=${IFLOW_RELENG_DB_MODULE}_user_pwd
+    # env | grep IFLOW_MODULE_DB | sort
+}
+
+function runModule() {
+    local mod=""
+    if [ -z "$1" ]; then
+      echo "Expected one module to start."
+      exit 1
+    else 
+      mod="$1"
+    fi
+
+    # find all jars except COMMON
+    nogui="-path ./gui -prune -o"
+    jar=$(find $mod -path ./common -prune -o $nogui -name *.jar -print)
+    
+    #enable shutdown actuator
+    jargs="-DMODNAME=$mod"
+    jargs="$jargs $IFLOW_ARGS"
+    jargs="$jargs -Dmanagement.endpoints.web.exposure.include=shutdown"
+    jargs="$jargs -Dmanagement.endpoint.shutdown.enabled=true"
+    jargs="$jargs -Dendpoints.shutdown.enabled=true"
+    jargs="$jargs -Diflow.common.rest.api.security.allowed-client-ids=iflow-client-id-for-dev"
+    jargs="$jargs -Diflow.common.rest.api.security.excluded-endpoint-prefixes=/iflow/common/admin/health,/actuator/shutdown"
+    jargs="$jargs -Diflow.common.rest.api.security.client-id.internal=iflow-inner-module"
+ 
+    nohup java $jargs -jar $jar 1>/dev/null 2>&1 </dev/null &
+    sleep 1
+}
+
+function startModules() {
+    local modules="$1"
+    for module in $modules; do
+        echo -n "Starting module $module"
+        setDbEnvVars $module
+        runModule $module
+        echo " -> done"
+        sleep 5
+    done
+}
+
+function stopModules() {
+    disableErrorExit
+    local ports=""
+    if [ -z "$1" ]; then
+      ports="$ALL_PORTS"
+    else 
+      ports="$*"
+    fi
+    for port in $ports; do
+        echo -n "Stopping module on port $port: " 
+        RESPONSE=$(curl --silent -m 1 -X POST localhost:$port/actuator/shutdown)
+        ERRC="$?"        
+        if [ "$ERRC" != "0" ]; then
+            MSG="Error code: $ERRC  (code 7: failed to connect to host - see https://curl.haxx.se/libcurl/c/libcurl-errors.html)"
+        else
+            MSG=" -> done"
+        fi
+        echo $MSG
+        sleep 2
+    done
+    enableErrorExit
+    sleep 3
+}
+
+
+function createModuleAndDatabases() {
+    local modules="$1"
+    local sep=""
+    echo -n "Compiling and creating database ..."
+
+        setDbEnvVars $module
+                
+	    jargs="-Difw.module.db.database=_e2e_core"
+	 	jargs="$jargs -Difw.module.db.user=_e2e_core_user"
+	 	jargs="$jargs -Difw.module.db.user.password=_e2e_core_user"
+	 	jargs="$jargs -Difw.module.db.user.password=_e2e_core_user_pwd"
+	 	jargs="$jargs -Difw.module.dbcreate.skip=false"
+        
+        mvn install $MAVEN_QUIET -P db-create $jargs -pl core $SKIP_TESTS -am
+        echo -n " -> done"
+        sep=", "
+
+    echo
+}
+
+function dropDatabases() {
+    local modules="$1"
+    local sep=""
+    echo -n "Compiling and creating database ..."
+
+        setDbEnvVars $module
+               
+	    jargs="-Difw.module.db.database=_e2e_core"
+	 	jargs="$jargs -Difw.module.db.user=_e2e_core_user"
+	 	jargs="$jargs -Difw.module.db.user.password=_e2e_core_user"
+	 	jargs="$jargs -Difw.module.db.user.password=_e2e_core_user_pwd"
+	 	jargs="$jargs -Difw.module.dbcreate.skip=false"
+        
+        mvn install $MAVEN_QUIET -P db-clean $jargs -pl core $SKIP_TESTS -am
+        echo -n " -> done"
+ 
+    echo
+}
+
+function buildModules() {
+    MODULES="$(echo $1 | sed -re 's/ +/,/g' )"
+    if [ "$MAVEN_CLEAN" == "true" ] ; then
+      echo -n "Cleaning modules"
+      mvn clean $MAVEN_QUIET
+      echo " -> done"
+    else
+      echo "MAVEN Clean is off"
+    fi
+    
+    # The given modules do not contain common (at least in e2e-full.sh)
+    # @Thomas: you deleted this part with commit 
+    #  06eb54942d0c6fae263a2852e7c25cbab55215016db1287ed307674de3d3868380cb9e6133bbf851
+    # I think this is wrong.
+    # The build did not work reliable for me any more.
+    echo -n "Building modules: common"
+    mvn install $MAVEN_QUIET -pl common $SKIP_TESTS
+    #mvn install -pl common $SKIP_TESTS
+    echo " -> done"
+
+    echo -n "Building modules: $MODULES"
+    mvn install $MAVEN_QUIET -pl $MODULES -am $SKIP_TESTS
+    #mvn install  -pl $MODULES -am $SKIP_TESTS
+    echo " -> done"
+    
+}
+
+function buildCoreFlyway() {
+
+# $MAVEN_QUIET
+    echo -n "Building modules: core-flyway"
+    mvn package flyway:info flyway:migrate flyway:info -pl core -am -DskipTests=true
+    echo " -> done"
+    
+}
+
+function handleSuccess() {
+    echo
+    echo "########################################"
+    echo "#                                      #"
+    echo "#         E2E tests finished           #"
+    echo "#                                      #"
+    echo "#              SUCCESS                 #"
+    echo "#                                      #"
+    echo "########################################"
+    echo
+}
+
+function handleError() {
+    read line file <<<$(caller)
+    #echo "An error occurred in line $line of file $file" >&2
+    
+    echo "####################################" >&2
+    echo "#"                                    >&2
+    echo "# Error on line $line: $file"         >&2
+    echo "# "                                   >&2
+    echo "#          ### ERROR ###"             >&2
+    echo "#"                                    >&2
+    echo "####################################" >&2
+    exit 1
+}
