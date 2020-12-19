@@ -13,10 +13,12 @@ import com.pth.workflow.services.bl.IWorkflowPrepare;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.TestThreeTaskWorkflowSaveStrategyFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -31,8 +33,8 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
   private final IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare;
 
   public TestThreeTaskWorkProcessService(ITestThreeTaskWorkflowRepository testThreeTaskWorkflowRepository,
-                                        IWorkflowSaveStrategyFactory<TestThreeTaskWorkflowEntity> workStrategyFactory,
-                                        IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare) {
+                                         @Named("testThreeTaskWorkflowSaveStrategyFactory") IWorkflowSaveStrategyFactory<TestThreeTaskWorkflowEntity> workStrategyFactory,
+                                          IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare) {
 
     this.testThreeTaskWorkflowRepository = testThreeTaskWorkflowRepository;
     this.workStrategyFactory = workStrategyFactory;

@@ -13,9 +13,11 @@ import com.pth.workflow.services.bl.IWorkflowPrepare;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.SingleTaskWorkflowSaveStrategyFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Singleton
@@ -30,7 +32,7 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   private final IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare;
 
   public SingleTaskWorkflowProcessService(ISingleTaskWorkflowRepository singleTaskWorkflowRepository,
-                                          IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
+                                          @Named("singleTaskWorkflowSaveStrategyFactory") IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
                                           IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare) {
 
     this.singleTaskWorkflowRepository = singleTaskWorkflowRepository;

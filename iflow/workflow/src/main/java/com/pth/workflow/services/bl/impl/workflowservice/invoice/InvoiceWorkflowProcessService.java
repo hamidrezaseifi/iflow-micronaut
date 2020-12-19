@@ -13,9 +13,12 @@ import com.pth.workflow.services.bl.IWorkflowPrepare;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategy;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.InvoiceWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.TestThreeTaskWorkflowSaveStrategyFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 
@@ -31,7 +34,7 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
   private final IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare;
 
   public InvoiceWorkflowProcessService(IInvoiceWorkflowRepository invoiceWorkflowRepository,
-                                        IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
+                                       @Named("invoiceWorkflowSaveStrategyFactory") IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
                                         IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare) {
 
     this.invoiceWorkflowRepository = invoiceWorkflowRepository;

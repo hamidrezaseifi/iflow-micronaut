@@ -8,9 +8,11 @@ import com.pth.common.edo.WorkflowMessageListEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 
+import javax.inject.Singleton;
 import java.util.Optional;
 import java.util.UUID;
 
+@Singleton
 public class GuiCachDataClient extends ClientBase implements IGuiCachDataClient {
 
   private final IGuiCachDataV001DeclarativeClient guiCachDataV001DeclarativeClient;

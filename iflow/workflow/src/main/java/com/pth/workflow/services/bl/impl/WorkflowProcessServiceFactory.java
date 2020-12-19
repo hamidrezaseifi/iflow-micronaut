@@ -15,6 +15,9 @@ import com.pth.workflow.services.bl.impl.workflowservice.singletask.SingleTaskWo
 import com.pth.workflow.services.bl.impl.workflowservice.testthreetask.TestThreeTaskWorkProcessService;
 import com.pth.workflow.services.bl.impl.workflowservice.workflow.WorkflowProcessService;
 import com.pth.workflow.services.bl.strategy.IWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.InvoiceWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.SingleTaskWorkflowSaveStrategyFactory;
+import com.pth.workflow.services.bl.strategy.factory.TestThreeTaskWorkflowSaveStrategyFactory;
 import io.micronaut.context.annotation.Bean;
 import io.micronaut.context.annotation.Factory;
 
@@ -37,7 +40,7 @@ public class WorkflowProcessServiceFactory {
     @Singleton
     @Named("invoiceWorkflowProcessService")
     public IWorkflowProcessService generateInvoiceWorkflowProcessService(IInvoiceWorkflowRepository invoiceWorkflowRepository,
-                                                                         IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
+                                                                         @Named("invoiceWorkflowSaveStrategyFactory") IWorkflowSaveStrategyFactory<InvoiceWorkflowEntity> workStrategyFactory,
                                                                          @Named("invoiceWorkflowPrepare") IWorkflowPrepare<InvoiceWorkflowEntity> workflowPrepare) {
         return new InvoiceWorkflowProcessService(invoiceWorkflowRepository, workStrategyFactory, workflowPrepare);
     }
@@ -46,7 +49,7 @@ public class WorkflowProcessServiceFactory {
     @Singleton
     @Named("singleTaskWorkflowProcessService")
     public IWorkflowProcessService generateSingleTaskWorkflowProcessService(ISingleTaskWorkflowRepository singleTaskWorkflowRepository,
-                                                                            IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
+                                                                            @Named("singleTaskWorkflowSaveStrategyFactory") IWorkflowSaveStrategyFactory<SingleTaskWorkflowEntity> workStrategyFactory,
                                                                             @Named("singleTaskWorkflowPrepare") IWorkflowPrepare<SingleTaskWorkflowEntity> workflowPrepare) {
         return new SingleTaskWorkflowProcessService(singleTaskWorkflowRepository, workStrategyFactory, workflowPrepare);
     }
@@ -55,7 +58,7 @@ public class WorkflowProcessServiceFactory {
     @Singleton
     @Named("testThreeTaskWorkProcessService")
     public IWorkflowProcessService generateTestThreeTaskWorkProcessService(ITestThreeTaskWorkflowRepository testThreeTaskWorkflowRepository,
-                                                                           IWorkflowSaveStrategyFactory<TestThreeTaskWorkflowEntity> workStrategyFactory,
+                                                                           @Named("testThreeTaskWorkflowSaveStrategyFactory") IWorkflowSaveStrategyFactory<TestThreeTaskWorkflowEntity> workStrategyFactory,
                                                                            @Named("testThreeTaskWorkPrepare") IWorkflowPrepare<TestThreeTaskWorkflowEntity> workflowPrepare) {
         return new TestThreeTaskWorkProcessService(testThreeTaskWorkflowRepository, workStrategyFactory, workflowPrepare);
     }

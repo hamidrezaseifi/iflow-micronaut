@@ -110,9 +110,9 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 
 	loadEditInitialData(identity: string){
 
-        const httpOptions = { headers: HttpHepler.generateFormHeader() };
+      const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getInitEditUrl(identity), new HttpParams(), httpOptions);
+      return this.http.post(this.getInitEditUrl(identity), null, httpOptions);
 
 	}
 
