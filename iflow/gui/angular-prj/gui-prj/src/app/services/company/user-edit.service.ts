@@ -35,7 +35,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	listUsers(){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	  const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
 		return this.http.get(this.loadUsersUrl, httpOptions);
 

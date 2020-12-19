@@ -85,29 +85,29 @@ export class WorkflowEditBaseService extends HttpErrorResponseHelper implements 
 	loadCreateInitialData(){
     	this.loadingService.showLoading();
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
-		        (initialData :WorkflowSaveRequestInit) => {
+      this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
+          (initialData :WorkflowSaveRequestInit) => {
 
-		            console.log("GET successful edit inital data", initialData);
+              console.log("GET successful edit inital data", initialData);
 
-		            this.workflowSaveRequestInit = <WorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
+              this.workflowSaveRequestInit = <WorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
 
-		            this.workflowSaveRequestInitSubject.next(initialData);
+              this.workflowSaveRequestInitSubject.next(initialData);
 
 
-		        },
-		        response => {
-		        	console.log("Error in read edit inital data", response);
-		        	this.processErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
-		        	this.workflowSaveRequestInitSubject.complete();
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+          },
+          response => {
+            console.log("Error in read edit inital data", response);
+            this.processErrorResponse(response);
+            this.loadingService.hideLoading();
+          },
+          () => {
+            this.workflowSaveRequestInitSubject.complete();
+            this.loadingService.hideLoading();
+          }
+      );
 
 	}
 

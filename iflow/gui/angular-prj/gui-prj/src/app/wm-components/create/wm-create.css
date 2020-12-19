@@ -24,3 +24,9 @@ div.workflow-content div.workflow-step-button-bar, div.workflow-content-record d
     right: 15px;
     margin: 5px 0;
 }
+
+.page-toolbar .toolbar-link, .page-toolbar .toolbar-button{
+  color: white;
+  margin-left: 5px;
+}
+

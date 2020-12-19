@@ -52,8 +52,8 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     this.companyHandler = companyHandler;
   }
 
-  //@Post("/initcreate" )
-  public HttpResponse<Map<String, Object>> loadWorkflowCreateData1(Session session) {
+  @Post("/initcreate" )
+  public HttpResponse<Map<String, Object>> loadWorkflowCreateData(Session session) {
 
     final Map<String, Object> map = new HashMap<>();
 
@@ -75,7 +75,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     return HttpResponse.ok(map);
   }
 
-  //@Post( "/initedit/{workflowId}")
+  @Post( "/initedit/{workflowId}")
   public HttpResponse<Map<String, Object>> loadWorkflowEditData(final UUID workflowId, Session session)
        {
 
@@ -101,7 +101,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
    return HttpResponse.notFound();
   }
 
-  //@Post( "/create")
+  @Post( "/create")
   public HttpResponse<List<W>> createWorkflow(@Body final WS createRequest, Session session) {
 
     createRequest.getWorkflow().setCompanyId(this.getCompanyId(session));
@@ -113,7 +113,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
 
   }
 
-  //@Post( "/save" )
+  @Post( "/save" )
   public HttpResponse<?> saveWorkflow(@Body final WS saveRequest, Session session) {
 
     saveRequest.getWorkflow().setCompanyId(this.getCompanyId(session));
@@ -125,7 +125,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     return HttpResponse.ok();
   }
 
-  //@Post( "/archive")
+  @Post( "/archive")
   public HttpResponse<?> archiveWorkflow(@Body final W workflow, Session session) {
 
     this.setWorkflowController(workflow, session);
@@ -134,7 +134,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     return HttpResponse.ok();
   }
 
-  //@Post( "/done")
+  @Post( "/done")
   public HttpResponse<?> makeDoneWorkflow(@Body final WS saveRequest, final Session session) {
 
     saveRequest.getWorkflow().setCompanyId(this.getCompanyId(session));
@@ -145,7 +145,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     return HttpResponse.ok();
   }
 
-  //@Post( "/assign/{workflowId}")
+  @Post( "/assign/{workflowId}")
   public HttpResponse<W> assignWorkflow(final UUID workflowId, Session session) {
 
     final Optional<W> workflowOptional = this.workflowHandler.assignWorkflow(workflowId, getSessionData(session));
@@ -161,7 +161,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     return HttpResponse.badRequest();
   }
 
-  //@Post( "/processdoc")
+  @Post( "/processdoc")
   public HttpResponse<GuiSocketMessage> processDocument(@Body final GuiSocketMessage message, Session session)
           throws IOException {
 
@@ -357,7 +357,8 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
 
     if(controllerList == null ||controllerList.isEmpty()){
 
-      throw new GuiCustomizedException("Invalid-Company-Setting:Workflow-Controller-Not-Found!");
+      //throw new GuiCustomizedException("Invalid-Company-Setting:Workflow-Controller-Not-Found!");
+      return;
     }
 
     newWorkflow.setControllerId(controllerList.get(0).getUserId());

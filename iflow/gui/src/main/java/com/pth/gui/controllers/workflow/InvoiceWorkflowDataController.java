@@ -29,7 +29,7 @@ public class InvoiceWorkflowDataController extends WorkflowDataControllerBase<In
     super(workflowHandler, uploadFileManager, companyHandler);
   }
 
-  @Post("/initcreate" )
+  /*@Post("/initcreate" )
   public HttpResponse<Map<String, Object>> loadWorkflowCreateData(Session session) {
 
     final Map<String, Object> map = new HashMap<>();
@@ -50,7 +50,7 @@ public class InvoiceWorkflowDataController extends WorkflowDataControllerBase<In
                                                                        this.getLoggedToken(session)));
 
     return HttpResponse.ok(map);
-  }
+  }*/
 
 
   @Override
@@ -59,6 +59,7 @@ public class InvoiceWorkflowDataController extends WorkflowDataControllerBase<In
     final InvoiceWorkflow workflow = InvoiceWorkflow.generateInitial(userId);
     workflow.setWorkflowType(this.getWorkflowTypeByEnumType(EWorkflowType.INVOICE_WORKFLOW_TYPE, session));
     workflow.setIsDirectDebitPermission(false);
+    workflow.setCurrentUserId(userId);
     return workflow;
   }
 

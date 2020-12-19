@@ -80,28 +80,30 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 	loadCreateInitialData(){
     	this.loadingService.showLoading();
 
-        const httpOptions = { headers: HttpHepler.generateFormHeader() };
+      const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        this.http.post(this.getInitCreateUrl(), new HttpParams(), httpOptions).subscribe(
-		        (initialData :InvoiceWorkflowSaveRequestInit) => {
+      console.log("InitCreateUrl: " + this.getInitCreateUrl());
 
-		            console.log("GET successful edit inital data", initialData);
+      this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
+          (initialData :InvoiceWorkflowSaveRequestInit) => {
 
-		            this.workflowSaveRequestInit = <InvoiceWorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
+              console.log("GET successful edit inital data", initialData);
 
-		            this.workflowSaveRequestInitSubject.next(initialData);
+              this.workflowSaveRequestInit = <InvoiceWorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
+
+              this.workflowSaveRequestInitSubject.next(initialData);
 
 
-		        },
-		        response => {
-		        	console.log("Error in read edit inital data", response);
-		        	this.errorService.showErrorResponse(response);
-		        },
-		        () => {
-		        	this.workflowSaveRequestInitSubject.complete();
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+          },
+          response => {
+            console.log("Error in read edit inital data", response);
+            this.errorService.showErrorResponse(response);
+          },
+          () => {
+            this.workflowSaveRequestInitSubject.complete();
+            this.loadingService.hideLoading();
+          }
+      );
 
 	}
 

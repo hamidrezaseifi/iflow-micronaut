@@ -365,13 +365,18 @@ public abstract class WorkflowBase implements IWorkflow {
 
   @Override
   public boolean isLoggedUserController() {
-
+    if(this.controllerId == null || this.currentUserId == null){
+      return false;
+    }
     return this.controllerId.equals(this.currentUserId);
   }
 
   @Override
   public boolean isLoggedUserControllerAndDone() {
 
+    if(this.controllerId == null || this.currentUserId == null){
+      return false;
+    }
     return this.controllerId.equals(this.currentUserId) && this.getIsDone();
   }
 
