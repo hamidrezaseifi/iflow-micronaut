@@ -12,8 +12,8 @@ import { ErrorServiceService } from '../../../services/error-service.service';
 import { User, Department, GeneralData, UploadedFile, UploadedResult } from '../../../ui-models';
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, WorkflowUploadedFile }
 	from '../../../wf-models';
-import { WorkflowSaveRequest } from '../../../wf-models/workflow-save-request';
-import { WorkflowSaveRequestInit } from '../../../wf-models/workflow-save-request-init';
+import { SingleTaskWorkflowSaveRequest } from '../../../wf-models/singletask/singletask-workflow-save-request';
+import { SingleTaskWorkflowSaveRequestInit } from '../../../wf-models/singletask/singletask-workflow-save-request-init';
 
 @Component({
   selector: 'app-create-singletask',
@@ -25,7 +25,7 @@ export class CreateSingletaskComponent implements OnInit {
 
 	workflowListUrl :string = "/workflow/list";
 
-	workflowSaveRequest :WorkflowSaveRequest = null;
+	workflowSaveRequest :SingleTaskWorkflowSaveRequest = null;
 	generalDataObs :Observable<GeneralData> = null;
 
 	showDebug : boolean = false;
@@ -115,7 +115,7 @@ export class CreateSingletaskComponent implements OnInit {
 	}
 
 	private subscribeToSearchInitialData(){
-		this.editService.workflowSaveRequestInitSubject.subscribe((data : WorkflowSaveRequestInit) => {
+		this.editService.workflowSaveRequestInitSubject.subscribe((data : SingleTaskWorkflowSaveRequestInit) => {
 
 			console.log("set gloabl-data from workflow-create. : ", data);
 			//alert("from app-comp: \n" + JSON.stringify(data));

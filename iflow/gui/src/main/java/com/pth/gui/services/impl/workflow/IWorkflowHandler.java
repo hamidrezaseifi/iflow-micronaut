@@ -1,8 +1,13 @@
 package com.pth.gui.services.impl.workflow;
 
+import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.workflow.Workflow;
-import com.pth.gui.models.workflow.workflow.WorkflowSaveRequest;
-import com.pth.gui.services.IBasicWorkflowHandler;
 
-public interface IWorkflowHandler extends IBasicWorkflowHandler<Workflow, WorkflowSaveRequest> {
+import java.util.Optional;
+import java.util.UUID;
+
+public interface IWorkflowHandler {
+
+    Optional<Workflow> readWorkflow(final UUID workflowId, SessionData sessionData);
+
 }

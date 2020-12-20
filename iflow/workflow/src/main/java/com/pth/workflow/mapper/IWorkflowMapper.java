@@ -9,5 +9,5 @@ import com.pth.workflow.models.WorkflowSearchFilter;
 
 public interface IWorkflowMapper extends IModelEdoMapper<WorkflowEntity, WorkflowEdo> {
 
-    WorkflowSearchFilter fromEdo(WorkflowSearchFilterEdo edo);
+
 }

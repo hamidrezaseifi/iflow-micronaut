@@ -3,6 +3,7 @@ package com.pth.workflow.entities;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ public class WorkflowFileEntity extends BaseEntity {
   private Integer activeFileVersion;
 
   @Column(name = "created_by")
-  private Long createdByUserId;
+  private UUID createdByUserId;
 
   @Column(name = "comments")
   private String comments;
@@ -126,12 +127,12 @@ public class WorkflowFileEntity extends BaseEntity {
     this.activeFileVersion = fileVersion;
   }
 
-  public Long getCreatedByUserId() {
+  public UUID getCreatedByUserId() {
 
     return createdByUserId;
   }
 
-  public void setCreatedByUserId(final Long createdByUserId) {
+  public void setCreatedByUserId(final UUID createdByUserId) {
 
     this.createdByUserId = createdByUserId;
   }

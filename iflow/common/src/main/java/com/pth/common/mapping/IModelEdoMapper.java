@@ -1,5 +1,6 @@
 package com.pth.common.mapping;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -9,8 +10,8 @@ public interface IModelEdoMapper<M, E> {
 
   E toEdo(M model);
 
-  List<E> toEdoList(final List<M> modelList);
+  List<E> toEdoList(final Collection<M> modelList);
 
-  List<M> fromEdoList(final List<E> edoList);
+  List<M> fromEdoList(final Collection<E> edoList);
 
 }

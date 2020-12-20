@@ -247,4 +247,8 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
         return getWorkflow().getCompanyId();
     }
 
+    public void setCompanyId(final UUID companyId) {
+
+        this.getWorkflow().setCompanyId(companyId);
+    }
 }

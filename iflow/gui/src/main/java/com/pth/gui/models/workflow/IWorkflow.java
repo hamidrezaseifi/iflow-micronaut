@@ -27,9 +27,9 @@ public interface IWorkflow {
 
   void setComments(final String comments);
 
-  int getVersion();
+  Integer getVersion();
 
-  void setVersion(final int version);
+  void setVersion(final Integer version);
 
   List<WorkflowFile> getFiles();
 

@@ -13,10 +13,10 @@ import { InvoiceBaseComponent } from '../../invoice-base.component';
 import { GlobalSocket } from '../../../services/global-socket';
 
 import { User, Department, GeneralData, OcrWord, UploadedFile, UploadedResult } from '../../../ui-models';
-import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, InvoiceType, WorkflowUploadedFile } 
+import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, InvoiceType, WorkflowUploadedFile }
 	from '../../../wf-models';
-import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice-workflow-save-request';
-import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice-workflow-save-request-init';
+import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice/invoice-workflow-save-request';
+import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice/invoice-workflow-save-request-init';
 import { InvoiceTypeControllValidator } from '../../../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
@@ -33,7 +33,7 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 		ss += " -- " + parseDate(ss, 'dd.mm.yyyy');
 		return ss;
 	}
-	
+
 	constructor(
 		    protected router: Router,
 			protected global: GlobalService,
@@ -56,26 +56,26 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 			  	formBuilder,
 			  	dateAdapter,
 			  	globalSocket);
-		
+
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
 		    	this.loadInitialData();
 			}
 		});
 
-		
+
 
 	}
-	
+
 	ngOnInit() {
-		
+
 		super.ngOnInit();
-		
+
 	}
-	
-	
+
+
 	protected loadInitialData(){
-		
+
 	 	if(this.editService.workflowSaveRequestInit !== null){
 	 		this.workflowSaveRequest = this.editService.workflowSaveRequestInit.workflowSaveRequest;
 	 		this.ocrSettingPresets = this.editService.workflowSaveRequestInit.ocrPresetList;
@@ -85,20 +85,20 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 	 		this.subscribeToSearchInitialData();
 	 		this.editService.loadCreateInitialData();
 	 	}
-		 	
+
 	}
 
 	reload() {
-		
+
 		this.loadInitialData();
-	
+
 	}
 
 	private subscribeToSearchInitialData(){
 		this.editService.workflowSaveRequestInitSubject.subscribe((data : InvoiceWorkflowSaveRequestInit) => {
-	    	
+
 			console.log("Load initial workflow-create data", data);
-	 		
+
 			if(data && data !== null){
 				this.workflowSaveRequest = data.workflowSaveRequest;
 				this.ocrSettingPresets = data.ocrPresetList;
@@ -109,34 +109,34 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 			}
 		  });
 	}
-	
+
 
 	save(){
-		
+
 		this.setFormControlValues();
-				
+
 		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
-		 
+
 		this.loadingService.showLoading();
-		
+
         this.editService.createWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {		        	
+		        (result) => {
 		            console.log("Create workflow result", result);
-		            
+
 		            this.router.navigate([this.workflowListUrl]);
 		        },
 		        response => {
 		        	console.log("Error in create workflow", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		    );	       	
-		
+		    );
+
 	}
-	
+
 }

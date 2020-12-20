@@ -8,12 +8,10 @@ import com.pth.workflow.entities.WorkflowEntity;
 import com.pth.workflow.entities.WorkflowEntity_;
 import com.pth.workflow.models.WorkflowSearchFilter;
 import com.pth.workflow.repositories.IWorkflowRepository;
-import io.micronaut.context.annotation.Bean;
 import io.micronaut.spring.tx.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 
 import javax.inject.Named;
-import javax.inject.Qualifier;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -93,7 +91,7 @@ public class WorkflowRepository extends AEntityRdbmsHibernateRepository<Workflow
         final Root<WorkflowEntity> root = query.from(WorkflowEntity.class);
         query.select(root);
 
-        Predicate finalPredicate = criteriaBuilder.equal(root.get(WorkflowEntity_.companyId), workflowSearchFilter.getCompanyIdentity());
+        Predicate finalPredicate = criteriaBuilder.equal(root.get(WorkflowEntity_.companyId), workflowSearchFilter.getCompanyId());
 
         if (workflowSearchFilter.getStatusSet().isEmpty() == false) {
             final Path<Integer> path = root.get(WorkflowEntity_.status);

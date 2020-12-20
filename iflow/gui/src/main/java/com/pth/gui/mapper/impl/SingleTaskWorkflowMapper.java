@@ -6,12 +6,10 @@ import com.pth.common.edo.enums.EWorkflowMessageType;
 import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
-import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
-import com.pth.gui.mapper.IWorkflowActionMapper;
-import com.pth.gui.mapper.IWorkflowFileMapper;
-import com.pth.gui.mapper.IWorkflowMessageMapper;
+import com.pth.gui.mapper.*;
 import com.pth.gui.models.workflow.WorkflowMessage;
 import com.pth.gui.models.workflow.singletask.SingleTaskWorkflow;
+import com.pth.gui.models.workflow.workflow.Workflow;
 
 import javax.inject.Singleton;
 
@@ -19,30 +17,20 @@ import javax.inject.Singleton;
 public class SingleTaskWorkflowMapper extends ModelEdoMapperBase<SingleTaskWorkflow, SingleTaskWorkflowEdo>
         implements ISingleTaskWorkflowMapper {
 
-    private final IWorkflowFileMapper workflowFileMapper;
-    private final IWorkflowActionMapper workflowActionMapper;
+    private final IWorkflowMapper workflowMapper;
 
-    public SingleTaskWorkflowMapper(IWorkflowFileMapper workflowFileMapper,
-                          IWorkflowActionMapper workflowActionMapper) {
-        this.workflowFileMapper = workflowFileMapper;
-        this.workflowActionMapper = workflowActionMapper;
+    public SingleTaskWorkflowMapper(IWorkflowMapper workflowMapper) {
+
+        this.workflowMapper = workflowMapper;
     }
 
     @Override
     public SingleTaskWorkflow fromEdo(SingleTaskWorkflowEdo edo) {
         final SingleTaskWorkflow model = new SingleTaskWorkflow();
 
-        model.setComments(edo.getWorkflow().getComments());
-        model.setStatus(edo.getWorkflow().getStatus());
-        model.setVersion(edo.getWorkflow().getVersion());
-        model.setControllerId(edo.getWorkflow().getControllerId());
-        model.setCurrentStepId(edo.getWorkflow().getCurrentStepId());
-        model.setCreatedById(edo.getWorkflow().getCreatedById());
-        model.setIdentity(edo.getWorkflow().getIdentity());
-        model.setCompanyId(edo.getWorkflow().getCompanyId());
+        Workflow workflow = workflowMapper.fromEdo(edo.getWorkflow());
 
-        model.setFiles(workflowFileMapper.fromEdoList(edo.getWorkflow().getFiles()));
-        model.setActions(workflowActionMapper.fromEdoList(edo.getWorkflow().getActions()));
+        model.setWorkflow(workflow);
 
         return model;
     }
@@ -50,19 +38,7 @@ public class SingleTaskWorkflowMapper extends ModelEdoMapperBase<SingleTaskWorkf
     @Override
     public SingleTaskWorkflowEdo toEdo(SingleTaskWorkflow model) {
 
-        final WorkflowEdo workflowEdo = new WorkflowEdo();
-        workflowEdo.setComments(model.getComments());
-        workflowEdo.setStatus(model.getStatusInt());
-        workflowEdo.setControllerId(model.getControllerId());
-        workflowEdo.setCurrentStepId(model.getCurrentStepId());
-        workflowEdo.setCreatedById(model.getCreatedById());
-        workflowEdo.setVersion(model.getVersion());
-        workflowEdo.setId(model.getId());
-        workflowEdo.setWorkflowTypeId(model.getWorkflowTypeId());
-        workflowEdo.setCompanyId(model.getCompanyId());
-
-        workflowEdo.setFiles(workflowFileMapper.toEdoList(model.getFiles()));
-        workflowEdo.setActions(workflowActionMapper.toEdoList(model.getActions()));
+        final WorkflowEdo workflowEdo = workflowMapper.toEdo(model.getWorkflow());
 
         final SingleTaskWorkflowEdo edo = new SingleTaskWorkflowEdo();
         edo.setWorkflow(workflowEdo);

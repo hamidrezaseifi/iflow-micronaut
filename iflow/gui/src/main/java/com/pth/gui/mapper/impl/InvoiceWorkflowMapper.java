@@ -5,12 +5,10 @@ import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.common.edo.workflow.invoice.InvoiceWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.mapping.ModelEdoMapperBase;
-import com.pth.gui.mapper.IInvoiceWorkflowMapper;
-import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
-import com.pth.gui.mapper.IWorkflowActionMapper;
-import com.pth.gui.mapper.IWorkflowFileMapper;
+import com.pth.gui.mapper.*;
 import com.pth.gui.models.workflow.invoice.InvoiceWorkflow;
 import com.pth.gui.models.workflow.singletask.SingleTaskWorkflow;
+import com.pth.gui.models.workflow.workflow.Workflow;
 
 import javax.inject.Singleton;
 
@@ -18,27 +16,20 @@ import javax.inject.Singleton;
 public class InvoiceWorkflowMapper extends ModelEdoMapperBase<InvoiceWorkflow, InvoiceWorkflowEdo>
         implements IInvoiceWorkflowMapper {
 
-    private final IWorkflowFileMapper workflowFileMapper;
-    private final IWorkflowActionMapper workflowActionMapper;
+    private final IWorkflowMapper workflowMapper;
 
-    public InvoiceWorkflowMapper(IWorkflowFileMapper workflowFileMapper,
-                                 IWorkflowActionMapper workflowActionMapper) {
-        this.workflowFileMapper = workflowFileMapper;
-        this.workflowActionMapper = workflowActionMapper;
+    public InvoiceWorkflowMapper(IWorkflowMapper workflowMapper) {
+
+        this.workflowMapper = workflowMapper;
     }
 
     @Override
     public InvoiceWorkflow fromEdo(InvoiceWorkflowEdo edo) {
         final InvoiceWorkflow model = new InvoiceWorkflow();
 
-        model.setComments(edo.getWorkflow().getComments());
-        model.setStatus(edo.getWorkflow().getStatus());
-        model.setVersion(edo.getWorkflow().getVersion());
-        model.setControllerId(edo.getWorkflow().getControllerId());
-        model.setCurrentStepId(edo.getWorkflow().getCurrentStepId());
-        model.setCreatedById(edo.getWorkflow().getCreatedById());
-        model.setIdentity(edo.getWorkflow().getIdentity());
-        model.setCompanyId(edo.getWorkflow().getCompanyId());
+        Workflow workflow = workflowMapper.fromEdo(edo.getWorkflow());
+
+        model.setWorkflow(workflow);
 
         model.setDiscountDate(edo.getDiscountDate());
         model.setDiscountDeadline(edo.getDiscountDeadline());
@@ -54,8 +45,6 @@ public class InvoiceWorkflowMapper extends ModelEdoMapperBase<InvoiceWorkflow, I
         model.setVendorName(edo.getVendorName());
         model.setVendorNumber(edo.getVendorNumber());
 
-        model.setFiles(workflowFileMapper.fromEdoList(edo.getWorkflow().getFiles()));
-        model.setActions(workflowActionMapper.fromEdoList(edo.getWorkflow().getActions()));
 
         return model;
     }
@@ -63,19 +52,7 @@ public class InvoiceWorkflowMapper extends ModelEdoMapperBase<InvoiceWorkflow, I
     @Override
     public InvoiceWorkflowEdo toEdo(InvoiceWorkflow model) {
 
-        final WorkflowEdo workflowEdo = new WorkflowEdo();
-        workflowEdo.setComments(model.getComments());
-        workflowEdo.setStatus(model.getStatusInt());
-        workflowEdo.setControllerId(model.getControllerId());
-        workflowEdo.setCurrentStepId(model.getCurrentStepId());
-        workflowEdo.setCreatedById(model.getCreatedById());
-        workflowEdo.setVersion(model.getVersion());
-        workflowEdo.setId(model.getId());
-        workflowEdo.setWorkflowTypeId(model.getWorkflowTypeId());
-        workflowEdo.setCompanyId(model.getCompanyId());
-
-        workflowEdo.setFiles(workflowFileMapper.toEdoList(model.getFiles()));
-        workflowEdo.setActions(workflowActionMapper.toEdoList(model.getActions()));
+        final WorkflowEdo workflowEdo = workflowMapper.toEdo(model.getWorkflow());
 
         final InvoiceWorkflowEdo edo = new InvoiceWorkflowEdo();
         edo.setWorkflow(workflowEdo);

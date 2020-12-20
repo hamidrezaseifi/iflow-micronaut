@@ -1,21 +1,18 @@
 package com.pth.gui.services.impl.workflow.workflow;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.pth.common.edo.workflow.WorkflowEdo;
-import com.pth.gui.exception.GuiCustomizedException;
 import com.pth.gui.mapper.IWorkflowMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
-import com.pth.gui.models.workflow.WorkflowFile;
+import com.pth.gui.models.workflow.WorkflowAction;
+import com.pth.gui.models.workflow.WorkflowType;
+import com.pth.gui.models.workflow.WorkflowTypeStep;
 import com.pth.gui.models.workflow.workflow.Workflow;
-import com.pth.gui.models.workflow.workflow.WorkflowSaveRequest;
-import com.pth.gui.services.IUploadFileManager;
-import com.pth.gui.services.IBasicWorkflowHandler;
 import com.pth.gui.services.impl.workflow.IWorkflowHandler;
-import com.pth.gui.services.impl.workflow.base.WorkflowHandlerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.pth.clients.clients.workflow.IWorkflowClient;
@@ -23,21 +20,18 @@ import com.pth.clients.clients.workflow.IWorkflowClient;
 import javax.inject.Singleton;
 
 @Singleton
-public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements IWorkflowHandler {
+public class WorkflowHandler implements IWorkflowHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(WorkflowHandler.class);
 
   private final IWorkflowClient workflowClient;
   private final IWorkflowMapper workflowMapper;
-  private final IUploadFileManager uploadFileManager;
 
   public WorkflowHandler(IWorkflowClient workflowClient,
-                         IWorkflowMapper workflowMapper,
-                         IUploadFileManager uploadFileManager) {
+                         IWorkflowMapper workflowMapper) {
 
     this.workflowClient = workflowClient;
     this.workflowMapper = workflowMapper;
-    this.uploadFileManager = uploadFileManager;
   }
 
   @Override
@@ -55,57 +49,47 @@ public class WorkflowHandler extends WorkflowHandlerHelper<Workflow> implements 
     return Optional.empty();
   }
 
-  @Override
-  public List<Workflow> createWorkflow(final WorkflowSaveRequest createRequest,
-                                                 SessionData sessionData) {
-    throw new GuiCustomizedException("not implemented");
+
+  private Workflow prepareWorkflow(final Workflow workflow, SessionData sessionData) {
+
+    workflow.setWorkflowType(sessionData.findWorkflowType(workflow.getWorkflowTypeId()));
+    workflow.setCreatedByUser(sessionData.findUser(workflow.getCreatedById()));
+    workflow.setControllerUser(sessionData.findUser(workflow.getControllerId()));
+    workflow.setCurrentUserId(sessionData.getUser().getCurrentUser().getId());
+    workflow.setCurrentStep(this.findStepByIdInWorkflowType(workflow.getCurrentStepId(), workflow.getWorkflowType()));
+
+    this.prepareWorkflowActions(workflow, sessionData);
+
+    return workflow;
   }
 
-  @Override
-  public Optional<Workflow> saveWorkflow(final WorkflowSaveRequest saveRequest, SessionData sessionData) {
+  private Workflow prepareWorkflowActions(final Workflow workflow, SessionData sessionData){
+    
+    for (final WorkflowAction action : workflow.getActions()) {
+      action.setAssignToUser(sessionData.findUser(action.getAssignToId()));
+      action.setCurrentStep(this.findStepByIdInWorkflowType(action.getCurrentStepId(), workflow.getWorkflowType()));
+    }
 
-    logger.debug("Save workflow");
-
-    throw new GuiCustomizedException("not implemented");
+    return workflow;
   }
 
-  @Override
-  public Optional<Workflow> assignWorkflow(final UUID workflowId, SessionData sessionData){
+  private WorkflowTypeStep findStepByIdInWorkflowType(final UUID stepId, final WorkflowType workflowType) {
 
-    logger.debug("Assign workflow");
+    final Map<UUID, WorkflowTypeStep> steps = this.getIdMapedSteps(workflowType);
 
-    throw new GuiCustomizedException("not implemented");
-
+    if (steps.containsKey(stepId)) {
+      return steps.get(stepId);
+    }
+    else {
+      return null;
+    }
   }
 
-  @Override
-  public Optional<Workflow> doneWorkflow(final WorkflowSaveRequest saveRequest, SessionData sessionData) {
+  protected Map<UUID, WorkflowTypeStep> getIdMapedSteps(final WorkflowType workflowType) {
 
-    logger.debug("Make workflow done");
+    final Map<UUID, WorkflowTypeStep> list = workflowType.getSteps().stream().collect(
+            Collectors.toMap(s -> s.getId(), s -> s));
 
-    throw new GuiCustomizedException("not implemented");
+    return list;
   }
-
-  @Override
-  public Optional<Workflow> archiveWorkflow(final Workflow workflow, SessionData sessionData){
-
-    logger.debug("Make workflow archive");
-
-    throw new GuiCustomizedException("not implemented");
-  }
-
-  @Override
-  public Optional<WorkflowFile> readWorkflowFile(final UUID workflowId,
-                                                 final UUID fileId,
-                                                 SessionData sessionData){
-
-    throw new GuiCustomizedException("not implemented");
-  }
-
-  @Override
-  protected IUploadFileManager getUploadFileManager() {
-
-    return this.uploadFileManager;
-  }
-
 }

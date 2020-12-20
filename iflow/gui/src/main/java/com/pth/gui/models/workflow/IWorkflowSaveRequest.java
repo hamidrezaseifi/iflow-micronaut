@@ -2,12 +2,13 @@ package com.pth.gui.models.workflow;
 
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.gui.models.UploadededFile;
+import com.pth.gui.models.workflow.base.WorkflowBased;
 
 import java.util.List;
 import java.util.UUID;
 
 
-public interface IWorkflowSaveRequest<W extends IWorkflow> {
+public interface IWorkflowSaveRequest<W extends WorkflowBased> {
 
   /**
    * @return the workflow

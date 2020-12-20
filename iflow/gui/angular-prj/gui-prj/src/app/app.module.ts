@@ -20,9 +20,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {IFlowMaterialModules} from './material-module';
 
 
-
-import { fakeBackendProvider } from './helper';
-
 import { AppComponent } from './app.component';
 import { appRoutingModule } from './app.routing';
 import { GlobalService } from './services/global.service';
@@ -126,7 +123,6 @@ export function createTranslateLoader(http: HttpClient) {
 	  GlobalService,
 	  AuthenticationService,
 	  WorkflowMessageService,
-	  fakeBackendProvider,
 	  CookieService,
 	  {
         provide: HTTP_INTERCEPTORS,

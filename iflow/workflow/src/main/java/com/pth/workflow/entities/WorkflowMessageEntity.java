@@ -1,6 +1,6 @@
 package com.pth.workflow.entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -48,11 +48,11 @@ public class WorkflowMessageEntity extends BaseEntity {
 
   @CreationTimestamp
   @Column(name = "created_at", insertable = false, updatable = false)
-  private Date createdAt;
+  private Timestamp createdAt;
 
   @UpdateTimestamp
   @Column(name = "updated_at", insertable = false, updatable = false)
-  private Date updatedAt;
+  private Timestamp updatedAt;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "workflow_id", nullable = false, insertable = false, updatable = false)
@@ -178,22 +178,22 @@ public class WorkflowMessageEntity extends BaseEntity {
     this.expireDays = expireDays;
   }
 
-  public Date getCreatedAt() {
+  public Timestamp getCreatedAt() {
 
     return this.createdAt;
   }
 
-  public void setCreatedAt(final Date createdAt) {
+  public void setCreatedAt(final Timestamp createdAt) {
 
     this.createdAt = createdAt;
   }
 
-  public Date getUpdatedAt() {
+  public Timestamp getUpdatedAt() {
 
     return updatedAt;
   }
 
-  public void setUpdatedAt(final Date updatedAt) {
+  public void setUpdatedAt(final Timestamp updatedAt) {
 
     this.updatedAt = updatedAt;
   }

@@ -18,8 +18,8 @@ import { ErrorServiceService } from '../services/error-service.service';
 import { User, Department, GeneralData, OcrWord, UploadedFile, UploadedResult, CompanyWorkflowtypeItemOcrSettingPreset } from '../ui-models';
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult,
 	InvoiceType, WorkflowUploadedFile, WorkflowFile } from '../wf-models';
-import { InvoiceWorkflowSaveRequest } from '../wf-models/invoice-workflow-save-request';
-import { InvoiceWorkflowSaveRequestInit } from '../wf-models/invoice-workflow-save-request-init';
+import { InvoiceWorkflowSaveRequest } from '../wf-models/invoice/invoice-workflow-save-request';
+import { InvoiceWorkflowSaveRequestInit } from '../wf-models/invoice/invoice-workflow-save-request-init';
 import { InvoiceTypeControllValidator } from '../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../helper';
 
@@ -344,15 +344,15 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	private setPageTitle(){
 		var pageLabelId = "invoice-assignview-title";
 
-		if(this.workflowSaveRequest.workflow.currentStepIndex === 1){
+		if(this.workflowSaveRequest.workflow.workflowBase.currentStepIndex === 1){
 			pageLabelId = "invoice-assignview-title";
 		}
 
-		if(this.workflowSaveRequest.workflow.currentStepIndex === 2){
+		if(this.workflowSaveRequest.workflow.workflowBase.currentStepIndex === 2){
 			pageLabelId = "invoice-testingview-title";
 		}
 
-		if(this.workflowSaveRequest.workflow.currentStepIndex === 3){
+		if(this.workflowSaveRequest.workflow.workflowBase.currentStepIndex === 3){
 			pageLabelId = "invoice-releaseview-title";
 		}
 
@@ -390,7 +390,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			this.invoiceEditForm.controls["discountDate"].setValue(this.workflowSaveRequest.workflow.discountDate);
 			this.invoiceEditForm.controls["paymentAmount"].setValue(this.workflowSaveRequest.workflow.paymentAmount);
 
-			this.uploadedFiles = WorkflowFile.toUploadedFileList(this.workflowSaveRequest.workflow.files);
+			this.uploadedFiles = WorkflowFile.toUploadedFileList(this.workflowSaveRequest.workflow.workflowBase.files);
 
 		}
 	}

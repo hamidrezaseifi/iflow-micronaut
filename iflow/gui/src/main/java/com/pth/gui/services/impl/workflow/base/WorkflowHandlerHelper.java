@@ -3,6 +3,8 @@ package com.pth.gui.services.impl.workflow.base;
 import com.pth.gui.models.gui.FileSavingData;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.*;
+import com.pth.gui.models.workflow.base.WorkflowBased;
+import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.services.IUploadFileManager;
 
 import java.io.IOException;
@@ -13,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public abstract class WorkflowHandlerHelper<W extends IWorkflow> {
+public abstract class WorkflowHandlerHelper<W extends WorkflowBased> {
 
   // private static final boolean MANAGE_UPLOADFILES_IS_DISABLED = false;
 
@@ -21,11 +23,12 @@ public abstract class WorkflowHandlerHelper<W extends IWorkflow> {
 
     final List<FileSavingData> archiveList = this.getUploadFileManager().moveFromTempToArchive(createRequest.getUploadedFiles());
 
-    createRequest.getWorkflow().clearFiles();
+    createRequest.getWorkflow().getWorkflow().clearFiles();
 
     for (final FileSavingData savedArchiveFile : archiveList) {
 
       createRequest
+          .getWorkflow()
           .getWorkflow()
           .addNewFile(savedArchiveFile.getFilePath(),
                       userId,
@@ -70,11 +73,13 @@ public abstract class WorkflowHandlerHelper<W extends IWorkflow> {
 
   protected W prepareWorkflow(final W workflow, SessionData sessionData) {
 
-    workflow.setWorkflowType(sessionData.findWorkflowType(workflow.getWorkflowTypeId()));
-    workflow.setCreatedByUser(sessionData.findUser(workflow.getCreatedById()));
-    workflow.setControllerUser(sessionData.findUser(workflow.getControllerId()));
-    workflow.setCurrentUserId(sessionData.getUser().getCurrentUser().getId());
-    workflow.setCurrentStep(this.findStepByIdInWorkflowType(workflow.getCurrentStepId(), workflow.getWorkflowType()));
+    Workflow workflowBase = workflow.getWorkflow();
+
+    workflowBase.setWorkflowType(sessionData.findWorkflowType(workflowBase.getWorkflowTypeId()));
+    workflowBase.setCreatedByUser(sessionData.findUser(workflowBase.getCreatedById()));
+    workflowBase.setControllerUser(sessionData.findUser(workflowBase.getControllerId()));
+    workflowBase.setCurrentUserId(sessionData.getUser().getCurrentUser().getId());
+    workflowBase.setCurrentStep(this.findStepByIdInWorkflowType(workflowBase.getCurrentStepId(), workflowBase.getWorkflowType()));
 
     this.prepareWorkflowActions(workflow, sessionData);
 
@@ -82,10 +87,11 @@ public abstract class WorkflowHandlerHelper<W extends IWorkflow> {
   }
 
   protected W prepareWorkflowActions(final W workflow, SessionData sessionData){
+    Workflow workflowBase = workflow.getWorkflow();
 
-    for (final WorkflowAction action : workflow.getActions()) {
+    for (final WorkflowAction action : workflowBase.getActions()) {
       action.setAssignToUser(sessionData.findUser(action.getAssignToId()));
-      action.setCurrentStep(this.findStepByIdInWorkflowType(action.getCurrentStepId(), workflow.getWorkflowType()));
+      action.setCurrentStep(this.findStepByIdInWorkflowType(action.getCurrentStepId(), workflowBase.getWorkflowType()));
     }
 
     return workflow;

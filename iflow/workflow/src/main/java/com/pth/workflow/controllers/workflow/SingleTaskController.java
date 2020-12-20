@@ -14,6 +14,7 @@ import com.pth.common.enums.UserRoles;
 import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.mapper.ISingleTaskWorkflowMapper;
 import com.pth.workflow.mapper.ISingleTaskWorkflowSaveRequestMapper;
+import com.pth.workflow.models.workflow.SingleTaskWorkflowSaveRequest;
 import com.pth.workflow.services.bl.IWorkflowProcessService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -47,11 +48,11 @@ public class SingleTaskController {
   public HttpResponse<SingleTaskWorkflowEdo> readInvoice(final UUID id,
                                                          @Header String authorization) throws Exception {
 
-    final Optional<SingleTaskWorkflowEntity> modelOptional =
-            this.singleTaskWorkflowService.getById(id);
+    final Optional<SingleTaskWorkflowEntity> modelOptional = this.singleTaskWorkflowService.getById(id);
 
     if(modelOptional.isPresent()){
-      return HttpResponse.ok(singleTaskWorkflowMapper.toEdo(modelOptional.get()));
+      SingleTaskWorkflowEdo workflowEdo = singleTaskWorkflowMapper.toEdo(modelOptional.get());
+      return HttpResponse.ok(workflowEdo);
     }
     return HttpResponse.notFound();
   }
@@ -62,10 +63,10 @@ public class SingleTaskController {
           @Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
           @Header String authorization) throws Exception {
 
+    SingleTaskWorkflowSaveRequest workflowSaveRequest =
+            singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo);
     final List<SingleTaskWorkflowEntity> modelList =
-            this.singleTaskWorkflowService.create(
-                    singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo),
-                    authorization);
+            this.singleTaskWorkflowService.create( workflowSaveRequest, authorization);
 
     return HttpResponse.created(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
   }
@@ -81,7 +82,8 @@ public class SingleTaskController {
                                                 authorization);
 
     if(modelOptional.isPresent()){
-      return HttpResponse.created(singleTaskWorkflowMapper.toEdo(modelOptional.get()));
+      SingleTaskWorkflowEdo workflowEdo = singleTaskWorkflowMapper.toEdo(modelOptional.get());
+      return HttpResponse.created(workflowEdo);
     }
     return HttpResponse.badRequest();
   }
@@ -90,10 +92,10 @@ public class SingleTaskController {
   public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
                                                                  @Header String authorization) throws Exception {
 
-    final List<SingleTaskWorkflowEntity> modelList =
-            this.singleTaskWorkflowService.getListByIdentityList(idList);
+    final List<SingleTaskWorkflowEntity> modelList = this.singleTaskWorkflowService.getListByIdentityList(idList);
 
-    return HttpResponse.ok(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
+    List<SingleTaskWorkflowEdo> workflowEdoList = singleTaskWorkflowMapper.toEdoList(modelList);
+    return HttpResponse.ok(new SingleTaskWorkflowListEdo(workflowEdoList));
   }
 
   @Get(value = "/readbyuserid/{id}/{status}")
@@ -101,10 +103,10 @@ public class SingleTaskController {
                                                                         @PathVariable(defaultValue = "0") final int status,
                                                                         @Header String authorization) throws Exception {
 
-    final List<SingleTaskWorkflowEntity> modelList =
-            this.singleTaskWorkflowService.getListForUser(id, status);
+    final List<SingleTaskWorkflowEntity> modelList = this.singleTaskWorkflowService.getListForUser(id, status);
 
-    return HttpResponse.ok(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
+    List<SingleTaskWorkflowEdo> workflowEdoList = singleTaskWorkflowMapper.toEdoList(modelList);
+    return HttpResponse.ok(new SingleTaskWorkflowListEdo(workflowEdoList));
   }
 
   @Status(HttpStatus.ACCEPTED)
@@ -114,8 +116,8 @@ public class SingleTaskController {
   validateInvoiceRequest(@Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
                          @Header String authorization) throws Exception {
 
-    this.singleTaskWorkflowService.validate(singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo),
-                                            authorization);
+    SingleTaskWorkflowSaveRequest model = singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo);
+    this.singleTaskWorkflowService.validate(model, authorization);
 
   }
 

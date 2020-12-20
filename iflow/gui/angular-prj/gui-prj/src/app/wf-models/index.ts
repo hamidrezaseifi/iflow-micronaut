@@ -13,8 +13,11 @@ export * from './assign-type';
 export * from './workflow-process-command';
 export * from './file-title';
 export * from './workflow-uploadfile-result';
-export * from './invoice-type';
+export * from './invoice/invoice-type';
 export * from './ws-uploaded-file';
+export * from './singletask/singletask-workflow';
+export * from './testthreetask/testthreetask-workflow';
+
 
 
 

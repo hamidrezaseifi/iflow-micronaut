@@ -18,6 +18,7 @@ import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.IWorkflow;
 import com.pth.gui.models.workflow.IWorkflowSaveRequest;
 import com.pth.gui.models.workflow.WorkflowType;
+import com.pth.gui.models.workflow.base.WorkflowBased;
 import com.pth.gui.services.IBasicWorkflowHandler;
 import com.pth.gui.services.ICompanyHandler;
 import com.pth.gui.services.IUploadFileManager;
@@ -35,180 +36,12 @@ import java.io.IOException;
 import java.util.*;
 
 //@Controller
-public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends IWorkflowSaveRequest<W>> 
+public abstract class WorkflowDataControllerBase
         extends AuthenticatedController {
 
-  protected final IBasicWorkflowHandler<W, WS> workflowHandler;
+  protected abstract ICompanyHandler getCompanyHandler();
 
-  protected final IUploadFileManager uploadFileManager;
-
-  protected final ICompanyHandler companyHandler;
-
-  public WorkflowDataControllerBase(IBasicWorkflowHandler<W, WS> workflowHandler,
-                                    IUploadFileManager uploadFileManager,
-                                    ICompanyHandler companyHandler) {
-    this.workflowHandler = workflowHandler;
-    this.uploadFileManager = uploadFileManager;
-    this.companyHandler = companyHandler;
-  }
-
-  @Post("/initcreate" )
-  public HttpResponse<Map<String, Object>> loadWorkflowCreateData(Session session) {
-
-    final Map<String, Object> map = new HashMap<>();
-
-    final W newWorkflow = this.generateInitialWorkflow(this.getCurrentUserId(session), session);
-
-    this.setWorkflowController(newWorkflow, session);
-
-    final WS workflowReq =
-            this.generateInitialWorkflowSaveRequest(newWorkflow,
-                                                    newWorkflow.getHasActiveAction() ?
-                                                    newWorkflow.getActiveAction().getCurrentStep().getExpireDays() :
-                                                    15);
-
-    map.put("workflowSaveRequest", workflowReq);
-    map.put("ocrPresetList",
-            this.companyHandler.readCompanyWorkflowtypeItemOcrSettings(this.getCompanyId(session),
-                                                                       this.getLoggedToken(session)));
-
-    return HttpResponse.ok(map);
-  }
-
-  @Post( "/initedit/{workflowId}")
-  public HttpResponse<Map<String, Object>> loadWorkflowEditData(final UUID workflowId, Session session)
-       {
-
-    final Map<String, Object> map = new HashMap<>();
-
-    final Optional<W> workflowOptional = this.workflowHandler.readWorkflow(workflowId, getSessionData(session));
-
-    if(workflowOptional.isPresent()){
-      W workflow = workflowOptional.get();
-      final Integer expireDays = workflow.getHasActiveAction() ? workflow.getActiveAction().getCurrentStep().getExpireDays() : 0;
-
-      final WS saveRequest = this.generateInitialWorkflowSaveRequest(workflow, expireDays);
-
-      this.setWorkflowController(workflow, session);
-
-      map.put("workflowSaveRequest", saveRequest);
-      map
-              .put("ocrPresetList",
-                   this.companyHandler.readCompanyWorkflowtypeItemOcrSettings(this.getCompanyId(session), this.getLoggedToken(session)));
-
-      return HttpResponse.ok(map);
-    }
-   return HttpResponse.notFound();
-  }
-
-  @Post( "/create")
-  public HttpResponse<List<W>> createWorkflow(@Body final WS createRequest, Session session) {
-
-    createRequest.getWorkflow().setCompanyId(this.getCompanyId(session));
-
-    this.setWorkflowController(createRequest.getWorkflow(), session);
-
-    List<W> createdWorkflowList = this.workflowHandler.createWorkflow(createRequest, getSessionData(session));
-    return HttpResponse.created(createdWorkflowList);
-
-  }
-
-  @Post( "/save" )
-  public HttpResponse<?> saveWorkflow(@Body final WS saveRequest, Session session) {
-
-    saveRequest.getWorkflow().setCompanyId(this.getCompanyId(session));
-
-    this.setWorkflowController(saveRequest.getWorkflow(), session);
-
-    this.workflowHandler.saveWorkflow(saveRequest, getSessionData(session));
-
-    return HttpResponse.ok();
-  }
-
-  @Post( "/archive")
-  public HttpResponse<?> archiveWorkflow(@Body final W workflow, Session session) {
-
-    this.setWorkflowController(workflow, session);
-
-    this.workflowHandler.archiveWorkflow(workflow, getSessionData(session));
-    return HttpResponse.ok();
-  }
-
-  @Post( "/done")
-  public HttpResponse<?> makeDoneWorkflow(@Body final WS saveRequest, final Session session) {
-
-    saveRequest.getWorkflow().setCompanyId(this.getCompanyId(session));
-
-    this.setWorkflowController(saveRequest.getWorkflow(), session);
-
-    this.workflowHandler.doneWorkflow(saveRequest, getSessionData(session));
-    return HttpResponse.ok();
-  }
-
-  @Post( "/assign/{workflowId}")
-  public HttpResponse<W> assignWorkflow(final UUID workflowId, Session session) {
-
-    final Optional<W> workflowOptional = this.workflowHandler.assignWorkflow(workflowId, getSessionData(session));
-
-    if(workflowOptional.isPresent()){
-      W workflow = workflowOptional.get();
-
-      this.setWorkflowController(workflow, session);
-
-      return HttpResponse.ok(workflow);
-    }
-
-    return HttpResponse.badRequest();
-  }
-
-  @Post( "/processdoc")
-  public HttpResponse<GuiSocketMessage> processDocument(@Body final GuiSocketMessage message, Session session)
-          throws IOException {
-
-    final GuiSocketMessage result = message.clone();
-
-    final String selectedPreset = message.getSelectedOcrPreset();
-    if (StringUtils.isEmpty(selectedPreset)) {
-      result.setStatus("error");
-      result.setErrorMessage("Invalid Preset!");
-
-      return HttpResponse.ok(result);
-    }
-
-    final String filePath = message.getFileNotHash();
-    final String hocrPath = message.getHocrFileNotHash();
-
-    final File file = new File(filePath);
-
-    final OcrResults ocrResults = OcrResults.loadFromHocrFile(hocrPath);
-
-    final Map<String, Set<OcrResultWord>> words = this.retrieveInvoiceDetailWords(ocrResults, selectedPreset, session);
-    if(words == null){
-      return  HttpResponse.notFound();
-    }
-
-    result.setWords(words);
-    result.setPageCount(ocrResults.getPages().size());
-
-    result.setImageWidth(300);
-    result.setImageHeight(500);
-    if (result.getIsFileImage()) {
-      final BufferedImage bimg = ImageIO.read(file);
-      result.setImageWidth(bimg.getWidth());
-      result.setImageHeight(bimg.getHeight());
-    }
-
-    if (result.getIsFilePdf() && ocrResults.getPages().size() > 0) {
-      result.setImageWidth(ocrResults.getPages().get(0).getBox().getWidth());
-      result.setImageHeight(ocrResults.getPages().get(0).getBox().getHeight());
-    }
-
-    result.setStatus("done");
-
-    return HttpResponse.ok(result);
-  }
-
-  private Map<String, Set<OcrResultWord>> retrieveInvoiceDetailWords(final OcrResults ocrResults,
+  protected Map<String, Set<OcrResultWord>> retrieveInvoiceDetailWords(final OcrResults ocrResults,
                                                                      final String selectedPreset,
                                                                      Session session) {
 
@@ -224,7 +57,7 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     WorkflowType workflowType = sessionData.getWorkflowTypeById(presetOptional.get().getWorkflowTypeId());
 
     final Map<String, CompanyWorkflowtypeItemOcrSettingPresetItem> presetItems =
-            this.companyHandler.readPresetAllItems(selectedPreset,
+            this.getCompanyHandler().readPresetAllItems(selectedPreset,
                                                    this.getCompanyId(session),
                                                    workflowType.getTypeEnum(),
                                                    this.getLoggedToken(session));
@@ -347,12 +180,13 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
     return results;
   }
 
-  protected void setWorkflowController(final W newWorkflow, Session session) {
+  private void setWorkflowController(final WorkflowBased workflow, Session session) {
 
     SessionData sessionData = this.getSessionData(session);
     sessionData.getCompany().getWorkflowTypeControllers();
 
-    List<CompanyWorkflowTypeController> controllerList = sessionData.getControllerForWorkflowType(newWorkflow.getWorkflowTypeId());
+    List<CompanyWorkflowTypeController> controllerList =
+            sessionData.getControllerForWorkflowType(workflow.getWorkflow().getWorkflowTypeId());
 
 
     if(controllerList == null ||controllerList.isEmpty()){
@@ -361,12 +195,21 @@ public abstract class WorkflowDataControllerBase<W extends IWorkflow, WS extends
       return;
     }
 
-    newWorkflow.setControllerId(controllerList.get(0).getUserId());
+    workflow.getWorkflow().setControllerId(controllerList.get(0).getUserId());
   }
 
-  protected abstract W generateInitialWorkflow(UUID userId, Session session);
+  private void setWorkflowCompanyId(final WorkflowBased workflow, Session session) {
 
-  protected abstract WS generateInitialWorkflowSaveRequest(W workflow, int expireDays);
+    workflow.getWorkflow().setCompanyId(this.getCompanyId(session));
+  }
+
+
+  protected void prepareWorkflow(final WorkflowBased workflow, Session session) {
+
+    setWorkflowController(workflow, session);
+    setWorkflowCompanyId(workflow, session);
+  }
+
 
   protected UUID getCurrentUserId(Session session){
     return this.getSessionData(session).getCurrentUserId();

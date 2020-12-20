@@ -15,8 +15,8 @@ import { GlobalSocket } from '../../../services/global-socket';
 
 import { User, Department, GeneralData } from '../../../ui-models';
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, InvoiceType } from '../../../wf-models';
-import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice-workflow-save-request';
-import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice-workflow-save-request-init';
+import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice/invoice-workflow-save-request';
+import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice/invoice-workflow-save-request-init';
 import { InvoiceTypeControllValidator } from '../../../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
@@ -27,38 +27,38 @@ import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
   providers: [{provide: DateAdapter, useClass: GermanDateAdapter}, InvoiceWorkflowEditService]
 })
 export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit {
-	
-	workflowIdentity : string = "not-set";	
 
-	saveMessage : string = "";	
+	workflowIdentity : string = "not-set";
+
+	saveMessage : string = "";
 
 
 	viewWorkflowModel :Workflow = null;
 
 	get canSave() :boolean{
 		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.canSave;
+			return this.workflowSaveRequest.workflow.workflowBase.canSave;
 		}
 		return false;
 	}
-	
+
 	get canDone() :boolean{
 		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.canDone;
+			return this.workflowSaveRequest.workflow.workflowBase.canDone;
 		}
 		return false;
 	}
-	
+
 	get canArchive() :boolean{
 		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.canArchive;
+			return this.workflowSaveRequest.workflow.workflowBase.canArchive;
 		}
 		return false;
 	}
-	
+
 	get canAssign() :boolean{
 		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.canAssign;
+			return this.workflowSaveRequest.workflow.workflowBase.canAssign;
 		}
 		return true;
 	}
@@ -68,8 +68,8 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 		ss += " -- " + parseDate(ss, 'dd.mm.yyyy');
 		return ss;
 	}
-	
-	
+
+
 	constructor(
 		    protected router: Router,
 			protected global: GlobalService,
@@ -83,7 +83,7 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 		  	protected route: ActivatedRoute,
 		  	protected globalSocket: GlobalSocket,
 	) {
-		
+
 		super(router,
 				global,
 				translate,
@@ -94,7 +94,7 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 			  	formBuilder,
 			  	dateAdapter,
 			  	globalSocket);
-		
+
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
 				this.workflowIdentity = this.route.snapshot.params['identity'];
@@ -103,169 +103,169 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 		});
 
 	}
-	
+
 	ngOnInit() {
-	
+
 		super.ngOnInit();
-		
+
 	}
-	
-	
+
+
 	protected loadInitialData(){
-		
-	 	
+
+
 		if(this.workflowIdentity == ''){
 			return;
 		}
-	
+
 	 	this.loadWorkflowData();
-	 	
+
 	}
-	
+
 	reload() {
-		
+
 		this.loadInitialData();
-	
+
 	}
 
 	private loadWorkflowData(){
-		
-		this.loadingService.showLoading();	     
+
+		this.loadingService.showLoading();
 		this.editService.loadEditInitialData(this.workflowIdentity).subscribe(
 	        (initialData :InvoiceWorkflowSaveRequestInit) => {
-	        	
+
 				console.log("set inital-data from workflow-edit. : ", initialData);
 				//alert("from app-comp: \n" + JSON.stringify(data));
-		 		
+
 				if(initialData && initialData !== null){
 					this.workflowSaveRequest = initialData.workflowSaveRequest;
 			 		this.ocrSettingPresets = initialData.ocrPresetList;
-					this.viewWorkflowModel = this.workflowSaveRequest.workflow;
+					this.viewWorkflowModel = this.workflowSaveRequest.workflow.workflowBase;
 					this.setToControlValues();
-					
+
 				}
 				else{
 					this.workflowSaveRequest = null;
 				}
-	            
+
 	        },
 	        response => {
 	        	console.log("Error in read edit inital data", response);
 	        	this.errorService.showErrorResponse(response);
 	        },
 	        () => {
-	        	
-	        	this.loadingService.hideLoading();	            
+
+	        	this.loadingService.hideLoading();
 	        }
-	    );	       	
-		
+	    );
+
 	}
-	
+
 	save(makeDone :boolean){
-		
+
 		this.setFormControlValues();
-		
+
 		this.loadingService.showLoading();
-		
+
 		if(makeDone){
         	this.doneWorkflowData();
         }
         else{
         	this.saveWorkflowData();
         }
-	
+
 	}
-	
-	
+
+
 	archive(){
-		
+
 		this.setFormControlValues();
-		
+
 		this.loadingService.showLoading();
-		
+
 		this.archiveWorkflowData();
-	
-	}	
+
+	}
 	private saveWorkflowData(){
-		
+
 		this.saveMessage = "";
-		
+
         this.editService.saveWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {		        	
+		        (result) => {
 		            console.log("Create workflow result", result);
-		            
+
 		            this.translate.get('common.saved').subscribe((res: string) => {
 		            	this.saveMessage = res;
 		            });
-		            
+
 		            this.loadWorkflowData();
-		            
+
 		        },
 		        response => {
 		        	console.log("Error in create workflow", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		    );	       	
-		
+		    );
+
 	}
-	
+
 	private doneWorkflowData(){
-		
+
         this.editService.doneWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {		        	
+		        (result) => {
 		            console.log("Create workflow result", result);
-		            
+
 		            this.router.navigate([this.workflowListUrl]);
 		        },
 		        response => {
 		        	console.log("Error in create workflow", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		    );	       	
-		
+		    );
+
 	}
-	
+
 	private archiveWorkflowData(){
-		
+
         this.editService.archiveWorkflow(this.workflowSaveRequest.workflow).subscribe(
-		        (result) => {		        	
+		        (result) => {
 		            console.log("Create workflow result", result);
-		            
+
 		            this.router.navigate([this.workflowListUrl]);
 		        },
 		        response => {
 		        	console.log("Error in create workflow", response);
-		        	
+
 		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();	 
+		        	this.loadingService.hideLoading();
 		        },
 		        () => {
-		        	
-		        	this.loadingService.hideLoading();	 
+
+		        	this.loadingService.hideLoading();
 		        }
-		    );	       	
-		
+		    );
+
 	}
-	
-	collapseRecordPanel() {		
+
+	collapseRecordPanel() {
 		$(".workflow-content-container").removeClass("expanded").addClass("collapsed");
 		$(".workflow-inline-content-container").hide();
 	}
-	
-	expandRecordPanel() {		
-		$(".workflow-content-container").removeClass("collapsed").addClass("expanded");		
+
+	expandRecordPanel() {
+		$(".workflow-content-container").removeClass("collapsed").addClass("expanded");
 		$(".workflow-inline-content-container").show();
 	}
 

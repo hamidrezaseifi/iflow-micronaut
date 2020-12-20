@@ -72,9 +72,9 @@ public class TestThreeTaskBasicWorkflowHandler
 
     createRequest.setCommand(EWorkflowProcessCommand.CREATE);
 
-    createRequest.getWorkflow().setComments(createRequest.getComments());
-    if (createRequest.getWorkflow().getHasActiveAction()) {
-      createRequest.getWorkflow().getActiveAction().setComments(createRequest.getComments());
+    createRequest.getWorkflow().getWorkflow().setComments(createRequest.getComments());
+    if (createRequest.getWorkflow().getWorkflow().getHasActiveAction()) {
+      createRequest.getWorkflow().getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
     this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
@@ -101,13 +101,13 @@ public class TestThreeTaskBasicWorkflowHandler
 
     logger.debug("Save workflow");
 
-    if (saveRequest.getWorkflow().getHasActiveAction()) {
-      saveRequest.getWorkflow().getActiveAction().setCurrentStepId(saveRequest.getWorkflow().getCurrentStepId());
+    if (saveRequest.getWorkflow().getWorkflow().getHasActiveAction()) {
+      saveRequest.getWorkflow().getWorkflow().getActiveAction().setCurrentStepId(saveRequest.getWorkflow().getWorkflow().getCurrentStepId());
     }
 
     saveRequest.setCommand(EWorkflowProcessCommand.SAVE);
-    if (saveRequest.getWorkflow().getHasActiveAction()) {
-      saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
+    if (saveRequest.getWorkflow().getWorkflow().getHasActiveAction()) {
+      saveRequest.getWorkflow().getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
     this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
@@ -167,8 +167,8 @@ public class TestThreeTaskBasicWorkflowHandler
     logger.debug("Make workflow done");
 
     saveRequest.setCommand(EWorkflowProcessCommand.DONE);
-    if (saveRequest.getWorkflow().getHasActiveAction()) {
-      saveRequest.getWorkflow().getActiveAction().setComments(saveRequest.getComments());
+    if (saveRequest.getWorkflow().getWorkflow().getHasActiveAction()) {
+      saveRequest.getWorkflow().getWorkflow().getActiveAction().setComments(saveRequest.getComments());
     }
 
     this.testThreeTaskWorkClient.validate(sessionData.getRefreshToken(),
@@ -223,7 +223,7 @@ public class TestThreeTaskBasicWorkflowHandler
     Optional<TestThreeTaskWorkflow> workflowOptional = this.readWorkflow(workflowId, sessionData);
 
     if(workflowOptional.isPresent()){
-      final WorkflowFile workflowFile = workflowOptional.get().getFileById(workflowId);
+      final WorkflowFile workflowFile = workflowOptional.get().getWorkflow().getFileById(workflowId);
 
       return Optional.of(workflowFile);
     }

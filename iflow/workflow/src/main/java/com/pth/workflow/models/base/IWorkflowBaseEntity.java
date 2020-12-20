@@ -13,99 +13,101 @@ import javax.persistence.Entity;
 @Entity
 public interface IWorkflowBaseEntity {
 
-  public UUID getWorkflowId();
+  UUID getWorkflowId();
 
-  public void setWorkflowId(final UUID workflowId);
+  void setWorkflowId(final UUID workflowId);
 
-  public WorkflowEntity getWorkflow();
+  WorkflowEntity getWorkflow();
 
-  public void setWorkflow(final WorkflowEntity workflow);
+  void setWorkflow(final WorkflowEntity workflow);
 
-  public String getIdentity();
+  String getIdentity();
 
-  public void setIdentity(final String identity);
+  void setIdentity(final String identity);
 
-  public WorkflowTypeEntity getWorkflowType();
+  WorkflowTypeEntity getWorkflowType();
 
-  public void setWorkflowType(final WorkflowTypeEntity workflowType);
+  void setWorkflowType(final WorkflowTypeEntity workflowType);
 
-  public WorkflowTypeStepEntity getCurrentStep();
+  WorkflowTypeStepEntity getCurrentStep();
 
-  public void setCurrentStep(final WorkflowTypeStepEntity currentStep);
+  void setCurrentStep(final WorkflowTypeStepEntity currentStep);
 
-  public String getComments();
+  String getComments();
 
-  public void setComments(final String comments);
+  void setComments(final String comments);
 
-  public EWorkflowStatus getStatusEnum();
+  EWorkflowStatus getStatusEnum();
 
-  public Integer getStatusInt();
+  Integer getStatusInt();
 
-  public void setStatus(final Integer status);
+  void setStatus(final Integer status);
 
-  public void setStatus(final EWorkflowStatus status);
+  void setStatus(final EWorkflowStatus status);
 
-  public Integer getVersion();
+  Integer getVersion();
 
-  public void setVersion(final Integer version);
+  void setVersion(final Integer version);
 
-  public List<WorkflowFileEntity> getFiles();
+  List<WorkflowFileEntity> getFiles();
 
-  public void setFiles(final List<WorkflowFileEntity> files);
+  void setFiles(final List<WorkflowFileEntity> files);
 
-  public List<WorkflowActionEntity> getActions();
+  List<WorkflowActionEntity> getActions();
 
-  public boolean hasAction();
+  boolean hasAction();
 
-  public void setActions(final List<WorkflowActionEntity> actions);
+  void setActions(final List<WorkflowActionEntity> actions);
 
-  public abstract EWorkflowType getWorkflowTypeEnum();
+  abstract EWorkflowType getWorkflowTypeEnum();
 
-  public UUID getCurrentStepId();
+  UUID getCurrentStepId();
 
-  public void setCurrentStepId(final UUID id);
+  void setCurrentStepId(final UUID id);
 
-  public UUID getControllerId();
+  UUID getControllerId();
 
-  public void setControllerId(final UUID id);
+  void setControllerId(final UUID id);
 
-  public UUID getCreatedById();
+  UUID getCreatedById();
 
-  public void setCreatedById(final UUID id);
+  void setCreatedById(final UUID id);
 
-  public boolean hasActiveAction();
+  boolean hasActiveAction();
 
-  public WorkflowActionEntity getActiveAction();
+  WorkflowActionEntity getActiveAction();
 
-  public WorkflowActionEntity getLastAction();
+  WorkflowActionEntity getLastAction();
 
-  public boolean isAssigned();
+  boolean isAssigned();
 
-  public void setActiveActionAssignTo(final UUID userId);
+  void setActiveActionAssignTo(final UUID userId);
 
-  public void setActiveActionStatus(final EWorkflowActionStatus status);
+  void setActiveActionStatus(final EWorkflowActionStatus status);
 
-  public boolean isInitializing();
+  boolean isInitializing();
 
-  public boolean isOffering();
+  boolean isOffering();
 
-  public boolean isArchived();
+  boolean isArchived();
 
-  public boolean isAssignedStatus();
+  boolean isAssignedStatus();
 
-  public boolean isDone();
+  boolean isDone();
 
-  public boolean hasController();
+  boolean hasController();
 
-  public boolean hasCreatedBy();
+  boolean hasCreatedBy();
 
-  public boolean hasWorkflowType();
+  boolean hasWorkflowType();
 
-  public void addAction(final WorkflowActionEntity action);
+  void addAction(final WorkflowActionEntity action);
 
-  public String getWorkflowTypeIdentity();
+  String getWorkflowTypeIdentity();
 
   boolean isCurrentStepId(UUID currentStepId);
 
   UUID getCompanyId();
+
+  void setCompanyId(final UUID companyId);
 }

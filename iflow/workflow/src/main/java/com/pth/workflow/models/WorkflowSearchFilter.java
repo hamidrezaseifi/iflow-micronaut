@@ -61,12 +61,12 @@ public class WorkflowSearchFilter {
     }
   }
 
-  public UUID getCompanyIdentity() {
+  public UUID getCompanyId() {
 
     return companyId;
   }
 
-  public void setCompanyIdentity(final UUID companyIdentity) {
+  public void setCompanyId(final UUID companyIdentity) {
 
     this.companyId = companyIdentity;
   }

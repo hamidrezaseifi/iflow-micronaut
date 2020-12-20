@@ -5,22 +5,23 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pth.common.edo.enums.EIdentity;
 import com.pth.common.edo.enums.EInvoiceType;
-import com.pth.common.edo.enums.EWorkflowStatus;
 import com.pth.common.edo.enums.EWorkflowType;
-import com.pth.gui.models.workflow.IWorkflow;
-import com.pth.gui.models.workflow.base.WorkflowBase;
+import com.pth.gui.exception.GuiCustomizedException;
+import com.pth.gui.models.workflow.WorkflowType;
+import com.pth.gui.models.workflow.base.WorkflowBased;
+import com.pth.gui.models.workflow.workflow.Workflow;
 
 @JsonIgnoreProperties(value = { "isAssignTo" })
-public class InvoiceWorkflow extends WorkflowBase implements IWorkflow {
+public class InvoiceWorkflow extends WorkflowBased {
+
 
   private String sender;
 
   private String registerNumber;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
-  private LocalDate invocieDate;
+  private LocalDate invoiceDate;
 
   private String partnerCode;
 
@@ -44,13 +45,10 @@ public class InvoiceWorkflow extends WorkflowBase implements IWorkflow {
 
   private Double paymentAmount;
 
-  @Override
   public EWorkflowType getWorkflowTypeEnum() {
 
     return EWorkflowType.INVOICE_WORKFLOW_TYPE;
   }
-
-
 
   public String getSender() {
 
@@ -74,12 +72,12 @@ public class InvoiceWorkflow extends WorkflowBase implements IWorkflow {
 
   public LocalDate getInvoiceDate() {
 
-    return this.invocieDate;
+    return this.invoiceDate;
   }
 
   public void setInvoiceDate(final LocalDate invocieDate) {
 
-    this.invocieDate = invocieDate;
+    this.invoiceDate = invocieDate;
   }
 
   public String getPartnerCode() {
@@ -182,19 +180,22 @@ public class InvoiceWorkflow extends WorkflowBase implements IWorkflow {
     this.paymentAmount = paymentAmount;
   }
 
-  public static InvoiceWorkflow generateInitial(final UUID creatorId) {
+  public static InvoiceWorkflow generateInitial(final UUID creatorId,
+                                                final UUID currentUserId,
+                                                WorkflowType workflowType) {
+
+    if(workflowType.getTypeEnum() != new InvoiceWorkflow().getWorkflowTypeEnum()){
+      throw new GuiCustomizedException("invalid-initial-workflowtype");
+    }
 
     final InvoiceWorkflow newWorkflow = new InvoiceWorkflow();
-    newWorkflow.setStatus(EWorkflowStatus.INITIALIZE);
-    newWorkflow.setCreatedById(creatorId);
-    newWorkflow.setControllerId(null);
-    newWorkflow.setCurrentStepId(null);
-    newWorkflow.setVersion(0);
-    newWorkflow.setComments("");
-    newWorkflow.setIdentity("");
+    newWorkflow.setWorkflow(Workflow.generateInitial(creatorId, currentUserId, workflowType));
     newWorkflow.setInvoiceDate(LocalDate.now());
+
 
     return newWorkflow;
   }
+
+
 
 }

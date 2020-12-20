@@ -7,16 +7,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingServiceService } from '../../loading-service.service';
 import { ErrorServiceService } from '../../error-service.service';
 import { HttpHepler } from '../../../helper/http-hepler';
-import { HttpErrorResponseHelper } from '../../../helper/http-error-response-helper';
 import { AuthenticationService } from '../../authentication.service';
 
-import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice-workflow-save-request-init';
-import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice-workflow-save-request';
-import { InvoiceWorkflow } from '../../../wf-models/invoice-workflow';
+import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice/invoice-workflow-save-request-init';
+import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice/invoice-workflow-save-request';
+import { InvoiceWorkflow } from '../../../wf-models/invoice/invoice-workflow';
 
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType } from '../../../wf-models';
 
 import { WorkflowEditInterfaceService } from '../../../services';
+import { HttpErrorResponseHelper } from '../../../helper/http-error-response-helper';
 
 
 
