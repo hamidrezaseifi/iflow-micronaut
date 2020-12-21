@@ -33,9 +33,21 @@ public class ProfileClient extends ClientBase implements IProfileClient {
   }
 
   @Override
-  public Optional<BearerAccessRefreshToken> validateToken(String authorization, TokenValidationRequestEdo requestEdo) {
+  public Optional<BearerAccessRefreshToken> validateTokenRequest(String authorization, TokenValidationRequestEdo requestEdo) {
     HttpResponse<BearerAccessRefreshToken> response =
-            this.authenticationDeclarativeClient.validateToken(prepareBearerAuthorization(authorization), requestEdo);
+            this.authenticationDeclarativeClient.validateTokenRequest(prepareBearerAuthorization(authorization),
+                                                                      requestEdo);
+    if(response.getStatus() == HttpStatus.OK){
+      return response.getBody();
+    }
+
+    return Optional.empty();
+  }
+
+  @Override
+  public Optional<BearerAccessRefreshToken> validateToken(String authorization) {
+    HttpResponse<BearerAccessRefreshToken> response =
+            this.authenticationDeclarativeClient.validateToken(prepareBearerAuthorization(authorization));
     if(response.getStatus() == HttpStatus.OK){
       return response.getBody();
     }

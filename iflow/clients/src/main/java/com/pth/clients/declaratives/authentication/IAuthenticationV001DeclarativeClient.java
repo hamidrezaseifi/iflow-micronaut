@@ -4,6 +4,7 @@ import com.pth.common.contants.ApiUrlConstants;
 import com.pth.common.edo.TokenValidationRequestEdo;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
+import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.client.annotation.Client;
@@ -19,6 +20,9 @@ public interface IAuthenticationV001DeclarativeClient {
     HttpResponse<BearerAccessRefreshToken> postLogin(@NotBlank @Body UsernamePasswordCredentials credentials);
 
     @Post(ApiUrlConstants.ProfileUrlConstants.API001_PROFILE001_AUTHENTICATION + "/validateToken")
-    HttpResponse<BearerAccessRefreshToken> validateToken(@Header String authorization,
-                                                         @NotBlank @Body TokenValidationRequestEdo requestEdo);
+    HttpResponse<BearerAccessRefreshToken> validateTokenRequest(@Header String authorization,
+                                                                @NotBlank @Body TokenValidationRequestEdo requestEdo);
+
+    @Get(ApiUrlConstants.ProfileUrlConstants.API001_PROFILE001_AUTHENTICATION + "/validateToken")
+    HttpResponse<BearerAccessRefreshToken> validateToken(@Header String authorization);
 }

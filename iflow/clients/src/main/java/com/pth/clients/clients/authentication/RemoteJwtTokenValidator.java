@@ -61,7 +61,8 @@ public class RemoteJwtTokenValidator extends JwtTokenValidator {
             requestEdo.setToken(token);
 
 
-            Optional<BearerAccessRefreshToken> refreshTokenOptional = this.profileClient.validateToken(token, requestEdo);
+            Optional<BearerAccessRefreshToken> refreshTokenOptional = this.profileClient.validateTokenRequest(token,
+                                                                                                              requestEdo);
             if(refreshTokenOptional.isPresent()){
                 return Flowable.just(authentication);
             }

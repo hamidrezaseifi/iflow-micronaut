@@ -99,9 +99,9 @@ micronaut:
           - isAnonymous()
     token:
       jwt:
-        #        enabled: true
+        #enabled: true
         generator:
-          access-token-expiration: 3600
+          access-token-expiration: 7200
           refresh-token-expiration: 172800
         signatures:
           secret:

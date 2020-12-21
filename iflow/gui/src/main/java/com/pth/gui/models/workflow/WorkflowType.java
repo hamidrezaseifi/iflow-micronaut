@@ -76,13 +76,11 @@ public class WorkflowType extends GuiBaseModel {
     this.sendToController = sendToController;
   }
 
-  public EWorkflowTypeAssignType geAssignType() {
-
-    return this.assignType;
+  public EWorkflowTypeAssignType getAssignType() {
+    return assignType;
   }
 
-  public void setAssignType(final EWorkflowTypeAssignType assignType) {
-
+  public void setAssignType(EWorkflowTypeAssignType assignType) {
     this.assignType = assignType;
   }
 

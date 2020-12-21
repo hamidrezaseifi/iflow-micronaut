@@ -51,7 +51,7 @@ public class WorkflowTypeMapper extends ModelEdoMapperBase<WorkflowType, Workflo
         edo.setStatus(model.getStatus());
         edo.setIdentity(model.getIdentity());
         edo.setSendToController(model.getSendToController());
-        edo.setAssignType(model.geAssignType());
+        edo.setAssignType(model.getAssignType());
         edo.setIncreaseStepAutomatic(model.getIncreaseStepAutomatic());
         edo.setAllowAssign(model.getAllowAssign());
         edo.setSteps(workflowTypeStepMapper.toEdoList(model.getSteps()).stream().collect(Collectors.toSet()));

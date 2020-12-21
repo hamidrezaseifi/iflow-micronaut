@@ -1,5 +1,7 @@
 package com.pth.profile.services.authentication;
 
+import com.pth.clients.clients.ClientBase;
+import com.pth.common.authentication.IAuthenticationDetailResolver;
 import com.pth.common.credentials.IPasswordHashGenerator;
 import com.pth.profile.authentication.entities.RefreshTokenEntity;
 import com.pth.profile.models.TokenValidationRequest;
@@ -19,13 +21,16 @@ public class ProfileAuthenticationManager implements IProfileAuthenticationManag
     private final IPasswordHashGenerator passwordHashGenerator;
     private final IRefreshTokenRepository refreshTokenRepository;
     private final JwtGeneratorConfigurationProperties jwtConfigurationProperties;
+    private final IAuthenticationDetailResolver authenticationDetailResolver;
 
     public ProfileAuthenticationManager(IPasswordHashGenerator passwordHashGenerator,
                                         IRefreshTokenRepository refreshTokenRepository,
-                                        JwtGeneratorConfigurationProperties jwtConfigurationProperties){
+                                        JwtGeneratorConfigurationProperties jwtConfigurationProperties,
+                                        IAuthenticationDetailResolver authenticationDetailResolver){
         this.passwordHashGenerator = passwordHashGenerator;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtConfigurationProperties = jwtConfigurationProperties;
+        this.authenticationDetailResolver = authenticationDetailResolver;
     }
 
     @Override
@@ -33,10 +38,27 @@ public class ProfileAuthenticationManager implements IProfileAuthenticationManag
 
 
         Authentication authentication = tokenProfileRequest.getAuthentication();
-        String username = authentication.getAttributes().get("sub").toString();
-        Date issuedAt = new Date((long)authentication.getAttributes().get("iat"));  ;
-        List<String> roles = (List<String>)authentication.getAttributes().get("roles");
+        return validateAuthenticationAndToken(authentication, tokenProfileRequest.getToken());
+    }
 
+    @Override
+    public Optional<BearerAccessRefreshToken> validateToken(String token) {
+        token = ClientBase.removeBearer(token);
+
+        Optional<Authentication> authenticationOptional =  authenticationDetailResolver.resolveAuthentication(token);
+
+        if(authenticationOptional.isPresent()){
+            return validateAuthenticationAndToken(authenticationOptional.get(), token);
+        }
+        return Optional.empty();
+    }
+
+    private Optional<BearerAccessRefreshToken> validateAuthenticationAndToken(Authentication authentication,
+                                                                              String token) {
+
+
+        String username = authentication.getAttributes().get("sub").toString();
+        List<String> roles = (List<String>)authentication.getAttributes().get("roles");
 
         Optional<RefreshTokenEntity> refreshTokenEntityOptional =
                 this.refreshTokenRepository.findByUsername(username);
@@ -44,16 +66,17 @@ public class ProfileAuthenticationManager implements IProfileAuthenticationManag
 
             RefreshTokenEntity refreshTokenEntity = refreshTokenEntityOptional.get();
 
-            if(tokenProfileRequest.getToken().equals(refreshTokenEntity.getRefreshToken())){
+            if(token.equals(refreshTokenEntity.getRefreshToken())){
 
                 return Optional.of(new BearerAccessRefreshToken(username,
                                                                 roles,
-                                                    jwtConfigurationProperties.getRefreshTokenExpiration(),
-                                                    refreshTokenEntity.getRefreshToken(),
-                                                    refreshTokenEntity.getRefreshToken(),
-                                                    "bearer"));
-             }
+                                                                jwtConfigurationProperties.getRefreshTokenExpiration(),
+                                                                refreshTokenEntity.getRefreshToken(),
+                                                                refreshTokenEntity.getRefreshToken(),
+                                                                "bearer"));
+            }
         }
         return Optional.empty();
     }
+
 }

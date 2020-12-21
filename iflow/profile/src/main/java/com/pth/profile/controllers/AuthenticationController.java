@@ -30,16 +30,26 @@ public class AuthenticationController {
         this.authenticationEdoMapper = authenticationEdoMapper;
     }
 
-
-
     @Produces(MediaType.APPLICATION_JSON)
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Post(value = "/validateToken")
-    public HttpResponse<?> validateToken(@Body @Valid TokenValidationRequestEdo requestEdo) {
+    public HttpResponse<?> validateTokenRequest(@Body @Valid TokenValidationRequestEdo requestEdo) {
 
         TokenValidationRequest request =  this.authenticationEdoMapper.fromEdo(requestEdo);
 
         Optional<BearerAccessRefreshToken> resultOptional = this.authenticationManager.validateAuthentication(request);
+        if(resultOptional.isPresent()){
+            return HttpResponse.ok(resultOptional.get());
+        }
+        return HttpResponse.unauthorized();
+    }
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Get(value = "/validateToken")
+    public HttpResponse<?> validateToken(@Header String authorization) {
+
+        Optional<BearerAccessRefreshToken> resultOptional = this.authenticationManager.validateToken(authorization);
         if(resultOptional.isPresent()){
             return HttpResponse.ok(resultOptional.get());
         }

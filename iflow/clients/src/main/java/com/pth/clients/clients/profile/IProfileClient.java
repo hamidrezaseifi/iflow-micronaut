@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IProfileClient {
 
   Optional<BearerAccessRefreshToken> postLogin(UsernamePasswordCredentials credentials);
-  Optional<BearerAccessRefreshToken> validateToken(String authorization,
-                                                   TokenValidationRequestEdo requestEdo);
+  Optional<BearerAccessRefreshToken> validateTokenRequest(String authorization, TokenValidationRequestEdo requestEdo);
+  Optional<BearerAccessRefreshToken> validateToken(String authorization);
 
 }

@@ -17,7 +17,7 @@ public class GuiBaseModel {
     }
 
     public boolean hasId(UUID id) {
-        return this.id == id;
+        return this.id.equals(id);
     }
 
     public void setId(UUID id) {
