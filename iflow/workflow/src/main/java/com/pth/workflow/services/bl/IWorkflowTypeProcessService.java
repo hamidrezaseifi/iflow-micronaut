@@ -11,13 +11,10 @@ import java.util.UUID;
 
 public interface IWorkflowTypeProcessService {
 
-  public Optional<WorkflowTypeEntity> getById(UUID id);
+  Optional<WorkflowTypeEntity> getById(UUID id);
 
-  public Optional<WorkflowTypeEntity> getByIdentity(String identity);
+  List<WorkflowTypeEntity> getListByCompanyId(UUID id);
 
-  public List<WorkflowTypeEntity> getListByCompanyId(UUID id);
+  List<WorkflowTypeStepEntity> getStepsById(UUID id);
 
-  public List<WorkflowTypeStepEntity> getStepsById(UUID id);
-
-  public List<WorkflowTypeEntity> getListByIdentityList(final Set<String> identityList);
 }

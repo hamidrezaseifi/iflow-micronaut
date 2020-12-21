@@ -86,15 +86,6 @@ public class InvoiceController {
     return HttpResponse.badRequest();
   }
 
-  @Post(value = "/readbyidentitylist")
-  public HttpResponse<InvoiceWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
-                                                              @Header String authorization) throws Exception {
-
-    final List<InvoiceWorkflowEntity> modelList = this.invoiceWorkflowService.getListByIdentityList(idList);
-
-    return HttpResponse.ok(new InvoiceWorkflowListEdo(invoiceWorkflowMapper.toEdoList(modelList)));
-  }
-
   @Get(value = "/readbyuserid/{id}/{status}")
   public HttpResponse<InvoiceWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                      @PathVariable(defaultValue = "0") final int status,

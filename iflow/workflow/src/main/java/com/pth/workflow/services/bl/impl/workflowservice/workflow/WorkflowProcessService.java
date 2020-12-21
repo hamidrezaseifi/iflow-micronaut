@@ -36,7 +36,14 @@ public class WorkflowProcessService implements IWorkflowProcessService<WorkflowE
 
   @Override
   public Optional<WorkflowEntity> getById(UUID id) {
-    return workflowRepository.getById(id);
+    logger.debug("get workflow by id {}", id);
+
+    final Optional<WorkflowEntity> workflowEntityOptional = this.workflowRepository.getById(id);
+    if(workflowEntityOptional.isPresent()){
+      return workflowPrepare.prepareWorkflow(workflowEntityOptional.get());
+    }
+
+    return Optional.empty();
   }
 
   @Override
@@ -61,34 +68,11 @@ public class WorkflowProcessService implements IWorkflowProcessService<WorkflowE
   }
 
   @Override
-  public Optional<WorkflowEntity> getByIdentity(final String identity) {
-
-    logger.debug("get workflow by id {}", identity);
-
-    final Optional<WorkflowEntity> workflowEntityOptional = this.workflowRepository.getByIdentity(identity);
-    if(workflowEntityOptional.isPresent()){
-      return workflowPrepare.prepareWorkflow(workflowEntityOptional.get());
-    }
-
-    return Optional.empty();
-  }
-
-  @Override
   public List<WorkflowEntity> getListForUser(final UUID id, final int status) {
 
     logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
     final List<WorkflowEntity> list = this.workflowRepository.getListForUser(id, status);
-
-    return workflowPrepare.prepareWorkflowList(list);
-  }
-
-  @Override
-  public List<WorkflowEntity> getListByIdentityList(final Set<String> identityList) {
-
-    logger.debug("get workflow list by id list with authentication {}");
-
-    final List<WorkflowEntity> list = this.workflowRepository.getListByIdentityList(identityList);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

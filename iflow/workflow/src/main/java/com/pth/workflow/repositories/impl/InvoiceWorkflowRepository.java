@@ -39,13 +39,6 @@ public class InvoiceWorkflowRepository extends AEntityRdbmsHibernateRepository<I
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<InvoiceWorkflowEntity> getByIdentity(String identity) {
-        return queryScala((cb, root) -> (cb.equal(
-                root.get(InvoiceWorkflowEntity_.workflow).get(WorkflowEntity_.IDENTITY), identity)));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public List<InvoiceWorkflowEntity> getListForUser(UUID id,
                                                       int status) {
         final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
@@ -85,11 +78,5 @@ public class InvoiceWorkflowRepository extends AEntityRdbmsHibernateRepository<I
         // System.out.println("search workflow query: " + qr);
         final List<InvoiceWorkflowEntity> list = typedQuery.getResultList();
         return list;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<InvoiceWorkflowEntity> getListByIdentityList(Set<String> identityList) {
-        return queryCollection((cb, root) -> ( root.in(identityList)));
     }
 }

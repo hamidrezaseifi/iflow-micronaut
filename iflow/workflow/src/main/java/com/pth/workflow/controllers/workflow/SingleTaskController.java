@@ -88,16 +88,6 @@ public class SingleTaskController {
     return HttpResponse.badRequest();
   }
 
-  @Post(value = "/readbyidentitylist")
-  public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
-                                                                 @Header String authorization) throws Exception {
-
-    final List<SingleTaskWorkflowEntity> modelList = this.singleTaskWorkflowService.getListByIdentityList(idList);
-
-    List<SingleTaskWorkflowEdo> workflowEdoList = singleTaskWorkflowMapper.toEdoList(modelList);
-    return HttpResponse.ok(new SingleTaskWorkflowListEdo(workflowEdoList));
-  }
-
   @Get(value = "/readbyuserid/{id}/{status}")
   public HttpResponse<SingleTaskWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                         @PathVariable(defaultValue = "0") final int status,

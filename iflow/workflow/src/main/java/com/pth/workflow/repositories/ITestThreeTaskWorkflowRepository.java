@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface ITestThreeTaskWorkflowRepository extends IWorkflowBaseRepository<TestThreeTaskWorkflowEntity> {
 
-    Optional<TestThreeTaskWorkflowEntity> getByIdentity(String identity);
 }

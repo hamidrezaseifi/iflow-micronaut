@@ -10,9 +10,6 @@ import java.util.UUID;
 
 public interface IWorkflowTypeRepository extends IEntityRepository<WorkflowTypeEntity> {
 
-    Optional<WorkflowTypeEntity> getByIdentity(String identity);
-
     List<WorkflowTypeEntity> getListByCompanyId(UUID id);
 
-    List<WorkflowTypeEntity> getListByIdentityList(Set<String> identityList);
 }

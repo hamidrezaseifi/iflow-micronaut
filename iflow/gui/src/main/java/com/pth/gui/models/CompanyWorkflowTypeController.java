@@ -5,12 +5,11 @@ import java.util.UUID;
 
 public class CompanyWorkflowTypeController {
 
-  private UUID id;
+  private Long id;
 
    private UUID workflowTypeId;
 
   private UUID userId;
-
 
   private Integer priority;
 
@@ -18,7 +17,7 @@ public class CompanyWorkflowTypeController {
 
   }
 
-  public CompanyWorkflowTypeController(UUID id,
+  public CompanyWorkflowTypeController(Long id,
                                        UUID workflowTypeId,
                                        UUID userId,
                                        Integer priority) {
@@ -28,11 +27,11 @@ public class CompanyWorkflowTypeController {
     this.priority = priority;
   }
 
-  public UUID getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(UUID id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

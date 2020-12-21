@@ -93,9 +93,10 @@ public class CompanySessionData {
     }
 
     public List<CompanyWorkflowTypeController> getControllerForWorkflowType(UUID workflowTypeId){
+
         return this.workflowTypeControllers.
                                            stream().
-                                           filter(c -> c.getWorkflowTypeId() == workflowTypeId).
+                                           filter(c -> c.getWorkflowTypeId().equals(workflowTypeId)).
                                            collect(Collectors.toList());
     }
 }

@@ -31,12 +31,6 @@ public class WorkflowRepository extends AEntityRdbmsHibernateRepository<Workflow
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<WorkflowEntity> getByIdentity(String identity) {
-        return queryScala((cb, root) -> (cb.equal(root.get(WorkflowEntity_.identity), identity)));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public List<WorkflowEntity> getListForUser(UUID id,
                                                int status) {
 
@@ -75,12 +69,6 @@ public class WorkflowRepository extends AEntityRdbmsHibernateRepository<Workflow
         // System.out.println("search workflow query: " + qr);
         final List<WorkflowEntity> list = typedQuery.getResultList();
         return list;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<WorkflowEntity> getListByIdentityList(Set<String> identityList) {
-        return queryCollection((cb, root) -> ( root.in(identityList)));
     }
 
     @Override

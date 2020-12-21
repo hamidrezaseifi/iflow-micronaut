@@ -25,12 +25,6 @@ public class WorkflowTypeRepository extends AEntityRdbmsHibernateRepository<Work
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<WorkflowTypeEntity> getByIdentity(String identity) {
-        return queryScala((cb, root) -> (cb.equal(root.get(WorkflowTypeEntity_.identity), identity)));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public List<WorkflowTypeEntity> getListByCompanyId(UUID id) {
 
         final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
@@ -47,11 +41,5 @@ public class WorkflowTypeRepository extends AEntityRdbmsHibernateRepository<Work
          System.out.println("search workflow query: " + qr);
         final List<WorkflowTypeEntity> list = typedQuery.getResultList();
         return list;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<WorkflowTypeEntity> getListByIdentityList(Set<String> identityList) {
-        return queryCollection((cb, root) -> ( root.in(identityList)));
     }
 }

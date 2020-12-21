@@ -20,6 +20,7 @@ public class ProfileResponseMapper extends ModelEdoMapperBase<ProfileResponse, P
     private final IUserMapper userMapper;
     private final IUserDashboardMenuMapper userDashboardMenuMapper;
     private final ICompanyWorkflowTypeOcrSettingPresetMapper workflowTypeOcrSettingPresetMapper;
+    private final ICompanyWorkflowTypeControllerMapper companyWorkflowTypeControllerMapper;
     private final IDepartmentMapper departmentMapper;
     private final IUserGroupMapper userGroupMapper;
 
@@ -27,12 +28,14 @@ public class ProfileResponseMapper extends ModelEdoMapperBase<ProfileResponse, P
                                  IUserMapper userMapper,
                                  IUserDashboardMenuMapper userDashboardMenuMapper,
                                  ICompanyWorkflowTypeOcrSettingPresetMapper workflowTypeOcrSettingPresetMapper,
+                                 ICompanyWorkflowTypeControllerMapper companyWorkflowTypeControllerMapper,
                                  IDepartmentMapper departmentMapper,
                                  IUserGroupMapper userGroupMapper) {
         this.companyMapper = companyMapper;
         this.userMapper = userMapper;
         this.userDashboardMenuMapper = userDashboardMenuMapper;
         this.workflowTypeOcrSettingPresetMapper = workflowTypeOcrSettingPresetMapper;
+        this.companyWorkflowTypeControllerMapper = companyWorkflowTypeControllerMapper;
         this.departmentMapper = departmentMapper;
         this.userGroupMapper = userGroupMapper;
     }
@@ -55,7 +58,8 @@ public class ProfileResponseMapper extends ModelEdoMapperBase<ProfileResponse, P
         edo.getCompanyProfile().setOcrPresets(
                 workflowTypeOcrSettingPresetMapper.toEdoList(model.getCompanyProfile().getOcrPresetSettings()));
         edo.getCompanyProfile().setUserGroups(userGroupMapper.toEdoList(model.getCompanyProfile().getUserGroups()));
-        edo.getCompanyProfile().setWorkflowTypeControllers(new ArrayList<>());
+        edo.getCompanyProfile().setWorkflowTypeControllers(
+                companyWorkflowTypeControllerMapper.toEdoList(model.getCompanyProfile().getWorkflowTypeControllers()));
 
         return edo;
     }

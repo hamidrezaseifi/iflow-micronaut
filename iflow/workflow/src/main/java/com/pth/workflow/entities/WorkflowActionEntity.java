@@ -28,6 +28,9 @@ public class WorkflowActionEntity extends BaseEntity {
   @Column(name = "current_step_id")
   private UUID currentStepId;
 
+  @Column(name = "workflow_id")
+  private UUID workflowId;
+
   @Column(name = "status")
   private Integer status;
 
@@ -104,6 +107,14 @@ public class WorkflowActionEntity extends BaseEntity {
   public void setCurrentStepId(final UUID currentStepId) {
 
     this.currentStepId = currentStepId;
+  }
+
+  public UUID getWorkflowId() {
+    return workflowId;
+  }
+
+  public void setWorkflowId(UUID workflowId) {
+    this.workflowId = workflowId;
   }
 
   public UUID getAssignToId() {

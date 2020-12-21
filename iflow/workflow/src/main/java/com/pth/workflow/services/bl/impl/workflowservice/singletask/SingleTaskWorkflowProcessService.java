@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
@@ -42,13 +43,29 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
 
   @Override
   public Optional<SingleTaskWorkflowEntity> getById(UUID id) {
-    return singleTaskWorkflowRepository.getById(id);
+
+    logger.debug("get workflow by id {}", id);
+
+    final Optional<SingleTaskWorkflowEntity> workflowOptional = this.singleTaskWorkflowRepository.getById(id);
+
+    if(workflowOptional.isPresent())
+    {
+      return workflowPrepare.prepareWorkflow(workflowOptional.get());
+    }
+    return Optional.empty();
   }
 
   @Override
   public List<SingleTaskWorkflowEntity>
     create(final IWorkflowSaveRequest<SingleTaskWorkflowEntity> request, String authorization)
           throws WorkflowCustomizedException {
+
+    Optional<SingleTaskWorkflowEntity> preparedWorkflowOptional =
+            workflowPrepare.prepareWorkflow(request.getWorkflow());
+    if(!preparedWorkflowOptional.isPresent()){
+      throw new WorkflowCustomizedException("No assign by workflow create", EIFlowErrorType.NO_WORKFLOW_ASSIGN_CREATE_STRATEGY);
+    }
+    request.setWorkflow(preparedWorkflowOptional.get());
 
     final IWorkflowSaveStrategy<
             SingleTaskWorkflowEntity>
@@ -91,35 +108,11 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
   }
 
   @Override
-  public Optional<SingleTaskWorkflowEntity> getByIdentity(final String identity){
-
-    logger.debug("get workflow by id {} with authentication {}", identity);
-
-    final Optional<SingleTaskWorkflowEntity> workflowOptional = this.singleTaskWorkflowRepository.getByIdentity(identity);
-
-    if(workflowOptional.isPresent())
-    {
-      return workflowPrepare.prepareWorkflow(workflowOptional.get());
-    }
-    return Optional.empty();
-  }
-
-  @Override
   public List<SingleTaskWorkflowEntity> getListForUser(final UUID id, final int status){
 
     logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
     final List<SingleTaskWorkflowEntity> list = this.singleTaskWorkflowRepository.getListForUser(id, status);
-
-    return workflowPrepare.prepareWorkflowList(list);
-  }
-
-  @Override
-  public List<SingleTaskWorkflowEntity> getListByIdentityList(final Set<String> identityList){
-
-    logger.debug("get workflow list by id list with authentication {}");
-
-    final List<SingleTaskWorkflowEntity> list = this.singleTaskWorkflowRepository.getListByIdentityList(identityList);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

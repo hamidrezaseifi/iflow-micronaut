@@ -178,6 +178,8 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
   }
 
   public void addAction(WorkflowActionEntity action) {
+    action.setWorkflowEntity(this);
+    action.setWorkflowId(this.id);
     actions.add(action);
   }
 
@@ -319,6 +321,7 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
     if (actions != null) {
       for (final WorkflowActionEntity action : actions) {
         action.setWorkflowEntity(this);
+        action.setWorkflowId(this.id);
         this.actions.add(action);
       }
 
@@ -409,24 +412,8 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
 
   }
 
-  public void makeAllSubEntityNew() {
-
-    for (final WorkflowActionEntity action : actions) {
-      action.setId(null);
-    }
-
-    for (final WorkflowFileEntity file : files) {
-
-      for (final WorkflowFileVersionEntity fileVersion : file.getFileVersions()) {
-        fileVersion.setId(null);
-        fileVersion.getWorkflowFileEntity().setId(null);
-        fileVersion.getWorkflowFileEntity().setIdentity("");
-
-      }
-
-      file.setId(null);
-      file.setIdentity("");
-    }
-
+  @Override
+  public boolean isNew() {
+    return this.createdAt == null;
   }
 }

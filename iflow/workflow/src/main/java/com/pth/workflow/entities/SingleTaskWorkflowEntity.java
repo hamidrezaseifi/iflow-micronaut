@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.sql.Date;
 import java.util.UUID;
 
 @Entity
@@ -57,4 +58,21 @@ public class SingleTaskWorkflowEntity extends WorkflowBaseEntity {
   public UUID getWorkflowTypeId() {
     return this.workflow.getWorkflowTypeId();
   }
+
+
+  @Override
+  public Date getCreatedAt() {
+    return this.workflow.getCreatedAt();
+  }
+
+  @Override
+  public Date getUpdatedAt() {
+    return this.workflow.getUpdatedAt();
+  }
+
+  @Override
+  public boolean isNew() {
+    return this.workflow.isNew();
+  }
+
 }

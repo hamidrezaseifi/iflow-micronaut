@@ -11,7 +11,10 @@ import java.util.UUID;
 public class CompanyWorkflowTypeControllerEdo {
 
   @NotNull(message = "Id must not be null")
-  private UUID id;
+  private Long id;
+
+  @NotNull(message = "CompanyId must not be null")
+  private UUID companyId;
 
   @NotNull(message = "WorkflowTypeId must not be null")
   private UUID workflowTypeId;
@@ -26,19 +29,27 @@ public class CompanyWorkflowTypeControllerEdo {
 
   }
 
-  public CompanyWorkflowTypeControllerEdo(UUID id, UUID workflowTypeId, UUID userId, Integer priority) {
+  public CompanyWorkflowTypeControllerEdo(Long id, UUID workflowTypeId, UUID userId, Integer priority) {
     this.id = id;
     this.workflowTypeId = workflowTypeId;
     this.userId = userId;
     this.priority = priority;
   }
 
-  public UUID getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(UUID id) {
+  public void setId(Long id) {
     this.id = id;
+  }
+
+  public UUID getCompanyId() {
+    return companyId;
+  }
+
+  public void setCompanyId(UUID companyId) {
+    this.companyId = companyId;
   }
 
   public UUID getWorkflowTypeId() {

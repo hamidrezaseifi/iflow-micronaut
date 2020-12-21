@@ -51,17 +51,6 @@ public class WorkflowTypeController {
     return HttpResponse.notFound();
   }
 
-  @Secured(SecurityRule.IS_AUTHENTICATED)
-  @Post(value = "/readbyidentitylist")
-  public HttpResponse<WorkflowTypeListEdo> readWorkflowList(@Body @Valid final Set<String> idList,
-                                                            final Authentication authentication,
-                                                            @Header String authorization) throws Exception {
-
-    final List<WorkflowTypeEntity> modelList = this.workflowTypeProcessService.getListByIdentityList(idList);
-
-    return HttpResponse.ok(new WorkflowTypeListEdo(workflowTypeMapper.toEdoList(modelList)));
-  }
-
   @Get(value = "/readbycompanyid/{id}")
   public HttpResponse<WorkflowTypeListEdo> readWorkflowListByCompany(final UUID id,
                                                                      final Authentication authentication,

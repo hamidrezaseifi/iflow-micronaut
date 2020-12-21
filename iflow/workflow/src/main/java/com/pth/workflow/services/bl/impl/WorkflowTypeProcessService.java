@@ -34,28 +34,11 @@ public class WorkflowTypeProcessService implements IWorkflowTypeProcessService {
   }
 
   @Override
-  public Optional<WorkflowTypeEntity> getByIdentity(final String identity){
-
-    logger.debug("Request workflow data for id {}", identity);
-
-    return this.workflowTypeRepository.getByIdentity(identity);
-
-  }
-
-  @Override
   public List<WorkflowTypeEntity> getListByCompanyId(final UUID id){
 
     logger.debug("Request workflow list for company id {}", id);
 
     return this.workflowTypeRepository.getListByCompanyId(id);
-  }
-
-  @Override
-  public List<WorkflowTypeEntity> getListByIdentityList(final Set<String> identityList){
-
-    logger.debug("Request workflow list for id list {}");
-
-    return this.workflowTypeRepository.getListByIdentityList(identityList);
   }
 
   @Override

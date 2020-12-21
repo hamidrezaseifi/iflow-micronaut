@@ -1,8 +1,10 @@
 package com.pth.workflow.services.bl;
 
+import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.workflow.entities.WorkflowActionEntity;
 import com.pth.workflow.entities.WorkflowTypeEntity;
 import com.pth.workflow.entities.WorkflowTypeStepEntity;
+import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.repositories.IWorkflowTypeRepository;
 
@@ -26,7 +28,7 @@ public abstract class WorkflowPrepareBase<W extends IWorkflowBaseEntity> impleme
                 workflowTypeOptional = this.workflowTypeRepository.getById(workflow.getWorkflowTypeId());
 
         if(workflowTypeOptional.isPresent() == false){
-            return Optional.empty();
+            throw new WorkflowCustomizedException("WorkflowType not found!", EIFlowErrorType.UNKNOWN_WORKFLOW_TYPE);
         }
 
         WorkflowTypeEntity workflowType = workflowTypeOptional.get();

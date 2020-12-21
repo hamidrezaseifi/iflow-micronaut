@@ -86,16 +86,6 @@ public class TestThreeTaskController {
     return HttpResponse.badRequest();
   }
 
-  @Post(value = "/readbyidentitylist")
-  public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceList(@Body @Valid final Set<String> idList,
-                                                                    @Header String authorization) throws Exception {
-
-    final List<TestThreeTaskWorkflowEntity> modelList =
-            this.testThreeTaskWorkflowService.getListByIdentityList(idList);
-
-    return HttpResponse.ok(new TestThreeTaskWorkflowListEdo(testThreeTaskWorkflowMapper.toEdoList(modelList)));
-  }
-
   @Get(value = "/readbyuserid/{id}/{status}")
   public HttpResponse<TestThreeTaskWorkflowListEdo> readInvoiceListForUser(final UUID id,
                                                                            @PathVariable() final int status,

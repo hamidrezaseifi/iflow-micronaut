@@ -147,7 +147,14 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
   public Optional<W> saveWorkflow(final W workflow)
       throws WorkflowCustomizedException {
 
-    this.workflowRepository.save(workflow);
+    if(workflow.getCreatedAt() == null){
+      this.workflowRepository.save(workflow);
+    }
+    else {
+      this.workflowRepository.update(workflow);
+    }
+
+
     final Optional<W> savedWorkflowOptional = this.workflowRepository.getByWorkflowId(workflow.getWorkflowId());
 
     if(savedWorkflowOptional.isPresent()){

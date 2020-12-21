@@ -88,6 +88,8 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
     @Transactional(readOnly = false)
     public void update(TEntity entity) {
         try{
+            entityManager.refresh(entity);
+
             entityManager.merge(entity);
             entityManager.flush();
         }

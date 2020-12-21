@@ -32,9 +32,11 @@ public class CompanyProfileEdo {
 
   }
 
-  public CompanyProfileEdo(final CompanyEdo company, final List<DepartmentEdo> departments, final List<UserGroupEdo> userGroups,
-      final List<CompanyWorkflowTypeControllerEdo> workflowTypeControllers,
-      final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> workflowtypeItemOcrSettingPresets) {
+  public CompanyProfileEdo(final CompanyEdo company,
+                           final List<DepartmentEdo> departments,
+                           final List<UserGroupEdo> userGroups,
+                            final List<CompanyWorkflowTypeControllerEdo> workflowTypeControllers,
+                            final List<CompanyWorkflowtypeItemOcrSettingPresetEdo> workflowtypeItemOcrSettingPresets) {
 
     this.setDepartments(departments);
     this.setUserGroups(userGroups);

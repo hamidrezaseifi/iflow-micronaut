@@ -58,6 +58,7 @@ CREATE TABLE workflow_actions (
   current_step_id uuid NULL,
   comments varchar(45) DEFAULT NULL,
   status smallint DEFAULT 1,
+  version integer NOT NULL DEFAULT 1,
   created_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
   updated_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
   
@@ -74,6 +75,7 @@ CREATE TABLE workflow_files (
   comments text,
   active_version integer NOT NULL DEFAULT 1,
   status smallint NOT NULL DEFAULT 1,
+  version integer NOT NULL DEFAULT 1,
   created_by uuid DEFAULT NULL,
   created_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
   updated_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
@@ -88,6 +90,7 @@ CREATE TABLE workflow_files_versions (
   comments text,
   file_version integer NOT NULL DEFAULT 1,
   status smallint NOT NULL DEFAULT 1,
+  version integer NOT NULL DEFAULT 1,
   created_by uuid DEFAULT NULL,
   created_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),
   updated_at timestamp without time zone NOT NULL default (now() at time zone 'utc'),

@@ -14,9 +14,6 @@ public interface IWorkflowBaseRepository<W extends IWorkflowBaseEntity> extends 
 
     Optional<W> getByWorkflowId(UUID workflowId);
 
-    Optional<W> getByIdentity(String identity);
-
     List<W> getListForUser(UUID id, int status);
 
-    List<W> getListByIdentityList(Set<String> identityList);
 }

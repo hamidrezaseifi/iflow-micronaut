@@ -27,13 +27,21 @@ public class ProfileResponse {
     this.token = token;
   }
 
-  public ProfileResponse(final UserEntity user, final CompanyEntity company, final List<DepartmentEntity> departments,
-                         final List<UserGroupEntity> userGroups, final List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings,
+  public ProfileResponse(final UserEntity user,
+                         final CompanyEntity company,
+                         final List<DepartmentEntity> departments,
+                         final List<UserGroupEntity> userGroups,
+                         final List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings,
                          final List<UserDashboardMenuEntity> userDashboardMenus,
+                         final List<CompanyWorkflowTypeControllerEntity> workflowTypeControllers,
                          final String token) {
 
     this.user = user;
-    this.companyProfile = new CompanyProfile(company, departments, userGroups, ocrPresetSettings);
+    this.companyProfile = new CompanyProfile(company,
+                                             departments,
+                                             userGroups,
+                                             ocrPresetSettings,
+                                             workflowTypeControllers);
     this.token = token;
     setUserDashboardMenus(userDashboardMenus);
   }

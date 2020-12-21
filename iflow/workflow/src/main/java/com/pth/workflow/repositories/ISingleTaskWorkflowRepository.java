@@ -6,5 +6,4 @@ import java.util.Optional;
 
 public interface ISingleTaskWorkflowRepository extends IWorkflowBaseRepository<SingleTaskWorkflowEntity> {
 
-    Optional<SingleTaskWorkflowEntity> getByIdentity(String identity);
 }

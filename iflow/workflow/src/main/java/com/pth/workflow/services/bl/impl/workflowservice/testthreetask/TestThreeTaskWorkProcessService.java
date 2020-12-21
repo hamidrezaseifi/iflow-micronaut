@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
@@ -43,7 +44,16 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
 
   @Override
   public Optional<TestThreeTaskWorkflowEntity> getById(UUID id) {
-    return testThreeTaskWorkflowRepository.getById(id);
+    logger.debug("get workflow by id {}", id);
+
+    final Optional<TestThreeTaskWorkflowEntity> workflowOptional = testThreeTaskWorkflowRepository.getById(id);
+
+    if(workflowOptional.isPresent())
+    {
+      return workflowPrepare.prepareWorkflow(workflowOptional.get());
+    }
+    return Optional.empty();
+
   }
 
   @Override
@@ -92,37 +102,12 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
   }
 
   @Override
-  public Optional<TestThreeTaskWorkflowEntity> getByIdentity(final String identity){
-
-    logger.debug("get workflow by id {} with authentication {}", identity);
-
-    final Optional<TestThreeTaskWorkflowEntity> workflowOptional =
-            this.testThreeTaskWorkflowRepository.getByIdentity(identity);
-
-    if(workflowOptional.isPresent()){
-      return workflowPrepare.prepareWorkflow(workflowOptional.get());
-    }
-    return Optional.empty();
-  }
-
-  @Override
   public List<TestThreeTaskWorkflowEntity> getListForUser(final UUID id, final int status){
 
     logger.debug("get workflow assigned to user id {} and has status {} with authentication {}", id, status);
 
     final List<TestThreeTaskWorkflowEntity> list =
             this.testThreeTaskWorkflowRepository.getListForUser(id, status);
-
-    return workflowPrepare.prepareWorkflowList(list);
-  }
-
-  @Override
-  public List<TestThreeTaskWorkflowEntity>
-    getListByIdentityList(final Set<String> identityList) {
-
-    logger.debug("get workflow list by id list with authentication {}");
-
-    final List<TestThreeTaskWorkflowEntity> list = this.testThreeTaskWorkflowRepository.getListByIdentityList(identityList);
 
     return workflowPrepare.prepareWorkflowList(list);
   }

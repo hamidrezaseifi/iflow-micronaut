@@ -1,9 +1,11 @@
 package com.pth.profile.services.data.impl;
 
 import com.pth.common.credentials.IPasswordHashGenerator;
+import com.pth.common.edo.CompanyWorkflowTypeControllerEdo;
 import com.pth.profile.authentication.entities.RefreshTokenEntity;
 import com.pth.profile.entities.*;
 import com.pth.profile.exception.UserNotFoundException;
+import com.pth.profile.mapper.ICompanyWorkflowTypeControllerMapper;
 import com.pth.profile.models.ProfileResponse;
 import com.pth.profile.models.UserPasswordResetRequest;
 import com.pth.profile.repositories.*;
@@ -24,6 +26,7 @@ public class UsersService implements IUsersService {
   private final IRefreshTokenRepository refreshTokenRepository;
   private final IUserDashboardMenuRepository userDashboardMenuRepository;
   private final IPasswordHashGenerator passwordHashGenerator;
+  private final ICompanyWorkflowTypeControllerRepository companyWorkflowTypeControllerRepository;
 
   public UsersService(IUserRepository userRepository,
                       ICompanyRepository companyRepository,
@@ -32,7 +35,8 @@ public class UsersService implements IUsersService {
                       ICompanyWorkflowTypeOcrSettingPresetRepository workflowTypeOcrSettingPresetRepository,
                       IRefreshTokenRepository refreshTokenRepository,
                       IUserDashboardMenuRepository userDashboardMenuRepository,
-                      IPasswordHashGenerator passwordHashGenerator) {
+                      IPasswordHashGenerator passwordHashGenerator,
+                      ICompanyWorkflowTypeControllerRepository companyWorkflowTypeControllerRepository) {
     this.userRepository = userRepository;
     this.companyRepository = companyRepository;
     this.userGroupRepository = userGroupRepository;
@@ -41,6 +45,7 @@ public class UsersService implements IUsersService {
     this.refreshTokenRepository = refreshTokenRepository;
     this.userDashboardMenuRepository = userDashboardMenuRepository;
     this.passwordHashGenerator = passwordHashGenerator;
+    this.companyWorkflowTypeControllerRepository = companyWorkflowTypeControllerRepository;
   }
 
   @Override
@@ -221,6 +226,8 @@ public class UsersService implements IUsersService {
       List<UserGroupEntity> userGroups = userGroupRepository.getListByIdCompanyId(companyEntity.getId());
       List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings = this.workflowTypeOcrSettingPresetRepository.getByCompanyId(userEntity.getCompanyId());
       List<UserDashboardMenuEntity> userDashboardMenus = this.userDashboardMenuRepository.getByUserId(userEntity.getId(), appId);
+      List<CompanyWorkflowTypeControllerEntity> companyWorkflowTypeControllerList =
+              this.companyWorkflowTypeControllerRepository.getByCompanyId(companyEntity.getId());
 
       ProfileResponse profileResponse = new ProfileResponse(userEntity,
               companyEntity,
@@ -228,6 +235,7 @@ public class UsersService implements IUsersService {
               userGroups,
               ocrPresetSettings,
               userDashboardMenus,
+              companyWorkflowTypeControllerList,
               tokenEntity.getRefreshToken());
 
       return Optional.of(profileResponse);

@@ -11,11 +11,7 @@ import java.util.UUID;
 
 public interface IWorkflowRepository extends IEntityRepository<WorkflowEntity> {
 
-    Optional<WorkflowEntity> getByIdentity(String identity);
-
     List<WorkflowEntity> getListForUser(UUID id, int status);
-
-    List<WorkflowEntity> getListByIdentityList(Set<String> identityList);
 
     List<WorkflowEntity> search(final WorkflowSearchFilter workflowSearchFilter);
 }

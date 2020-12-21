@@ -1,9 +1,7 @@
 package com.pth.profile.models;
 
-import com.pth.profile.entities.CompanyEntity;
-import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity;
-import com.pth.profile.entities.DepartmentEntity;
-import com.pth.profile.entities.UserGroupEntity;
+import com.pth.common.edo.CompanyWorkflowtypeItemOcrSettingPresetEdo;
+import com.pth.profile.entities.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +13,23 @@ public class CompanyProfile {
   private final List<DepartmentEntity> departments = new ArrayList<>();
   private final List<UserGroupEntity> userGroups = new ArrayList<>();
   private final List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings = new ArrayList<>();
+  private final List<CompanyWorkflowTypeControllerEntity> workflowTypeControllers = new ArrayList<>();
 
-  // CompanyWorkflowtypeItemOcrSettingEntity
   public CompanyProfile() {
 
   }
 
-  public CompanyProfile(final CompanyEntity company, final List<DepartmentEntity> departments,
-      final List<UserGroupEntity> userGroups, final List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings) {
+  public CompanyProfile(final CompanyEntity company,
+                        final List<DepartmentEntity> departments,
+                        final List<UserGroupEntity> userGroups,
+                        final List<CompanyWorkflowTypeOcrSettingPresetEntity> ocrPresetSettings,
+                        final List<CompanyWorkflowTypeControllerEntity> workflowTypeControllers) {
 
     this.setDepartments(departments);
     this.setUserGroups(userGroups);
     this.setCompany(company);
     this.setOcrPresetSettings(ocrPresetSettings);
+    this.setWorkflowTypeControllers(workflowTypeControllers);
   }
 
   /**
@@ -85,7 +87,14 @@ public class CompanyProfile {
     }
   }
 
+  public List<CompanyWorkflowTypeControllerEntity> getWorkflowTypeControllers() {
+    return workflowTypeControllers;
+  }
 
-
-
+  public void setWorkflowTypeControllers(List<CompanyWorkflowTypeControllerEntity> workflowTypeControllers) {
+    this.workflowTypeControllers.clear();
+    if (workflowTypeControllers != null) {
+      this.workflowTypeControllers.addAll(workflowTypeControllers);
+    }
+  }
 }

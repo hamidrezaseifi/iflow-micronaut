@@ -21,11 +21,7 @@ public interface IWorkflowProcessService<W extends IWorkflowBaseEntity> {
 
   Optional<W> save(IWorkflowSaveRequest<W> request, String authorization) throws WorkflowCustomizedException;
 
-  Optional<W> getByIdentity(String identity);
-
   List<W> getListForUser(final UUID id, int status);
-
-  List<W> getListByIdentityList(final Set<String> identityList);
 
   void validate(IWorkflowSaveRequest<W> model, String authorization) throws WorkflowCustomizedException;
 }

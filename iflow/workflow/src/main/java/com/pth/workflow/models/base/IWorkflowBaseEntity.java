@@ -1,5 +1,6 @@
 package com.pth.workflow.models.base;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,4 +111,10 @@ public interface IWorkflowBaseEntity {
   UUID getCompanyId();
 
   void setCompanyId(final UUID companyId);
+
+  Date getCreatedAt();
+
+  Date getUpdatedAt();
+
+  boolean isNew();
 }
