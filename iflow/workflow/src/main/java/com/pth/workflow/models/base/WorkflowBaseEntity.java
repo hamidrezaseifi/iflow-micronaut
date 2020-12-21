@@ -233,11 +233,6 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
     }
 
     @Override
-    public String getWorkflowTypeIdentity() {
-        return getWorkflow().getWorkflowType().getIdentity();
-    }
-
-    @Override
     public boolean isCurrentStepId(UUID currentStepId){
         return getWorkflow().getCurrentStepId() == currentStepId;
     }

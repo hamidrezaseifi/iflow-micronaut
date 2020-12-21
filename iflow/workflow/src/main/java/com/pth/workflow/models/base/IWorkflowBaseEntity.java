@@ -103,7 +103,7 @@ public interface IWorkflowBaseEntity {
 
   void addAction(final WorkflowActionEntity action);
 
-  String getWorkflowTypeIdentity();
+  UUID getWorkflowTypeId();
 
   boolean isCurrentStepId(UUID currentStepId);
 

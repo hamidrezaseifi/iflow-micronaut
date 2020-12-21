@@ -18,10 +18,9 @@ import io.micronaut.core.annotation.Introspected;
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class WorkflowEdo {
 
-  @NotNull(message = "Id is not allowed to be null!")
-  private UUID id;
+  @NotNull(message = "id is not allowed to be null!")
+  protected UUID id;
 
-  @NotNull(message = "Identity is not allowed to be null!")
   private String identity;
 
   @NotNull(message = "CompanyId is not allowed to be null!")
@@ -63,8 +62,7 @@ public class WorkflowEdo {
     return this.identity;
   }
 
-  public void setId(final String identity) {
-
+  public void setIdentity(String identity) {
     this.identity = identity;
   }
 

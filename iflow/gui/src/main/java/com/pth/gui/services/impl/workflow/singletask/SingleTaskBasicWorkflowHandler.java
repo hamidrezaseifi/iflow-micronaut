@@ -8,6 +8,7 @@ import java.util.UUID;
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowEdo;
 import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowListEdo;
+import com.pth.common.edo.workflow.singletask.SingleTaskWorkflowSaveRequestEdo;
 import com.pth.gui.exception.GuiCustomizedException;
 import com.pth.gui.mapper.ISingleTaskWorkflowMapper;
 import com.pth.gui.mapper.ISingleTaskWorkflowSaveRequestMapper;
@@ -78,8 +79,9 @@ public class SingleTaskBasicWorkflowHandler
       createRequest.getWorkflow().getWorkflow().getActiveAction().setComments(createRequest.getComments());
     }
 
-    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(),
-                                           singleTaskWorkflowSaveRequestMapper.toEdo(createRequest));
+    SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo =
+            singleTaskWorkflowSaveRequestMapper.toEdo(createRequest);
+    this.singleTaskWorkflowClient.validate(sessionData.getRefreshToken(), workflowCreateRequestEdo);
 
     this.prepareUploadedFiles(createRequest, sessionData.getCurrentUserId());
 

@@ -112,8 +112,7 @@ public class SingleTaskController {
   @Status(HttpStatus.ACCEPTED)
   @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})
   @Post(value = "/validate")
-  public void
-  validateInvoiceRequest(@Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
+  public void validateInvoiceRequest(@Body @Valid final SingleTaskWorkflowSaveRequestEdo workflowCreateRequestEdo,
                          @Header String authorization) throws Exception {
 
     SingleTaskWorkflowSaveRequest model = singleTaskWorkflowSaveRequestMapper.fromEdo(workflowCreateRequestEdo);

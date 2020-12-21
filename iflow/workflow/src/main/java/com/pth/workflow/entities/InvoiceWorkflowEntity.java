@@ -236,5 +236,8 @@ public class InvoiceWorkflowEntity extends WorkflowBaseEntity {
     this.paymentAmount = paymentAmount;
   }
 
-
+  @Override
+  public UUID getWorkflowTypeId() {
+    return this.workflow.getWorkflowTypeId();
+  }
 }

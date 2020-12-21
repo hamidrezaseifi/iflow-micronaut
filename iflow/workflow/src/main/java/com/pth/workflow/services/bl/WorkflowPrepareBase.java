@@ -23,7 +23,7 @@ public abstract class WorkflowPrepareBase<W extends IWorkflowBaseEntity> impleme
     public Optional<W> prepareWorkflow(final W workflow){
 
         final Optional<WorkflowTypeEntity>
-                workflowTypeOptional = this.workflowTypeRepository.getByIdentity(workflow.getWorkflowTypeIdentity());
+                workflowTypeOptional = this.workflowTypeRepository.getById(workflow.getWorkflowTypeId());
 
         if(workflowTypeOptional.isPresent() == false){
             return Optional.empty();

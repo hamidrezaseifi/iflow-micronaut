@@ -182,11 +182,6 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
   }
 
   @Override
-  public String getWorkflowTypeIdentity() {
-    return workflowType.getIdentity();
-  }
-
-  @Override
   public boolean isCurrentStepId(UUID currentStepId) {
     return this.currentStepId == currentStepId;
   }
@@ -360,6 +355,7 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
     this.createdById = createdById;
   }
 
+  @Override
   public UUID getWorkflowTypeId() {
 
     return workflowTypeId;

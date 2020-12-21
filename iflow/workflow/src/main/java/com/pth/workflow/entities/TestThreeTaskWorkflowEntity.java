@@ -52,4 +52,9 @@ public class TestThreeTaskWorkflowEntity extends WorkflowBaseEntity {
     this.workflow = workflow;
   }
 
+  @Override
+  public UUID getWorkflowTypeId() {
+    return this.workflow.getWorkflowTypeId();
+  }
+
 }
