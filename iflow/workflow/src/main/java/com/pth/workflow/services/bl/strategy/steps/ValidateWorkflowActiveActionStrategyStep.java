@@ -18,7 +18,7 @@ public class ValidateWorkflowActiveActionStrategyStep<W extends IWorkflowBaseEnt
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
     if (processingWorkflow.hasActiveAction() == false) {
-      throw new WorkflowCustomizedException("The workflow has no active action identity:" + processingWorkflow.getIdentity(),
+      throw new WorkflowCustomizedException("The workflow has no active action id:" + processingWorkflow.getWorkflowId(),
                                             EIFlowErrorType.INVALID_WORKFLOW_STATUS);
 
     }

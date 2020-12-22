@@ -21,16 +21,6 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
     public abstract void setWorkflow(WorkflowEntity workflow);
 
     @Override
-    public String getIdentity() {
-        return getWorkflow().getIdentity();
-    }
-
-    @Override
-    public void setIdentity(String identity) {
-        getWorkflow().setIdentity(identity);
-    }
-
-    @Override
     public WorkflowTypeEntity getWorkflowType() {
         return getWorkflow().getWorkflowType();
     }

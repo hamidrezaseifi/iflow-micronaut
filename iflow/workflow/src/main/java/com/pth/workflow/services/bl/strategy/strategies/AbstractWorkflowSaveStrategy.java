@@ -253,7 +253,7 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     final List<String> stepIdList = this.getWorkflowTypeIdList(workflowType);
 
     if (stepIdList.contains(newWorkflow.getCurrentStep().getIdentity()) == false) {
-      throw new WorkflowCustomizedException("Invalid workflow step id:" + newWorkflow.getIdentity(), EIFlowErrorType.INVALID_WORKFLOW_STEP);
+      throw new WorkflowCustomizedException("Invalid workflow step id:" + newWorkflow.getWorkflowId(), EIFlowErrorType.INVALID_WORKFLOW_STEP);
     }
   }
 

@@ -27,7 +27,7 @@ public class ValidateWorkflowTypeStepStrategyStep<W extends IWorkflowBaseEntity>
 
     if (processingWorkflow.getCurrentStep() == null) {
 
-      throw new WorkflowCustomizedException("Unknown processingWorkflow step identity:" + processingWorkflow.getIdentity(),
+      throw new WorkflowCustomizedException("Unknown processingWorkflow step id:" + processingWorkflow.getWorkflowId(),
                                             EIFlowErrorType.UNKNOWN_WORKFLOW_TYPE_STEP);
     }
 

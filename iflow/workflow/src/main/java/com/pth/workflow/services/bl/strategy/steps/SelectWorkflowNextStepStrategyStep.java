@@ -23,7 +23,7 @@ public class SelectWorkflowNextStepStrategyStep<W extends IWorkflowBaseEntity> e
     final WorkflowTypeStepEntity nextStep =
             this.getWorkflowSaveStrategy().findNextStep(processingWorkflowType, processingWorkflow);
     if (nextStep == null) {
-      throw new WorkflowCustomizedException(String.format("Invalid workflow step id:%s", processingWorkflow.getIdentity()),
+      throw new WorkflowCustomizedException(String.format("Invalid workflow step id:%s", processingWorkflow.getWorkflowId().toString()),
                                             EIFlowErrorType.INVALID_WORKFLOW_STEP);
     }
 

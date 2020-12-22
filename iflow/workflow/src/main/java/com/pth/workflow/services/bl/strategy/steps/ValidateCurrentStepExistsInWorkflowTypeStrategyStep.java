@@ -23,7 +23,7 @@ public class ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W extends IWork
     final boolean isValid = this.validateCurrentStepExistsInWorkflowType(processingWorkflow.getCurrentStep(), processingWorkflowType);
     if (isValid == false) {
 
-      throw new WorkflowCustomizedException("Invalid workflow step id:" + processingWorkflow.getIdentity(),
+      throw new WorkflowCustomizedException("Invalid workflow step id:" + processingWorkflow.getCurrentStepId(),
                                             EIFlowErrorType.INVALID_WORKFLOW_STEP);
 
     }

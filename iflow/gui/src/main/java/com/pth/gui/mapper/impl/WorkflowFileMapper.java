@@ -32,7 +32,6 @@ public class WorkflowFileMapper extends ModelEdoMapperBase<WorkflowFile, Workflo
         model.setCreatedById(edo.getCreatedById());
         model.setActiveFilePath(edo.getActiveFilePath());
         model.setActiveFileVersion(edo.getActiveFileVersion());
-        model.setIdentity(edo.getIdentity());
         model.setId(edo.getId());
 
         model.setFileVersions(workflowFileVersionMapper.fromEdoList(edo.getFileVersions()));
@@ -50,7 +49,6 @@ public class WorkflowFileMapper extends ModelEdoMapperBase<WorkflowFile, Workflo
         edo.setCreatedById(model.getCreatedById());
         edo.setActiveFilePath(model.getActiveFilePath());
         edo.setActiveFileVersion(model.getActiveFileVersion());
-        edo.setIdentity(model.getIdentity());
         edo.setId(model.getId());
 
         edo.setFileVersions(workflowFileVersionMapper.toEdoList(model.getFileVersions()));

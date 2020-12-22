@@ -22,10 +22,6 @@ public interface IWorkflowBaseEntity {
 
   void setWorkflow(final WorkflowEntity workflow);
 
-  String getIdentity();
-
-  void setIdentity(final String identity);
-
   WorkflowTypeEntity getWorkflowType();
 
   void setWorkflowType(final WorkflowTypeEntity workflowType);

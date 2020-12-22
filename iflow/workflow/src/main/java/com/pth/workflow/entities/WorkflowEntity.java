@@ -33,9 +33,6 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
 
   private static final long serialVersionUID = 6541443032441596046L;
 
-  @Column(name = "identity")
-  private String identity;
-
   @Column(name = "company_id")
   private UUID companyId;
 
@@ -106,21 +103,6 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
   @Override
   public void setWorkflow(WorkflowEntity workflow) {
 
-  }
-
-  public String getIdentity() {
-
-    return identity;
-  }
-
-  public void setIdentity(final String identity) {
-
-    this.identity = identity;
-  }
-
-  public boolean isIdentityNotSet() {
-
-    return EIdentity.NOT_SET.getIdentity().equals(getIdentity());
   }
 
   public String getComments() {
@@ -443,7 +425,6 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
     this.setCreatedById(other.getCreatedById());
     this.setCurrentStepId(other.getCurrentStepId());
     this.setCurrentStep(other.getCurrentStep());
-    this.setIdentity(other.getIdentity());
     this.setWorkflowType(other.getWorkflowType());
     this.setWorkflowTypeId(other.getWorkflowTypeId());
     this.setVersion(other.getVersion());

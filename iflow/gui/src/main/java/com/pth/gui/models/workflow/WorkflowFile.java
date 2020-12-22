@@ -11,7 +11,6 @@ import java.util.UUID;
 
 public class WorkflowFile extends GuiBaseModel {
 
-  private String identity;
   private UUID workflowId;
   private UUID createdById;
   private String title;
@@ -24,16 +23,6 @@ public class WorkflowFile extends GuiBaseModel {
 
   public WorkflowFile() {
     super();
-  }
-
-  public String getIdentity() {
-
-    return this.identity;
-  }
-
-  public void setIdentity(final String identity) {
-
-    this.identity = identity;
   }
 
   public UUID getWorkflowId() {

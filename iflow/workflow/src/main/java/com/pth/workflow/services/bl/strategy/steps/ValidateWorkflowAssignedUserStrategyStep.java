@@ -18,7 +18,7 @@ public class ValidateWorkflowAssignedUserStrategyStep<W extends IWorkflowBaseEnt
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
     if (processingWorkflow.getActiveAction().isAssigned() == false) {
-      throw new WorkflowCustomizedException("The workflow has not been assigned identity:" + processingWorkflow.getIdentity(),
+      throw new WorkflowCustomizedException("The workflow has not been assigned id:" + processingWorkflow.getWorkflowId(),
                                             EIFlowErrorType.UNKNOWN_WORKFLOW_ASSIGN);
 
     }

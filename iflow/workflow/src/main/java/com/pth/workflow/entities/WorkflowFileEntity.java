@@ -25,9 +25,6 @@ public class WorkflowFileEntity extends BaseEntity {
 
   private static final long serialVersionUID = 8579770798642238402L;
 
-  @Column(name = "identity")
-  private String identity;
-
   @Column(name = "title")
   private String title;
 
@@ -66,16 +63,6 @@ public class WorkflowFileEntity extends BaseEntity {
 
   public WorkflowFileEntity() {
 
-  }
-
-  public String getIdentity() {
-
-    return identity;
-  }
-
-  public void setIdentity(final String identity) {
-
-    this.identity = identity;
   }
 
   public String getActiveFilePath() {
@@ -225,7 +212,7 @@ public class WorkflowFileEntity extends BaseEntity {
   }
 
   void fill(WorkflowFileEntity other){
-    this.setIdentity(other.identity);
+
     this.setComments(other.comments);
     this.setTitle(other.title);
     this.setExtention(other.extention);

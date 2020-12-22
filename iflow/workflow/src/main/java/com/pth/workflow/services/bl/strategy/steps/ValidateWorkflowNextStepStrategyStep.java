@@ -23,7 +23,7 @@ public class ValidateWorkflowNextStepStrategyStep<W extends IWorkflowBaseEntity>
     final WorkflowTypeStepEntity
             nextStep = this.getWorkflowSaveStrategy().findNextStep(processingWorkflowType, processingWorkflow);
     if (nextStep == null) {
-      throw new WorkflowCustomizedException("Invalid workflow step identity:" + processingWorkflow.getIdentity(),
+      throw new WorkflowCustomizedException("Invalid workflow step id:" + processingWorkflow.getWorkflowId(),
                                             EIFlowErrorType.INVALID_WORKFLOW_STEP);
     }
 

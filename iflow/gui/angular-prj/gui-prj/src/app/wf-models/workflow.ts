@@ -7,7 +7,6 @@ import { WorkflowAction } from '../wf-models';
 
 export class Workflow {
 	id: string;
-	//identity: string;
 	status: string;
 	workflowType: WorkflowType;
 	currentStep: WorkflowTypeStep;
