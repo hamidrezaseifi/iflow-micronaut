@@ -10,7 +10,6 @@ import com.pth.workflow.repositories.IWorkflowMessageRepository;
 import com.pth.workflow.services.IWorkflowMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import javax.inject.Singleton;
 
@@ -50,7 +49,7 @@ public class WorkflowMessageService implements IWorkflowMessageService {
 
     logger.debug("Save workflow message ");
 
-    workflowMessageRepository.save(message);
+    workflowMessageRepository.create(message);
 
     return workflowMessageRepository.getById(message.getId());
   }

@@ -5,16 +5,16 @@
 		<button class="toolbar-button" *ngIf="messagePanelShowed == false" (click)="showMessages();"><i class="material-icons">keyboard_arrow_up</i></button>
 		<button class="toolbar-button" *ngIf="messagePanelShowed" (click)="reloadMessages();"><i class="material-icons">refresh</i></button>
 		<img class="toolbar-image" *ngIf="isReloadingMessages" src="assets/images/loading200.gif" />
-	
+
 	</div>
 	<div class="message-panel-items-container">
 		<div class="message-panel-item" *ngFor="let message of messages;">
-			<a href="javascript:void(0);" (click)="showWorkflowView(message.workflowIdentity)">
+			<a href="javascript:void(0);" (click)="showWorkflowView(message.workflowId)">
 				<div>{{message.message}} ({{message.workflow.workflowType.title}}) ({{message.createdAtString}}) ({{message.remainingDays}}) ({{message.status}})</div>
 			</a>
 		</div>
 	</div>
-					
+
 </div>
 
 <div class="modal fade show" tabindex="-1" *ngIf="viewWorkflow" id="viewworkflowedialog" role="dialog">
@@ -27,23 +27,23 @@
 					<i class="material-icons">close</i>
 				</button>
 			</div>
-			
+
 		      <div class="modal-body">
-		      
+
 				<app-workflow-inlineview [workflow]="viewWorkflowModel"></app-workflow-inlineview>
-	   				
+
 		      </div>
 	      <div class="modal-footer">
-			<button type="button" class="btn btn-secondary" (click)="hideViewModal()"><i class="material-icons">close</i></button>
+			    <button type="button" class="btn btn-secondary" (click)="hideViewModal()"><i class="material-icons">close</i></button>
 
-			<button type="button" class="btn btn-success"  *ngIf="viewWorkflowModel.notAssigned" (click)="assignWorkflowMe()"><i class="material-icons">assignment_ind</i></button>
+			    <button type="button" class="btn btn-success"  *ngIf="viewWorkflowModel.notAssigned" (click)="assignWorkflowMe()"><i class="material-icons">assignment_ind</i></button>
 
 	        <button type="button" class="btn btn-primary" *ngIf="viewWorkflowModel.meAssigned" (click)="editWorkflow()" ><i class="material-icons">pageview</i></button>
 	      </div>
 	    </div>
-	  </div>		    
+	  </div>
 
 
-			
+
 </div>
 

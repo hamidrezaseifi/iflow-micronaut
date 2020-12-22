@@ -11,7 +11,7 @@ public interface IEntityRepository<TEntity> {
 
     Optional<TEntity> getById(UUID id);
 
-    void save(TEntity entity);
+    void create(TEntity entity);
 
     void update(TEntity entity);
 

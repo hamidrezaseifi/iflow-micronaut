@@ -51,7 +51,7 @@ class DepartmentRepositorySpec extends ProfileTestDataProvider {
             departmentEntity.identity = identity
 
         when:
-            departmentRepository.save(departmentEntity)
+            departmentRepository.create(departmentEntity)
             def departmentOptional = departmentRepository.getById(departmentEntity.id)
 
         then:
@@ -69,7 +69,7 @@ class DepartmentRepositorySpec extends ProfileTestDataProvider {
             departmentEntity.companyId = testCompanyId
             def identity = generateRandomString(15)
             departmentEntity.identity = identity
-            departmentRepository.save(departmentEntity)
+            departmentRepository.create(departmentEntity)
             def departmentOptional = departmentRepository.getById(departmentEntity.id)
             def departmentSaved =  departmentOptional.get()
             departmentSaved.title = "test-department_edited"
@@ -94,7 +94,7 @@ class DepartmentRepositorySpec extends ProfileTestDataProvider {
             departmentEntity.companyId = testCompanyId
             def identity = generateRandomString(15)
             departmentEntity.identity = identity
-            departmentRepository.save(departmentEntity)
+            departmentRepository.create(departmentEntity)
 
         when:
             departmentRepository.delete(departmentEntity)
@@ -116,7 +116,7 @@ class DepartmentRepositorySpec extends ProfileTestDataProvider {
             departmentEntity.companyId = testCompanyId
             def identity = generateRandomString(15)
             departmentEntity.identity = identity
-            departmentRepository.save(departmentEntity)
+            departmentRepository.create(departmentEntity)
             map.put(departmentEntity.id, departmentEntity)
         }
 

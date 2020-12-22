@@ -28,7 +28,7 @@ public class DepartmentService implements IDepartmentService {
 
     @Override
     public Optional<DepartmentEntity> create(DepartmentEntity model) {
-        departmentRepository.save(model);
+        departmentRepository.create(model);
         return departmentRepository.getById(model.getId());
     }
 

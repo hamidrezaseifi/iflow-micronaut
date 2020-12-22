@@ -45,7 +45,7 @@ public class AssignWorkflowStrategy<W extends IWorkflowBaseEntity> extends Abstr
     steps.add(new ValidateSingleUserAssignInSaveRequestStrategyStep<W>(this));
     steps.add(new AssignWorkflowActiveActionStrategyStep<W>(this));
     steps.add(new PrepareAssigningWorkflowStep<W>(this));
-    steps.add(new SaveWorkflowInCoreStep<W>(this, true));
+    steps.add(new UpdateWorkflowInCoreStep<W>(this, true));
     steps.add(new ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep<W>(this));
     steps.add(new ChangeWorkflowOfferStatusToAssignForUserAndWorkflowInCoreStep<W>(this));
     steps.add(new SendWorkflowOffersForUsersToProfileStep<W>(this));

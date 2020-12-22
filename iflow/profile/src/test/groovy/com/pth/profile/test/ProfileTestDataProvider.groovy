@@ -7,22 +7,13 @@ import com.pth.profile.entities.CompanyEntity
 import com.pth.profile.entities.CompanyWorkflowTypeOcrSettingPresetEntity
 import com.pth.profile.entities.DepartmentEntity
 import com.pth.profile.entities.UserDashboardMenuEntity
-import com.pth.profile.entities.UserDepartmentEntity
 import com.pth.profile.entities.UserEntity
 import com.pth.profile.entities.UserGroupEntity
 import com.pth.profile.repositories.ICompanyRepository
 import com.pth.profile.repositories.IDepartmentRepository
 import com.pth.profile.repositories.IUserRepository
-import com.pth.profile.repositories.impl.CompanyRepository
-import com.pth.profile.repositories.impl.UserRepository
 import org.apache.commons.lang3.RandomStringUtils
 import spock.lang.Specification
-
-import java.nio.charset.Charset
-import java.util.UUID
-import java.util.stream.Collectors
-
-import static java.lang.StringBuilder.*;
 
 class ProfileTestDataProvider extends Specification {
 
@@ -62,7 +53,7 @@ class ProfileTestDataProvider extends Specification {
         testCompany.companyTypeCustome = "Test-Company"
         testCompany.status = 1
         testCompany.id = testCompanyId
-        companyRepository.save(testCompany)
+        companyRepository.create(testCompany)
 
         return testCompany
     }
@@ -116,7 +107,7 @@ class ProfileTestDataProvider extends Specification {
         testUser1.lastName = "lname"
         testUser1.permission = 1
         testUser1.id = testUserId1
-        userRepository.save(testUser1)
+        userRepository.create(testUser1)
 
         return testUser1
     }
@@ -152,7 +143,7 @@ class ProfileTestDataProvider extends Specification {
             testDepartment1.identity = "test-department-1"
             testDepartment1.companyId = testCompanyId
             testDepartment1.title = "Test Department 1"
-            departmentRepository.save(testDepartment1)
+            departmentRepository.create(testDepartment1)
         }
 
         if(map.containsKey(testDepartmentId2)){
@@ -164,7 +155,7 @@ class ProfileTestDataProvider extends Specification {
             testDepartment2.identity = "test-department-2"
             testDepartment2.companyId = testCompanyId
             testDepartment2.title = "Test Department 2"
-            departmentRepository.save(testDepartment2)
+            departmentRepository.create(testDepartment2)
         }
 
         if(map.containsKey(testDepartmentId3)){
@@ -176,7 +167,7 @@ class ProfileTestDataProvider extends Specification {
             testDepartment3.identity = "test-department-3"
             testDepartment3.companyId = testCompanyId
             testDepartment3.title = "Test Department 3"
-            departmentRepository.save(testDepartment3)
+            departmentRepository.create(testDepartment3)
         }
     }
 

@@ -41,7 +41,7 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
             companyEntity.status = 1
 
         when:
-            companyRepository.save(companyEntity)
+            companyRepository.create(companyEntity)
             def companyOptional = companyRepository.getById(companyEntity.id)
 
         then:
@@ -61,7 +61,7 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
             companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
             companyEntity.companyTypeCustome = "Test-Company"
             companyEntity.status = 1
-            companyRepository.save(companyEntity)
+            companyRepository.create(companyEntity)
             def companyOptional = companyRepository.getById(companyEntity.id)
             def editingCompanyEntity = companyOptional.get()
         when:
@@ -91,7 +91,7 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
             companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
             companyEntity.companyTypeCustome = "Test-Company"
             companyEntity.status = 1
-            companyRepository.save(companyEntity)
+            companyRepository.create(companyEntity)
             def companyOptional = companyRepository.getById(companyEntity.id)
          when:
 
@@ -118,7 +118,7 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
                 companyEntity.companyType = ECompanyType.EINZELUNTERNEHMEN.enumValue
                 companyEntity.companyTypeCustome = "Test-Company-" + i
                 companyEntity.status = 1
-                companyRepository.save(companyEntity)
+                companyRepository.create(companyEntity)
                 map.put(companyEntity.id, companyEntity)
             }
 
@@ -150,7 +150,7 @@ class CompanyRepositorySpec extends ProfileTestDataProvider {
             companyEntity.status = 1
 
         when:
-            companyRepository.save(companyEntity)
+            companyRepository.create(companyEntity)
             def companyOptional = companyRepository.getByIdentity(companyEntity.identity)
 
         then:

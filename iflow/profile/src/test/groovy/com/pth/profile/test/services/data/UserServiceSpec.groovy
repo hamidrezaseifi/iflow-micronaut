@@ -68,7 +68,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
             userOptional.isPresent()
             verifyUser(userOptional.get(), userEntity)
         and:
-            1 * userRepository.save(_)
+            1 * userRepository.create(_)
             1 * userRepository.getById(_) >> Optional.of(userEntity)
 
     }
@@ -334,7 +334,7 @@ class UserServiceSpec extends ProfileTestDataProvider {
 
         and:
             1 * userRepository.getById(_) >> Optional.of(userEntity)
-            3 * userDashboardMenuRepository.save(_)
+            3 * userDashboardMenuRepository.create(_)
             1 * userDashboardMenuRepository.getByUserId(_, _) >> Arrays.asList(createTestUserDashboardMenuEntity(1),
                                                                                createTestUserDashboardMenuEntity(2),
                                                                                createTestUserDashboardMenuEntity(3))

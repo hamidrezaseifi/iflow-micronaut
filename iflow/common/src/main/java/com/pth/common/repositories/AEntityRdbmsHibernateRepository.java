@@ -52,7 +52,7 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
 
     @Override
     @Transactional(readOnly = false)
-    public void save(TEntity entity) {
+    public void create(TEntity entity) {
 
         try {
             entityManager.persist(entity);
@@ -88,7 +88,7 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
     @Transactional(readOnly = false)
     public void update(TEntity entity) {
         try{
-            entityManager.refresh(entity);
+            //entityManager.refresh(entity);
 
             entityManager.merge(entity);
             entityManager.flush();

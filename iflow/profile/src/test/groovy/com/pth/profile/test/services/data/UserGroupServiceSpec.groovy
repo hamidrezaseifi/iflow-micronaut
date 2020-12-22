@@ -5,9 +5,6 @@ import com.pth.profile.repositories.IUserGroupRepository
 import com.pth.profile.services.data.IUserGroupService
 import com.pth.profile.services.data.impl.UserGroupService
 import com.pth.profile.test.ProfileTestDataProvider
-import io.micronaut.context.ApplicationContext
-import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.Shared
 
 import java.util.stream.Collectors
 
@@ -45,7 +42,7 @@ class UserGroupServiceSpec extends ProfileTestDataProvider {
             companyOptional.isPresent()
             verifyUserGroup(companyOptional.get(), userGroupEntity)
         and:
-            1 * userGroupRepository.save(_)
+            1 * userGroupRepository.create(_)
             1 * userGroupRepository.getById(_) >> Optional.of(userGroupEntity)
 
     }

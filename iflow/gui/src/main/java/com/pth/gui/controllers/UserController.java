@@ -1,27 +1,23 @@
 package com.pth.gui.controllers;
 
-import com.pth.common.edo.enums.EModule;
-import com.pth.common.edo.enums.EUserAcces;
-import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.gui.controllers.helper.AuthenticatedController;
-import com.pth.gui.exception.GuiCustomizedException;
 import com.pth.gui.helpers.SessionDataHelper;
 import com.pth.gui.models.User;
 import com.pth.gui.models.UserDashboardMenu;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowMessage;
+import com.pth.gui.models.workflow.base.WorkflowBased;
+import com.pth.gui.models.workflow.workflow.Workflow;
+import com.pth.gui.services.IBasicWorkflowHandler;
 import com.pth.gui.services.IUserHandler;
 import com.pth.gui.services.IWorkflowMessageHandler;
+import com.pth.gui.services.IWorkflowGeneralHandler;
 import io.micronaut.http.*;
 import io.micronaut.http.annotation.*;
 import io.micronaut.security.annotation.Secured;
-import io.micronaut.security.authentication.Authentication;
-import io.micronaut.security.authentication.AuthenticationUserDetailsAdapter;
-import io.micronaut.security.authentication.UserDetails;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.session.Session;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.*;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -30,10 +26,14 @@ public class UserController extends AuthenticatedController {
 
     private final IWorkflowMessageHandler workflowMessageHandler;
     private final IUserHandler userHandler;
+    private final IWorkflowGeneralHandler workflowGeneralHandler;
 
-    public UserController(IWorkflowMessageHandler workflowMessageHandler, IUserHandler userHandler) {
+    public UserController(IWorkflowMessageHandler workflowMessageHandler,
+                          IUserHandler userHandler,
+                          IWorkflowGeneralHandler workflowGeneralHandler) {
         this.workflowMessageHandler = workflowMessageHandler;
         this.userHandler = userHandler;
+        this.workflowGeneralHandler = workflowGeneralHandler;
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
@@ -145,6 +145,24 @@ public class UserController extends AuthenticatedController {
                                                 sessionData.getCurrentUserId());
         return HttpResponse.created(resultList);
     }
+
+    @Post("/workflow/assign/{workflowId}")
+    public HttpResponse<WorkflowBased> assignWorkflow(@PathVariable final UUID workflowId, Session session) {
+        SessionData sessionData = getSessionData(session);
+        Optional<Workflow> workflowOptional = workflowGeneralHandler.readById(workflowId, sessionData);
+        if(workflowOptional.isPresent()){
+            IBasicWorkflowHandler handler =
+                    workflowGeneralHandler.getHandlerByWorkflowType(
+                            workflowOptional.get().getWorkflowType().getTypeEnum());
+
+            Optional<WorkflowBased> workflowBasedOptional = handler.assignWorkflow(workflowId, sessionData);
+            return HttpResponse.ok(workflowBasedOptional.get());
+        }
+
+        return HttpResponse.notFound();
+
+    }
+
 
     private List<WorkflowMessage> readUserMessages(SessionData sessionData) {
 

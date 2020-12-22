@@ -54,7 +54,7 @@ class CompanyWorkflowTypeOcrSettingPresetRepositorySpec extends ProfileTestDataP
             
 
         when:
-            presetRepository.save(presetEntity)
+            presetRepository.create(presetEntity)
             def presetOptional = presetRepository.getById(presetEntity.id)
 
         then:
@@ -72,7 +72,7 @@ class CompanyWorkflowTypeOcrSettingPresetRepositorySpec extends ProfileTestDataP
             presetEntity.workflowTypeId = UUID.randomUUID()
             presetEntity.identity = "preset-1"
             presetEntity.presetName = "preset-name"
-            presetRepository.save(presetEntity)
+            presetRepository.create(presetEntity)
             def presetOptional = presetRepository.getById(presetEntity.id)
             def presetEntitySaved =  presetOptional.get()
             presetEntitySaved.companyId = testCompanyId
@@ -101,7 +101,7 @@ class CompanyWorkflowTypeOcrSettingPresetRepositorySpec extends ProfileTestDataP
             presetEntity.workflowTypeId = UUID.randomUUID()
             presetEntity.identity = "preset-1"
             presetEntity.presetName = "preset-name"
-            presetRepository.save(presetEntity)
+            presetRepository.create(presetEntity)
 
         when:
             presetRepository.delete(presetEntity)
@@ -123,7 +123,7 @@ class CompanyWorkflowTypeOcrSettingPresetRepositorySpec extends ProfileTestDataP
             presetEntity.workflowTypeId = UUID.randomUUID()
             presetEntity.identity = "preset-" + i
             presetEntity.presetName = "preset-name-" + i
-            presetRepository.save(presetEntity)
+            presetRepository.create(presetEntity)
             map.put(presetEntity.id, presetEntity)
         }
 

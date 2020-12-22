@@ -60,7 +60,7 @@ class UserDashboardMenuRepositorySpec extends ProfileTestDataProvider {
             userDashboardMenuEntity.columnIndex = 1
 
         when:
-            userDashboardMenuRepository.save(userDashboardMenuEntity)
+            userDashboardMenuRepository.create(userDashboardMenuEntity)
             def userDashboardMenuOptional = userDashboardMenuRepository.getById(userDashboardMenuEntity.id)
 
         then:
@@ -79,7 +79,7 @@ class UserDashboardMenuRepositorySpec extends ProfileTestDataProvider {
             userDashboardMenuEntity.appId = "app-1"
             userDashboardMenuEntity.rowIndex = 1
             userDashboardMenuEntity.columnIndex = 1
-            userDashboardMenuRepository.save(userDashboardMenuEntity)
+            userDashboardMenuRepository.create(userDashboardMenuEntity)
             def userDashboardMenuOptional = userDashboardMenuRepository.getById(userDashboardMenuEntity.id)
             def userDashboardMenuSaved =  userDashboardMenuOptional.get()
             userDashboardMenuSaved.menuId = "menu-edited"
@@ -108,7 +108,7 @@ class UserDashboardMenuRepositorySpec extends ProfileTestDataProvider {
             userDashboardMenuEntity.appId = "app-1"
             userDashboardMenuEntity.rowIndex = 1
             userDashboardMenuEntity.columnIndex = 1
-            userDashboardMenuRepository.save(userDashboardMenuEntity)
+            userDashboardMenuRepository.create(userDashboardMenuEntity)
 
         when:
             userDashboardMenuRepository.delete(userDashboardMenuEntity)
@@ -131,7 +131,7 @@ class UserDashboardMenuRepositorySpec extends ProfileTestDataProvider {
             userDashboardMenuEntity.appId = "app-1"
             userDashboardMenuEntity.rowIndex = i
             userDashboardMenuEntity.columnIndex = i
-            userDashboardMenuRepository.save(userDashboardMenuEntity)
+            userDashboardMenuRepository.create(userDashboardMenuEntity)
             map.put(userDashboardMenuEntity.id, userDashboardMenuEntity)
         }
 

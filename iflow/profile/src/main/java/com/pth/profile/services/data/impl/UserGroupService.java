@@ -1,13 +1,7 @@
 package com.pth.profile.services.data.impl;
 
-import com.pth.common.edo.enums.EUserDepartmentMemberType;
 import com.pth.profile.entities.UserGroupEntity;
-import com.pth.profile.entities.UserDepartmentEntity;
-import com.pth.profile.entities.UserEntity;
-import com.pth.profile.repositories.IDepartmentRepository;
 import com.pth.profile.repositories.IUserGroupRepository;
-import com.pth.profile.repositories.IUserRepository;
-import com.pth.profile.services.data.IDepartmentService;
 import com.pth.profile.services.data.IUserGroupService;
 
 import javax.inject.Singleton;
@@ -27,7 +21,7 @@ public class UserGroupService implements IUserGroupService {
 
     @Override
     public Optional<UserGroupEntity> create(UserGroupEntity model) {
-        userGroupRepository.save(model);
+        userGroupRepository.create(model);
         return userGroupRepository.getById(model.getId());
     }
 

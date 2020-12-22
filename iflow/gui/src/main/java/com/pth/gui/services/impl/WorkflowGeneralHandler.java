@@ -3,16 +3,16 @@ package com.pth.gui.services.impl;
 import com.pth.clients.clients.workflow.IWorkflowClient;
 import com.pth.common.edo.WorkflowSearchFilterEdo;
 import com.pth.common.edo.enums.EWorkflowType;
+import com.pth.common.edo.workflow.WorkflowEdo;
 import com.pth.common.edo.workflow.WorkflowListEdo;
 import com.pth.gui.mapper.IWorkflowMapper;
 import com.pth.gui.mapper.IWorkflowSearchFilterMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
-import com.pth.gui.models.workflow.IWorkflow;
 import com.pth.gui.models.workflow.WorkflowSearchFilter;
 import com.pth.gui.models.workflow.base.WorkflowBased;
 import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.services.IBasicWorkflowHandler;
-import com.pth.gui.services.IWorkflowSearchHandler;
+import com.pth.gui.services.IWorkflowGeneralHandler;
 import com.pth.gui.services.impl.workflow.IInvoiceBasicWorkflowHandler;
 import com.pth.gui.services.impl.workflow.ISingleTaskBasicWorkflowHandler;
 import com.pth.gui.services.impl.workflow.ITestThreeTaskBasicWorkflowHandler;
@@ -23,9 +23,9 @@ import javax.inject.Singleton;
 import java.util.*;
 
 @Singleton
-public class WorkflowSearchHandler implements IWorkflowSearchHandler {
+public class WorkflowGeneralHandler implements IWorkflowGeneralHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(WorkflowSearchHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(WorkflowGeneralHandler.class);
     private final IWorkflowClient workflowClient;
     private final IWorkflowSearchFilterMapper workflowSearchFilterMapper;
     private final IWorkflowMapper workflowMapper;
@@ -33,12 +33,12 @@ public class WorkflowSearchHandler implements IWorkflowSearchHandler {
     private final ISingleTaskBasicWorkflowHandler singleTaskWorkflowHandler;
     private final ITestThreeTaskBasicWorkflowHandler testThreeTaskWorkflowHandler;
 
-    public WorkflowSearchHandler(IWorkflowClient workflowClient,
-                                 IWorkflowSearchFilterMapper workflowSearchFilterMapper,
-                                 IWorkflowMapper workflowMapper,
-                                 IInvoiceBasicWorkflowHandler invoiceWorkflowHandler,
-                                 ISingleTaskBasicWorkflowHandler singleTaskWorkflowHandler,
-                                 ITestThreeTaskBasicWorkflowHandler testThreeTaskWorkflowHandler) {
+    public WorkflowGeneralHandler(IWorkflowClient workflowClient,
+                                  IWorkflowSearchFilterMapper workflowSearchFilterMapper,
+                                  IWorkflowMapper workflowMapper,
+                                  IInvoiceBasicWorkflowHandler invoiceWorkflowHandler,
+                                  ISingleTaskBasicWorkflowHandler singleTaskWorkflowHandler,
+                                  ITestThreeTaskBasicWorkflowHandler testThreeTaskWorkflowHandler) {
         this.workflowClient = workflowClient;
         this.workflowSearchFilterMapper = workflowSearchFilterMapper;
         this.workflowMapper = workflowMapper;
@@ -75,14 +75,26 @@ public class WorkflowSearchHandler implements IWorkflowSearchHandler {
 
     }
 
-    private IBasicWorkflowHandler getHandlerByWorkflowType(final EWorkflowType eEorkflowType) {
-        if (eEorkflowType == EWorkflowType.INVOICE_WORKFLOW_TYPE) {
+    @Override
+    public Optional<Workflow> readById(UUID id, SessionData sessionData) {
+
+        Optional<WorkflowEdo> workflowEdoOptional = this.workflowClient.read(sessionData.getRefreshToken(), id);
+        if(workflowEdoOptional.isPresent()) {
+            Workflow workflow = workflowMapper.fromEdo(workflowEdoOptional.get());
+            prepareResult(workflow, sessionData);
+            return Optional.of(workflow);
+        }
+        return  Optional.empty();
+    }
+
+    public IBasicWorkflowHandler getHandlerByWorkflowType(final EWorkflowType workflowType) {
+        if (workflowType == EWorkflowType.INVOICE_WORKFLOW_TYPE) {
             return this.invoiceWorkflowHandler;
         }
-        if (eEorkflowType == EWorkflowType.SINGLE_TASK_WORKFLOW_TYPE) {
+        if (workflowType == EWorkflowType.SINGLE_TASK_WORKFLOW_TYPE) {
             return this.singleTaskWorkflowHandler;
         }
-        if (eEorkflowType == EWorkflowType.TESTTHREE_TASK_WORKFLOW_TYPE) {
+        if (workflowType == EWorkflowType.TESTTHREE_TASK_WORKFLOW_TYPE) {
             return this.testThreeTaskWorkflowHandler;
         }
         return null;

@@ -48,7 +48,7 @@ public class DoneExistingWorkflowStrategy<W extends IWorkflowBaseEntity> extends
     steps.add(new SelectWorkflowStatusStrategyStep<W>(this));
     steps.add(new CollectAssignedUserIdListStep<W>(this));
     steps.add(new AssignWorkflowActiveActionStrategyStep<W>(this));
-    steps.add(new SaveWorkflowInCoreStep<W>(this, true));
+    steps.add(new UpdateWorkflowInCoreStep<W>(this, true));
     steps.add(new ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep<W>(this));
     steps.add(new SaveWorkflowOfferForAssignedUseresInCoreStep<W>(this));
     steps.add(new SendWorkflowOffersForUsersToProfileStep<W>(this));

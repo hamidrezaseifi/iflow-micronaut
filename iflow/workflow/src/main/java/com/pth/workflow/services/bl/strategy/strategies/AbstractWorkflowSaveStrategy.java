@@ -113,7 +113,7 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     message.setWorkflowId(workflow.getWorkflowId());
     message.setStepId(workflow.getCurrentStepId());
     message.setVersion(1);
-    getWorkflowMessageRepository().save(message);
+    getWorkflowMessageRepository().create(message);
 
     // EWorkflowMessageType.OFFERING_WORKFLOW
     // EWorkflowMessageStatus.OFFERING
@@ -144,16 +144,23 @@ public abstract class AbstractWorkflowSaveStrategy<W extends IWorkflowBaseEntity
     profileCachDataDataService.resetCachDataForWorkflow(companyId, workflowId, authorization);
   }
 
-  public Optional<W> saveWorkflow(final W workflow)
-      throws WorkflowCustomizedException {
+  public Optional<W> createWorkflow(final W workflow)
+          throws WorkflowCustomizedException {
 
-    if(workflow.getCreatedAt() == null){
-      this.workflowRepository.save(workflow);
-    }
-    else {
-      this.workflowRepository.update(workflow);
-    }
+    this.workflowRepository.update(workflow);
 
+    final Optional<W> savedWorkflowOptional = this.workflowRepository.getByWorkflowId(workflow.getWorkflowId());
+
+    if(savedWorkflowOptional.isPresent()){
+      return prepareWorkflow(savedWorkflowOptional.get());
+    }
+    return Optional.empty();
+  }
+
+  public Optional<W> updateWorkflow(final W workflow)
+          throws WorkflowCustomizedException {
+
+    this.workflowRepository.update(workflow);
 
     final Optional<W> savedWorkflowOptional = this.workflowRepository.getByWorkflowId(workflow.getWorkflowId());
 

@@ -1,14 +1,12 @@
 package com.pth.gui.controllers.workflow;
 
-import com.pth.common.contants.ApiUrlConstants;
-import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.edo.enums.EWorkflowStatus;
 import com.pth.gui.controllers.helper.AuthenticatedController;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowSearchFilter;
 import com.pth.gui.models.workflow.WorkflowType;
 import com.pth.gui.models.workflow.workflow.Workflow;
-import com.pth.gui.services.IWorkflowSearchHandler;
+import com.pth.gui.services.IWorkflowGeneralHandler;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;
@@ -28,9 +26,9 @@ import java.util.Map;
 @Controller("/workflow/data/general")
 public class WorkflowSearchController extends AuthenticatedController {
   
-  private final IWorkflowSearchHandler workflowSearchHandler;
+  private final IWorkflowGeneralHandler workflowSearchHandler;
 
-  public WorkflowSearchController(IWorkflowSearchHandler workflowSearchHandler) {
+  public WorkflowSearchController(IWorkflowGeneralHandler workflowSearchHandler) {
     this.workflowSearchHandler = workflowSearchHandler;
   }
 

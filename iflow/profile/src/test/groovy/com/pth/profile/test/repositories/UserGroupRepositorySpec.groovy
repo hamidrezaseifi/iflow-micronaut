@@ -52,7 +52,7 @@ class UserGroupRepositorySpec extends ProfileTestDataProvider {
             userGroupEntity.identity = identity
 
         when:
-            userGroupRepository.save(userGroupEntity)
+            userGroupRepository.create(userGroupEntity)
             def userGroupOptional = userGroupRepository.getById(userGroupEntity.id)
 
         then:
@@ -70,7 +70,7 @@ class UserGroupRepositorySpec extends ProfileTestDataProvider {
             userGroupEntity.companyId = testCompanyId
             def identity = generateRandomString(15)
             userGroupEntity.identity = identity
-            userGroupRepository.save(userGroupEntity)
+            userGroupRepository.create(userGroupEntity)
             def userGroupOptional = userGroupRepository.getById(userGroupEntity.id)
             def userGroupSaved =  userGroupOptional.get()
             userGroupSaved.title = "test-userGroup_edited"
@@ -95,7 +95,7 @@ class UserGroupRepositorySpec extends ProfileTestDataProvider {
             userGroupEntity.companyId = testCompanyId
             def identity = generateRandomString(15)
             userGroupEntity.identity = identity
-            userGroupRepository.save(userGroupEntity)
+            userGroupRepository.create(userGroupEntity)
 
         when:
             userGroupRepository.delete(userGroupEntity)
@@ -117,7 +117,7 @@ class UserGroupRepositorySpec extends ProfileTestDataProvider {
             userGroupEntity.companyId = testCompanyId
             def identity = generateRandomString(15)
             userGroupEntity.identity = identity
-            userGroupRepository.save(userGroupEntity)
+            userGroupRepository.create(userGroupEntity)
             map.put(userGroupEntity.id, userGroupEntity)
         }
 

@@ -141,10 +141,10 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	}
 
-	showWorkflowView(identity){
-
+	showWorkflowView(id){
+    console.log(id);
 		for(var index in this.messages){
-			if(this.messages[index].workflowIdentity == identity){
+			if(this.messages[index].workflowId == id){
 				this.viewWorkflowModel = this.messages[index].workflow;
 				this.viewWorkflow = true;
 				break;
@@ -183,7 +183,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 		this.router.navigate(['/workflow/edit/' + this.viewWorkflowModel.workflowType.id + '/' + this.viewWorkflowModel.id]);
 
 
-  	}
+  }
 
 	private setConnected(subscribed) {
 		this.subscribed = subscribed;

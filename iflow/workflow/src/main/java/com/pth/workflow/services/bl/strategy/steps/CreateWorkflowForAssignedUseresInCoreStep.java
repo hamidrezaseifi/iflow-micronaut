@@ -5,15 +5,14 @@ import com.pth.common.edo.enums.EWorkflowActionStatus;
 import com.pth.common.edo.enums.EWorkflowStatus;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowBaseEntity;
-import com.pth.workflow.repositories.IWorkflowBaseRepository;
 import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStrategy;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class SaveWorkflowForAssignedUseresInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
+public class CreateWorkflowForAssignedUseresInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
-  public SaveWorkflowForAssignedUseresInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
+  public CreateWorkflowForAssignedUseresInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy) {
 
     super(workflowSaveStrategy);
 
@@ -31,7 +30,7 @@ public class SaveWorkflowForAssignedUseresInCoreStep<W extends IWorkflowBaseEnti
       processingWorkflow.setActiveActionStatus(EWorkflowActionStatus.OPEN);
       processingWorkflow.setStatus(EWorkflowStatus.ASSIGNED);
 
-      final Optional<W> savedWorkflowOptional = this.getWorkflowSaveStrategy().saveWorkflow(processingWorkflow);
+      final Optional<W> savedWorkflowOptional = this.getWorkflowSaveStrategy().createWorkflow(processingWorkflow);
       if(savedWorkflowOptional.isPresent()){
         this.getWorkflowSaveStrategy().addSavedWorkflowToList(userId, savedWorkflowOptional.get());
       }

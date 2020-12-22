@@ -102,7 +102,7 @@ public class WorkflowAction extends GuiBaseModel {
 
   public boolean isAssignTo(final UUID userId) {
 
-    return this.assignToId == userId;
+    return this.assignToId.equals(userId);
   }
 
 }

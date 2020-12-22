@@ -6,11 +6,11 @@ import com.pth.workflow.services.bl.strategy.strategies.AbstractWorkflowSaveStra
 
 import java.util.Optional;
 
-public class SaveWorkflowInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
+public class UpdateWorkflowInCoreStep<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategyStep<W> {
 
   private final boolean addToSavedWorkflowList;
 
-  public SaveWorkflowInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy, final boolean addToSavedWorkflowList) {
+  public UpdateWorkflowInCoreStep(final AbstractWorkflowSaveStrategy<W> workflowSaveStrategy, final boolean addToSavedWorkflowList) {
 
     super(workflowSaveStrategy);
     this.addToSavedWorkflowList = addToSavedWorkflowList;
@@ -21,7 +21,7 @@ public class SaveWorkflowInCoreStep<W extends IWorkflowBaseEntity> extends Abstr
 
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
-    final Optional<W> savedWorkflowOptional = this.getWorkflowSaveStrategy().saveWorkflow(processingWorkflow);
+    final Optional<W> savedWorkflowOptional = this.getWorkflowSaveStrategy().updateWorkflow(processingWorkflow);
 
     if(savedWorkflowOptional.isPresent()){
       W savedWorkflow = savedWorkflowOptional.get();

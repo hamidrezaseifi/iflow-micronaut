@@ -52,7 +52,7 @@ public class MainController {
         response.setRoles(roles);
         response.setStatus(1);
 
-        this.userRepository.save(response);
+        this.userRepository.create(response);
 
         return HttpResponse.ok(response);
     }

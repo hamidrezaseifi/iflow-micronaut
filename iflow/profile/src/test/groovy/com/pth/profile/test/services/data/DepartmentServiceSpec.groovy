@@ -47,7 +47,7 @@ class DepartmentServiceSpec extends ProfileTestDataProvider {
             companyOptional.isPresent()
             verifyDepartment(companyOptional.get(), documentEntity)
         and:
-            1 * departmentRepository.save(_)
+            1 * departmentRepository.create(_)
             1 * departmentRepository.getById(_) >> Optional.of(documentEntity)
 
     }

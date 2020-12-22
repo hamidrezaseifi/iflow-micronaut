@@ -25,7 +25,7 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Optional<CompanyEntity> create(CompanyEntity model) {
-        companyRepository.save(model);
+        companyRepository.create(model);
         return companyRepository.getById(model.getId());
     }
 
@@ -67,7 +67,7 @@ public class CompanyService implements ICompanyService {
             this.workflowTypeOcrSettingPresetRepository.update(preset);
         }
         else{
-            this.workflowTypeOcrSettingPresetRepository.save(preset);
+            this.workflowTypeOcrSettingPresetRepository.create(preset);
         }
 
         return this.workflowTypeOcrSettingPresetRepository.getById(preset.getId());

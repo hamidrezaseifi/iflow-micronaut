@@ -48,7 +48,7 @@ public class CreateManualAssignWorkflowStrategy<W extends IWorkflowBaseEntity> e
     steps.add(new InitializeWorkflowActiveActionStrategyStep<W>(this));
     steps.add(new ValidateWorkflowActiveActionStrategyStep<W>(this));
     steps.add(new CollectAssignedUserIdListStep<W>(this));
-    steps.add(new SaveWorkflowForAssignedUseresInCoreStep<W>(this));
+    steps.add(new CreateWorkflowForAssignedUseresInCoreStep<W>(this));
     steps.add(new SaveWorkflowOfferForAssignedUseresInCoreStep<W>(this));
     steps.add(new SendWorkflowOffersForUsersToProfileStep<W>(this));
 

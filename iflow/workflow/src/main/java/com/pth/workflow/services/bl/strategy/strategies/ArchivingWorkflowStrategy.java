@@ -40,7 +40,7 @@ public class ArchivingWorkflowStrategy<W extends IWorkflowBaseEntity> extends Ab
     steps.add(new PrepareArchivingWorkflowStep<W>(this));
     steps.add(new ValidateWorkflowTypeStepStrategyStep<W>(this));
     steps.add(new ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W>(this));
-    steps.add(new SaveWorkflowInCoreStep<W>(this, true));
+    steps.add(new UpdateWorkflowInCoreStep<W>(this, true));
     steps.add(new ChangeWorkflowOfferStatusToCloseForWorkflowInCoreStep<W>(this));
 
   }

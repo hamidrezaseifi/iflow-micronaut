@@ -8,9 +8,6 @@ import com.pth.profile.repositories.ICompanyWorkflowTypeOcrSettingPresetReposito
 import com.pth.profile.services.data.ICompanyService
 import com.pth.profile.services.data.impl.CompanyService
 import com.pth.profile.test.ProfileTestDataProvider
-import io.micronaut.context.ApplicationContext
-import io.micronaut.runtime.server.EmbeddedServer
-import spock.lang.Shared
 
 import java.util.stream.Collectors
 
@@ -51,7 +48,7 @@ class CompanyServiceSpec extends ProfileTestDataProvider {
             companyOptional.isPresent()
             verifyCompany(companyOptional.get(), companyEntity)
         and:
-            1 * companyRepository.save(_)
+            1 * companyRepository.create(_)
             1 * companyRepository.getById(_) >> Optional.of(companyEntity)
 
     }
@@ -162,7 +159,7 @@ class CompanyServiceSpec extends ProfileTestDataProvider {
             setting.presetName == settingOptional.get().presetName
 
         and:
-            1 * workflowTypeOcrSettingPresetRepository.save(_)
+            1 * workflowTypeOcrSettingPresetRepository.create(_)
             1 * workflowTypeOcrSettingPresetRepository.getById(_) >> Optional.of(setting)
 
     }

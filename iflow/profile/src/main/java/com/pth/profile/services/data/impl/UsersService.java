@@ -1,11 +1,9 @@
 package com.pth.profile.services.data.impl;
 
 import com.pth.common.credentials.IPasswordHashGenerator;
-import com.pth.common.edo.CompanyWorkflowTypeControllerEdo;
 import com.pth.profile.authentication.entities.RefreshTokenEntity;
 import com.pth.profile.entities.*;
 import com.pth.profile.exception.UserNotFoundException;
-import com.pth.profile.mapper.ICompanyWorkflowTypeControllerMapper;
 import com.pth.profile.models.ProfileResponse;
 import com.pth.profile.models.UserPasswordResetRequest;
 import com.pth.profile.repositories.*;
@@ -53,7 +51,7 @@ public class UsersService implements IUsersService {
 
     model.setPasswordHash("");
     model.setPasswordSalt("");
-    this.userRepository.save(model);
+    this.userRepository.create(model);
     return this.userRepository.getById(model.getId());
   }
 
@@ -208,7 +206,7 @@ public class UsersService implements IUsersService {
       for(UserDashboardMenuEntity userDashboardMenuEntity: list){
         userDashboardMenuEntity.setUserId(userEntity.getId());
         userDashboardMenuEntity.setAppId(appIdentity);
-        userDashboardMenuRepository.save(userDashboardMenuEntity);
+        userDashboardMenuRepository.create(userDashboardMenuEntity);
       }
       return this.userDashboardMenuRepository.getByUserId(userEntity.getId(), appIdentity);
     }

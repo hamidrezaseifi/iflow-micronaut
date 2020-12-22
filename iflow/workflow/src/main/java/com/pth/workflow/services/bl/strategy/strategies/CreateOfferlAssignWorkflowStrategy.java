@@ -45,7 +45,7 @@ public class CreateOfferlAssignWorkflowStrategy<W extends IWorkflowBaseEntity> e
     steps.add(new ValidateWorkflowActiveActionStrategyStep<W>(this));
     steps.add(new ValidateWorkflowTypeStepStrategyStep<W>(this));
     steps.add(new ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W>(this));
-    steps.add(new SaveWorkflowInCoreStep<W>(this, true));
+    steps.add(new CreateWorkflowInCoreStep<W>(this, true));
     steps.add(new CollectAssignedUserIdListStep<W>(this));
     steps.add(new SaveWorkflowOfferForAssignedUseresInCoreStep<W>(this));
     steps.add(new SendWorkflowOffersForUsersToProfileStep<W>(this));

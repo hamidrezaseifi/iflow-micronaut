@@ -65,7 +65,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
             userEntity.permission = 1
 
         when:
-            userRepository.save(userEntity)
+            userRepository.create(userEntity)
             def userOptional = userRepository.getById(userEntity.id)
 
         then:
@@ -89,7 +89,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
         userEntity.identity = identity
         userEntity.lastName = "lname"
         userEntity.permission = 1
-        userRepository.save(userEntity)
+        userRepository.create(userEntity)
         def userOptional = userRepository.getById(userEntity.id)
         def userSaved =  userOptional.get()
         userSaved.username = "username_edited"
@@ -121,7 +121,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
             userEntity.identity = identity
             userEntity.lastName = "lname"
             userEntity.permission = 1
-            userRepository.save(userEntity)
+            userRepository.create(userEntity)
 
         when:
             userRepository.delete(userEntity)
@@ -149,7 +149,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
             userEntity.identity = identity
             userEntity.lastName = "lname" + i
             userEntity.permission = 1
-            userRepository.save(userEntity)
+            userRepository.create(userEntity)
             map.put(userEntity.id, userEntity)
         }
 
@@ -182,7 +182,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
         userEntity.permission = 1
 
         when:
-        userRepository.save(userEntity)
+        userRepository.create(userEntity)
         def userOptional = userRepository.getByUsername(userEntity.username)
 
         then:
@@ -208,7 +208,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
         userEntity.permission = 1
 
         when:
-        userRepository.save(userEntity)
+        userRepository.create(userEntity)
         def userOptional = userRepository.getByIdentity(userEntity.identity)
 
         then:
@@ -235,7 +235,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
         userEntity.email = "useremail@domain.de"
 
         when:
-        userRepository.save(userEntity)
+        userRepository.create(userEntity)
         def userOptional = userRepository.getUserByUsername(userEntity.email)
 
         then:
@@ -262,7 +262,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
             userEntity.identity = identity
             userEntity.lastName = "lname" + i
             userEntity.permission = 1
-            userRepository.save(userEntity)
+            userRepository.create(userEntity)
             map.put(userEntity.id, userEntity)
         }
 
@@ -297,7 +297,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
             userEntity.lastName = "lname" + i
             userEntity.permission = 1
             userEntity.addUserDepartment(testDepartment1, 1)
-            userRepository.save(userEntity)
+            userRepository.create(userEntity)
             map.put(userEntity.id, userEntity)
         }
 
@@ -331,7 +331,7 @@ class UserRepositorySpec extends ProfileTestDataProvider {
             userEntity.lastName = "lname" + i
             userEntity.permission = 1
             userEntity.addUserDepartment(testDepartment1, 1)
-            userRepository.save(userEntity)
+            userRepository.create(userEntity)
             map.put(userEntity.identity, userEntity)
         }
 
