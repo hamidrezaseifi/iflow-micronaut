@@ -68,7 +68,8 @@ public class SingleTaskController {
     final List<SingleTaskWorkflowEntity> modelList =
             this.singleTaskWorkflowService.create( workflowSaveRequest, authorization);
 
-    return HttpResponse.created(new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList)));
+    SingleTaskWorkflowListEdo workflowListEdo = new SingleTaskWorkflowListEdo(singleTaskWorkflowMapper.toEdoList(modelList));
+    return HttpResponse.created(workflowListEdo);
   }
 
   @Secured({UserRoles.ROLE_DATAENTRY, UserRoles.ROLE_ADMIN})

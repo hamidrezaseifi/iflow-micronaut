@@ -29,6 +29,7 @@ public class InvoiceWorkflowMapper extends ModelEdoMapperBase<InvoiceWorkflowEnt
         final InvoiceWorkflowEntity model = new InvoiceWorkflowEntity();
 
         model.setWorkflow(workflowMapper.fromEdo(edo.getWorkflow()));
+        model.setWorkflowId(edo.getWorkflow().getId());
 
         model.setDiscountDate(Date.valueOf(edo.getDiscountDate()));
         model.setDiscountDeadline(edo.getDiscountDeadline());

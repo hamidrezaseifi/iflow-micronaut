@@ -9,6 +9,7 @@ import com.pth.gui.mapper.IWorkflowSearchFilterMapper;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.IWorkflow;
 import com.pth.gui.models.workflow.WorkflowSearchFilter;
+import com.pth.gui.models.workflow.base.WorkflowBased;
 import com.pth.gui.models.workflow.workflow.Workflow;
 import com.pth.gui.services.IBasicWorkflowHandler;
 import com.pth.gui.services.IWorkflowSearchHandler;
@@ -93,9 +94,9 @@ public class WorkflowSearchHandler implements IWorkflowSearchHandler {
                                                                           resultWorkflow.getCurrentStepId()));
 
         final IBasicWorkflowHandler handler = this.getHandlerByWorkflowType(resultWorkflow.getWorkflowType().getTypeEnum());
-        final Optional<IWorkflow> readWorkflowOptional = handler.readWorkflow(resultWorkflow.getId(), sessionData);
-        resultWorkflow.setActions(readWorkflowOptional.get().getActions());
-        resultWorkflow.setFiles(readWorkflowOptional.get().getFiles());
+        final Optional<WorkflowBased> readWorkflowOptional = handler.readWorkflow(resultWorkflow.getId(), sessionData);
+        resultWorkflow.setActions(readWorkflowOptional.get().getWorkflow().getActions());
+        resultWorkflow.setFiles(readWorkflowOptional.get().getWorkflow().getFiles());
 
         resultWorkflow.setCurrentUserId(sessionData.getCurrentUserId());
     }

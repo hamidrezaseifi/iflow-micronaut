@@ -132,8 +132,8 @@ public class WorkflowRepository extends AEntityRdbmsHibernateRepository<Workflow
 
         final TypedQuery<WorkflowEntity> typedQuery = getEntityManager().createQuery(query);
 
-        final String qr = typedQuery.unwrap(org.hibernate.query.Query.class).getQueryString();
-        System.out.println("search workflow query: " + qr);
+        //final String qr = typedQuery.unwrap(org.hibernate.query.Query.class).getQueryString();
+        //System.out.println("search workflow query: " + qr);
         final List<WorkflowEntity> list = typedQuery.getResultList();
         return list;
     }

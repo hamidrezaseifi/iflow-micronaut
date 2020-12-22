@@ -44,7 +44,7 @@ public class TestThreeTaskWorkflowClient extends ClientBase implements ITestThre
         HttpResponse<TestThreeTaskWorkflowListEdo> response =
                 this.testThreeTaskWorkflowDeclarativeClient.create(prepareBearerAuthorization(authorization),
                                                                         workflowCreateRequestEdo);
-        if(response.getStatus() == HttpStatus.OK){
+        if(response.getStatus() == HttpStatus.CREATED){
             return response.getBody();
         }
 
@@ -57,7 +57,7 @@ public class TestThreeTaskWorkflowClient extends ClientBase implements ITestThre
         HttpResponse<TestThreeTaskWorkflowEdo> response =
                 this.testThreeTaskWorkflowDeclarativeClient.save(prepareBearerAuthorization(authorization),
                                                                       requestEdo);
-        if(response.getStatus() == HttpStatus.OK){
+        if(response.getStatus() == HttpStatus.CREATED){
             return response.getBody();
         }
 

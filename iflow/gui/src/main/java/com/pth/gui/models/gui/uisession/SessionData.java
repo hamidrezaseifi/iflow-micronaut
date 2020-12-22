@@ -145,7 +145,7 @@ public class SessionData {
 
     public WorkflowType getWorkflowTypeById(UUID workflowTypeId) {
         for(WorkflowType workflowType: this.getWorkflow().getWorkflowTypes()){
-            if(workflowType.getId() == workflowTypeId ){
+            if(workflowType.getId().equals(workflowTypeId) ){
                 return workflowType;
             }
         }
@@ -156,7 +156,7 @@ public class SessionData {
                                                     UUID currentStepId) {
         for(WorkflowType workflowType: this.getWorkflow().getWorkflowTypes()){
             for(WorkflowTypeStep workflowTypeStep: workflowType.getSteps()){
-                if(workflowTypeStep.getId() == workflowTypeId ){
+                if(workflowTypeStep.getId().equals(currentStepId) ){
                     return workflowTypeStep;
                 }
             }

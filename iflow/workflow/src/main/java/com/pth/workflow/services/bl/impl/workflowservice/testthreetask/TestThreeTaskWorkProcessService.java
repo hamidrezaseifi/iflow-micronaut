@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.workflow.entities.SingleTaskWorkflowEntity;
 import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
@@ -61,6 +62,13 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
     create(final IWorkflowSaveRequest<TestThreeTaskWorkflowEntity> request, String authorization)
           throws WorkflowCustomizedException {
 
+    Optional<TestThreeTaskWorkflowEntity> preparedWorkflowOptional =
+            workflowPrepare.prepareWorkflow(request.getWorkflow());
+    if(!preparedWorkflowOptional.isPresent()){
+      throw new WorkflowCustomizedException("No assign by workflow create", EIFlowErrorType.NO_WORKFLOW_ASSIGN_CREATE_STRATEGY);
+    }
+    request.setWorkflow(preparedWorkflowOptional.get());
+
     final IWorkflowSaveStrategy<TestThreeTaskWorkflowEntity> workflowStrategy =
             this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);
 
@@ -77,6 +85,13 @@ public class TestThreeTaskWorkProcessService implements IWorkflowProcessService<
           throws WorkflowCustomizedException {
 
     logger.debug("Saving workflow");
+
+    Optional<TestThreeTaskWorkflowEntity> preparedWorkflowOptional =
+            workflowPrepare.prepareWorkflow(request.getWorkflow());
+    if(!preparedWorkflowOptional.isPresent()){
+      throw new WorkflowCustomizedException("No assign by workflow create", EIFlowErrorType.NO_WORKFLOW_ASSIGN_CREATE_STRATEGY);
+    }
+    request.setWorkflow(preparedWorkflowOptional.get());
 
     final IWorkflowSaveStrategy<TestThreeTaskWorkflowEntity> workflowStrategy =
             this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);

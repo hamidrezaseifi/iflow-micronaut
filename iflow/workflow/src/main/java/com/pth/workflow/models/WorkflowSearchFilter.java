@@ -47,6 +47,13 @@ public class WorkflowSearchFilter {
     return this.workflowTypeIdSet;
   }
 
+  public void setWorkflowTypeIdSet(Set<UUID> workflowTypeIdSet) {
+    
+    this.workflowTypeIdSet = new HashSet<>();
+    if (workflowTypeIdSet != null) {
+      this.workflowTypeIdSet.addAll(workflowTypeIdSet);
+    }
+  }
 
   public Set<UUID> getWorkflowStepIdSet() {
 

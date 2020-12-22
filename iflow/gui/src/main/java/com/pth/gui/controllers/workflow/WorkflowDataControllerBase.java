@@ -191,8 +191,7 @@ public abstract class WorkflowDataControllerBase
 
     if(controllerList == null ||controllerList.isEmpty()){
 
-      //throw new GuiCustomizedException("Invalid-Company-Setting:Workflow-Controller-Not-Found!");
-      return;
+      throw new GuiCustomizedException("Invalid-Company-Setting:Workflow-Controller-Not-Found!");
     }
 
     workflow.getWorkflow().setControllerId(controllerList.get(0).getUserId());

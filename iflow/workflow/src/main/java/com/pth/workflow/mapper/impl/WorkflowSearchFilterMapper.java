@@ -20,7 +20,7 @@ public class WorkflowSearchFilterMapper
         model.setStatusSet(edo.getStatusSet());
         model.setCompanyId(edo.getCompanyId());
         model.setWorkflowStepIdSet(edo.getWorkflowStepeIdSet());
-        model.setWorkflowStepIdSet(edo.getWorkflowTypeIdSet());
+        model.setWorkflowTypeIdSet(edo.getWorkflowTypeIdSet());
 
         return model;
     }

@@ -5,7 +5,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+import com.pth.common.exceptions.EIFlowErrorType;
 import com.pth.workflow.entities.InvoiceWorkflowEntity;
+import com.pth.workflow.entities.TestThreeTaskWorkflowEntity;
 import com.pth.workflow.exceptions.WorkflowCustomizedException;
 import com.pth.workflow.models.base.IWorkflowSaveRequest;
 import com.pth.workflow.repositories.IInvoiceWorkflowRepository;
@@ -57,6 +59,13 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
     create(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request, String authorization)
           throws WorkflowCustomizedException {
 
+    Optional<InvoiceWorkflowEntity> preparedWorkflowOptional =
+            workflowPrepare.prepareWorkflow(request.getWorkflow());
+    if(!preparedWorkflowOptional.isPresent()){
+      throw new WorkflowCustomizedException("No assign by workflow create", EIFlowErrorType.NO_WORKFLOW_ASSIGN_CREATE_STRATEGY);
+    }
+    request.setWorkflow(preparedWorkflowOptional.get());
+
     final IWorkflowSaveStrategy<InvoiceWorkflowEntity> workflowStrategy =
             this.workStrategyFactory.selectSaveWorkStrategy(request, authorization);
 
@@ -71,6 +80,13 @@ public class InvoiceWorkflowProcessService implements IWorkflowProcessService<In
   public Optional<InvoiceWorkflowEntity>
     save(final IWorkflowSaveRequest<InvoiceWorkflowEntity> request, String authorization)
           throws WorkflowCustomizedException {
+
+    Optional<InvoiceWorkflowEntity> preparedWorkflowOptional =
+            workflowPrepare.prepareWorkflow(request.getWorkflow());
+    if(!preparedWorkflowOptional.isPresent()){
+      throw new WorkflowCustomizedException("No assign by workflow create", EIFlowErrorType.NO_WORKFLOW_ASSIGN_CREATE_STRATEGY);
+    }
+    request.setWorkflow(preparedWorkflowOptional.get());
 
     final IWorkflowSaveStrategy<
         InvoiceWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request,

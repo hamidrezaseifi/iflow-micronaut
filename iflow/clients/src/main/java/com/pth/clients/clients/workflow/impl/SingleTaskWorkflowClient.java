@@ -43,7 +43,7 @@ public class SingleTaskWorkflowClient extends ClientBase implements ISingleTaskW
         HttpResponse<SingleTaskWorkflowListEdo> response =
                 this.singleTaskWorkflowDeclarativeClient.create(prepareBearerAuthorization(authorization),
                                                                         workflowCreateRequestEdo);
-        if(response.getStatus() == HttpStatus.OK){
+        if(response.getStatus() == HttpStatus.CREATED){
             return response.getBody();
         }
 
@@ -56,7 +56,7 @@ public class SingleTaskWorkflowClient extends ClientBase implements ISingleTaskW
         HttpResponse<SingleTaskWorkflowEdo> response =
                 this.singleTaskWorkflowDeclarativeClient.save(prepareBearerAuthorization(authorization),
                                                                       requestEdo);
-        if(response.getStatus() == HttpStatus.OK){
+        if(response.getStatus() == HttpStatus.CREATED){
             return response.getBody();
         }
 

@@ -84,6 +84,13 @@ public class SingleTaskWorkflowProcessService implements IWorkflowProcessService
 
     logger.debug("Saving workflow");
 
+    Optional<SingleTaskWorkflowEntity> preparedWorkflowOptional =
+            workflowPrepare.prepareWorkflow(request.getWorkflow());
+    if(!preparedWorkflowOptional.isPresent()){
+      throw new WorkflowCustomizedException("No assign by workflow create", EIFlowErrorType.NO_WORKFLOW_ASSIGN_CREATE_STRATEGY);
+    }
+    request.setWorkflow(preparedWorkflowOptional.get());
+
     final IWorkflowSaveStrategy<
         SingleTaskWorkflowEntity> workflowStrategy = this.workStrategyFactory.selectSaveWorkStrategy(request,
                                                                                                      authorization);

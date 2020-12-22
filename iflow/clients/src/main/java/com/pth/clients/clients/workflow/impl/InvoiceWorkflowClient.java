@@ -43,7 +43,7 @@ public class InvoiceWorkflowClient extends ClientBase implements IInvoiceWorkflo
         HttpResponse<InvoiceWorkflowListEdo> response =
                 this.invoiceWorkflowDeclarativeClient.createInvoice(prepareBearerAuthorization(authorization),
                                                                     workflowCreateRequestEdo);
-        if(response.getStatus() == HttpStatus.OK){
+        if(response.getStatus() == HttpStatus.CREATED){
             return response.getBody();
         }
 
@@ -56,7 +56,7 @@ public class InvoiceWorkflowClient extends ClientBase implements IInvoiceWorkflo
         HttpResponse<InvoiceWorkflowEdo> response =
                 this.invoiceWorkflowDeclarativeClient.saveInvoice(prepareBearerAuthorization(authorization),
                                                                   requestEdo);
-        if(response.getStatus() == HttpStatus.OK){
+        if(response.getStatus() == HttpStatus.CREATED){
             return response.getBody();
         }
 
