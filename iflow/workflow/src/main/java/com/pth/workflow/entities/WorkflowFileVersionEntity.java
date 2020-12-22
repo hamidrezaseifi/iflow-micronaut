@@ -130,4 +130,12 @@ public class WorkflowFileVersionEntity extends BaseEntity {
     this.workflowFileEntity = workflowFileEntity;
   }
 
+  void fill(WorkflowFileVersionEntity other){
+    this.setFilePath(other.filePath);
+    this.setComments(other.comments);
+    this.setFileVersion(other.fileVersion);
+    this.setStatus(other.status);
+    this.setStatus(other.status);
+    this.setCreatedByUserId(other.createdByUserId);
+  }
 }

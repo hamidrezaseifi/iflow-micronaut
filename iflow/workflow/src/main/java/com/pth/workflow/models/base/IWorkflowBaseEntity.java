@@ -117,4 +117,6 @@ public interface IWorkflowBaseEntity {
   Date getUpdatedAt();
 
   boolean isNew();
+
+  void fill(IWorkflowBaseEntity other);
 }

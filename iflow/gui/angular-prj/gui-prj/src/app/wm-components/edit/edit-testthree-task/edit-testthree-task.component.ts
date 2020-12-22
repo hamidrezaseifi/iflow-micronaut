@@ -204,7 +204,7 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 			this.workflowEditForm.controls["expireDays"].setValue(this.workflowSaveRequest.expireDays);
 
-			this.workflowEditForm.controls["controllerIdentity"].setValue(this.workflowSaveRequest.workflow.workflow.controllerIdentity);
+			this.workflowEditForm.controls["controllerIdentity"].setValue(this.workflowSaveRequest.workflow.workflow.controllerId);
 			this.workflowEditForm.controls["comments"].setValue(this.workflowSaveRequest.comments);
 
 			this.uploadedFiles = WorkflowFile.toUploadedFileList(this.workflowSaveRequest.workflow.workflow.files);
@@ -215,7 +215,7 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 		this.workflowSaveRequest.expireDays = this.workflowEditForm.controls["expireDays"].value;
 
-		this.workflowSaveRequest.workflow.workflow.controllerIdentity = this.workflowEditForm.controls["controllerIdentity"].value;
+		this.workflowSaveRequest.workflow.workflow.controllerId = this.workflowEditForm.controls["controllerIdentity"].value;
 		this.workflowSaveRequest.comments = this.workflowEditForm.controls["comments"].value;
 
 		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);

@@ -412,8 +412,75 @@ public class WorkflowEntity extends BaseEntity implements IWorkflowBaseEntity {
 
   }
 
+  protected WorkflowActionEntity findActionById(UUID id){
+    for(WorkflowActionEntity action: this.actions){
+      if(action.getId().equals(id)){
+        return action;
+      }
+    }
+    return null;
+  }
+
+  protected WorkflowFileEntity findFileById(UUID id){
+    for(WorkflowFileEntity fileEntity: this.files){
+      if(fileEntity.getId().equals(id)){
+        return fileEntity;
+      }
+    }
+    return null;
+  }
+
   @Override
   public boolean isNew() {
     return this.createdAt == null;
+  }
+
+  @Override
+  public void fill(IWorkflowBaseEntity other){
+    this.setStatus(other.getStatusInt());
+    this.setComments(other.getComments());
+    this.setControllerId(other.getControllerId());
+    this.setCreatedById(other.getCreatedById());
+    this.setCurrentStepId(other.getCurrentStepId());
+    this.setCurrentStep(other.getCurrentStep());
+    this.setIdentity(other.getIdentity());
+    this.setWorkflowType(other.getWorkflowType());
+    this.setWorkflowTypeId(other.getWorkflowTypeId());
+    this.setVersion(other.getVersion());
+
+    for(WorkflowActionEntity otherAction: other.getActions()){
+      WorkflowActionEntity action = findActionById(otherAction.getId());
+      if(action != null){
+        action.fill(otherAction);
+      }
+      else {
+        this.addAction(otherAction);
+      }
+    }
+
+    for(WorkflowActionEntity action: actions){
+      WorkflowActionEntity otherAction = other.getWorkflow().findActionById(action.getId());
+      if(otherAction == null){
+        actions.remove(action);
+      }
+    }
+
+    for(WorkflowFileEntity otherFile: other.getFiles()){
+      WorkflowFileEntity fileEntity = findFileById(otherFile.getId());
+      if(fileEntity != null){
+        fileEntity.fill(otherFile);
+      }
+      else {
+        this.files.add(otherFile);
+      }
+    }
+
+    for(WorkflowFileEntity fileEntity: files){
+      WorkflowFileEntity otherFile = other.getWorkflow().findFileById(fileEntity.getId());
+      if(otherFile == null){
+        files.remove(fileEntity);
+      }
+    }
+
   }
 }

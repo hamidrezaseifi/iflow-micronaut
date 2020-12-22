@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.pth.common.entities.BaseEntity;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -213,4 +214,43 @@ public class WorkflowFileEntity extends BaseEntity {
     return "wf";
   }
 
+
+  protected WorkflowFileVersionEntity findFileVersionById(UUID id){
+    for(WorkflowFileVersionEntity fileVersion: this.fileVersions){
+      if(fileVersion.getId().equals(id)){
+        return fileVersion;
+      }
+    }
+    return null;
+  }
+
+  void fill(WorkflowFileEntity other){
+    this.setIdentity(other.identity);
+    this.setComments(other.comments);
+    this.setTitle(other.title);
+    this.setExtention(other.extention);
+    this.setStatus(other.status);
+    this.setActiveFilePath(other.activeFilePath);
+    this.setActiveFileVersion(other.activeFileVersion);
+    this.setCreatedByUserId(other.createdByUserId);
+
+    for(WorkflowFileVersionEntity otherFileVersion: other.getFileVersions()){
+      WorkflowFileVersionEntity fileVersion = findFileVersionById(otherFileVersion.getId());
+      if(fileVersion != null){
+        fileVersion.fill(otherFileVersion);
+      }
+      else {
+        this.fileVersions.add(otherFileVersion);
+      }
+    }
+
+    for(WorkflowFileVersionEntity fileVersion: fileVersions){
+      WorkflowFileVersionEntity otherFileVersion = other.findFileVersionById(fileVersion.getId());
+      if(otherFileVersion == null){
+        fileVersions.remove(fileVersion);
+      }
+    }
+
+
+  }
 }

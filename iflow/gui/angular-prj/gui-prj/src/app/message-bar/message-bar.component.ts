@@ -180,7 +180,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 	editWorkflow(){
 
 		this.viewWorkflow = false;
-		const url = '/workflow/edit/' + this.viewWorkflowModel.workflowType.identity + '/' + this.viewWorkflowModel.id;
+		const url = '/workflow/edit/' + this.viewWorkflowModel.workflowType.identity  + '/' + this.viewWorkflowModel.id;
 		console.log(url);
 		this.router.navigate([url]);
 

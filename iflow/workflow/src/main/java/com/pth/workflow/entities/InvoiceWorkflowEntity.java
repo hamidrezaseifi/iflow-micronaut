@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.pth.common.edo.enums.EInvoiceType;
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.models.base.WorkflowBaseEntity;
 import org.hibernate.annotations.Type;
 
@@ -255,5 +256,10 @@ public class InvoiceWorkflowEntity extends WorkflowBaseEntity {
   @Override
   public boolean isNew() {
     return this.workflow.isNew();
+  }
+
+  @Override
+  public void fill(IWorkflowBaseEntity other){
+    this.getWorkflow().fill(other.getWorkflow());
   }
 }

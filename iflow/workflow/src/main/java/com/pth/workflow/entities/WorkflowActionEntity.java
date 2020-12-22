@@ -154,4 +154,13 @@ public class WorkflowActionEntity extends BaseEntity {
   public void setCurrentStep(WorkflowTypeStepEntity currentStep) {
     this.currentStep = currentStep;
   }
+
+  void fill(WorkflowActionEntity other){
+    this.setWorkflowId(other.workflowId);
+    this.setComments(other.comments);
+    this.setAssignToId(other.assignToId);
+    this.setCurrentStepId(other.currentStepId);
+    this.setStatus(other.status);
+
+  }
 }

@@ -1,6 +1,7 @@
 package com.pth.workflow.entities;
 
 
+import com.pth.workflow.models.base.IWorkflowBaseEntity;
 import com.pth.workflow.models.base.WorkflowBaseEntity;
 
 import javax.persistence.CascadeType;
@@ -75,4 +76,8 @@ public class SingleTaskWorkflowEntity extends WorkflowBaseEntity {
     return this.workflow.isNew();
   }
 
+  @Override
+  public void fill(IWorkflowBaseEntity other){
+    this.getWorkflow().fill(other.getWorkflow());
+  }
 }
