@@ -53,8 +53,6 @@ export class EditTestthreeTaskComponent implements OnInit {
 	    //this.preview();
 	}
 
-
-
 	get assignedUsers() : AssignItem[]{
 		if(this.workflowSaveRequest != null){
 			return this.workflowSaveRequest.assigns;
@@ -70,42 +68,42 @@ export class EditTestthreeTaskComponent implements OnInit {
 	}
 
 	get isWorkflowDone() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.isDone;
 		}
 		return false;
 	}
 
 	get isWorkflowInLastStep() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.isLastStep;
 		}
 		return false;
 	}
 
 	get canSave() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canSave;
 		}
 		return false;
 	}
 
 	get canDone() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canDone;
 		}
 		return false;
 	}
 
 	get canArchive() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canArchive;
 		}
 		return false;
 	}
 
 	get canAssign() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canAssign;
 		}
 		return true;
@@ -114,16 +112,16 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 
 	constructor(
-		    private router: Router,
+		  private router: Router,
 			private global: GlobalService,
 			private translate: TranslateService,
 			public  editService :TestthreetaskWorkflowEditService,
 			private loadingService: LoadingServiceService,
 			private http: HttpClient,
 			private errorService: ErrorServiceService,
-		  	private formBuilder: FormBuilder,
-		  	private dateAdapter: DateAdapter<Date>,
-		  	private route: ActivatedRoute,
+      private formBuilder: FormBuilder,
+      private dateAdapter: DateAdapter<Date>,
+      private route: ActivatedRoute,
 	) {
 
 

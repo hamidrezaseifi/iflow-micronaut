@@ -11,8 +11,8 @@ export class Workflow {
 	status: string;
 	workflowType: WorkflowType;
 	currentStep: WorkflowTypeStep;
-	currentStepIdentity: string;
-	controllerIdentity: string;
+	currentStepId: string;
+	controllerId: string;
 	controllerUser: User;
 	comments: string;
 

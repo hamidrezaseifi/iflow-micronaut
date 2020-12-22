@@ -33,8 +33,8 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 		return HttpHepler.dataServer + "/workflow/invoice/data/initcreate";
 	}
 
-	getInitEditUrl(identity :string) :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/initedit/" + identity;
+	getInitEditUrl(id :string) :string{
+		return HttpHepler.dataServer + "/workflow/invoice/data/initedit/" + id;
 	}
 
 	getCreateWorkflowUrl() :string{
@@ -108,11 +108,11 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 	}
 
 
-	loadEditInitialData(identity: string){
+	loadEditInitialData(id: string){
 
       const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-      return this.http.post(this.getInitEditUrl(identity), null, httpOptions);
+      return this.http.post(this.getInitEditUrl(id), null, httpOptions);
 
 	}
 

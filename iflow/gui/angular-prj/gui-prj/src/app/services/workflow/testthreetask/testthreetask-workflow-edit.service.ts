@@ -52,8 +52,8 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 		return HttpHepler.dataServer + "/workflow/testthreetask/data/archive";
 	}
 
-	getInitEditUrl(identity :string) :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/initedit/" + identity;
+	getInitEditUrl(id :string) :string{
+		return HttpHepler.dataServer + "/workflow/testthreetask/data/initedit/" + id;
 	}
 
 	getUploadOcrScanFileUrl() :string{
@@ -113,11 +113,11 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	}
 
-	loadEditInitialData(identity: string){
+	loadEditInitialData(id: string){
 
-        const httpOptions = { headers: HttpHepler.generateFormHeader() };
+      const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getInitEditUrl(identity), new HttpParams(), httpOptions);
+      return this.http.post(this.getInitEditUrl(id), new HttpParams(), httpOptions);
 
 	}
 

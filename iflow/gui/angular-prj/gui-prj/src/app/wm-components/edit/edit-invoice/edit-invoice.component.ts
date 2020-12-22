@@ -36,29 +36,29 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 	viewWorkflowModel :Workflow = null;
 
 	get canSave() :boolean{
-		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.workflowBase.canSave;
+		if(this.workflowSaveRequest.workflow.workflow){
+			return this.workflowSaveRequest.workflow.workflow.canSave;
 		}
 		return false;
 	}
 
 	get canDone() :boolean{
-		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.workflowBase.canDone;
+		if(this.workflowSaveRequest.workflow.workflow){
+			return this.workflowSaveRequest.workflow.workflow.canDone;
 		}
 		return false;
 	}
 
 	get canArchive() :boolean{
-		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.workflowBase.canArchive;
+		if(this.workflowSaveRequest.workflow.workflow){
+			return this.workflowSaveRequest.workflow.workflow.canArchive;
 		}
 		return false;
 	}
 
 	get canAssign() :boolean{
-		if(this.workflowSaveRequest.workflow){
-			return this.workflowSaveRequest.workflow.workflowBase.canAssign;
+		if(this.workflowSaveRequest.workflow.workflow){
+			return this.workflowSaveRequest.workflow.workflow.canAssign;
 		}
 		return true;
 	}
@@ -140,7 +140,7 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 				if(initialData && initialData !== null){
 					this.workflowSaveRequest = initialData.workflowSaveRequest;
 			 		this.ocrSettingPresets = initialData.ocrPresetList;
-					this.viewWorkflowModel = this.workflowSaveRequest.workflow.workflowBase;
+					this.viewWorkflowModel = this.workflowSaveRequest.workflow.workflow;
 					this.setToControlValues();
 
 				}

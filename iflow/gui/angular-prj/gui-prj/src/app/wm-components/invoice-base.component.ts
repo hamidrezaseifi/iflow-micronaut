@@ -344,15 +344,15 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	private setPageTitle(){
 		var pageLabelId = "invoice-assignview-title";
 
-		if(this.workflowSaveRequest.workflow.workflowBase.currentStepIndex === 1){
+		if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 1){
 			pageLabelId = "invoice-assignview-title";
 		}
 
-		if(this.workflowSaveRequest.workflow.workflowBase.currentStepIndex === 2){
+		if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 2){
 			pageLabelId = "invoice-testingview-title";
 		}
 
-		if(this.workflowSaveRequest.workflow.workflowBase.currentStepIndex === 3){
+		if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 3){
 			pageLabelId = "invoice-releaseview-title";
 		}
 
@@ -390,7 +390,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			this.invoiceEditForm.controls["discountDate"].setValue(this.workflowSaveRequest.workflow.discountDate);
 			this.invoiceEditForm.controls["paymentAmount"].setValue(this.workflowSaveRequest.workflow.paymentAmount);
 
-			this.uploadedFiles = WorkflowFile.toUploadedFileList(this.workflowSaveRequest.workflow.workflowBase.files);
+			this.uploadedFiles = WorkflowFile.toUploadedFileList(this.workflowSaveRequest.workflow.workflow.files);
 
 		}
 	}

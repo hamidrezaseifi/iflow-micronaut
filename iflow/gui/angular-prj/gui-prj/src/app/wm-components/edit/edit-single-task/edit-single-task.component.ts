@@ -48,42 +48,42 @@ export class EditSingleTaskComponent implements OnInit {
 	}
 
 	get isWorkflowDone() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.isDone;
 		}
 		return false;
 	}
 
 	get isWorkflowInLastStep() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.isLastStep;
 		}
 		return false;
 	}
 
 	get canSave() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canSave;
 		}
 		return false;
 	}
 
 	get canDone() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canDone;
 		}
 		return false;
 	}
 
 	get canArchive() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canArchive;
 		}
 		return false;
 	}
 
 	get canAssign() :boolean{
-		if(this.workflowSaveRequest.workflow){
+		if(this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canAssign;
 		}
 		return true;
@@ -121,10 +121,10 @@ export class EditSingleTaskComponent implements OnInit {
 		this.workflowEditForm = this.formBuilder.group({
 			expireDays: [10, Validators.required],
 
-			controllerIdentity: ['', Validators.required],
+			controllerId: ['', Validators.required],
 			comments: [''],
 
-        });
+    });
 
 
 	}
@@ -196,7 +196,7 @@ export class EditSingleTaskComponent implements OnInit {
 
 			this.workflowEditForm.controls["expireDays"].setValue(this.workflowSaveRequest.expireDays);
 
-			this.workflowEditForm.controls["controllerIdentity"].setValue(this.workflowSaveRequest.workflow.workflow.controllerIdentity);
+			this.workflowEditForm.controls["controllerId"].setValue(this.workflowSaveRequest.workflow.workflow.controllerId);
 			this.workflowEditForm.controls["comments"].setValue(this.workflowSaveRequest.comments);
 
 			this.uploadedFiles = [];
@@ -209,7 +209,7 @@ export class EditSingleTaskComponent implements OnInit {
 
 		this.workflowSaveRequest.expireDays = this.workflowEditForm.controls["expireDays"].value;
 
-		this.workflowSaveRequest.workflow.workflow.controllerIdentity = this.workflowEditForm.controls["controllerIdentity"].value;
+		this.workflowSaveRequest.workflow.workflow.controllerId = this.workflowEditForm.controls["controllerId"].value;
 		this.workflowSaveRequest.comments = this.workflowEditForm.controls["comments"].value;
 
 		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);

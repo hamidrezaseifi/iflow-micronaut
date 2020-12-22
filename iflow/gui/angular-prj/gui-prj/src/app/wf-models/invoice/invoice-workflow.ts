@@ -4,7 +4,7 @@ import { Workflow, WorkflowType, WorkflowTypeStep, WorkflowFile, WorkflowAction,
 
 export class InvoiceWorkflow  {
 
-  workflowBase: Workflow;
+  workflow: Workflow;
 	sender: string;
 	registerNumber: string;
 	invocieDate: string;

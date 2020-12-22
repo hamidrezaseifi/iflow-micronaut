@@ -42,7 +42,7 @@ public class SaveExistingWorkflowStrategy<W extends IWorkflowBaseEntity> extends
     steps.add(new ValidateWorkflowTypeStepStrategyStep<W>(this));
     steps.add(new ValidateCurrentStepExistsInWorkflowTypeStrategyStep<W>(this));
     steps.add(new ValidateWorkflowAssignedUserStrategyStep<W>(this));
-    steps.add(new UpdateWorkflowInCoreStep<W>(this, true));
+    steps.add(new UpdateWorkflowInCoreStep(this, true));
 
   }
 
