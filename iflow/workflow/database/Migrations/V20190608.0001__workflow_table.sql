@@ -34,7 +34,6 @@ CREATE TABLE workflow_type_step (
 CREATE TABLE workflow (
   id uuid NOT NULL PRIMARY KEY,
   company_id uuid NOT NULL,
-  identity varchar(45) DEFAULT NULL,
   workflow_type_id uuid NOT NULL,
   current_step uuid NOT NULL,
   status int NOT NULL,
@@ -67,7 +66,6 @@ CREATE TABLE workflow_actions (
 
 CREATE TABLE workflow_files (
   id uuid NOT NULL PRIMARY KEY,
-  identity varchar(45) DEFAULT NULL,
   workflow_id uuid NOT NULL,
   title varchar(200) NOT NULL,
   extention varchar(10) NOT NULL,

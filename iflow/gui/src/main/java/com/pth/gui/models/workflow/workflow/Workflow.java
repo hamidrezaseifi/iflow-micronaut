@@ -14,7 +14,6 @@ import java.util.UUID;
 @JsonIgnoreProperties(value = { "isAssignTo" })
 public class Workflow extends GuiBaseModel {
 
-  private String identity;
   private UUID companyId;
 
   private UUID workflowTypeId;
@@ -31,16 +30,6 @@ public class Workflow extends GuiBaseModel {
 
   private final List<WorkflowFile> files = new ArrayList<>();
   private final List<WorkflowAction> actions = new ArrayList<>();
-
-  public String getIdentity() {
-
-    return this.identity;
-  }
-
-  public void setIdentity(final String identity) {
-
-    this.identity = identity;
-  }
 
   public UUID getWorkflowTypeId() {
 
@@ -444,7 +433,6 @@ public class Workflow extends GuiBaseModel {
     newWorkflow.setCurrentStepId(null);
     newWorkflow.setVersion(0);
     newWorkflow.setComments("");
-    newWorkflow.setIdentity("");
     newWorkflow.setCurrentUserId(currentUserId);
 
     return newWorkflow;

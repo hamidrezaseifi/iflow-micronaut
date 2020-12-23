@@ -22,13 +22,15 @@ public class SelectWorkflowStatusStrategyStep<W extends IWorkflowBaseEntity> ext
     final WorkflowTypeEntity processingWorkflowType = strategy.getProcessingWorkflowType();
     final WorkflowActionEntity activeAction = strategy.getActiveAction();
 
+    processingWorkflow.setStatus(EWorkflowStatus.DONE);
+
     if (strategy.IsWorkflowCurrentStepChanged() == false) {
       if (strategy.isLastStep(processingWorkflowType, processingWorkflow.getCurrentStep())) {
         processingWorkflow.setStatus(EWorkflowStatus.DONE);
       }
     }
     else {
-      if (activeAction.isAssigned() == false) {
+      if (activeAction!= null && activeAction.isAssigned() == false) {
         processingWorkflow.setStatus(EWorkflowStatus.NOT_ASSIGNED);
       }
     }

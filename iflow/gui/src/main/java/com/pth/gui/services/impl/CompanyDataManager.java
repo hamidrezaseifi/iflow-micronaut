@@ -2,6 +2,8 @@ package com.pth.gui.services.impl;
 
 import com.pth.clients.clients.workflow.IWorkflowMessageClient;
 import com.pth.common.edo.WorkflowMessageListEdo;
+import com.pth.common.edo.enums.EWorkflowActionStatus;
+import com.pth.common.edo.enums.EWorkflowMessageStatus;
 import com.pth.gui.mapper.IWorkflowMessageMapper;
 import com.pth.gui.models.gui.cach.CompanyCachData;
 import com.pth.gui.models.gui.cach.UserCachData;
@@ -81,8 +83,7 @@ public class CompanyDataManager implements ICompanyCachDataManager {
                 this.workflowMessageClient.readUserWorkflowMessageList(authorization, userId);
 
         if(messageListEdoOptional.isPresent()){
-            final List<WorkflowMessage> messageList =
-                    this.workflowMessageMapper.fromEdoList(messageListEdoOptional.get().getWorkflowMessages());
+            final List<WorkflowMessage> messageList = filterMessages(messageListEdoOptional);
             this.removeUserMessages(companyId, userId);
             this.setUserWorkflowMessages(companyId, userId, messageList);
 
@@ -101,8 +102,7 @@ public class CompanyDataManager implements ICompanyCachDataManager {
                 this.workflowMessageClient.readWorkflowWorkflowMessageList(authorization, workflowId);
 
         if(messageListEdoOptional.isPresent()) {
-            final List<WorkflowMessage> messageList =
-                    this.workflowMessageMapper.fromEdoList(messageListEdoOptional.get().getWorkflowMessages());
+            final List<WorkflowMessage> messageList = filterMessages(messageListEdoOptional);
 
             final List<UUID> userIdentityList = this.removeWorkflowMessages(companyId, workflowId);
 
@@ -127,8 +127,7 @@ public class CompanyDataManager implements ICompanyCachDataManager {
                     this.workflowMessageClient.readUserWorkflowMessageList(authorization, userId);
 
             if(messageListEdoOptional.isPresent()) {
-                final List<WorkflowMessage> messageList =
-                        this.workflowMessageMapper.fromEdoList(messageListEdoOptional.get().getWorkflowMessages());
+                final List<WorkflowMessage> messageList = filterMessages(messageListEdoOptional);
 
                 this.setUserWorkflowMessages(companyId, userId, messageList);
                 this.sendResetMessageToSocket(userId);
@@ -199,4 +198,17 @@ public class CompanyDataManager implements ICompanyCachDataManager {
         }
     }
 
+    private List<WorkflowMessage>
+        filterMessages(Optional<WorkflowMessageListEdo> messageListEdoOptional){
+
+        final List<WorkflowMessage> messageList =
+                this.workflowMessageMapper.fromEdoList(messageListEdoOptional.get().getWorkflowMessages());
+        final List<WorkflowMessage> messageListFiltered =
+                messageList.
+                                   stream().
+                                   filter(m -> m.getStatus() != EWorkflowMessageStatus.CLOSED).
+                                   collect(Collectors.toList());
+
+        return messageListFiltered;
+    }
 }

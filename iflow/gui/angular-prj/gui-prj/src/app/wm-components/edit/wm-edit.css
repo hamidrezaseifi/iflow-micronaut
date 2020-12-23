@@ -11,7 +11,7 @@ div.workflow-content-container{
 div.workflow-content{
     background-color: #dad9d9;
     padding: 15px;
-    border-radius: 5px;    
+    border-radius: 5px;
     min-height: 480px;
     padding-bottom: 50px;
     position: relative;
@@ -47,7 +47,7 @@ div.workflow-record{
 }
 
 
-div.workflow-content div.workflow-step-button-bar, 
+div.workflow-content div.workflow-step-button-bar,
 div.workflow-content-record div.workflow-step-button-bar{
     background-color: white;
     padding: 6px;
@@ -64,14 +64,14 @@ div.workflow-content-record{
 
 .workflow-record-toolbar{
 	background-color: white;
-	padding: 0;	
+	padding: 0;
 	margin-bottom: 3px;
 	height: 20px;
 }
 
 .workflow-record-toolbar button{
 	border: none;
-	background-color: transparent;	
+	background-color: transparent;
 	padding: 0;
     margin: 0;
     height: 20px;
@@ -114,3 +114,7 @@ div.workflow-content-record{
 	display: none;
 }
 
+.page-toolbar .toolbar-link, .page-toolbar .toolbar-button{
+  color: white;
+  margin-left: 5px;
+}

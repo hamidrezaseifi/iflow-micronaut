@@ -143,7 +143,7 @@ public abstract class WorkflowBaseEntity implements IWorkflowBaseEntity {
 
     @Override
     public boolean hasActiveAction() {
-        return getWorkflow().hasAction();
+        return getWorkflow().hasActiveAction();
     }
 
     @Override

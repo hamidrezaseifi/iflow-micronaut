@@ -10,7 +10,6 @@ import com.pth.workflow.services.bl.IDepartmentDataService;
 import com.pth.workflow.services.bl.IGuiCachDataDataService;
 import com.pth.workflow.services.bl.IWorkflowPrepare;
 import com.pth.workflow.services.bl.strategy.steps.*;
-import io.micronaut.security.authentication.Authentication;
 
 public class DoneExistingWorkflowStrategy<W extends IWorkflowBaseEntity> extends AbstractWorkflowSaveStrategy<W> {
 

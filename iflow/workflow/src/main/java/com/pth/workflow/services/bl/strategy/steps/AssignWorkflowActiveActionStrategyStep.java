@@ -38,6 +38,10 @@ public class AssignWorkflowActiveActionStrategyStep<W extends IWorkflowBaseEntit
     final IWorkflowSaveRequest<W> processingWorkflowSaveRequest = this.getWorkflowSaveStrategy().getProcessingWorkflowSaveRequest();
     final W processingWorkflow = this.getWorkflowSaveStrategy().getProcessingWorkflow();
 
+    if(processingWorkflowSaveRequest.getAssigns().isEmpty()){
+      return false;
+    }
+
     if (processingWorkflowSaveRequest.isDoneCommand() && processingWorkflowType.isAssignTypeManual()) {
       return this.getWorkflowSaveStrategy().IsWorkflowCurrentStepChanged() && processingWorkflow.hasActiveAction();
     }

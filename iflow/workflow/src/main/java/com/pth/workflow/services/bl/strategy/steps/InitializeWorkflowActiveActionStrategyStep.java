@@ -34,7 +34,8 @@ public class InitializeWorkflowActiveActionStrategyStep<W extends IWorkflowBaseE
     if (prevAction != null && this.getWorkflowSaveStrategy().isLastStep(processingWorkflowType, prevAction.getCurrentStep())) {
       return false;
     }
-    return processingWorkflow.hasActiveAction() == false;
+    boolean hasActiveAction = processingWorkflow.hasActiveAction();
+    return hasActiveAction == false;
   }
 
 }
