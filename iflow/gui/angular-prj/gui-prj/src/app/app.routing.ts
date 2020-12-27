@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthenticationService } from './services/authentication.service';
 
 import { HomeComponent } from './home';
-import { HomeTestComponent } from './hometest/home-test.component';
 import { AboutComponent } from './about';
 import { LoginComponent } from './login/login.component';
 
@@ -24,7 +23,6 @@ import { OcrPresetsComponent } from './company-components/ocr-presets/ocr-preset
 
 
 const routes: Routes = [
-    //{ path: '', component: HomeTestComponent },
     { path: '', component: HomeComponent, canActivate: [AuthenticationService] },
     { path: 'auth/login', component: LoginComponent },
     { path: 'about', component: AboutComponent, canActivate: [AuthenticationService] },

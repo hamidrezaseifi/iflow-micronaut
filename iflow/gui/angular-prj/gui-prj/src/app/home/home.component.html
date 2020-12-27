@@ -6,22 +6,22 @@
 	<div class="cubes-container">
 		<div class="cubes-container-toolbar">
 			<i class="material-icons cubes-container-toolbar-button" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }" (click)="startEditCubes()">build</i>
-			
+
 			<i class="material-icons cubes-container-toolbar-button apply-button" *ngIf="menusIsChanged" (click)="applyEditCubes()">done</i>
 		</div>
 		<div *ngFor="let cubeRow of cubes; let row = index">
-		
-			<a *ngFor="let cube of cubeRow; let col = index" class="cube" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }" 
+
+			<a *ngFor="let cube of cubeRow; let col = index" class="cube" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }"
 				(click)="selectMenuItem(cube)" [style.background-color] = "cube.backColor" [style.color] = "cube.foreColor" >
 				<img class="menu-icon" src="{{ cube.image }}">
 				<span class="cube-text">
 					{{ cube.text }}
 				</span>
-			
+
 			</a>
-		
+
 		</div>
-		
+
 	</div>
 
 </div>
@@ -33,9 +33,9 @@
 					<button type="button" class="close" (click)="hideMenuDialog()" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-				</div>			
+				</div>
 				<div class="modal-body">
-					
+
 					<div id="menuitemtree" class="menuitemtree">
 						<ul class="list-group">
 							<li *ngFor="let menu of menus;">
@@ -50,16 +50,17 @@
 										<div class="list-group-item node-treeview1 menu-item">
 											<span class="menu-item-text" (click)="selectMenuItemForCube(childmenu)">{{ childmenu.label }}</span>
 										</div>
-										
+
 									</li>
-								
+
 								</ul>
 							</li>
 						</ul>
 					</div>
-				</div>	
+				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" (click)="hideMenuDialog()">{{ 'common.close' | translate }}</button>
-				</div>						
+          <button type="button" class="btn btn-secondary" (click)="deleteMenuItemForCube()">{{ 'common.delete' | translate }}</button>
+				</div>
 			</div>
 		</div>

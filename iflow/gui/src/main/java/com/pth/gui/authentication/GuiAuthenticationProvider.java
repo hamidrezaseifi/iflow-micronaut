@@ -91,7 +91,8 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
             BearerAccessRefreshToken bearerAccessRefreshToken = accessRefreshToken.get();
 
             String refreshToken = bearerAccessRefreshToken.getRefreshToken();
-            Optional<SessionData> sessionDataOptional = gerSessionData(bearerAccessRefreshToken);
+            Optional<SessionData> sessionDataOptional = gerSessionData(bearerAccessRefreshToken.getRefreshToken(),
+                                                                       bearerAccessRefreshToken.getUsername());
 
             if(sessionDataOptional.isPresent()){
                 SessionData sessionData = sessionDataOptional.get();
@@ -117,15 +118,13 @@ public class GuiAuthenticationProvider implements AuthenticationProvider {
         return Flowable.just(new AuthenticationFailed());
     }
 
-    private Optional<SessionData> gerSessionData(BearerAccessRefreshToken bearerAccessRefreshToken){
+    public Optional<SessionData> gerSessionData(String refreshToken, String userName){
         SessionData sessionData = new SessionData();
-
-        String refreshToken = bearerAccessRefreshToken.getRefreshToken();
 
         Optional<ProfileResponseEdo> profileResponseEdoOptional =
                 this.userClient.readUserProfileByUsername(refreshToken,
                                                           EApplication.IFLOW.getIdentity(),
-                                                          bearerAccessRefreshToken.getUsername());
+                                                          userName);
 
         if(profileResponseEdoOptional.isPresent()){
             ProfileResponseEdo profileResponseEdo = profileResponseEdoOptional.get();

@@ -1,5 +1,6 @@
 package com.pth.gui.controllers;
 
+import com.pth.gui.authentication.GuiAuthenticationProvider;
 import com.pth.gui.controllers.helper.AuthenticatedController;
 import com.pth.gui.helpers.SessionDataHelper;
 import com.pth.gui.models.User;
@@ -27,13 +28,16 @@ public class UserController extends AuthenticatedController {
     private final IWorkflowMessageHandler workflowMessageHandler;
     private final IUserHandler userHandler;
     private final IWorkflowGeneralHandler workflowGeneralHandler;
+    private final GuiAuthenticationProvider authenticationProvider;
 
     public UserController(IWorkflowMessageHandler workflowMessageHandler,
                           IUserHandler userHandler,
-                          IWorkflowGeneralHandler workflowGeneralHandler) {
+                          IWorkflowGeneralHandler workflowGeneralHandler,
+                          GuiAuthenticationProvider authenticationProvider) {
         this.workflowMessageHandler = workflowMessageHandler;
         this.userHandler = userHandler;
         this.workflowGeneralHandler = workflowGeneralHandler;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Secured(SecurityRule.IS_ANONYMOUS)
@@ -161,6 +165,23 @@ public class UserController extends AuthenticatedController {
 
         return HttpResponse.notFound();
 
+    }
+
+    @Post(value = "/applydashboardlink")
+    public HttpResponse<?> applyDashboardLinks(@Body final List<List<UserDashboardMenu>> cubes, Session session) {
+
+        SessionData sessionData = getSessionData(session);
+
+        List<UserDashboardMenu> savingList = new ArrayList<>();
+        cubes.forEach(lst -> savingList.addAll(lst));
+        final List<UserDashboardMenu> resultList =
+                this.userHandler.saveUserDashboardMenus(sessionData.getRefreshToken(),
+                                                        savingList,
+                                                        sessionData.getCurrentUserId());
+        if(resultList.isEmpty() == false){
+            return HttpResponse.ok(resultList);
+        }
+        return HttpResponse.badRequest();
     }
 
 

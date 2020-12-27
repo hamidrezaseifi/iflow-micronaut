@@ -30,4 +30,14 @@ public class UserDashboardMenuRepository extends AEntityRdbmsHibernateRepository
                 cb.equal(root.get(UserDashboardMenuEntity_.appId), appId)))
         );
     }
+
+    @Override
+    @Transactional
+    public int deleteByUserId(UUID userId,
+                               String appId) {
+        return deleteCollection((cb, root) -> (
+                                        cb.and(cb.equal(root.get(UserDashboardMenuEntity_.userId), userId),
+                                               cb.equal(root.get(UserDashboardMenuEntity_.appId), appId)))
+                               );
+    }
 }

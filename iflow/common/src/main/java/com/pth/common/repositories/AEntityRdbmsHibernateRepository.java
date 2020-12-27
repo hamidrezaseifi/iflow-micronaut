@@ -99,7 +99,7 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void delete(TEntity entity) {
         entityManager.remove(entity);
         entityManager.flush();
@@ -134,5 +134,10 @@ public abstract class AEntityRdbmsHibernateRepository<TEntity>
 
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    protected int deleteCollection(PredicateBuilder<TEntity> predicateBuilder) {
+
+        return hibernatePredicateQueryAdapter.deleteCollection(entityManager, entityType, predicateBuilder);
     }
 }

@@ -22,18 +22,21 @@ a.cube{
 }
 
 a.cube img.menu-icon{
-	width: 50%;
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-top: 10px;	
+	width: 30%;
+  margin-left: 35%;
+  margin-right: 35%;
+  margin-top: 10px;
 }
 
 span.cube-text{
 	display: block;
 	text-align: center;
 	line-height: normal;
-	height: 20px;
-    overflow: hidden;
+	height: 60px;
+	font-size: 12px;
+  overflow: hidden;
+  width: 92%;
+  margin-left: 4%;
 }
 
 a.cube.editmode span.cube-text{
@@ -107,7 +110,7 @@ a.cube.noeditmode span.cube-text{
 
 .cubes-container-toolbar{
 	height: 30px;
-	margin-bottom: 5px;	
+	margin-bottom: 5px;
 	padding: 3px 10px;
 }
 

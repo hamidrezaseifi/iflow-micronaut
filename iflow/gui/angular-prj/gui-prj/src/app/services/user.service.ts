@@ -19,4 +19,5 @@ export class UserService {
     delete(id: number) {
         return this.http.delete(HttpHepler.dataServer + "/users/${id}");
     }
+
 }

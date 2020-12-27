@@ -9,9 +9,11 @@ import com.pth.gui.models.User;
 import com.pth.gui.models.UserDashboardMenu;
 import com.pth.gui.services.IUserHandler;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Singleton;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Singleton
 public class UserHandler implements IUserHandler {
@@ -105,13 +107,16 @@ public class UserHandler implements IUserHandler {
                                                           final List<UserDashboardMenu> userDashboardMenuList,
                                                           final UUID userId){
 
-        for (final UserDashboardMenu item : userDashboardMenuList) {
-            item.setAppId(EApplication.IFLOW.getIdentity());
-            item.setUserId(userId);
+        final List<UserDashboardMenu> filteredList =
+                userDashboardMenuList.
+                                             stream().
+                                             filter(d -> StringUtils.isNotEmpty(d.getMenuId())).
+                                             collect(Collectors.toList());
+        filteredList.forEach(d -> d.setAppId(EApplication.IFLOW.getIdentity()));
+        filteredList.forEach(d -> d.setUserId(userId));
 
-        }
 
-        List<UserDashboardMenuEdo> userDashboardMenuEdoList = userDashboardMenuMapper.toEdoList(userDashboardMenuList);
+        List<UserDashboardMenuEdo> userDashboardMenuEdoList = userDashboardMenuMapper.toEdoList(filteredList);
 
         UserDashboardMenuListEdo userDashboardMenuListEdo = new UserDashboardMenuListEdo(userDashboardMenuEdoList);
 

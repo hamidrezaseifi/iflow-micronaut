@@ -43,7 +43,7 @@ public class UserDashboardMenu extends GuiBaseModel {
 
   public String getText() {
 
-    return this.menu != null ? this.menu.getLabel() : "Cube " + this.rowIndex + "-" + this.columnIndex;
+    return this.menu != null ? this.menu.getLabel() : ""; //""Cube " + this.rowIndex + "-" + this.columnIndex;
   }
 
   public String getUrl() {

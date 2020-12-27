@@ -151,7 +151,7 @@ public class UserClient extends ClientBase implements IUserClient {
                                                                        requestedEdoList,
                                                                        appIdentity,
                                                                        userId);
-    if(response.getStatus() == HttpStatus.OK){
+    if(response.getStatus() == HttpStatus.CREATED){
       return  response.getBody();
     }
 

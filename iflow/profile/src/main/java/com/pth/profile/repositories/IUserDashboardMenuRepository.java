@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface IUserDashboardMenuRepository extends IEntityRepository<UserDashboardMenuEntity> {
     List<UserDashboardMenuEntity> getByUserId(UUID userId, String appId);
+    int deleteByUserId(UUID userId, String appId);
 }

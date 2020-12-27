@@ -9,7 +9,7 @@ import { HttpHepler } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
 import { AuthenticationService } from '../../services';
 
-import { User } from '../../ui-models';
+import { DashboardCube, User } from '../../ui-models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 	updateUserUrl :string = HttpHepler.dataServer + "/users/data/update";
 	deleteUserUrl :string = HttpHepler.dataServer + "/users/data/delete";
 	resetUserPasswordUrl :string = HttpHepler.dataServer + "/users/data/resetpassword";
+  applyDashboardLinksUrl :string = HttpHepler.dataServer + "/users/data/applydashboardlink";
 
 	constructor(
 			protected http: HttpClient,
@@ -72,4 +73,12 @@ export class UserEditService extends HttpErrorResponseHelper {
 		  return this.http.post(this.resetUserPasswordUrl, user, httpOptions);
 
 	};
+
+
+  applyDashboardLinks(cubes : DashboardCube[][]) {
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+
+    console.log("saving cubes:" , cubes);
+    return this.http.post(this.applyDashboardLinksUrl, cubes, httpOptions);
+  };
 }

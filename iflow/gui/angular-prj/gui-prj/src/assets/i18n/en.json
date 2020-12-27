@@ -28,6 +28,7 @@
 	"menu-reports" : "Reports",
 	"menu-contacts" : "Kontakten",
 	"common.edit" : "Bearbeiten",
+  "common.delete" : "Delete",
 	"common.save" : "speichern",
 	"common.saved" : "gespeichert",
 	"common.close" : "Schließen",

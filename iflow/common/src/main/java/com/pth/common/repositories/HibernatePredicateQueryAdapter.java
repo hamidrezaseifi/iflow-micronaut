@@ -3,6 +3,7 @@ package com.pth.common.repositories;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;
@@ -83,6 +84,22 @@ public class HibernatePredicateQueryAdapter {
         return typedQuery.getResultList();
     }
 
+    public <T> int deleteCollection(EntityManager entityManager,
+                                       Class<T> entityClass,
+                                       PredicateBuilder<T> predicateBuilder) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaDelete<T> criteriaDelete = criteriaBuilder.createCriteriaDelete(entityClass);
+
+        Root<T> root = criteriaDelete.from(entityClass);
+
+        if (null != predicateBuilder) {
+            criteriaDelete.where(predicateBuilder.build(criteriaBuilder, root));
+        }
+
+        Query typedQuery = entityManager.createQuery(criteriaDelete);
+        return typedQuery.executeUpdate();
+    }
+
     public <T> int queryCountItems(EntityManager entityManager,
                                    Class<T> entityClass,
                                    PredicateBuilder<T> predicateBuilder) {
@@ -110,4 +127,5 @@ public class HibernatePredicateQueryAdapter {
         List<Order> build(CriteriaBuilder criteriaBuilder,
                           Root<T> root);
     }
+
 }

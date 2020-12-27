@@ -7,6 +7,11 @@ import { GlobalService } from '../services/global.service';
 
 import { DashboardCube, GeneralData, MenuItem } from '../ui-models';
 
+import { UserEditService } from '../services/company/user-edit.service';
+import { ErrorServiceService } from '../services/error-service.service';
+import { LoadingServiceService } from '../services/loading-service.service';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-root',
   templateUrl: './home.component.html',
@@ -35,7 +40,11 @@ export class HomeComponent implements OnInit {
 
     constructor(private global: GlobalService,
         private route: ActivatedRoute,
-        private router: Router ) {
+        private router: Router,
+        private editService :UserEditService,
+        private loadingService: LoadingServiceService,
+        protected translate: TranslateService,
+        private errorService: ErrorServiceService) {
       		this.isPresentObs = this.global.presensSubject.asObservable();
     }
 
@@ -45,22 +54,44 @@ export class HomeComponent implements OnInit {
       	this.isPresent = res;
       });
 
+      this.reloadCubes();
+
+    }
+
+    reloadCubes(){
       this.global.currentSessionDataSubject.asObservable().subscribe((res: GeneralData) => {
         if(res == null || res == undefined){
           return;
         }
       	this.menus = res.app.menus;
       	this.cubes = res.app.dashboard.dashboardMenus;
+      	this.setCubesText();
+      	console.log("read cubes: ", this.cubes);
+
       	this.totalColumns = res.app.dashboard.totalColumns;
       	this.totalRows = res.app.dashboard.totalRows;
       });
+    }
+
+    setCubesText(){
+
+      for(var rowIndex in this.cubes){
+        for(var cubeIndex in this.cubes[rowIndex]){
+          var cube = this.cubes[rowIndex][cubeIndex];
+          if(cube.menuId != undefined && cube.menuId != "" && cube.menuId != null){
+            this.setCubeText(rowIndex, cubeIndex);
+          }
+
+        }
+      }
 
     }
 
-    getMenuItemTreeData(){
-
+    setCubeText(rowIndex, cubeIndex){
+      this.translate.get(this.cubes[rowIndex][cubeIndex].menuId).subscribe((res: string) => {
+            		            	this.cubes[rowIndex][cubeIndex].text = res;
+      });
     }
-
 
     selectMenuItem(cube:DashboardCube){
 
@@ -120,6 +151,19 @@ export class HomeComponent implements OnInit {
       this.selectedCube.text = menu.label;
       this.selectedCube.image = menu.image;
       this.selectedCube.url = menu.url;
+      this.selectedCube.menuId = menu.id;
+
+      this.menusIsChanged = true;
+
+      this.hideMenuDialog();
+    }
+
+    deleteMenuItemForCube(){
+
+      this.selectedCube.text = " ";
+      this.selectedCube.image = "/assets/images/no-image.png";
+      this.selectedCube.url = "";
+      this.selectedCube.menuId = "";
 
       this.menusIsChanged = true;
 
@@ -132,9 +176,33 @@ export class HomeComponent implements OnInit {
 
     applyEditCubes(){
 
+      this.loadingService.showLoading();
 
-      this.menusIsChanged = false;
-      this.isEditMode = false;
+      this.editService.applyDashboardLinks(this.cubes).subscribe(
+            (result) => {
+                console.log("Create user result", result);
+                this.menusIsChanged = false;
+                this.isEditMode = false;
+                this.global.loadAllSetting();
+                this.reloadCubes();
+            },
+            response => {
+              console.log("Error in create user", response);
+
+              this.errorService.showErrorResponse(response);
+              this.loadingService.hideLoading();
+              this.menusIsChanged = false;
+              this.isEditMode = false;
+            },
+            () => {
+
+              this.loadingService.hideLoading();
+            }
+      );
+
+
+
+
     }
 
 

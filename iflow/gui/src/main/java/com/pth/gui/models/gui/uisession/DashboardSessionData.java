@@ -2,6 +2,7 @@ package com.pth.gui.models.gui.uisession;
 
 import com.pth.gui.models.UserDashboardMenu;
 import com.pth.gui.models.gui.UiMenuItem;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,22 +81,18 @@ public class DashboardSessionData {
         return dashboardMenuList;
     }
 
-    private static UserDashboardMenu
-        findUserDashboardMenu(List<UserDashboardMenu> dashboardMenus,
-                              final List<UiMenuItem> menuList,
-                              final int r,
-                              final int c) {
+    private static UserDashboardMenu findUserDashboardMenu(List<UserDashboardMenu> dashboardMenus,
+                                                           final List<UiMenuItem> menuList,
+                                                           final int r,
+                                                           final int c) {
 
         UserDashboardMenu item = null;
         for (final UserDashboardMenu searchItem : dashboardMenus) {
             if (searchItem.getRowIndex() == r && searchItem.getColumnIndex() == c) {
                 item = searchItem;
 
-                for (final UiMenuItem menuItem : menuList) {
-                    if (menuItem.getId().equals(item.getMenuId())) {
-                        item.setMenu(menuItem);
-                    }
-                }
+                UiMenuItem menuItem = findMenuById(item.getMenuId(), menuList);
+                item.setMenu(menuItem);
 
                 break;
             }
@@ -114,4 +111,18 @@ public class DashboardSessionData {
         return item;
     }
 
+    private static UiMenuItem findMenuById(String menuId, final List<UiMenuItem> menuList){
+        for(UiMenuItem menuItem: menuList){
+            if (menuItem.getId().equals(menuId)) {
+                return menuItem;
+            }
+
+            UiMenuItem subMenuItem = findMenuById(menuId, menuItem.getChildren());
+            if(subMenuItem != null){
+                return subMenuItem;
+            }
+        }
+
+        return null;
+    }
 }

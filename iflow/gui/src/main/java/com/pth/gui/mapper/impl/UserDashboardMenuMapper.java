@@ -21,6 +21,7 @@ public class UserDashboardMenuMapper extends ModelEdoMapperBase<UserDashboardMen
         model.setRowIndex(edo.getRowIndex());
         model.setStatus(edo.getStatus());
         model.setVersion(edo.getVersion());
+        model.setId(edo.getId());
 
         return model;
     }
@@ -35,6 +36,7 @@ public class UserDashboardMenuMapper extends ModelEdoMapperBase<UserDashboardMen
         edo.setRowIndex(model.getRowIndex());
         edo.setStatus(model.getStatus());
         edo.setVersion(model.getVersion());
+        edo.setId(model.getId());
 
         return edo;
     }

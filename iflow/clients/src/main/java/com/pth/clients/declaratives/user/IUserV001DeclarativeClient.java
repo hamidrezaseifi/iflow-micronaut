@@ -61,8 +61,8 @@ public interface IUserV001DeclarativeClient {
                                         final String appIdentity,
                                         final UUID userId);
 
-    @Post(value = ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_SAVE_BY_USERID)
-    public HttpResponse<UserDashboardMenuListEdo>
+    @Post(value = ApiUrlConstants.ProfileUrlConstants.API001_CORE001_USERS + ApiUrlConstants.ProfileUrlConstants.USERDASHBOARDMENU_SAVE_BY_USERID)
+    HttpResponse<UserDashboardMenuListEdo>
         saveUserDashboardMenuByIdentity(@Header("Authorization") String authorization,
                                         @Body @Valid final UserDashboardMenuListEdo requestedEdoList,
                                         final String appIdentity,

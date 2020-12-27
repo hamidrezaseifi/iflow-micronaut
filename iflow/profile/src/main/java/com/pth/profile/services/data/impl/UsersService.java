@@ -203,6 +203,8 @@ public class UsersService implements IUsersService {
     if(userEntityOptional.isPresent()){
       UserEntity userEntity = userEntityOptional.get();
 
+      userDashboardMenuRepository.deleteByUserId(userId, appIdentity);
+
       for(UserDashboardMenuEntity userDashboardMenuEntity: list){
         userDashboardMenuEntity.setUserId(userEntity.getId());
         userDashboardMenuEntity.setAppId(appIdentity);
