@@ -5,6 +5,7 @@ import com.pth.gui.controllers.helper.AuthenticatedController;
 import com.pth.gui.helpers.SessionDataHelper;
 import com.pth.gui.models.User;
 import com.pth.gui.models.UserDashboardMenu;
+import com.pth.gui.models.gui.uisession.DashboardSessionData;
 import com.pth.gui.models.gui.uisession.SessionData;
 import com.pth.gui.models.workflow.WorkflowMessage;
 import com.pth.gui.models.workflow.base.WorkflowBased;
@@ -172,8 +173,8 @@ public class UserController extends AuthenticatedController {
 
         SessionData sessionData = getSessionData(session);
 
-        List<UserDashboardMenu> savingList = new ArrayList<>();
-        cubes.forEach(lst -> savingList.addAll(lst));
+        List<UserDashboardMenu> savingList = getFlatUserDashboardMenuList(cubes);
+
         final List<UserDashboardMenu> resultList =
                 this.userHandler.saveUserDashboardMenus(sessionData.getRefreshToken(),
                                                         savingList,
@@ -207,6 +208,11 @@ public class UserController extends AuthenticatedController {
         return this.workflowMessageHandler;
     }
 
+    private List<UserDashboardMenu> getFlatUserDashboardMenuList(List<List<UserDashboardMenu>> list){
+        List<UserDashboardMenu> resultList = new ArrayList<>();
+        list.forEach(lst -> resultList.addAll(lst));
 
+        return resultList;
+    }
 
 }

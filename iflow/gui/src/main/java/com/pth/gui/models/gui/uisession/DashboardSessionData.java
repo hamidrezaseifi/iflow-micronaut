@@ -81,6 +81,11 @@ public class DashboardSessionData {
         return dashboardMenuList;
     }
 
+    public static List<List<UserDashboardMenu>> initDashboardMenus(List<UserDashboardMenu> dashboardMenus) {
+
+        return getPreparedUserDashboardMenus(dashboardMenus, null);
+    }
+
     private static UserDashboardMenu findUserDashboardMenu(List<UserDashboardMenu> dashboardMenus,
                                                            final List<UiMenuItem> menuList,
                                                            final int r,
@@ -91,8 +96,10 @@ public class DashboardSessionData {
             if (searchItem.getRowIndex() == r && searchItem.getColumnIndex() == c) {
                 item = searchItem;
 
-                UiMenuItem menuItem = findMenuById(item.getMenuId(), menuList);
-                item.setMenu(menuItem);
+                if(menuList != null && menuList.isEmpty() == false){
+                    UiMenuItem menuItem = findMenuById(item.getMenuId(), menuList);
+                    item.setMenu(menuItem);
+                }
 
                 break;
             }
