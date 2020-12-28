@@ -1,9 +1,8 @@
-<app-top-bar (loggingOut)="onLoggingOut($event)"
-	(togglingPresens)="onTogglingPresens($event)" ></app-top-bar>
+<app-top-bar (loggingOut)="onLoggingOut($event)" (togglingPresens)="onTogglingPresens($event)" ></app-top-bar>
 
 <div class="container">
 
-	<router-outlet></router-outlet>
+	<router-outlet (loggingOut)="onLoggingOut($event)"></router-outlet>
 
 </div>
 

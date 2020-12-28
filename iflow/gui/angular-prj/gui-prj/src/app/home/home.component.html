@@ -26,41 +26,60 @@
 
 </div>
 
-		<div class="modal fade show" tabindex="-1" *ngIf="showSelectMenuDialog" role="dialog" id="selectmenudialog">
-			<div class="modal-dialog menuitem-dialog" role="document">
-				<div class="modal-header">
-			 		<h5 class="modal-title">{{ 'common.select-menu-item' | translate }}</h5>
-					<button type="button" class="close" (click)="hideMenuDialog()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
+<div class="modal fade show" tabindex="-1" *ngIf="showSelectMenuDialog" role="dialog" id="selectmenudialog">
+  <div class="modal-dialog menuitem-dialog" role="document">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ 'common.select-menu-item' | translate }}</h5>
+      <button type="button" class="close" (click)="hideMenuDialog()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
 
-					<div id="menuitemtree" class="menuitemtree">
-						<ul class="list-group">
-							<li *ngFor="let menu of menus;">
-								<div class="list-group-item node-treeview1 menu-item">
-									<i *ngIf="menu.children.length > 0" class="material-icons" (click)="toggleSubMenuShowed(menu.id)">add</i>
-									<i *ngIf="menu.children.length === 0" class="space-icon"></i>
-									<span class="menu-item-text" (click)="selectMenuItemForCube(menu)">{{ menu.label }}</span>
-									<div class="clear"></div>
-								</div>
-								<ul class="list-group child-item" *ngIf="isSubMenuShowed(menu.id)">
-									<li *ngFor="let childmenu of menu.children;" >
-										<div class="list-group-item node-treeview1 menu-item">
-											<span class="menu-item-text" (click)="selectMenuItemForCube(childmenu)">{{ childmenu.label }}</span>
-										</div>
+      <div id="menuitemtree" class="menuitemtree">
+        <ul class="list-group">
+          <li *ngFor="let menu of menus;">
+            <div class="list-group-item node-treeview1 menu-item">
+              <i *ngIf="menu.children.length > 0" class="material-icons" (click)="toggleSubMenuShowed(menu.id)">add</i>
+              <i *ngIf="menu.children.length === 0" class="space-icon"></i>
+              <span class="menu-item-text" (click)="selectMenuItemForCube(menu)">{{ menu.label }}</span>
+              <div class="clear"></div>
+            </div>
+            <ul class="list-group child-item" *ngIf="isSubMenuShowed(menu.id)">
+              <li *ngFor="let childmenu of menu.children;" >
+                <div class="list-group-item node-treeview1 menu-item">
+                  <span class="menu-item-text" (click)="selectMenuItemForCube(childmenu)">{{ childmenu.label }}</span>
+                </div>
 
-									</li>
+              </li>
 
-								</ul>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" (click)="hideMenuDialog()">{{ 'common.close' | translate }}</button>
-          <button type="button" class="btn btn-secondary" (click)="deleteMenuItemForCube()">{{ 'common.delete' | translate }}</button>
-				</div>
-			</div>
-		</div>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="hideMenuDialog()">{{ 'common.close' | translate }}</button>
+      <button type="button" class="btn btn-secondary" (click)="deleteMenuItemForCube()">{{ 'common.delete' | translate }}</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade show" tabindex="-1" *ngIf="showApplyMessageDialog" role="dialog" id="applyreloginconfirm">
+  <div class="modal-dialog relogin-dialog" role="document">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ 'home-apply-message-title' | translate }}</h5>
+      <button type="button" class="close" (click)="showApplyMessageDialog = false" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <h5 class="modal-title" [innerHTML]="applyMessage"></h5>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="showApplyMessageDialog = false">{{ 'common.close' | translate }}</button>
+      <button type="button" class="btn btn-secondary" (click)="doRelogin()">{{ 'common.logout' | translate }}</button>
+    </div>
+  </div>
+</div>

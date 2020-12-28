@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { User, MenuItem, GeneralData } from '../ui-models';
 import { TopBarComponent } from '../top-bar/top-bar.component';
-import { LoadingServiceService } from './loading-service.service';
+import { LoginService, LoadingServiceService, AuthenticationService } from '../services';
 import { HttpHepler } from '../helper/http-hepler';
 
 @Injectable({ providedIn: 'root' })
@@ -21,9 +21,9 @@ export class GlobalService {
 
 	constructor(private http:HttpClient,
 	            private loadingService: LoadingServiceService,
-	            private _cookieService:CookieService
+	            private loginService: LoginService,
+	            private cookieService:CookieService
 	            ) {
-
 	}
 
 	public getSessionData():GeneralData{
@@ -33,6 +33,19 @@ export class GlobalService {
 	public setSessionData(data:GeneralData){
 	  sessionStorage.setItem("session-data", JSON.stringify(data));
 	  this.currentSessionDataSubject.next(data);
+	}
+
+	public logout(){
+    this.cookieService.delete("iflow");
+    this.cookieService.delete('Path');
+	  this.removeSession();
+	  this.loginService.logout().subscribe((data :any) => {});
+	  window.location.href = '/auth/login';
+	}
+
+	public removeSession(){
+	  this.removeSessionData();
+	  this.getSessionId();
 	}
 
 	public removeSessionData(){

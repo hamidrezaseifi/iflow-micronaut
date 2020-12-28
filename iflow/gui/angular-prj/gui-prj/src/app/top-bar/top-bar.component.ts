@@ -88,35 +88,7 @@ export class TopBarComponent implements OnInit {
 
 	logout(){
 
-    this.global.removeSessionData();
-    this.global.removeSessionId();
-
-    this.cookieService.delete("iflow");
-    this.cookieService.delete('Path');
-
-	  this.loadingService.showLoading();
-    this.loginService.logout().subscribe(
-                                          (data :any) => {
-                                              this.loadingService.hideLoading();
-                                              this.global.removeSessionData();
-                                              this.global.removeSessionId();
-
-                                              this.cookieService.delete(data["session-cookie-name"]);
-                                              this.cookieService.delete('Path');
-
-                                              this.router.navigate(['/auth/login']);
-                                          },
-                                          response => {
-                                            console.log("Error in logout", response);
-                                            this.loadingService.hideLoading();
-                                          },
-                                          () => {
-                                            this.loadingService.hideLoading();
-                                          }
-                                      );
-
-
-		//this.loggingOut.emit(true);
+		this.loggingOut.emit(true);
 
 	}
 

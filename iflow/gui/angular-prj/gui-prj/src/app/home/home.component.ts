@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input} from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import $ from "jquery";
@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomeComponent implements OnInit {
 
+    @Output() loggingOut = new EventEmitter<boolean>();
 
 		isPresentObs :Observable<boolean> = null;
 
@@ -35,6 +36,9 @@ export class HomeComponent implements OnInit {
 		showedSubMenu : any[] = [];
 		selectedCube :DashboardCube = null;
 
+		showApplyMessageDialog: boolean = false;
+		applyMessage = "-";
+
 		isEditMode = false;
 		menusIsChanged = false;
 
@@ -46,6 +50,10 @@ export class HomeComponent implements OnInit {
         protected translate: TranslateService,
         private errorService: ErrorServiceService) {
       		this.isPresentObs = this.global.presensSubject.asObservable();
+
+      		this.translate.get('home-apply-message').subscribe((res: string) => {
+            this.applyMessage = res;
+          });
     }
 
     ngOnInit() {
@@ -183,8 +191,8 @@ export class HomeComponent implements OnInit {
                 console.log("Create user result", result);
                 this.menusIsChanged = false;
                 this.isEditMode = false;
-                this.global.loadAllSetting();
-                this.reloadCubes();
+                //this.global.logout();
+                this.showApplyMessageDialog = true;
             },
             response => {
               console.log("Error in create user", response);
@@ -203,6 +211,10 @@ export class HomeComponent implements OnInit {
 
 
 
+    }
+
+    doRelogin(){
+      this.global.logout();
     }
 
 

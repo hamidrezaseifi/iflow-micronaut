@@ -60,6 +60,29 @@ a.cube.noeditmode span.cube-text{
     height: calc(100vh - 100px);
 }
 
+
+.modal-dialog.relogin-dialog{
+  width: 900px;
+  max-width: 900px;
+  background-color: white;
+  pointer-events: all;
+  height: 250px;
+}
+
+
+.modal-dialog.relogin-dialog .modal-body{
+    max-height: calc(100% - 95px);
+    height: calc(100% - 95px);
+}
+
+.relogin-dialog .menuitemtree{
+	max-height: calc(100% - 40px);
+	height: calc(100% - 40px);
+	overflow: auto;
+}
+
+
+
 .modal-dialog.menuitem-dialog .modal-body{
     max-height: calc(100% - 95px);
     height: calc(100% - 95px);

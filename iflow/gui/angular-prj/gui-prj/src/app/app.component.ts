@@ -28,7 +28,7 @@ export class AppComponent implements OnInit  {
 
 
 	constructor(
-	    private router: Router,
+	  private router: Router,
 		private autService: AuthenticationService,
 		private global: GlobalService,
 		translate: TranslateService,
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit  {
 
 
 	onLoggingOut(data: boolean) {
-		this.autService.logout("");
+		this.global.logout();
 	}
 
 	onTogglingPresens(data: boolean) {
