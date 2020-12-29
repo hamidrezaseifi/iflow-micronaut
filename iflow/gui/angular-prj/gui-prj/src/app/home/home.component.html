@@ -11,14 +11,15 @@
 		</div>
 		<div *ngFor="let cubeRow of cubes; let row = index">
 
-			<a *ngFor="let cube of cubeRow; let col = index" class="cube" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }"
-				(click)="selectMenuItem(cube)" [style.background-color] = "cube.backColor" [style.color] = "cube.foreColor" >
-				<img class="menu-icon" src="{{ cube.image }}">
-				<span class="cube-text">
+      <a *ngFor="let cube of cubeRow; let col = index" class="cube" [ngClass]="{'editmode': isEditMode, 'noeditmode': isEditMode === false }"
+         (click)="selectMenuItem(cube)" [style.background-color] = "cube.hasMenu ? cube.menu.backColor : '#ffffff'" [style.color] = "cube.hasMenu ? cube.menu.foreColor : '#000000'" >
+        <img *ngIf="cube.hasMenu" class="menu-icon" src="{{ cube.menu.image }}">
+        <img *ngIf="cube.hasMenu === false" class="menu-icon" src="/assets/images/no-image.png">
+        <span class="cube-text">
 					{{ cube.text }}
 				</span>
 
-			</a>
+      </a>
 
 		</div>
 

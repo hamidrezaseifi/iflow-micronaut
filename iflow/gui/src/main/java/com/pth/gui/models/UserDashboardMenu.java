@@ -41,12 +41,17 @@ public class UserDashboardMenu extends GuiBaseModel {
     this.menu = menu;
   }
 
+  public boolean getHasMenu() {
+
+    return this.menu != null;
+  }
+
   public String getText() {
 
     return this.menu != null ? this.menu.getLabel() : ""; //""Cube " + this.rowIndex + "-" + this.columnIndex;
   }
 
-  public String getUrl() {
+  /*public String getUrl() {
 
     return this.menu != null ? this.menu.getUrl() : "#";
   }
@@ -71,7 +76,7 @@ public class UserDashboardMenu extends GuiBaseModel {
     String style = "background-color:" + this.getBackColor() + ";";
     style += "color:" + this.getForeColor() + ";";
     return style;
-  }
+  }*/
 
   public String getAppId() {
 

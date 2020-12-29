@@ -105,8 +105,8 @@ export class HomeComponent implements OnInit {
 
       if(this.isEditMode === false){
 
-        if(cube.url != null && cube.url != ''){
-          this.router.navigate([cube.url]);
+        if(cube.menu.url != null && cube.menu.url != ''){
+          this.router.navigate([cube.menu.url]);
         }
 
 
@@ -157,8 +157,8 @@ export class HomeComponent implements OnInit {
     selectMenuItemForCube(menu){
 
       this.selectedCube.text = menu.label;
-      this.selectedCube.image = menu.image;
-      this.selectedCube.url = menu.url;
+      //this.selectedCube.image = menu.image;
+      //this.selectedCube.url = menu.url;
       this.selectedCube.menuId = menu.id;
 
       this.menusIsChanged = true;
@@ -169,8 +169,10 @@ export class HomeComponent implements OnInit {
     deleteMenuItemForCube(){
 
       this.selectedCube.text = " ";
-      this.selectedCube.image = "/assets/images/no-image.png";
-      this.selectedCube.url = "";
+      //this.selectedCube.image = "/assets/images/no-image.png";
+      //this.selectedCube.url = "";
+      this.selectedCube.hasMenu = false;
+      this.selectedCube.menu = null;
       this.selectedCube.menuId = "";
 
       this.menusIsChanged = true;
