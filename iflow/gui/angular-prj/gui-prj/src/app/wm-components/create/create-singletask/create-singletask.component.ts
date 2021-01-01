@@ -134,23 +134,23 @@ export class CreateSingletaskComponent implements OnInit {
 
 		this.loadingService.showLoading();
 
-        this.editService.createWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {
-		            console.log("Create workflow result", result);
+    this.editService.createWorkflow(this.workflowSaveRequest).subscribe(
+        (result) => {
+            console.log("Create workflow result", result);
 
-		            this.router.navigate([this.workflowListUrl]);
-		        },
-		        response => {
-		        	console.log("Error in create workflow", response);
+            this.router.navigate([this.workflowListUrl]);
+        },
+        response => {
+          console.log("Error in create workflow", response);
 
-		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
+          this.errorService.showErrorResponse(response);
+          this.loadingService.hideLoading();
+        },
+        () => {
 
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+          this.loadingService.hideLoading();
+        }
+    );
 
 	}
 

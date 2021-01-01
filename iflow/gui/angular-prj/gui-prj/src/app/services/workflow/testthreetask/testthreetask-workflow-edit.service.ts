@@ -57,7 +57,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return HttpHepler.dataServer + "/general/data/uploadtempfile";
+		return HttpHepler.dataServer + "/archive/data/uploadtempfile";
 	}
 
 	constructor(

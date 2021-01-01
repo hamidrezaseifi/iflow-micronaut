@@ -1,7 +1,7 @@
 package com.pth.gui.models.workflow;
 
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
-import com.pth.gui.models.UploadededFile;
+import com.pth.gui.models.ArchiveFileData;
 import com.pth.gui.models.workflow.base.WorkflowBased;
 
 import java.util.List;
@@ -35,9 +35,9 @@ public interface IWorkflowSaveRequest<W extends WorkflowBased> {
 
   void setAssignUser(final UUID userId);
 
-  public List<UploadededFile> getUploadedFiles();
+  public List<ArchiveFileData> getUploadedFiles();
 
-  public void setUploadedFiles(final List<UploadededFile> uploadedFiles);
+  public void setUploadedFiles(final List<ArchiveFileData> uploadedFiles);
 
   public String getComments();
 

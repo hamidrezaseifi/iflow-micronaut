@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pth.gui.exception.InvalidUploadedStreamException;
-import com.pth.gui.models.UploadededFile;
+import com.pth.gui.models.ArchiveFileData;
 import com.pth.gui.models.gui.FileSavingData;
 import com.pth.gui.services.IUploadFileManager;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.http.multipart.CompletedFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.inject.Singleton;
 
@@ -47,20 +46,22 @@ public class UploadFileManager implements IUploadFileManager {
   }
 
   @Override
-  public List<FileSavingData> moveFromTempToArchive(final List<UploadededFile> files) {
+  public List<FileSavingData> moveFromTempToArchive(final List<ArchiveFileData> archiveFileDataList) {
 
     final List<FileSavingData> list = new ArrayList<>();
 
-    for (final UploadededFile tempUploadedFile : files) {
+    for (final ArchiveFileData tempArchiveFileData : archiveFileDataList) {
 
-      final FileSavingData fileSave = FileSavingData.generateFromFilePath(tempUploadedFile.getFilePath());
+      final FileSavingData fileSave = FileSavingData.generateFromFilePath(tempArchiveFileData.getFilePath());
 
-      final String archiveFilePath = FileSavingData.generateSavingFileFullPath(this.archiveBaseDir, fileSave.getFileExtention());
+      final String archiveFilePath =
+              FileSavingData.generateSavingFileFullPath(this.archiveBaseDir,
+                                                        fileSave.getFileExtention());
 
       this.createFileAndFolders(archiveFilePath);
 
       final FileSavingData archiveSaveFile = FileSavingData.generateFromFilePath(archiveFilePath);
-      archiveSaveFile.setTitle(tempUploadedFile.getFileName());
+      archiveSaveFile.setTitle(tempArchiveFileData.getFileName());
 
       final File tempFile = fileSave.getFile();
       tempFile.renameTo(archiveSaveFile.getFile());

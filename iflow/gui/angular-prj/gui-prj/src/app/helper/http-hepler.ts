@@ -35,22 +35,10 @@ export class HttpHepler {
 	public static generateFileUploadHeader(): HttpHeaders{
 
 		var header :HttpHeaders  = new HttpHeaders({
-			//'Content-Type' : undefined,
-  	  		'Cache-Control': 'no-cache',
-  	        'Pragma': 'no-cache',
-  	        'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'
+			'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+      'Content-Type':  'multipart/form-data'
 		});
-
-		if (environment.fake === true) {
-			header = new HttpHeaders({
-				//'Content-Type' : undefined,
-	  		    'X-Use-Interceptor' : 'user-fake',
-	  	  		'Cache-Control': 'no-cache',
-	  	        'Pragma': 'no-cache',
-	  	        'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'
-			});
-		}
-		//alert(header.keys());
 
 		return header;
 	}

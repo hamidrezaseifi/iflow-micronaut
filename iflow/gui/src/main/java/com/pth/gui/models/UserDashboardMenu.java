@@ -51,33 +51,6 @@ public class UserDashboardMenu extends GuiBaseModel {
     return this.menu != null ? this.menu.getLabel() : ""; //""Cube " + this.rowIndex + "-" + this.columnIndex;
   }
 
-  /*public String getUrl() {
-
-    return this.menu != null ? this.menu.getUrl() : "#";
-  }
-
-  public String getImage() {
-
-    return this.menu != null ? this.menu.getImage() : "/assets/images/no-image.png";
-  }
-
-  public String getBackColor() {
-
-    return this.menu != null ? this.menu.getBackColor() : "#ffffff";
-  }
-
-  public String getForeColor() {
-
-    return this.menu != null ? this.menu.getForeColor() : "#000000";
-  }
-
-  public String getStyle() {
-
-    String style = "background-color:" + this.getBackColor() + ";";
-    style += "color:" + this.getForeColor() + ";";
-    return style;
-  }*/
-
   public String getAppId() {
 
     return this.appId;

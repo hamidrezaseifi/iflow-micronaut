@@ -58,7 +58,7 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return HttpHepler.dataServer + "/general/data/uploadtempfile";
+		return HttpHepler.dataServer + "/archive/data/uploadtempfile";
 	}
 
 	getProcessDocumentWordsUrl() :string{

@@ -25,7 +25,8 @@ micronaut:
           - Accept
           - X-PINGOTHER
           - Set-Cookie
-          - myxyz
+          - Pragma
+          - Cache-Control
         allowedOrigins:
           - ${iflow.gui.cli-server}
         allowedMethods:

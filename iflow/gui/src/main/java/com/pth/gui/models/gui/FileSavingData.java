@@ -104,7 +104,7 @@ public class FileSavingData {
   public static String generateSavingFilePathPreffix(final String fileExtention) {
 
     final LocalDate dt = LocalDate.now();
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("YYYY/MM/dd");
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     return String.format("%s/temp_%d.%s", dt.format(formatter), System.currentTimeMillis(), fileExtention);
   }

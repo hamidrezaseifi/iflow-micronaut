@@ -55,7 +55,7 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return HttpHepler.dataServer + "/general/data/uploadtempfile";
+		return HttpHepler.dataServer + "/archive/data/uploadtempfile";
 	}
 
 	constructor(
@@ -69,16 +69,20 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	}
 
-	uploadTempFiles(ocrScanFile : File){
+	uploadTempFiles(file : File){
 
-	    const formData = new FormData();
-	    formData.append('file', ocrScanFile);
-	    formData.append('wids', "0");
+    const formData = new FormData();
+    formData.append('file', file);
+    //formData.append('wids', "0");
 
 
-      const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
 
-	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, httpFileUploadOptions);
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+
+    //return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
+
+	  return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
 
 	}
 
@@ -137,18 +141,18 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	createWorkflow(workflowSaveRequest :SingleTaskWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 
 
 	saveWorkflow(workflowSaveRequest :SingleTaskWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 

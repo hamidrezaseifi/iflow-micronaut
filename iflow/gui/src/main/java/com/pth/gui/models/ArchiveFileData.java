@@ -3,13 +3,13 @@ package com.pth.gui.models;
 import com.pth.gui.models.gui.GuiSocketMessage;
 import org.apache.commons.lang3.StringUtils;
 
-public class UploadededFile {
+public class ArchiveFileData {
 
   private String fileName;
   // private String filePath;
   private String filePathHashed;
 
-  public UploadededFile() {
+  public ArchiveFileData() {
 
   }
 

@@ -2,7 +2,7 @@ package com.pth.gui.models.workflow.testthree;
 
 import com.pth.common.edo.enums.EAssignType;
 import com.pth.common.edo.enums.EWorkflowProcessCommand;
-import com.pth.gui.models.UploadededFile;
+import com.pth.gui.models.ArchiveFileData;
 import com.pth.gui.models.workflow.AssignItem;
 import com.pth.gui.models.workflow.IWorkflowSaveRequest;
 
@@ -17,7 +17,7 @@ public class TestThreeTaskWorkflowSaveRequest implements IWorkflowSaveRequest<Te
   private Integer expireDays;
   private List<AssignItem> assigns = new ArrayList<>();
   private EWorkflowProcessCommand command;
-  private List<UploadededFile> uploadedFiles = new ArrayList<>();
+  private List<ArchiveFileData> uploadedFiles = new ArrayList<>();
   private String comments;
 
   public TestThreeTaskWorkflowSaveRequest() {
@@ -119,13 +119,13 @@ public class TestThreeTaskWorkflowSaveRequest implements IWorkflowSaveRequest<Te
   }
 
   @Override
-  public List<UploadededFile> getUploadedFiles() {
+  public List<ArchiveFileData> getUploadedFiles() {
 
     return this.uploadedFiles;
   }
 
   @Override
-  public void setUploadedFiles(final List<UploadededFile> uploadedFiles) {
+  public void setUploadedFiles(final List<ArchiveFileData> uploadedFiles) {
 
     this.uploadedFiles = uploadedFiles;
   }
