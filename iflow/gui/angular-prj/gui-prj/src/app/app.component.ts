@@ -5,10 +5,9 @@ import { Title } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 
 import { GlobalService } from './services/global.service';
-import { AuthenticationService } from './services';
+import { AuthenticationService } from './services/authentication.service';
 
 import { environment } from '../environments/environment';
-
 
 import { User, MenuItem, GeneralData } from './ui-models';
 

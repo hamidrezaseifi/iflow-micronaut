@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LoginService, LoadingServiceService, AuthenticationService } from '../services';
+import { LoginService, LoadingServiceService } from '../services';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 import { GlobalService } from '../services/global.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
               private router: Router,
               private global: GlobalService,
               private loginService: LoginService,
-              private authenticationService: AuthenticationService,
               private loadingService: LoadingServiceService,
               private cookieService: CookieService ) {
     this.isFailed = false;

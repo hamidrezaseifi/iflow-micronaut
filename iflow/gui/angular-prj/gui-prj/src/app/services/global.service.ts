@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { User, MenuItem, GeneralData } from '../ui-models';
 import { TopBarComponent } from '../top-bar/top-bar.component';
-import { LoginService, LoadingServiceService, AuthenticationService } from '../services';
+import { LoginService, LoadingServiceService } from '../services';
 import { HttpHepler } from '../helper/http-hepler';
 
 @Injectable({ providedIn: 'root' })

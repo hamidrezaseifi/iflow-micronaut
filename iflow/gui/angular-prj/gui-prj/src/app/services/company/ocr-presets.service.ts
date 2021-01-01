@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { LoadingServiceService } from '../loading-service.service';
 import { HttpHepler } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
-import { AuthenticationService } from '../../services';
+import { AuthenticationService } from '../../services/authentication.service';
 
 import { CompanyWorkflowtypeItemOcrSettingPreset, GeneralData } from '../../ui-models';
 

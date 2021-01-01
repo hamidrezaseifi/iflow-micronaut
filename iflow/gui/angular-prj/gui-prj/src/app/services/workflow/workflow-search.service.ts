@@ -7,7 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpHepler } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
 import { LoadingServiceService } from '../loading-service.service';
-import { AuthenticationService } from '../../services';
+import { AuthenticationService } from '../../services/authentication.service';
 
 import { WorkflowSearchFilter, WorkflowListInitialData, Workflow, WorkflowSearchResult } from '../../wf-models';
 
