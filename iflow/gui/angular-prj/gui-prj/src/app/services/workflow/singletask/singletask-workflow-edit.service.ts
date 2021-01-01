@@ -73,14 +73,9 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
     const formData = new FormData();
     formData.append('file', file);
-    //formData.append('wids', "0");
-
+    formData.append('wids', "0");
 
     const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
-
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-
-    //return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	  return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
 

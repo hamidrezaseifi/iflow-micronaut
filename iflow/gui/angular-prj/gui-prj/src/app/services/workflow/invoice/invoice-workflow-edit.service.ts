@@ -141,7 +141,7 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 
         const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
 
-	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, httpFileUploadOptions);
+	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
 
 	}
 

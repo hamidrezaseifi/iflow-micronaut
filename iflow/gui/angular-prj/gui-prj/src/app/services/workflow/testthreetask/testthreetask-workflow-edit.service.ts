@@ -80,7 +80,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
       const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
 
-	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, httpFileUploadOptions);
+	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
 
 	}
 
