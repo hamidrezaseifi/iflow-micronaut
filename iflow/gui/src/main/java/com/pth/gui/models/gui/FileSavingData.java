@@ -12,6 +12,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.multipart.CompletedFileUpload;
+import io.micronaut.http.server.types.files.SystemFile;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 
@@ -226,14 +227,14 @@ public class FileSavingData {
     return ext;
   }
 
-  public HttpResponse<InputStreamResource> generateFileReposneEntity(final String readFilePath, String fileName)
-      throws FileNotFoundException {
+  public HttpResponse<InputStreamResource>
+    generateFileReposneEntity(final String readFilePath, String fileName) throws FileNotFoundException {
 
     final File file = new File(readFilePath);
     fileName = StringUtils.isEmpty(fileName) ? file.getName() : fileName;
 
     final InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-    //final HttpResponse<InputStreamResource> respEntity = new HttpResponse<>(isr, respHeaders, HttpStatus.OK);
+
     final HttpResponse<InputStreamResource> respEntity =
             HttpResponse.ok(isr).contentType(this.getMediaType()).
                     contentLength(file.length()).
@@ -258,4 +259,24 @@ public class FileSavingData {
     return fileSaveData;
   }
 
+  public SystemFile prepareDownloadResponse(String readFilePath, String fileName) {
+    final File file = new File(readFilePath);
+    fileName = StringUtils.isEmpty(fileName) ? file.getName() : fileName;
+
+    SystemFile systemFile = new SystemFile(file).attach(fileName);
+
+    return systemFile;
+  }
+
+  public HttpResponse<InputStreamResource> prepareViewResponse(String readFilePath) throws FileNotFoundException {
+    final File file = new File(readFilePath);
+    final InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+
+    HttpResponse response = HttpResponse.ok(isr)
+                                        .contentLength(file.length())
+                                        .contentType(this.getMediaTypeString());
+
+
+    return response;
+  }
 }

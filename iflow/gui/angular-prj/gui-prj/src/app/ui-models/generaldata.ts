@@ -39,6 +39,7 @@ export class GeneralData {
 	company: CompanyGeneralData;
 	app: AppGeneralData;
 	user: UserGeneralData;
+	refreshToken; string;
 
 }
 

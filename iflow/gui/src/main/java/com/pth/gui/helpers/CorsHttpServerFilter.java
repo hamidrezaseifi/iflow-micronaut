@@ -38,7 +38,7 @@ public class CorsHttpServerFilter implements HttpServerFilter
                            response.getHeaders().add("Access-Control-Allow-Origin", guiAppProperties.getCliServer());
                            response.getHeaders().add("Access-Control-Allow-Credentials","true");
                            response.getHeaders().add("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
-                           response.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Host, Pragma, Cache-Control");
+                           response.getHeaders().add("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Length, Host, Pragma, Cache-Control, Content-disposition");
 
                            if(request.getMethod() == HttpMethod.OPTIONS){
                                response = response.status(200).body(null);

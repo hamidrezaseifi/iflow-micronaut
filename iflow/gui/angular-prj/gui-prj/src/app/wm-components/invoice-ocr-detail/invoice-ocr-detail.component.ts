@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import $ from "jquery";
 
 import { OcrWord, OcrBox, CompanyWorkflowtypeItemOcrSettingPreset } from '../../ui-models';
+import { HttpHepler } from '../../helper/http-hepler';
 
 @Component({
   selector: 'app-invoice-ocr-detail',
@@ -93,12 +94,12 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	}
 
 	get imageFileViewUrl():string {
-		return 'url(/general/data/file/view/' + this.scanedPdfPath + ')';
+		return 'url(' + HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath + ')';
 		//return 'url()';
 	}
 
 	get fileViewUrl():string {
-		return '/general/data/file/view/' + this.scanedPdfPath;
+		return HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath;
 		//return 'url()';
 	}
 

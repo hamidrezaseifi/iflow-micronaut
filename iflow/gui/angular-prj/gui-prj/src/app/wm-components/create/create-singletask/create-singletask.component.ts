@@ -132,6 +132,8 @@ export class CreateSingletaskComponent implements OnInit {
 
 	save(){
 
+		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
+
 		this.loadingService.showLoading();
 
     this.editService.createWorkflow(this.workflowSaveRequest).subscribe(

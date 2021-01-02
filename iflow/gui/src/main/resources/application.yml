@@ -27,6 +27,7 @@ micronaut:
           - Set-Cookie
           - Pragma
           - Cache-Control
+          - Content-disposition
         allowedOrigins:
           - ${iflow.gui.cli-server}
         allowedMethods:
