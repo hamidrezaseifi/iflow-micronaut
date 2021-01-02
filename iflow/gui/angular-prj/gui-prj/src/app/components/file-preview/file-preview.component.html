@@ -12,7 +12,7 @@
 
 						<div class="scanned-item-preview-container">
 
-							<ngx-extended-pdf-viewer *ngIf="fileIsPdf" [src]="fileViewUrl" authorization="{{getAuthorization()}}"  useBrowserLocale="true" class="scanned-item-preview-image"></ngx-extended-pdf-viewer>
+							<ngx-extended-pdf-viewer *ngIf="fileIsPdf" [src]="fileViewUrl" [authorization]="authorizationData"  useBrowserLocale="true" class="scanned-item-preview-image"></ngx-extended-pdf-viewer>
 
 							<div *ngIf="fileIsImage" class="scanned-item-preview-image" [style.backgroundImage]="imageFileViewUrl" ></div>
 

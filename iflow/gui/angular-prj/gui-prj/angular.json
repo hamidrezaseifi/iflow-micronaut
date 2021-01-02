@@ -25,16 +25,16 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "node_modules/ngx-extended-pdf-viewer/assets/locale",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
                 "output": "/assets/locale/"
               },
                 {
                 "glob": "**/*",
-                "input": "node_modules/ngx-extended-pdf-viewer/assets/images",
+                  "input": "node_modules/ngx-extended-pdf-viewer/bleeding-edge/",
                 "output": "/assets/images/"
               },
               {
-                "glob": "**/pdf.worker*.js",
+                "glob": "**/*.js",
                 "input": "node_modules/ngx-extended-pdf-viewer/assets",
                 "output": "/assets/"
               }
@@ -50,10 +50,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/moment/min/moment.min.js",
-              "node_modules/ngx-extended-pdf-viewer/assets/pdf.js",
-              "node_modules/ngx-extended-pdf-viewer/assets/viewer.js",
-              "node_modules/ngx-extended-pdf-viewer/assets/pdf-es5.js",
-              "node_modules/ngx-extended-pdf-viewer/assets/viewer-es5.js",
+
               "src/assets/js/sockjs.min.js",
               "src/assets/js/stomp.min.js",
               "src/assets/js/bootstrap-treeview.min.js"

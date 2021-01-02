@@ -57,9 +57,9 @@ export class FilePreviewComponent implements OnInit {
 
 	}
 
-	getAuthorization(): string{
+	get authorizationData():string{
 	  const auth = "Bearer: " + this.refreshToken;
-	  console.log("file preview Authorization" , auth);
+	  //console.log("file preview Authorization" , auth);
 	  return auth;
 	}
 
