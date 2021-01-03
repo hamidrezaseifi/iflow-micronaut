@@ -11,14 +11,11 @@ micronaut:
     name: gui
   server:
     port: 1200
-    maxRequestSize: 100MB
     max-request-size: 100MB
     max-file-size: 100MB
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
-      maxFileSize: 100MB
-      maxRequestSize: 100MB
       enabled: true
 
   cors:
