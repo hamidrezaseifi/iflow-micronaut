@@ -22,6 +22,7 @@ import { InvoiceWorkflowSaveRequest } from '../wf-models/invoice/invoice-workflo
 import { InvoiceWorkflowSaveRequestInit } from '../wf-models/invoice/invoice-workflow-save-request-init';
 import { InvoiceTypeControllValidator } from '../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../helper';
+import { HttpHepler } from '../helper/http-hepler';
 
 export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
@@ -59,7 +60,9 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
   ocrSettingPresets : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
   selectedOcrSettingPreset : CompanyWorkflowtypeItemOcrSettingPreset = null;
 
-	generalDataObs :Observable<GeneralData> = null;
+	//generalDataObs :Observable<GeneralData> = null;
+
+	currentUser: User;
 
 	selectAssign : boolean[][] = [];
 
@@ -134,16 +137,16 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	}
 
 	constructor(
-		    protected router: Router,
+		  protected router: Router,
 			protected global: GlobalService,
 			protected translate: TranslateService,
 			protected editService :InvoiceWorkflowEditService,
 			protected loadingService: LoadingServiceService,
 			protected http: HttpClient,
 			protected errorService: ErrorServiceService,
-		  	protected formBuilder: FormBuilder,
-		  	protected dateAdapter: DateAdapter<Date>,
-		  	protected globalSocket: GlobalSocket,
+      protected formBuilder: FormBuilder,
+      protected dateAdapter: DateAdapter<Date>,
+      protected globalSocket: GlobalSocket,
 	) {
 
 		this.dateAdapter.setLocale('de');
@@ -167,7 +170,14 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
         	this.paymentamountTypePaymentTitle = res;
         });
 
-		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+		//this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+    this.global.currentSessionDataSubject.asObservable().subscribe((res: GeneralData) => {
+        if(res == null || res == undefined){
+          return;
+        }
+      	this.currentUser = res.user.currentUser;
+      	console.log("currentUser" , this.currentUser);
+     });
 
 	}
 
@@ -282,7 +292,10 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 		      this.unsubscribe();
 		}
 
-		let socket :SockJS = new SockJS('/iflow-guide-websocket');
+     var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowocr/" + this.currentUser.id;
+
+
+		let socket :SockJS = new SockJS(url);
 		this.stompClient = Stomp.over(socket);
 
 		const _this = this;
