@@ -1,7 +1,7 @@
 
 export class UploadedResult {
-		
-	status: string = "";	
+
+	status: string = "";
 	fileName: string = "";
 	fileHash: string = "";
 	hocrFileHash: string = "";
@@ -12,6 +12,6 @@ export class UploadedResult {
 
 	errorMessage: string = "";
 	errorDetail: string = "";
-
+  token: string = "";
 
 }

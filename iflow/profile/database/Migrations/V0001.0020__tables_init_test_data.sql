@@ -28,11 +28,15 @@ INSERT INTO public.users_roles (user_id,"role",created_at) VALUES
 ;
 
 
-INSERT INTO company_workflowtype_controller (company_id, workflow_type_id, user_id, priority) VALUES ('4420cc31-339d-49f2-8c5d-f06b58244305', '2cde5028-f047-4dbb-a593-157e0b89dc61', '12ae03f5-81b8-44bc-ac85-4b985d0af79f', 1);
-INSERT INTO company_workflowtype_controller (company_id, workflow_type_id, user_id, priority) VALUES ('4420cc31-339d-49f2-8c5d-f06b58244305', '2cde5028-f047-4dbb-a593-157e0b89dc62', '12ae03f5-81b8-44bc-ac85-4b985d0af79f', 1);
-INSERT INTO company_workflowtype_controller (company_id, workflow_type_id, user_id, priority) VALUES ('4420cc31-339d-49f2-8c5d-f06b58244305', '2cde5028-f047-4dbb-a593-157e0b89dc63', '12ae03f5-81b8-44bc-ac85-4b985d0af79f', 1);
-INSERT INTO company_workflowtype_controller (company_id, workflow_type_id, user_id, priority) VALUES ('4420cc31-339d-49f2-8c5d-f06b58244305', '2cde5028-f047-4dbb-a593-157e0b89dc61', 'd94c7d98-0240-4633-b300-0777d5b30c12', 2);
-INSERT INTO company_workflowtype_controller (company_id, workflow_type_id, user_id, priority) VALUES ('4420cc31-339d-49f2-8c5d-f06b58244305', '2cde5028-f047-4dbb-a593-157e0b89dc63', 'd94c7d98-0240-4633-b300-0777d5b30c12', 2);
+INSERT INTO company_workflowtype_controller (company_id,workflow_type_id,user_id,priority,created_at) VALUES
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','2cde5028-f047-4dbb-a593-157e0b89dc61','12ae03f5-81b8-44bc-ac85-4b985d0af79f',1,'2020-12-21 11:28:13.952985'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','2cde5028-f047-4dbb-a593-157e0b89dc62','12ae03f5-81b8-44bc-ac85-4b985d0af79f',1,'2020-12-21 11:28:13.952985'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','2cde5028-f047-4dbb-a593-157e0b89dc63','12ae03f5-81b8-44bc-ac85-4b985d0af79f',1,'2020-12-21 11:28:13.952985'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','2cde5028-f047-4dbb-a593-157e0b89dc61','d94c7d98-0240-4633-b300-0777d5b30c12',2,'2020-12-21 11:28:13.952985'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','2cde5028-f047-4dbb-a593-157e0b89dc63','d94c7d98-0240-4633-b300-0777d5b30c12',2,'2020-12-21 11:28:13.952985'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','d94c7d98-0240-4633-b300-0777d5b30ca1','12ae03f5-81b8-44bc-ac85-4b985d0af79f',1,'2020-12-21 11:44:48.092879'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','d94c7d98-0240-4633-b300-0777d5b30ca2','12ae03f5-81b8-44bc-ac85-4b985d0af79f',1,'2020-12-22 12:28:17.894954'),
+	 ('4420cc31-339d-49f2-8c5d-f06b58244305','d94c7d98-0240-4633-b300-0777d5b30ca3','12ae03f5-81b8-44bc-ac85-4b985d0af79f',1,'2020-12-22 12:35:51.971939');
 
 INSERT INTO departments(id, identity, company_id, title) VALUES
 ('12ae03f5-81b8-44bc-ac85-4b985d0af7d1','dep1', '4420cc31-339d-49f2-8c5d-f06b58244305','Dep 1'),

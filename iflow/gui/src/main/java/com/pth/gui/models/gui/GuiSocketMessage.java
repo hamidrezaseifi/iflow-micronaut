@@ -207,6 +207,19 @@ public class GuiSocketMessage extends HashMap<String, Object> {
     this.put(ESocketCommands.IMAGE_HEIGHT.getValue(), value);
   }
 
+  public String getToken() {
+    return this.get(ESocketCommands.TOKEN.getValue()).toString();
+  }
+
+  public boolean hasToken() {
+
+    return this.containsKey(ESocketCommands.TOKEN.getValue());
+  }
+
+  public void setToken(String token) {
+    this.put(ESocketCommands.TOKEN.getValue(), token);
+  }
+
   public static GuiSocketMessage generate(final String status) {
 
     final GuiSocketMessage message = new GuiSocketMessage();
@@ -239,5 +252,6 @@ public class GuiSocketMessage extends HashMap<String, Object> {
     return message;
 
   }
+
 
 }

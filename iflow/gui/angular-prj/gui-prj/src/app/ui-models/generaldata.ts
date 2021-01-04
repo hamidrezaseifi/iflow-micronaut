@@ -34,12 +34,13 @@ export interface WorkflowGeneralData {
 }
 
 export class GeneralData {
-	isLogged: boolean;
+	isLogged: boolean=false;
 	workflow: WorkflowGeneralData;
 	company: CompanyGeneralData;
 	app: AppGeneralData;
 	user: UserGeneralData;
-	refreshToken; string;
+	refreshToken; string = "";
+	currentUserId : string = "";
 
 }
 

@@ -5,6 +5,8 @@ iflow:
       archive-base-dir: c:/upload/archive
     cli-port: 4200
     cli-server: "http://localhost:4200"
+    tesseract:
+      tess-data-path: C:/tessdata
 
 micronaut:
   application:

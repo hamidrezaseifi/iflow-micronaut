@@ -34,7 +34,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	private subscription: Subscription;
 	private messages: Observable<Message>;
 	public subscribed: boolean;
-	private stompClient: any = null;
 
 	uploadedFiles :UploadedFile[] = [];
 
@@ -50,6 +49,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 	ocrResultMessage : any = null;
 
+  webSocket: WebSocket = null;
 
 	invoiceEditForm: FormGroup;
 
@@ -62,7 +62,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 	//generalDataObs :Observable<GeneralData> = null;
 
-	currentUser: User;
+  generalData : GeneralData = new GeneralData;
 
 	selectAssign : boolean[][] = [];
 
@@ -175,8 +175,8 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
         if(res == null || res == undefined){
           return;
         }
-      	this.currentUser = res.user.currentUser;
-      	console.log("currentUser" , this.currentUser);
+        this.generalData = res;
+        console.log("invoice-generalData" , this.generalData);
      });
 
 	}
@@ -204,7 +204,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 			paymentAmount: [0, Validators.required],
 
-        });
+    });
 
 
 	}
@@ -254,12 +254,14 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 	public onRecevieResponse = (message: Message) => {
 
-		console.log("Message Received: " , message.body);
+    if(this.webSocket){
+      this.webSocket.close();
+    }
 
 		var uploaded = this.uploadedFiles[this.scanningFileIndex ];
 
 		this.loadingService.hideLoading();
-		this.ocrResultMessage = JSON.parse(message.body);
+		this.ocrResultMessage = JSON.parse(message);
 
 		if(this.ocrResultMessage.status){
 			if(this.ocrResultMessage.status === "done"){
@@ -289,18 +291,40 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	subscribe(uploadedFile: UploadedFile) {
 
 		if (this.subscribed) {
-		      this.unsubscribe();
+		  this.unsubscribe();
 		}
 
-     var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowocr/" + this.currentUser.id;
+    var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowocr/" + this.generalData.currentUserId;
+
+    var msg = uploadedFile.uploadResult;
+    msg.token = this.generalData.refreshToken;
+    var msgstr = JSON.stringify(msg);
+
+	  this.webSocket = new WebSocket(url);
+
+    var _this = this;
+
+    this.webSocket.onmessage = function (evt) {
+       if(evt && evt.data){
+        console.log("OCR Message is received..." + evt.data);
+        _this.onRecevieResponse(evt.data);
+       }
+    };
+
+    this.webSocket.onclose = function() {
+       _this.setConnected(false);
+       _this.webSocket = null;
+       console.log("OCR Connection is closed...");
+    };
+
+    this.webSocket.onopen = function() {
+       console.log("OCR websocket connected");
+       _this.setConnected(true);
+       this.send(msgstr);
+    };
 
 
-		let socket :SockJS = new SockJS(url);
-		this.stompClient = Stomp.over(socket);
-
-		const _this = this;
-
-		this.stompClient.connect({}, function (frame) {
+		/*this.stompClient.connect({}, function (frame) {
 
 			console.log("Stomp Connected " , frame);
 
@@ -315,37 +339,27 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			_this.stompClient.send('/socketapp/ocrprocess', {}, JSON.stringify(uploadedFile.uploadResult));
 
             //_this.stompClient.reconnect_delay = 2000;
-    }, _this.errorCallBack);
+    }, _this.errorCallBack);*/
 
 		//this.messages = this._stompService.subscribe('/user/socket/ocrprocess');
 
 	    //this.subscription = this.messages.subscribe(this.onRecevieResponse);
 
-	    this.setConnected(true);
-		this.listening = true;
-	}
 
-	errorCallBack(error) {
-        console.log("errorCallBack -> " + error)
-        setTimeout(() => {
-           // this._connect();
-        }, 5000);
-    }
+    this.listening = true;
+	}
 
 	unsubscribe() {
 		this.listening = false;
-	    if (!this.subscribed) {
-	      return;
-	    }
+    if (!this.subscribed || this.webSocket == null) {
+      return;
+    }
 
-	    if (this.stompClient !== null) {
-	    	this.stompClient.disconnect();
-	    }
-	    this.setConnected(false);
-	    console.log("Disconnected");
+    this.webSocket.close();
+    this.webSocket = null;
 
-	    this.subscription = null;
-	    this.messages = null;
+	  this.setConnected(false);
+	  console.log("Disconnected");
 
 	}
 

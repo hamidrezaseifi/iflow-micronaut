@@ -214,8 +214,11 @@ export class MessageBarComponent implements OnInit, OnDestroy {
      };
 
      this.webSocket.onmessage = function (evt) {
-         console.log("Message is received..." + evt.data);
-         _this.onReceiveMessage(evt.data);
+        if(evt && evt.data){
+          console.log("Message is received..." + evt.data);
+          _this.onReceiveMessage(evt.data);
+        }
+
      };
 
      this.webSocket.onclose = function() {

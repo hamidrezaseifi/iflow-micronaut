@@ -40,6 +40,12 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>com.pth.iflow</groupId>
+      <artifactId>clients</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-inject</artifactId>
       <scope>compile</scope>
