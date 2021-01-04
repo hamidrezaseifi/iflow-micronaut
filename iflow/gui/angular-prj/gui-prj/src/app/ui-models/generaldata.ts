@@ -41,6 +41,7 @@ export class GeneralData {
 	user: UserGeneralData;
 	refreshToken; string = "";
 	currentUserId : string = "";
+	companyId : string = "";
 
 }
 

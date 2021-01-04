@@ -1,5 +1,6 @@
 package com.pth.gui.models.gui;
 
+import com.pth.common.edo.enums.EWorkflowType;
 import com.pth.common.exceptions.IFlowCustomizedException;
 import com.pth.gui.enums.ESocketCommands;
 import com.pth.gui.models.gui.ocr.OcrResultWord;
@@ -122,6 +123,11 @@ public class GuiSocketMessage extends HashMap<String, Object> {
     return this.get(ESocketCommands.SELECTED_OCR_PRESET.getValue()).toString();
   }
 
+  public boolean hasSelectedOcrPreset() {
+
+    return this.containsKey(ESocketCommands.SELECTED_OCR_PRESET.getValue());
+  }
+
   public void setSelectedOcrPreset(final String value) {
 
     this.put(ESocketCommands.SELECTED_OCR_PRESET.getValue(), value);
@@ -219,6 +225,24 @@ public class GuiSocketMessage extends HashMap<String, Object> {
   public void setToken(String token) {
     this.put(ESocketCommands.TOKEN.getValue(), token);
   }
+
+
+
+
+
+  public EWorkflowType getWorkflowType() {
+    return EWorkflowType.valueFromIdentity(this.get(ESocketCommands.WORKFLOW_TYPE.getValue()).toString());
+  }
+
+  public boolean hasWorkflowType() {
+
+    return this.containsKey(ESocketCommands.WORKFLOW_TYPE.getValue());
+  }
+
+  public void setWorkflowType(EWorkflowType type) {
+    this.put(ESocketCommands.WORKFLOW_TYPE.getValue(), type.getIdentity());
+  }
+
 
   public static GuiSocketMessage generate(final String status) {
 

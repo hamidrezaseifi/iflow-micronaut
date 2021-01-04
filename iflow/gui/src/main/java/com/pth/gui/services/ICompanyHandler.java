@@ -28,7 +28,7 @@ public interface ICompanyHandler {
   List<String> readWorkflowtypeItems(final EWorkflowType workflowType);
 
   Map<String, CompanyWorkflowtypeItemOcrSettingPresetItem> readPresetAllItems(final String presetName,
-                                                                              final UUID CompanyId,
+                                                                              final UUID companyId,
                                                                               EWorkflowType workflowType,
                                                                               final String token);
 

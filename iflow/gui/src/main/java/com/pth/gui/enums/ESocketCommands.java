@@ -18,6 +18,7 @@ public enum ESocketCommands {
   SELECTED_OCR_PRESET("selectedPreset"),
   USER_LOGGED_IN("selectedPreset"),
   TOKEN("token"),
+  WORKFLOW_TYPE("workflow-type"),
 
   MESSAGE_RELOAD("message-reload");
 

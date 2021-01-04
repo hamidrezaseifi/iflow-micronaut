@@ -130,12 +130,12 @@ public class CompanyHandler implements ICompanyHandler {
 
     @Override
     public Map<String, CompanyWorkflowtypeItemOcrSettingPresetItem> readPresetAllItems(final String presetName,
-                                                                                       final UUID CompanyId,
+                                                                                       final UUID companyId,
                                                                                        EWorkflowType workflowType,
                                                                                        final String token) {
 
         final List<CompanyWorkflowtypeItemOcrSettingPreset> presetList =
-                this.readCompanyWorkflowtypeItemOcrSettings(CompanyId, token);
+                this.readCompanyWorkflowtypeItemOcrSettings(companyId, token);
         final Optional<CompanyWorkflowtypeItemOcrSettingPreset> optionalPreset = presetList
                 .stream()
                 .filter(p -> p.getPresetName().equals(presetName))

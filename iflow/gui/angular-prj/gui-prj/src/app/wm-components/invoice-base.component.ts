@@ -293,11 +293,17 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 		  this.unsubscribe();
 		}
 
-    var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowocr/" + this.generalData.currentUserId;
+    var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowocr/" + this.generalData.companyId + "/" + this.generalData.currentUserId;
 
     var msg = uploadedFile.uploadResult;
     msg.token = this.generalData.refreshToken;
     var msgstr = JSON.stringify(msg);
+    var msgparsed = JSON.parse(msgstr);
+    msgparsed['workflow-type'] = 'invoiceworkflowtype';
+    var msgstr = JSON.stringify(msgparsed);
+
+    console.log("ocr socket msg to send ", msgstr);
+
 
 	  this.webSocket = new WebSocket(url);
 
