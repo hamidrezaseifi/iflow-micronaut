@@ -101,7 +101,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		console.log("Destroy Messagebar. " );
-	    this.unsubscribe();
+	  this.unsubscribe();
 	}
 
 	onResizeEnd(event: ResizeEvent): void {
@@ -181,7 +181,6 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 		this.viewWorkflow = false;
 		const url = '/workflow/edit/' + this.viewWorkflowModel.workflowType.identity  + '/' + this.viewWorkflowModel.id;
-		console.log(url);
 		this.router.navigate([url]);
 
 
@@ -209,13 +208,13 @@ export class MessageBarComponent implements OnInit, OnDestroy {
      var _this = this;
      this.webSocket.onopen = function() {
 
-         console.log("websocket connected");
+         console.log("WM websocket connected");
          _this.setConnected(true);
      };
 
      this.webSocket.onmessage = function (evt) {
         if(evt && evt.data){
-          console.log("Message is received..." + evt.data);
+          console.log("WM Message is received..." + evt.data);
           _this.onReceiveMessage(evt.data);
         }
 
@@ -223,7 +222,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
      this.webSocket.onclose = function() {
          _this.setConnected(false);
-         console.log("Connection is closed...");
+         console.log("WM Message Connection is closed...");
      };
 
 
@@ -233,10 +232,7 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 		this.requesting = false;
 
-		console.log("Socket Message: " , message);
 		var parsedMessage = JSON.parse(message);
-		console.log("Parsed Message: " , parsedMessage);
-
 		if(parsedMessage.command && parsedMessage.command === "message-reload"){
 			this.readMessageList(false);
 		}
@@ -251,9 +247,8 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 	      return;
 	    }
 
-
 	    this.setConnected(false);
-	    console.log("Disconnected");
+	    console.log("WM Message Disconnected");
 
 	}
 

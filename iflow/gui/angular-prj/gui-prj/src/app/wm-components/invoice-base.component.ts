@@ -6,8 +6,6 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { DateAdapter } from '@angular/material/core';
 import { Observable, throwError , Subscription } from 'rxjs';
 import { Message } from '@stomp/stompjs';
-import * as SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
 import { GlobalSocket } from '../services/global-socket';
 
 import { GlobalService } from '../services/global.service';
@@ -93,21 +91,21 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	  this.loadingService.showLoading();
 
 		this.editService.processDocumentWords(message).subscribe(
-	        (data :any) => {
+      (data :any) => {
 
-						console.log("Document Process with preset " + this.selectedOcrSettingPreset.presetName + " Result. : ", data);
+        console.log("Document Process with preset " + this.selectedOcrSettingPreset.presetName + " Result. : ", data);
 
-						this.scanedWordes = data.words;
-	        },
-	        response => {
-	        	console.log("Error in document Process", response);
-	        	this.errorService.showErrorResponse(response);
-	        },
-	        () => {
+        this.scanedWordes = data.words;
+      },
+      response => {
+        console.log("Error in document Process", response);
+        this.errorService.showErrorResponse(response);
+      },
+      () => {
 
-	        	this.loadingService.hideLoading();
-	        }
-	    );
+        this.loadingService.hideLoading();
+      }
+	  );
 
 
 	}
@@ -241,7 +239,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			this.scanningFile = this.uploadedFiles[index];
 	    this.showOcrDetailsDialog = true;
 
-			console.log("showScanResults : ", this.scanningFile);
+			console.log("OCR showScanResults : ", this.scanningFile);
 
 		}
 	}
@@ -252,32 +250,33 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	}
 
 
-	public onRecevieResponse = (message: Message) => {
+	public onRecevieResponse = (message: string) => {
 
-    if(this.webSocket){
-      this.webSocket.close();
-    }
+    //if(this.webSocket){
+    //  this.webSocket.close();
+    //}
 
 		var uploaded = this.uploadedFiles[this.scanningFileIndex ];
 
 		this.loadingService.hideLoading();
 		this.ocrResultMessage = JSON.parse(message);
+    console.log("Parsed OCR Message: " , this.ocrResultMessage);
 
 		if(this.ocrResultMessage.status){
 			if(this.ocrResultMessage.status === "done"){
 				this.unsubscribe();
 
-	            if(this.ocrResultMessage.words){
+        if(this.ocrResultMessage.words){
 
-	            	this.showOcrDetailsDialog = true;
+          this.showOcrDetailsDialog = true;
 
-	            	this.uploadedFiles[this.scanningFileIndex].foundWords = <OcrWord[]>this.ocrResultMessage.words;
-	            	this.uploadedFiles[this.scanningFileIndex].isScanned = true;
-	            	this.uploadedFiles[this.scanningFileIndex].imageSizeX = this.ocrResultMessage.imageWidth;
-	            	this.uploadedFiles[this.scanningFileIndex].imageSizeY = this.ocrResultMessage.imageHeight;
+          this.uploadedFiles[this.scanningFileIndex].foundWords = <OcrWord[]>this.ocrResultMessage.words;
+          this.uploadedFiles[this.scanningFileIndex].isScanned = true;
+          this.uploadedFiles[this.scanningFileIndex].imageSizeX = this.ocrResultMessage.imageWidth;
+          this.uploadedFiles[this.scanningFileIndex].imageSizeY = this.ocrResultMessage.imageHeight;
 
-	            	console.log("Received Words: " , this.uploadedFiles[this.scanningFileIndex].foundWords);
-	            }
+          console.log("OCR Received Words: " , this.uploadedFiles[this.scanningFileIndex].foundWords);
+        }
 
 			}
 			if(this.ocrResultMessage.status === "error" && this.ocrResultMessage.errorMessage){
@@ -323,29 +322,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
        this.send(msgstr);
     };
 
-
-		/*this.stompClient.connect({}, function (frame) {
-
-			console.log("Stomp Connected " , frame);
-
-			_this.setConnected(true);
-			_this.stompClient.subscribe('/user/socket/ocrprocess', function (message) {
-					console.log("Message Received: " , message.body);
-					_this.onRecevieResponse(message);
-      });
-
-			console.log("ocrUploadedFile : ", _this.scanningFile);
-
-			_this.stompClient.send('/socketapp/ocrprocess', {}, JSON.stringify(uploadedFile.uploadResult));
-
-            //_this.stompClient.reconnect_delay = 2000;
-    }, _this.errorCallBack);*/
-
-		//this.messages = this._stompService.subscribe('/user/socket/ocrprocess');
-
-	    //this.subscription = this.messages.subscribe(this.onRecevieResponse);
-
-
     this.listening = true;
 	}
 
@@ -359,7 +335,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
     this.webSocket = null;
 
 	  this.setConnected(false);
-	  console.log("Disconnected");
+	  console.log("OCR Disconnected");
 
 	}
 

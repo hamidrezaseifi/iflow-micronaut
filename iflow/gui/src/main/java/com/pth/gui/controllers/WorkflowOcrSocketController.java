@@ -16,7 +16,6 @@ import io.micronaut.websocket.annotation.OnOpen;
 import io.micronaut.websocket.annotation.ServerWebSocket;
 import org.reactivestreams.Publisher;
 
-import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
 import javax.imageio.ImageIO;
@@ -83,7 +82,13 @@ public class WorkflowOcrSocketController {
             final String hocrPath = message.getHocrFileNotHash();
 
             try {
-                final OcrResults ocrResults = ocrHelper.doOcrGenerateResult(filePath);
+                final String hocrResult = ocrHelper.doOcr(filePath);
+                final OcrResults ocrResults = ocrHelper.generateResult(hocrResult);
+
+                final BufferedWriter writer = new BufferedWriter(new FileWriter(hocrPath));
+                writer.write(hocrResult);
+
+                writer.close();
 
                 generatedMessage.setWords(new HashMap<String, Set<OcrResultWord>>());
                 generatedMessage.setPageCount(ocrResults.getPages().size());

@@ -9,5 +9,5 @@ public interface IOcrHelper {
 
     String doOcr(String filePath) throws TesseractException;
 
-    OcrResults doOcrGenerateResult(String filePath) throws TesseractException, IOException;
+    OcrResults generateResult(String hocrResult) throws TesseractException, IOException;
 }

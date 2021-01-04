@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.pth.gui.helpers.MergeDuplicateFieldsJsonNodeDeserializer;
 import com.pth.gui.models.gui.ocr.helper.OcrResultsDeserializer;
 
@@ -93,15 +94,5 @@ public class OcrResults {
     return results;
   }
 
-  public static OcrResults loadFromHocrText(final String hocrText) throws IOException {
 
-    final SimpleModule mergeDuplicatesModule = new SimpleModule("Merge duplicated fields in array");
-    mergeDuplicatesModule.addDeserializer(JsonNode.class, new MergeDuplicateFieldsJsonNodeDeserializer());
-
-    final ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(mergeDuplicatesModule);
-
-    final OcrResults results = mapper.readValue(hocrText, OcrResults.class);
-    return results;
-  }
 }
