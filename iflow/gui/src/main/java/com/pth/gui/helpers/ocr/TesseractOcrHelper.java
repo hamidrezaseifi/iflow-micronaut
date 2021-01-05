@@ -13,7 +13,9 @@ import net.sourceforge.tess4j.TesseractException;
 
 import javax.inject.Singleton;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 @Singleton
 @ConfigurationProperties("iflow.gui.tesseract")
@@ -47,9 +49,28 @@ public class TesseractOcrHelper implements IOcrHelper {
     }
 
     @Override
-    public OcrResults generateResult(String hocrResult) throws TesseractException, IOException {
+    public OcrResults generateResultFromContent(String hocrResult) throws TesseractException, IOException {
 
         final OcrResults ocrResults = loadFromHocrText(hocrResult);
+        return ocrResults;
+    }
+
+    @Override
+    public OcrResults generateResultFromFile(String filePath) throws IOException {
+
+
+        StringBuilder contentBuilder = new StringBuilder();
+        File file = new File(filePath);
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNextLine()) {
+            String data = scanner.nextLine();
+            contentBuilder.append(data + "\n");
+        }
+        scanner.close();
+
+        String content = contentBuilder.toString();
+
+        final OcrResults ocrResults = loadFromHocrText(content);
         return ocrResults;
     }
 

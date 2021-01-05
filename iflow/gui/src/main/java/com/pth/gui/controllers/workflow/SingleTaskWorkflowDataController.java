@@ -2,6 +2,7 @@ package com.pth.gui.controllers.workflow;
 
 
 import com.pth.common.edo.enums.EWorkflowType;
+import com.pth.gui.helpers.ocr.IOcrHelper;
 import com.pth.gui.models.gui.GuiSocketMessage;
 import com.pth.gui.models.gui.ocr.OcrResultWord;
 import com.pth.gui.models.gui.ocr.OcrResults;
@@ -37,12 +38,16 @@ public class SingleTaskWorkflowDataController extends WorkflowDataControllerBase
 
   protected final ICompanyHandler companyHandler;
 
+  protected final IOcrHelper ocrHelper;
+
   public SingleTaskWorkflowDataController(SingleTaskBasicWorkflowHandler workflowHandler,
                                           IUploadFileManager uploadFileManager,
-                                          ICompanyHandler companyHandler) {
+                                          ICompanyHandler companyHandler,
+                                          IOcrHelper ocrHelper) {
     this.workflowHandler = workflowHandler;
     this.uploadFileManager = uploadFileManager;
     this.companyHandler = companyHandler;
+    this.ocrHelper = ocrHelper;
   }
 
   @Post("/initcreate" )
@@ -150,57 +155,21 @@ public class SingleTaskWorkflowDataController extends WorkflowDataControllerBase
     return HttpResponse.badRequest();
   }
 
-  @Post( "/processdoc")
-  public HttpResponse<GuiSocketMessage> processDocument(@Body final GuiSocketMessage message, Session session)
-          throws IOException {
-
-    final GuiSocketMessage result = message.clone();
-
-    final String selectedPreset = message.getSelectedOcrPreset();
-    if (StringUtils.isEmpty(selectedPreset)) {
-      result.setStatus("error");
-      result.setErrorMessage("Invalid Preset!");
-
-      return HttpResponse.ok(result);
-    }
-
-    final String filePath = message.getFileNotHash();
-    final String hocrPath = message.getHocrFileNotHash();
-
-    final File file = new File(filePath);
-
-    final OcrResults ocrResults = OcrResults.loadFromHocrFile(hocrPath);
-
-    final Map<String, Set<OcrResultWord>> words = this.retrieveInvoiceDetailWords(ocrResults, selectedPreset, session);
-    if(words == null){
-      return  HttpResponse.notFound();
-    }
-
-    result.setWords(words);
-    result.setPageCount(ocrResults.getPages().size());
-
-    result.setImageWidth(300);
-    result.setImageHeight(500);
-    if (result.getIsFileImage()) {
-      final BufferedImage bimg = ImageIO.read(file);
-      result.setImageWidth(bimg.getWidth());
-      result.setImageHeight(bimg.getHeight());
-    }
-
-    if (result.getIsFilePdf() && ocrResults.getPages().size() > 0) {
-      result.setImageWidth(ocrResults.getPages().get(0).getBox().getWidth());
-      result.setImageHeight(ocrResults.getPages().get(0).getBox().getHeight());
-    }
-
-    result.setStatus("done");
-
-    return HttpResponse.ok(result);
-  }
-
-
   @Override
   protected ICompanyHandler getCompanyHandler() {
     return this.companyHandler;
+  }
+
+  @Override
+  protected IOcrHelper getOcrHelper() {
+    return this.ocrHelper;
+  }
+
+  @Override
+  protected Map<String, Set<OcrResultWord>> retrieveInvoiceDetailWords(final OcrResults ocrResults,
+                                                                       final String selectedPreset,
+                                                                       Session session) {
+    return new HashMap<>();
   }
 
   protected SingleTaskWorkflow generateInitialWorkflow(final UUID userId, Session session) {

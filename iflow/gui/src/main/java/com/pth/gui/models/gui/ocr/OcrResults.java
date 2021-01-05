@@ -72,27 +72,4 @@ public class OcrResults {
     return words;
   }
 
-  public static OcrResults loadFromHocrFile(final String hocrFilePath) throws IOException {
-
-    final SimpleModule mergeDuplicatesModule = new SimpleModule("Merge duplicated fields in array");
-    mergeDuplicatesModule.addDeserializer(JsonNode.class, new MergeDuplicateFieldsJsonNodeDeserializer());
-
-    final ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(mergeDuplicatesModule);
-
-    final BufferedReader reader = new BufferedReader(new FileReader(hocrFilePath));
-
-    String xml = "";
-    String line = reader.readLine();
-    while (line != null) {
-      xml += line + "\n";
-      line = reader.readLine();
-    }
-    reader.close();
-
-    final OcrResults results = mapper.readValue(xml, OcrResults.class);
-    return results;
-  }
-
-
 }

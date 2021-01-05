@@ -266,17 +266,17 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			if(this.ocrResultMessage.status === "done"){
 				this.unsubscribe();
 
-        if(this.ocrResultMessage.words){
+        //if(this.ocrResultMessage.words){
 
           this.showOcrDetailsDialog = true;
 
-          this.uploadedFiles[this.scanningFileIndex].foundWords = <OcrWord[]>this.ocrResultMessage.words;
+          this.uploadedFiles[this.scanningFileIndex].foundWords = []; //<OcrWord[]>this.ocrResultMessage.words;
           this.uploadedFiles[this.scanningFileIndex].isScanned = true;
           this.uploadedFiles[this.scanningFileIndex].imageSizeX = this.ocrResultMessage.imageWidth;
           this.uploadedFiles[this.scanningFileIndex].imageSizeY = this.ocrResultMessage.imageHeight;
 
           console.log("OCR Received Words: " , this.uploadedFiles[this.scanningFileIndex].foundWords);
-        }
+        //}
 
 			}
 			if(this.ocrResultMessage.status === "error" && this.ocrResultMessage.errorMessage){
