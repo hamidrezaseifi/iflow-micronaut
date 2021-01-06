@@ -50,7 +50,7 @@
 	</div>
 	<div class="scanned-item-preview-container" #scannedItemPreviewContainer>
 
-		<pdf-viewer *ngIf="fileIsPdf" [src]="fileViewUrl" useBrowserLocale="true" [zoom]="pdfZoom" [show-all]="showAllPages"
+		<pdf-viewer *ngIf="fileIsPdf" [src]="pdfFileViewUrl" useBrowserLocale="true" [zoom]="pdfZoom" [show-all]="showAllPages"
 			[page]="pdfPageIndex" height="99%"></pdf-viewer>
 
 		<div *ngIf="fileIsImage" class="scanned-item-preview-image" [style.width.px]="previewWidth"

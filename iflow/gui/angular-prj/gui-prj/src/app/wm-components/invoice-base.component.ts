@@ -258,12 +258,12 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 		var uploaded = this.uploadedFiles[this.scanningFileIndex ];
 
-		this.loadingService.hideLoading();
 		this.ocrResultMessage = JSON.parse(message);
     console.log("Parsed OCR Message: " , this.ocrResultMessage);
 
 		if(this.ocrResultMessage.status){
 			if(this.ocrResultMessage.status === "done"){
+			  this.loadingService.hideLoading();
 				this.unsubscribe();
 
         //if(this.ocrResultMessage.words){

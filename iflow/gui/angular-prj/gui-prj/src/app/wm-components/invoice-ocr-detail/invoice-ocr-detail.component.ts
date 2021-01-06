@@ -24,7 +24,17 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	selectedOcrPreset : CompanyWorkflowtypeItemOcrSettingPreset = null;
 
 	@Input('showOcrDetails') showOcrDetails :boolean = false;
-	@Input('scanedPdfPath') scanedPdfPath :string = "";
+	//@Input('scanedPdfPath') scanedPdfPath :string = "";
+
+  @Input('scanedPdfPath') set setScanedPdfPath(value: string) {
+      this.scanedPdfPath = value;
+      this.pdfFileViewUrl = {
+                  url: HttpHepler.dataServer + '/archive/data/file/view/' + value,
+                  withCredentials: true
+      };
+  }
+
+
 	@Input('scanedHocrPath') scanedHocrPath :string = "";
 	@Input('fileIsPdf') fileIsPdf: boolean = true;
 	@Input('fileIsImage') fileIsImage: boolean = false;
@@ -85,6 +95,11 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 
 	private yScale :number = 1;
 
+  pdfFileViewUrl = {
+       url: HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath,
+       withCredentials: true
+	};
+
 	get foundWords():OcrWord[] {
 		    return this._foundWords;
 	}
@@ -98,9 +113,14 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 		//return 'url()';
 	}
 
-	get fileViewUrl():string {
-		return HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath;
-		//return 'url()';
+	get fileViewUrl1() {
+	  //return HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath;
+
+	  return {
+       url: HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath,
+       withCredentials: true
+    };
+
 	}
 
 	isWordSelected(foundWord :OcrWord):boolean{
