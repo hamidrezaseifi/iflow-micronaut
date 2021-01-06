@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.pth.gui.helpers.GuiTesseractProperties;
 import com.pth.gui.helpers.MergeDuplicateFieldsJsonNodeDeserializer;
-import com.pth.gui.helpers.ocr.IOcrHelper;
 import com.pth.gui.models.gui.ocr.OcrResults;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import net.sourceforge.tess4j.Tesseract;

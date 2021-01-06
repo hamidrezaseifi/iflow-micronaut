@@ -20,6 +20,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 
 	selectedKey :string = "";
 	selectedWord :OcrWord = null;
+	_scanedPdfPath: string = "";
 
 	selectedOcrPreset : CompanyWorkflowtypeItemOcrSettingPreset = null;
 
@@ -27,7 +28,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	//@Input('scanedPdfPath') scanedPdfPath :string = "";
 
   @Input('scanedPdfPath') set setScanedPdfPath(value: string) {
-      this.scanedPdfPath = value;
+      this._scanedPdfPath = value;
       this.pdfFileViewUrl = {
                   url: HttpHepler.dataServer + '/archive/data/file/view/' + value,
                   withCredentials: true
@@ -96,7 +97,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	private yScale :number = 1;
 
   pdfFileViewUrl = {
-       url: HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath,
+       url: HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath,
        withCredentials: true
 	};
 
@@ -109,15 +110,15 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	}
 
 	get imageFileViewUrl():string {
-		return 'url(' + HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath + ')';
+		return 'url(' + HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath + ')';
 		//return 'url()';
 	}
 
 	get fileViewUrl1() {
-	  //return HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath;
+	  //return HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath;
 
 	  return {
-       url: HttpHepler.dataServer + '/archive/data/file/view/' + this.scanedPdfPath,
+       url: HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath,
        withCredentials: true
     };
 

@@ -1,19 +1,11 @@
 package com.pth.gui.models.gui.ocr;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.pth.gui.helpers.MergeDuplicateFieldsJsonNodeDeserializer;
 import com.pth.gui.models.gui.ocr.helper.OcrResultsDeserializer;
 
 @JsonDeserialize(using = OcrResultsDeserializer.class)
