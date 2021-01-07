@@ -1,31 +1,31 @@
 
 export interface WorkflowEditInterfaceService  {
 
-	
-	getInitCreateUrl();
-	
-	getCreateWorkflowUrl();
-	
-	getUploadFileUrl();
-	
-	
-	getSaveWorkflowUrl();
-	
-	getDoneWorkflowUrl();
-	
-	getArchiveWorkflowUrl();
-	
-	getUploadOcrScanFileUrl();
 
-	getInitEditUrl(identity :string);
+	getInitCreateUrl(): any;
 
-	
-	uploadTempFiles(ocrScanFile : File);
+	getCreateWorkflowUrl(): any;
 
-	loadCreateInitialData();
-	
-	loadEditInitialData(identity: string);
+	getUploadFileUrl(): any;
 
-		
-	
+
+	getSaveWorkflowUrl(): any;
+
+	getDoneWorkflowUrl(): any;
+
+	getArchiveWorkflowUrl(): any;
+
+	getUploadOcrScanFileUrl(): any;
+
+	getInitEditUrl(identity :string): any;
+
+
+	uploadTempFiles(ocrScanFile : File): any;
+
+	loadCreateInitialData(): any;
+
+	loadEditInitialData(identity: string): any;
+
+
+
 }

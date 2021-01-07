@@ -4,18 +4,18 @@ import { WorkflowFileVersion } from '../wf-models';
 import { UploadedFile } from '../ui-models';
 
 export class WorkflowFile {
-	createdByIdentity :string;
-	title :string;
-	extention :string;
-	activeFilePath :string;
-	comments :string;
-	activeFileVersion :Number;
-	assignToUser :User;
-	status :Number;
-	fileVersions :WorkflowFileVersion[];
+	createdByIdentity :string = "";
+	title :string = "";
+	extention :string = "";
+	activeFilePath :string = "";
+	comments :string = "";
+	activeFileVersion :Number = 0;
+	assignToUser :User = new User;
+	status :Number = 0;
+	fileVersions :WorkflowFileVersion[] = [];
 	fileIsPdf: boolean = false;
 	fileIsImage: boolean = false;
-	activeFilePathHash :string;
+	activeFilePathHash :string = "";
 
 
 	public static toUploadedFile(workflowFile :WorkflowFile) :UploadedFile{

@@ -13,7 +13,6 @@ import { HttpHepler } from '../helper/http-hepler';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService implements CanActivate{
-    private currentUserSubject: BehaviorSubject<User>;
 
     authenticateUrl :string = HttpHepler.dataServer + "/auth/authenticate";
     logoutUrl :string = HttpHepler.dataServer + "/auth/logout";
@@ -25,30 +24,20 @@ export class AuthenticationService implements CanActivate{
     		private route: ActivatedRoute,
     		private loadingService: LoadingServiceService,
     ) {
-        this.currentUserSubject = new BehaviorSubject<User>(null);
-    }
 
-    public get currentUserValue(): User {
-        return this.currentUserSubject.value;
-    }
-
-    public get isLogedIn(): boolean {
-        return this.currentUserSubject.value != null;
     }
 
     checkLoginState(returnUrl :string, ) {
 
       const geberalData:GeneralData = this.global.getSessionData();
 
-      //alert("authentication.service: " + JSON.stringify(geberalData));
-
       if(geberalData == null || geberalData.isLogged == false){
-        //alert("goto login");
+
         this.router.navigate(['auth/login'], { relativeTo: this.route });
         return false;
       }
-       //alert("isLogged: " + geberalData["isLogged"]);
 
+      return true;
     }
 
     logout(returnUrl :string) {

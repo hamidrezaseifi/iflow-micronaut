@@ -1,24 +1,24 @@
 
 export class OcrWord {
-	
-	box :OcrBox;
-	isStrong: boolean;
-	text: string;
-	id: string;
-	title: string;
-	className: string;
-	value :OcrWord;
-	pageIndex :number;
-	pageWidth :number;
-	pageHeight :number;
+
+	box :OcrBox = new OcrBox;
+	isStrong: boolean = false;
+	text: string = "";
+	id: string = "";
+	title: string = "";
+	className: string = "";
+	value :OcrWord = new OcrWord;
+	pageIndex :number = 0;
+	pageWidth :number = 0;
+	pageHeight :number = 0;
 
 }
 
 export class OcrBox {
-	left :number;
-	right :number;
-	top :number;
-	bottom :number;
-	width :number;
-	height :number;
+	left :number = 0;
+	right :number = 0;
+	top :number = 0;
+	bottom :number = 0;
+	width :number = 0;
+	height :number = 0;
 }

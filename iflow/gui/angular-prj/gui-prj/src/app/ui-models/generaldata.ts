@@ -3,43 +3,43 @@ import { WorkflowType } from '../wf-models/workflowtype';
 import { Company } from './company';
 import { Department, MenuItem, User, DashboardCube } from '../ui-models';
 
-export interface UserGeneralData {
-	currentUser: User;
+export class UserGeneralData {
+	currentUser: User = new User;
 
 }
 
-export interface DashboardGeneralData {
-  totalColumns: number;
-	totalRows: number;
-	dashboardMenus: DashboardCube[][];
+export class DashboardGeneralData {
+  totalColumns: number = 0;
+	totalRows: number = 0;
+	dashboardMenus: DashboardCube[][] = [];
 
 }
 
-export interface AppGeneralData {
-	menus: MenuItem[];
-	dashboard: DashboardGeneralData;
+export class AppGeneralData {
+	menus: MenuItem[] = [];
+	dashboard: DashboardGeneralData = new DashboardGeneralData;
 
 }
 
-export interface CompanyGeneralData {
-	departments: Department[];
-	users: User[];
-	company: Company;
+export class CompanyGeneralData {
+	departments: Department[] = [];
+	users: User[] = [];
+	company: Company = new Company;
 
 }
 
-export interface WorkflowGeneralData {
-	workflowTypes: WorkflowType[];
+export class WorkflowGeneralData {
+	workflowTypes: WorkflowType[] = [];
 
 }
 
 export class GeneralData {
 	isLogged: boolean=false;
-	workflow: WorkflowGeneralData;
-	company: CompanyGeneralData;
-	app: AppGeneralData;
-	user: UserGeneralData;
-	refreshToken; string = "";
+	workflow: WorkflowGeneralData = new WorkflowGeneralData;
+	company: CompanyGeneralData = new CompanyGeneralData;
+	app: AppGeneralData = new AppGeneralData;
+	user: UserGeneralData = new UserGeneralData;
+	refreshToken: string = "";
 	currentUserId : string = "";
 	companyId : string = "";
 

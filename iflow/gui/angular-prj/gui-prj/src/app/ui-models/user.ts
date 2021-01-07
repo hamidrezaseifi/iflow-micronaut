@@ -2,27 +2,27 @@ import { UserAccessType } from './user-access';
 import { UserDepartment } from './user-department';
 
 ﻿export class User {
-	id: string;
-	companyId: string;
-	identity: string;
-	birthDate: string;
-	email: string;
-  username: string;
-	firstName: string;
-  lastName: string;
-	fullName: string;
-	companyIdentity: string;
-	userAccess: UserAccessType;
-	userAccessLabel: string;
-	password: string;
+	id: string = "";
+	companyId: string = "";
+	identity: string = "";
+	birthDate: string = "";
+	email: string = "";
+  username: string = "";
+	firstName: string = "";
+  lastName: string = "";
+	fullName: string = "";
+	companyIdentity: string = "";
+	userAccess: UserAccessType = UserAccessType.NONE;
+	userAccessLabel: string = "";
+	password: string = "";
 
-	status: number;
-	version: number;
+	status: number = 0;
+	version: number = 0;
 
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string = "";
+  updatedAt: string = "";
 
-	permission: string;
+	permission: string = "";
 
 	userDepartments: UserDepartment[] = [];
 	groups: string[] = [];

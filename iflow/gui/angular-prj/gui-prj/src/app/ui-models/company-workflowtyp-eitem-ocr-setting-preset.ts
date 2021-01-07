@@ -2,7 +2,7 @@
 import { CompanyWorkflowtypeItemOcrSettingPresetItem } from './company-workflowtyp-eitem-ocr-setting-preset-item';
 
 export class CompanyWorkflowtypeItemOcrSettingPreset {
-	id: string;
+	id: string = "";
 	identity: string = "";
 	companyIdentity: string = "";
 	workflowTypeId: string = "";

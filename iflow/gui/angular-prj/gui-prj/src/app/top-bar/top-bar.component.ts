@@ -14,7 +14,7 @@ import { GlobalService } from '../services/global.service';
 export class TopBarComponent implements OnInit {
 
 	menus: MenuItem[] = [];
-	currentUser: User=null;
+	currentUser: User = new User;
 	isLogged: boolean=false;
 	isPresent : boolean=false;
 
@@ -63,7 +63,7 @@ export class TopBarComponent implements OnInit {
                                                                                     }
                                                                                     else{
                                                                                       console.log("generaldata in topbar is null");
-                                                                                      this.currentUser = null;
+                                                                                      this.currentUser = new User;
                                                                                       this.isLogged = false;
                                                                                       this.loadMenus([]);
                                                                                       this.isPresent = false;

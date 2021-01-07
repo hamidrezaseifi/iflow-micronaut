@@ -13,10 +13,9 @@ import { HttpHepler } from '../helper/http-hepler';
 export class GlobalService {
 
 	loadGeneralDataUrl :string = HttpHepler.dataServer + "/users/data/sessiondata";
-	public currentSessionDataSubject: BehaviorSubject<GeneralData> = new BehaviorSubject<GeneralData>(null);
-	//public currentSessionDataObs :Observable<GeneralData>;
+	public currentSessionDataSubject: BehaviorSubject<GeneralData> = new BehaviorSubject<GeneralData>(new GeneralData);
 
-	public presensSubject :BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+	public presensSubject :BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 
 	constructor(private http:HttpClient,
@@ -27,7 +26,11 @@ export class GlobalService {
 	}
 
 	public getSessionData():GeneralData{
-	  return <GeneralData> JSON.parse(sessionStorage.getItem("session-data"));
+	  if(sessionStorage.getItem("session-data")){
+	    var data:string = <string>sessionStorage.getItem("session-data");
+      return <GeneralData> JSON.parse(data);
+	  }
+	  return new GeneralData;
 	}
 
 	public setSessionData(data:GeneralData){
@@ -50,11 +53,11 @@ export class GlobalService {
 
 	public removeSessionData(){
 	  sessionStorage.removeItem("session-data");
-	  this.currentSessionDataSubject.next(null);
+	  this.currentSessionDataSubject.next(new GeneralData);
 	}
 
 	public getSessionId():string{
-	  return sessionStorage.getItem("session-id");
+	  return <string>sessionStorage.getItem("session-id");
 	}
 
 	public setSessionId(data:string){
@@ -76,12 +79,12 @@ export class GlobalService {
 
 		    this.loadingService.showLoading();
 
-				this.http.get(this.loadGeneralDataUrl).subscribe(
+				this.http.get<GeneralData>(this.loadGeneralDataUrl).subscribe(
 						(generalData: GeneralData) => {
 		            console.log("GET call successful generaldata", generalData);
 
 		            var islogged = generalData.isLogged + "";
-		            generalData.isLogged = islogged === "true";
+		            generalData.isLogged = (islogged === "true");
 
 		            this.setSessionData(<GeneralData> JSON.parse(JSON.stringify(generalData)));
 

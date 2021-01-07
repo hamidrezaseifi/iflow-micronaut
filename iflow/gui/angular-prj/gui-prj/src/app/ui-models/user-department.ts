@@ -1,6 +1,6 @@
 ﻿
 export class UserDepartment {
-	departmentId: string;
-	memberType: number;
+	departmentId: string = "";
+	memberType: number = 0;
 }
 

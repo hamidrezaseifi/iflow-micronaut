@@ -1,7 +1,6 @@
 ﻿import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
-import $ from "jquery";
 
 import { GlobalService } from '../services/global.service';
 
@@ -21,7 +20,7 @@ export class HomeComponent implements OnInit {
 
     @Output() loggingOut = new EventEmitter<boolean>();
 
-		isPresentObs :Observable<boolean> = null;
+		isPresentObs :Observable<boolean>;
 
 		isPresent : boolean = true;
 
@@ -34,7 +33,7 @@ export class HomeComponent implements OnInit {
 
 		showSelectMenuDialog : boolean = false;
 		showedSubMenu : any[] = [];
-		selectedCube :DashboardCube = null;
+		selectedCube :DashboardCube = new DashboardCube;
 
 		showApplyMessageDialog: boolean = false;
 		applyMessage = "-";
@@ -95,7 +94,7 @@ export class HomeComponent implements OnInit {
 
     }
 
-    setCubeText(rowIndex, cubeIndex){
+    setCubeText(rowIndex:any, cubeIndex:any){
       this.translate.get(this.cubes[rowIndex][cubeIndex].menuId).subscribe((res: string) => {
             		            	this.cubes[rowIndex][cubeIndex].text = res;
       });
@@ -139,7 +138,7 @@ export class HomeComponent implements OnInit {
       return false;
     }
 
-    toggleSubMenuShowed(id: string):boolean{
+    toggleSubMenuShowed(id: string){
 
 
       for(var index in this.showedSubMenu){
@@ -151,10 +150,10 @@ export class HomeComponent implements OnInit {
       }
 
       this.showedSubMenu.push({"id" : id, "show" : false});
-
+      return
     }
 
-    selectMenuItemForCube(menu){
+    selectMenuItemForCube(menu: MenuItem){
 
       this.selectedCube.text = menu.label;
       //this.selectedCube.image = menu.image;
@@ -172,7 +171,7 @@ export class HomeComponent implements OnInit {
       //this.selectedCube.image = "/assets/images/no-image.png";
       //this.selectedCube.url = "";
       this.selectedCube.hasMenu = false;
-      this.selectedCube.menu = null;
+      this.selectedCube.menu = new MenuItem;
       this.selectedCube.menuId = "";
 
       this.menusIsChanged = true;

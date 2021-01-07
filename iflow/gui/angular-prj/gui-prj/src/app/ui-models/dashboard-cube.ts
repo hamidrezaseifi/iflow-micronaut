@@ -1,7 +1,7 @@
 import { MenuItem } from './menuitem';
 
 export class DashboardCube {
-  menu: MenuItem = null;
+  menu: MenuItem = new MenuItem;
   appId: string = "";
 	menuId: string = "";
 	text: string = "";

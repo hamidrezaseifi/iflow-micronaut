@@ -3,7 +3,7 @@ import { Workflow } from '../../wf-models';
 
 export class SingleTaskWorkflow {
 
-	workflow: Workflow;
+	workflow: Workflow = new Workflow;
 
 }
 

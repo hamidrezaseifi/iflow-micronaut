@@ -8,24 +8,24 @@ import { ErrorDetail, ErrorResponse } from '../ui-models';
 })
 export class ErrorServiceService {
 
-	errorSubject = new BehaviorSubject<ErrorDetail>(null); 
-	
-	constructor() { 
-		
+	errorSubject = new BehaviorSubject<ErrorDetail>(new ErrorDetail("", ""));
+
+	constructor() {
+
 	}
-	
-    showError(errorMessage :string, errorDetail :string){
-		
+
+  showError(errorMessage :string, errorDetail :string){
+
     	if(errorDetail === undefined){
-    		errorDetail = "";	
+    		errorDetail = "";
     	}
-    	
-    	var err = new ErrorDetail(errorMessage, errorDetail);   	
+
+    	var err = new ErrorDetail(errorMessage, errorDetail);
     	this.errorSubject.next(err);
 	}
-      
-    showErrorResponse(response){
-    	var errResp = new ErrorResponse(response); 
-    	this.showError(errResp.message, errResp.details);   	
-    }
+
+  showErrorResponse(response: any){
+    var errResp = new ErrorResponse(response);
+    this.showError(errResp.message, errResp.details);
+  }
 }

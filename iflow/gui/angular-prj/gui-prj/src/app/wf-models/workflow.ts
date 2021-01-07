@@ -6,34 +6,34 @@ import { WorkflowFile } from '../wf-models';
 import { WorkflowAction } from '../wf-models';
 
 export class Workflow {
-	id: string;
-	status: string;
-	workflowType: WorkflowType;
-	currentStep: WorkflowTypeStep;
-	currentStepId: string;
-	controllerId: string;
-	controllerUser: User;
-	comments: string;
+	id: string = "";
+	status: string = "";
+	workflowType: WorkflowType = new WorkflowType;
+	currentStep: WorkflowTypeStep = new WorkflowTypeStep;
+	currentStepId: string = "";
+	controllerId: string = "";
+	controllerUser: User = new User;
+	comments: string = "";
 
-	assigned: boolean;
-	initializing: boolean;
-	meAssigned: boolean;
-	notAssigned: boolean;
-	currentStepIndex :number;
-	isDone :boolean;
-	isLastStep :boolean;
+	assigned: boolean = false;
+	initializing: boolean = false;
+	meAssigned: boolean = false;
+	notAssigned: boolean = false;
+	currentStepIndex :number = 0;
+	isDone: boolean = false;
+	isLastStep: boolean = false;
 
-	canDone :boolean;
-	canArchive :boolean;
-	canSave :boolean;
-	canAssign :boolean;
-	canEdit :boolean;
+	canDone: boolean = false;
+	canArchive: boolean = false;
+	canSave: boolean = false;
+	canAssign: boolean = false;
+	canEdit: boolean = false;
 
-	loggedUserControllerAndDone :boolean;
+	loggedUserControllerAndDone: boolean = false;
 
 
-	files: WorkflowFile[];
-	actions: WorkflowAction[];
+	files: WorkflowFile[] = [];
+	actions: WorkflowAction[] = [];
 
 
 }
