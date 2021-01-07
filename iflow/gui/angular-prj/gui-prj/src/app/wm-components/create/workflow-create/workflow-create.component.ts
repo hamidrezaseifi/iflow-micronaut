@@ -16,7 +16,6 @@ import { User, GeneralData } from '../../../ui-models';
 export class WorkflowCreateComponent implements OnInit {
 
 	workflowTypes: WorkflowType[] = [];
-	generalDataObs :Observable<GeneralData> = null;
 
 	constructor(
 		    private router: Router,
@@ -25,8 +24,7 @@ export class WorkflowCreateComponent implements OnInit {
 
 	) {
 
-		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
-		this.generalDataObs.subscribe(data => {
+		this.global.currentSessionDataSubject.asObservable().subscribe(data => {
 
 			this.workflowTypes = data.workflow.workflowTypes;
 		});

@@ -13,7 +13,7 @@ import { User, Department, GeneralData, UploadedFile, UploadedResult } from '../
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, WorkflowUploadedFile }
 	from '../../../wf-models';
 import { TestThreeTaskWorkflowSaveRequest } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request';
-import { TestThreeeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
+import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
 
 @Component({
   selector: 'app-create-testthreetask',
@@ -115,7 +115,7 @@ export class CreateTestthreetaskComponent implements OnInit {
 	}
 
 	private subscribeToSearchInitialData(){
-		this.editService.workflowSaveRequestInitSubject.subscribe((data : TestThreeeWorkflowSaveRequestInit) => {
+		this.editService.workflowSaveRequestInitSubject.subscribe((data : TestThreeWorkflowSaveRequestInit) => {
 
 			console.log("set gloabl-data from workflow-create. : ", data);
 			//alert("from app-comp: \n" + JSON.stringify(data));

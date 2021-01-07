@@ -3,7 +3,7 @@
 				<div class="page-title">{{ 'menu-workflow-create' | translate }}</div>
 				<a class="toolbar-link" [routerLink]="['/workflow/list']"><i class="material-icons">list</i></a>
 			</div>
-		
+
 			<div class="workflow-content">
 				<div class="item-row">
 					<div class="item-label">{{ 'common.expiredays' | translate }}</div>
@@ -13,10 +13,9 @@
 				<div class="item-row">
 					<div class="item-label">{{ 'workflow-assignto' | translate }}</div>
 					<div class="item-content">
-						<app-wm-assign-list [users]="(generalDataObs | async)?.company.users" 
-							[departments]="(generalDataObs | async)?.company.departments" [assignedUsers]="assignedUsers" 
+						<app-wm-assign-list [users]="users" [departments]="departments" [assignedUsers]="assignedUsers"
 							(onSelectedAssignChanged)="onUsersSelected($event)">
-							</app-wm-assign-list>
+            </app-wm-assign-list>
 					</div>
 					<div class="clear"></div>
 				</div>
@@ -30,11 +29,11 @@
 				<div class="item-row">
 					<div class="item-label">{{ 'common.attachments' | translate }}</div>
 					<div class="item-content">
-						<app-wm-file-upload [ocrScanningEnabled]="false" [editService]="editService" [showHeaderTitle]="false" 
+						<app-wm-file-upload [ocrScanningEnabled]="false" [editService]="editService" [showHeaderTitle]="false"
 						(onUploadedFilesChanged)="onUploadedFilesChanged($event)" [drawBorder]="true" > </app-wm-file-upload>
 					</div>
 					<div class="clear"></div>
-					
+
 				</div>
 				<div class="item-content workflow-step-button-bar">
 					<button (click)="save()" class="button-bar-button step-button button-save">
@@ -43,14 +42,13 @@
 					</button>
 					<div class="clear"></div>
 				</div>
-				        				
+
 				<div class="item-row" [innerHTML]="debugData">
 				</div>
 
 			</div>
-		    
+
 		</div>
 
 
-		    		 		
-		
+

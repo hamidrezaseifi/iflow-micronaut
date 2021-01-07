@@ -19,13 +19,13 @@ import { User, GeneralData } from '../../ui-models';
 export class WorkflowListComponent implements OnInit {
 	workflowTypes		:WorkflowType[] = [];
 	resultWorlflows		:Workflow[] = [];
-	listInitialData 	:WorkflowListInitialData = new WorkflowListInitialData();
+	listInitialData 	:WorkflowListInitialData = new WorkflowListInitialData;
 
 	displayedColumns = ['workflow-type', 'workflow-current-step', 'workflow-status', 'workflow-assignto', 'workflow-updated', 'actions'];
 
 	showDebug : boolean = false;
 	viewWorkflowModal :boolean = false;
-	viewWorkflowModel :Workflow = null;
+	viewWorkflowModel :Workflow = new Workflow;
 
 
 	constructor(
@@ -52,6 +52,7 @@ export class WorkflowListComponent implements OnInit {
 		}
 		return false;
 	}
+
 	set isMeAssigned(assigned :boolean){
 		if(this.listInitialData && this.listInitialData != null && this.listInitialData.searchFilter != null){
 			this.listInitialData.searchFilter.meAssigned = assigned;
@@ -93,7 +94,7 @@ export class WorkflowListComponent implements OnInit {
 				this.listInitialData = data;
 			}
 			else{
-				this.listInitialData = null;
+				this.listInitialData = new WorkflowListInitialData;
 			}
 		  });
 	}
@@ -121,7 +122,7 @@ export class WorkflowListComponent implements OnInit {
 		);
 	}
 
-	isStatusSelected(wstatus){
+	isStatusSelected(wstatus:string){
 		if(this.listInitialData &&
 				this.listInitialData != null &&
 				this.listInitialData.searchFilter != null &&
@@ -133,7 +134,7 @@ export class WorkflowListComponent implements OnInit {
 
 	}
 
-	toggleStatusSelected(wstatus){
+	toggleStatusSelected(wstatus:string){
 		if(this.listInitialData &&
 				this.listInitialData != null &&
 				this.listInitialData.searchFilter != null &&

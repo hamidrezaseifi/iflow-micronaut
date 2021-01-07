@@ -5,7 +5,7 @@ import { CompanyWorkflowtypeItemOcrSettingPreset } from '../../ui-models';
 
 export class SingleTaskWorkflowSaveRequestInit {
 
-	workflowSaveRequest :SingleTaskWorkflowSaveRequest = null;
+	workflowSaveRequest :SingleTaskWorkflowSaveRequest = new SingleTaskWorkflowSaveRequest;
 
 	ocrPresetList : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
 

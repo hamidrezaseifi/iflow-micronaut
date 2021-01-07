@@ -25,44 +25,30 @@ export class CreateSingletaskComponent implements OnInit {
 
 	workflowListUrl :string = "/workflow/list";
 
-	workflowSaveRequest :SingleTaskWorkflowSaveRequest = null;
-	generalDataObs :Observable<GeneralData> = null;
+	workflowSaveRequest :SingleTaskWorkflowSaveRequest = new SingleTaskWorkflowSaveRequest;
+	users : User[] = [];
+	departments : Department[] = [];
 
 	showDebug : boolean = false;
 
 	uploadedFiles :UploadedFile[] = [];
 
 	get expireDays() : number{
-		if(this.workflowSaveRequest != null){
-			return this.workflowSaveRequest.expireDays;
-		}
-		return 0;
+		return this.workflowSaveRequest.expireDays;
 	}
 	set expireDays(days: number){
-		if(this.workflowSaveRequest != null){
-			this.workflowSaveRequest.expireDays = days;
-		}
-
+		this.workflowSaveRequest.expireDays = days;
 	}
 
 	get assignedUsers() : AssignItem[]{
-		if(this.workflowSaveRequest != null){
-			return this.workflowSaveRequest.assigns;
-		}
-		return [];
+		return this.workflowSaveRequest.assigns;
 	}
 
 	get comments() : string{
-		if(this.workflowSaveRequest != null){
-			return this.workflowSaveRequest.comments;
-		}
-		return "";
+		return this.workflowSaveRequest.comments;
 	}
 	set comments(value: string){
-		if(this.workflowSaveRequest != null){
-			this.workflowSaveRequest.comments = value;
-		}
-
+		this.workflowSaveRequest.comments = value;
 	}
 
 	get debugData() :string{
@@ -72,7 +58,7 @@ export class CreateSingletaskComponent implements OnInit {
 
 
 	constructor(
-		    private router: Router,
+		  private router: Router,
 			private global: GlobalService,
 			public  translate: TranslateService,
 			public  editService :SingleTaskWorkflowEditService,
@@ -86,7 +72,20 @@ export class CreateSingletaskComponent implements OnInit {
 		    	this.loadInitialData();
 			}
 		});
-		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+
+    this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
+                                                                                  if(generalData != null){
+                                                                                    this.users = generalData.company.users;
+                                                                                    this.departments = generalData.company.departments;
+
+                                                                                  }
+                                                                                  else{
+                                                                                    console.log("generaldata in topbar is null");
+
+                                                                                  }
+
+                                                                              });
+
 	}
 
 	ngOnInit() {
@@ -118,16 +117,13 @@ export class CreateSingletaskComponent implements OnInit {
 		this.editService.workflowSaveRequestInitSubject.subscribe((data : SingleTaskWorkflowSaveRequestInit) => {
 
 			console.log("set gloabl-data from workflow-create. : ", data);
-			//alert("from app-comp: \n" + JSON.stringify(data));
 
 			if(data && data !== null){
 				this.workflowSaveRequest = data.workflowSaveRequest;
 
 			}
-			else{
-				this.workflowSaveRequest = null;
-			}
-		  });
+
+		});
 	}
 
 	save(){

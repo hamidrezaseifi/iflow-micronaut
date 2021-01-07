@@ -17,11 +17,11 @@ import { WorkflowSearchFilter, WorkflowListInitialData, Workflow, WorkflowSearch
 })
 export class WorkflowSearchService extends HttpErrorResponseHelper {
 
-	public searchInitialDataSubject: BehaviorSubject<WorkflowListInitialData> = new BehaviorSubject<WorkflowListInitialData>(null);
+	public searchInitialDataSubject: BehaviorSubject<WorkflowListInitialData> = new BehaviorSubject<WorkflowListInitialData>(new WorkflowListInitialData);
 
 	loadInitialUrl :string = HttpHepler.dataServer + "/workflow/data/general/initsearch";
 	searchUrl :string = HttpHepler.dataServer + "/workflow/data/general/search";
-	listInitialData :WorkflowListInitialData = null;
+	listInitialData :WorkflowListInitialData = new WorkflowListInitialData;
 
 	constructor(
 			protected http: HttpClient,
@@ -35,42 +35,40 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 	}
 
 
-    loadInitialData() {
+  loadInitialData() {
 
-    	this.loadingService.showLoading();
+    this.loadingService.showLoading();
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-    	  this.http.post(this.loadInitialUrl, null, httpOptions).subscribe(
-		        (initialData :WorkflowListInitialData) => {
+    this.http.post<WorkflowListInitialData>(this.loadInitialUrl, null, httpOptions).subscribe(
+        (initialData :WorkflowListInitialData) => {
 
-		            console.log("GET successful search inital data", initialData);
+            console.log("GET successful search inital data", initialData);
 
-		            this.listInitialData = <WorkflowListInitialData> JSON.parse(JSON.stringify(initialData));
+            this.listInitialData = <WorkflowListInitialData> JSON.parse(JSON.stringify(initialData));
 
-		            this.searchInitialDataSubject.next(initialData);
+            this.searchInitialDataSubject.next(initialData);
 
 
-		        },
-		        response => {
-		        	console.log("Error in read search inital data", response);
-		        	this.processErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
-		        	this.searchInitialDataSubject.complete();
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+        },
+        response => {
+          console.log("Error in read search inital data", response);
+          this.processErrorResponse(response);
+          this.loadingService.hideLoading();
+        },
+        () => {
+          this.searchInitialDataSubject.complete();
+          this.loadingService.hideLoading();
+        }
+    );
 
-    }
+  }
 
 	search(searchFilter: WorkflowSearchFilter){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
-
-
-		return this.http.post(this.searchUrl, searchFilter, httpOptions);
+	  const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+		return this.http.post<WorkflowSearchResult>(this.searchUrl, searchFilter, httpOptions);
 
 	};
 

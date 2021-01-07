@@ -5,8 +5,6 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { Observable, throwError , Subscription } from 'rxjs';
-import { Message } from '@stomp/stompjs';
-import { GlobalSocket } from '../services/global-socket';
 
 import { GlobalService } from '../services/global.service';
 import { InvoiceWorkflowEditService } from '../services/workflow/invoice/invoice-workflow-edit.service';
@@ -29,36 +27,32 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	paymentamountOtherTypesTitle :string = "";
 	paymentamountTypePaymentTitle :string = "";
 
-	private subscription: Subscription;
-	private messages: Observable<Message>;
-	public subscribed: boolean;
+	subscribed: boolean = false;
 
 	uploadedFiles :UploadedFile[] = [];
 
 	listening :boolean = false;
 
 	scanningFileIndex :number = -1;
-	scanningFile :UploadedFile = null;
+	scanningFile :UploadedFile = new UploadedFile;
   scanedWordes : OcrWord[] = [];
 
 	showOcrDetailsDialog :boolean = false;
 
-	scannedSelectedValues :string[] = [];
+	scannedSelectedValues :{[id: string]: string} = {};
 
-	ocrResultMessage : any = null;
+	ocrResultMessage : any = {};
 
-  webSocket: WebSocket = null;
+  webSocket: WebSocket | null = null;
 
 	invoiceEditForm: FormGroup;
 
 	workflowListUrl :string = "/workflow/list";
 
-	workflowSaveRequest :InvoiceWorkflowSaveRequest = new InvoiceWorkflowSaveRequest();
+	workflowSaveRequest :InvoiceWorkflowSaveRequest | null = null;
 
   ocrSettingPresets : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
-  selectedOcrSettingPreset : CompanyWorkflowtypeItemOcrSettingPreset = null;
-
-	//generalDataObs :Observable<GeneralData> = null;
+  selectedOcrSettingPreset : CompanyWorkflowtypeItemOcrSettingPreset = new CompanyWorkflowtypeItemOcrSettingPreset;
 
   generalData : GeneralData = new GeneralData;
 
@@ -143,11 +137,33 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			protected http: HttpClient,
 			protected errorService: ErrorServiceService,
       protected formBuilder: FormBuilder,
-      protected dateAdapter: DateAdapter<Date>,
-      protected globalSocket: GlobalSocket,
+      protected dateAdapter: DateAdapter<Date>
 	) {
 
 		this.dateAdapter.setLocale('de');
+
+		this.invoiceEditForm = this.formBuilder.group({
+			expireDays: [10, Validators.required],
+
+			comments: [''],
+
+			sender: ['', Validators.required],
+			registerNumber: ['', Validators.required],
+			invocieDate: [new Date(), Validators.required],
+			partnerCode: ['', Validators.required],
+			vendorNumber: ['', Validators.required],
+			vendorName: ['', Validators.required],
+			isDirectDebitPermission: [false],
+			invoiceType: [InvoiceType.NO_TYPE, [InvoiceTypeControllValidator]],
+
+			discountEnterDate: [new Date(), Validators.required],
+			discountDeadline: [0, Validators.required],
+			discountRate: [0, Validators.required],
+			discountDate: ["", Validators.required],
+
+			paymentAmount: [0, Validators.required],
+
+    });
 
 		for(var o in InvoiceType){
 			var str = o + "";
@@ -180,30 +196,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-
-		this.invoiceEditForm = this.formBuilder.group({
-			expireDays: [10, Validators.required],
-
-			comments: [''],
-
-			sender: ['', Validators.required],
-			registerNumber: ['', Validators.required],
-			invocieDate: [new Date(), Validators.required],
-			partnerCode: ['', Validators.required],
-			vendorNumber: ['', Validators.required],
-			vendorName: ['', Validators.required],
-			isDirectDebitPermission: [false],
-			invoiceType: [InvoiceType.NO_TYPE, [InvoiceTypeControllValidator]],
-
-			discountEnterDate: [new Date(), Validators.required],
-			discountDeadline: [0, Validators.required],
-			discountRate: [0, Validators.required],
-			discountDate: ["", Validators.required],
-
-			paymentAmount: [0, Validators.required],
-
-    });
-
 
 	}
 
@@ -318,7 +310,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
     this.webSocket.onclose = function() {
        _this.setConnected(false);
-       _this.webSocket = null;
        console.log("OCR Connection is closed...");
     };
 
@@ -338,14 +329,13 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
     }
 
     this.webSocket.close();
-    this.webSocket = null;
 
 	  this.setConnected(false);
 	  console.log("OCR Disconnected");
 
 	}
 
-	private setConnected(subscribed) {
+	private setConnected(subscribed: boolean) {
 		this.subscribed = subscribed;
 
 	}
@@ -353,21 +343,24 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	private setPageTitle(){
 		var pageLabelId = "invoice-assignview-title";
 
-		if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 1){
-			pageLabelId = "invoice-assignview-title";
-		}
+    if(this.workflowSaveRequest){
+      if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 1){
+        pageLabelId = "invoice-assignview-title";
+      }
 
-		if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 2){
-			pageLabelId = "invoice-testingview-title";
-		}
+      if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 2){
+        pageLabelId = "invoice-testingview-title";
+      }
 
-		if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 3){
-			pageLabelId = "invoice-releaseview-title";
-		}
+      if(this.workflowSaveRequest.workflow.workflow.currentStepIndex === 3){
+        pageLabelId = "invoice-releaseview-title";
+      }
 
-        this.translate.get(pageLabelId).subscribe((res: string) => {
-        	this.pageTitle = res;
-        });
+    }
+
+    this.translate.get(pageLabelId).subscribe((res: string) => {
+      this.pageTitle = res;
+    });
 
 	}
 
@@ -406,40 +399,48 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 	setFormControlValues(){
 
-		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
+    if(this.workflowSaveRequest){
+      this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
-		this.workflowSaveRequest.expireDays = this.invoiceEditForm.controls["expireDays"].value;
+      this.workflowSaveRequest.expireDays = this.invoiceEditForm.controls["expireDays"].value;
 
-		this.workflowSaveRequest.comments = this.invoiceEditForm.controls["comments"].value;
+      this.workflowSaveRequest.comments = this.invoiceEditForm.controls["comments"].value;
 
-		this.workflowSaveRequest.workflow.sender = this.invoiceEditForm.controls["sender"].value;
-		this.workflowSaveRequest.workflow.registerNumber = this.invoiceEditForm.controls["registerNumber"].value;
-		this.workflowSaveRequest.workflow.invocieDate = formatDate(this.invoiceEditForm.controls["invocieDate"].value, 'dd.mm.yyyy');
-		this.workflowSaveRequest.workflow.partnerCode = this.invoiceEditForm.controls["partnerCode"].value;
-		this.workflowSaveRequest.workflow.vendorNumber = this.invoiceEditForm.controls["vendorNumber"].value;
-		this.workflowSaveRequest.workflow.vendorName = this.invoiceEditForm.controls["vendorName"].value;
-		this.workflowSaveRequest.workflow.isDirectDebitPermission = this.invoiceEditForm.controls["isDirectDebitPermission"].value;
-		this.workflowSaveRequest.workflow.invoiceType = this.invoiceEditForm.controls["invoiceType"].value;
-		this.workflowSaveRequest.workflow.discountEnterDate = formatDate(this.invoiceEditForm.controls["discountEnterDate"].value, 'dd.mm.yyyy');
-		this.workflowSaveRequest.workflow.discountDeadline = this.invoiceEditForm.controls["discountDeadline"].value;
-		this.workflowSaveRequest.workflow.discountRate = this.invoiceEditForm.controls["discountRate"].value;
-		this.workflowSaveRequest.workflow.discountDate = this.invoiceEditForm.controls["discountDate"].value;
-		this.workflowSaveRequest.workflow.paymentAmount = this.invoiceEditForm.controls["paymentAmount"].value;
+      this.workflowSaveRequest.workflow.sender = this.invoiceEditForm.controls["sender"].value;
+      this.workflowSaveRequest.workflow.registerNumber = this.invoiceEditForm.controls["registerNumber"].value;
+      this.workflowSaveRequest.workflow.invocieDate = formatDate(this.invoiceEditForm.controls["invocieDate"].value, 'dd.mm.yyyy');
+      this.workflowSaveRequest.workflow.partnerCode = this.invoiceEditForm.controls["partnerCode"].value;
+      this.workflowSaveRequest.workflow.vendorNumber = this.invoiceEditForm.controls["vendorNumber"].value;
+      this.workflowSaveRequest.workflow.vendorName = this.invoiceEditForm.controls["vendorName"].value;
+      this.workflowSaveRequest.workflow.isDirectDebitPermission = this.invoiceEditForm.controls["isDirectDebitPermission"].value;
+      this.workflowSaveRequest.workflow.invoiceType = this.invoiceEditForm.controls["invoiceType"].value;
+      this.workflowSaveRequest.workflow.discountEnterDate = formatDate(this.invoiceEditForm.controls["discountEnterDate"].value, 'dd.mm.yyyy');
+      this.workflowSaveRequest.workflow.discountDeadline = this.invoiceEditForm.controls["discountDeadline"].value;
+      this.workflowSaveRequest.workflow.discountRate = this.invoiceEditForm.controls["discountRate"].value;
+      this.workflowSaveRequest.workflow.discountDate = this.invoiceEditForm.controls["discountDate"].value;
+      this.workflowSaveRequest.workflow.paymentAmount = this.invoiceEditForm.controls["paymentAmount"].value;
+
+    }
 	}
 
 
 	get forms() { return this.invoiceEditForm.controls; }
 
 	onUsersSelected(assigns: AssignItem[]) {
-		this.workflowSaveRequest.assigns = [];
 
-		for(var item in assigns){
-			var assign = new AssignItem;
-			assign.itemId = assigns[item].itemId;
-			assign.itemType = assigns[item].itemType;
+	  if(this.workflowSaveRequest){
 
-			this.workflowSaveRequest.assigns.push(assign);
-		}
+      this.workflowSaveRequest.assigns = [];
+
+      for(var item in assigns){
+        var assign = new AssignItem;
+        assign.itemId = assigns[item].itemId;
+        assign.itemType = assigns[item].itemType;
+
+        this.workflowSaveRequest.assigns.push(assign);
+      }
+	  }
+
 
 	}
 
@@ -465,7 +466,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 		if(this.scannedSelectedValues["invoice-paymentamount"] && this.scannedSelectedValues["invoice-paymentamount"] != ""){
 			var foundPayment = this.scannedSelectedValues["invoice-paymentamount"].replace(/\./g, "").replace(",", ".");
 
-			if(isNaN(foundPayment) === false){
+			if(isNaN(Number(foundPayment)) === false){
 				var foundPaymentFloat = parseFloat(foundPayment);
 				this.invoiceEditForm.controls["paymentAmount"].setValue(foundPaymentFloat);
 			}

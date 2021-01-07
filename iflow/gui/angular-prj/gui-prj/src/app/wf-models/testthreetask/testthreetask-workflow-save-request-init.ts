@@ -3,9 +3,9 @@ import { TestThreeTaskWorkflowSaveRequest } from './testthreetask-workflow-save-
 
 import { CompanyWorkflowtypeItemOcrSettingPreset } from '../../ui-models';
 
-export class TestThreeeWorkflowSaveRequestInit {
+export class TestThreeWorkflowSaveRequestInit {
 
-	workflowSaveRequest :TestThreeTaskWorkflowSaveRequest = null;
+	workflowSaveRequest :TestThreeTaskWorkflowSaveRequest = new TestThreeTaskWorkflowSaveRequest;
 
 	ocrPresetList : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
 

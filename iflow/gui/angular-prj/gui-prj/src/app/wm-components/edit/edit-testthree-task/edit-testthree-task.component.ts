@@ -18,7 +18,7 @@ import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, Wo
 import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
 import { TestThreeTaskWorkflowSaveRequest } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request';
-import { TestThreeeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
+import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
 
 @Component({
   selector: 'app-edit-testthree-task',
@@ -170,7 +170,7 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 		this.loadingService.showLoading();
 		this.editService.loadEditInitialData(this.workflowIdentity).subscribe(
-	        (initialData :TestThreeeWorkflowSaveRequestInit) => {
+	        (initialData :TestThreeWorkflowSaveRequestInit) => {
 
 				console.log("set inital-data from workflow-edit. : ", initialData);
 				//alert("from app-comp: \n" + JSON.stringify(data));

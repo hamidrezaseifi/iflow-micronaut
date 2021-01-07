@@ -5,7 +5,7 @@ import { CompanyWorkflowtypeItemOcrSettingPreset } from '../../ui-models';
 
 export class InvoiceWorkflowSaveRequestInit {
 
-	workflowSaveRequest :InvoiceWorkflowSaveRequest = null;
+	workflowSaveRequest :InvoiceWorkflowSaveRequest = new InvoiceWorkflowSaveRequest;
 
 	ocrPresetList : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
 

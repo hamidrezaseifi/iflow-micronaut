@@ -5,21 +5,20 @@ import { Workflow, WorkflowType, WorkflowTypeStep, WorkflowFile, WorkflowAction,
 export class InvoiceWorkflow  {
 
   workflow: Workflow = new Workflow;
-	sender: string;
-	registerNumber: string;
-	invocieDate: string;
-	partnerCode: string;
-	vendorNumber: string;
-	vendorName: string;
-	isDirectDebitPermission: boolean;
-	invoiceType: InvoiceType;
+	sender: string = "";
+	registerNumber: string = "";
+	invocieDate: string = "";
+	partnerCode: string = "";
+	vendorNumber: string = "";
+	vendorName: string = "";
+	isDirectDebitPermission: boolean = false;
+	invoiceType: InvoiceType = InvoiceType.NO_TYPE;
+	discountEnterDate: string = "";
+	discountDeadline: number = 0;
+	discountRate: number = 0;
+	discountDate: string = "";
 
-	discountEnterDate: string;
-	discountDeadline: number;
-	discountRate: number;
-	discountDate: string;
-
-	paymentAmount: number;
+	paymentAmount: number = 0;
 
 }
 

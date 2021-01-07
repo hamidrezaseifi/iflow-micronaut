@@ -15,7 +15,7 @@ import { HttpErrorResponseHelper } from '../../../helper/http-error-response-hel
 import { WorkflowProcessCommand, TestThreeTaskWorkflow, AssignItem, FileTitle, AssignType } from '../../../wf-models';
 
 import { TestThreeTaskWorkflowSaveRequest } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request';
-import { TestThreeeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
+import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
 
 
 
@@ -24,9 +24,10 @@ import { TestThreeeWorkflowSaveRequestInit } from '../../../wf-models/testthreet
 })
 export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper implements WorkflowEditInterfaceService {
 
-	public workflowSaveRequestInitSubject: BehaviorSubject<TestThreeeWorkflowSaveRequestInit> = new BehaviorSubject<TestThreeeWorkflowSaveRequestInit>(null);
+	public workflowSaveRequestInitSubject: BehaviorSubject<TestThreeWorkflowSaveRequestInit> =
+	  new BehaviorSubject<TestThreeWorkflowSaveRequestInit>(TestThreeWorkflowSaveRequestInit);
 
-	workflowSaveRequestInit :TestThreeeWorkflowSaveRequestInit = null;
+	workflowSaveRequestInit :TestThreeWorkflowSaveRequestInit = new TestThreeWorkflowSaveRequestInit;
 
 	getInitCreateUrl() :string{
 		return HttpHepler.dataServer + "/workflow/testthreetask/data/initcreate";
@@ -89,12 +90,12 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-      this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
-          (initialData :TestThreeeWorkflowSaveRequestInit) => {
+      this.http.post<TestThreeWorkflowSaveRequestInit>(this.getInitCreateUrl(), null, httpOptions).subscribe(
+          (initialData :TestThreeWorkflowSaveRequestInit) => {
 
               console.log("GET successful edit inital data", initialData);
 
-              this.workflowSaveRequestInit = <TestThreeeWorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
+              this.workflowSaveRequestInit = <TestThreeWorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
 
               this.workflowSaveRequestInitSubject.next(initialData);
 
@@ -139,34 +140,34 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	createWorkflow(workflowSaveRequest :TestThreeTaskWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 
 
 	saveWorkflow(workflowSaveRequest :TestThreeTaskWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 
 	doneWorkflow(workflowSaveRequest :TestThreeTaskWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 
 	archiveWorkflow(workflowSaveRequest :TestThreeTaskWorkflow){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 

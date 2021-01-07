@@ -22,9 +22,10 @@ import { SingleTaskWorkflowSaveRequestInit } from '../../../wf-models/singletask
 })
 export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper implements WorkflowEditInterfaceService {
 
-	public workflowSaveRequestInitSubject: BehaviorSubject<SingleTaskWorkflowSaveRequestInit> = new BehaviorSubject<SingleTaskWorkflowSaveRequestInit>(null);
+	public workflowSaveRequestInitSubject: BehaviorSubject<SingleTaskWorkflowSaveRequestInit> =
+	  new BehaviorSubject<SingleTaskWorkflowSaveRequestInit>(new SingleTaskWorkflowSaveRequestInit);
 
-	workflowSaveRequestInit :SingleTaskWorkflowSaveRequestInit = null;
+	workflowSaveRequestInit :SingleTaskWorkflowSaveRequestInit = new SingleTaskWorkflowSaveRequestInit;
 
 	getInitCreateUrl() :string{
 		return HttpHepler.dataServer + "/workflow/singletask/data/initcreate";
@@ -82,39 +83,34 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 	}
 
 	loadCreateInitialData(){
-    	this.loadingService.showLoading();
+    this.loadingService.showLoading();
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-      this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
-          (initialData :SingleTaskWorkflowSaveRequestInit) => {
-
-              console.log("GET successful edit inital data", initialData);
-
-              this.workflowSaveRequestInit = <SingleTaskWorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
-
-              this.workflowSaveRequestInitSubject.next(initialData);
-
-
-          },
-          response => {
-            console.log("Error in read edit inital data", response);
-            this.processErrorResponse(response);
-            this.loadingService.hideLoading();
-          },
-          () => {
-            this.workflowSaveRequestInitSubject.complete();
-            this.loadingService.hideLoading();
-          }
-      );
+    this.http.post<SingleTaskWorkflowSaveRequestInit>(this.getInitCreateUrl(), null, httpOptions).subscribe(
+        (initialData :SingleTaskWorkflowSaveRequestInit) => {
+            console.log("GET successful edit inital data", initialData);
+            this.workflowSaveRequestInit = <SingleTaskWorkflowSaveRequestInit> JSON.parse(JSON.stringify(initialData));
+            this.workflowSaveRequestInitSubject.next(initialData);
+        },
+        response => {
+          console.log("Error in read edit inital data", response);
+          this.processErrorResponse(response);
+          this.loadingService.hideLoading();
+        },
+        () => {
+          this.workflowSaveRequestInitSubject.complete();
+          this.loadingService.hideLoading();
+        }
+    );
 
 	}
 
 	loadEditInitialData(id: string){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getInitEditUrl(id), new HttpParams(), httpOptions);
+    return this.http.post(this.getInitEditUrl(id), new HttpParams(), httpOptions);
 
 	}
 
@@ -153,17 +149,17 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	doneWorkflow(workflowSaveRequest :SingleTaskWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 
 	archiveWorkflow(workflowSaveRequest :SingleTaskWorkflow){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
+    return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
 	}
 

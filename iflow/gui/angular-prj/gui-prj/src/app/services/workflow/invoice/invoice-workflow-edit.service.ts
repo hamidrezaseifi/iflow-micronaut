@@ -25,9 +25,10 @@ import { HttpErrorResponseHelper } from '../../../helper/http-error-response-hel
 })
 export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implements WorkflowEditInterfaceService {
 
-	public workflowSaveRequestInitSubject: BehaviorSubject<InvoiceWorkflowSaveRequestInit> = new BehaviorSubject<InvoiceWorkflowSaveRequestInit>(null);
+	public workflowSaveRequestInitSubject: BehaviorSubject<InvoiceWorkflowSaveRequestInit> =
+	  new BehaviorSubject<InvoiceWorkflowSaveRequestInit>(new InvoiceWorkflowSaveRequestInit);
 
-	workflowSaveRequestInit :InvoiceWorkflowSaveRequestInit = null;
+	workflowSaveRequestInit :InvoiceWorkflowSaveRequestInit = new InvoiceWorkflowSaveRequestInit;
 
 	getInitCreateUrl() :string{
 		return HttpHepler.dataServer + "/workflow/invoice/data/initcreate";
@@ -84,7 +85,7 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 
       console.log("InitCreateUrl: " + this.getInitCreateUrl());
 
-      this.http.post(this.getInitCreateUrl(), null, httpOptions).subscribe(
+      this.http.post<InvoiceWorkflowSaveRequestInit>(this.getInitCreateUrl(), null, httpOptions).subscribe(
           (initialData :InvoiceWorkflowSaveRequestInit) => {
 
               console.log("GET successful edit inital data", initialData);
@@ -110,15 +111,15 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 
 	loadEditInitialData(id: string){
 
-      const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-      return this.http.post(this.getInitEditUrl(id), null, httpOptions);
+    return this.http.post(this.getInitEditUrl(id), null, httpOptions);
 
 	}
 
 	uploadFiles(fileTitles : FileTitle[]){
 
-	    const formData = new FormData();
+	  const formData = new FormData();
 
 		for (var i = 0; i < fileTitles.length; i++) {
 		    formData.append('files', fileTitles[i].file);
@@ -126,64 +127,57 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 		    formData.append('wids', i + "");
 		}
 
-        const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
 
-	    return this.http.post(this.getUploadFileUrl(), formData, httpFileUploadOptions);
+    return this.http.post(this.getUploadFileUrl(), formData, httpFileUploadOptions);
 
 	}
 
 	uploadTempFiles(ocrScanFile : File){
 
-	    const formData = new FormData();
-	    formData.append('file', ocrScanFile);
-	    formData.append('wids', "0");
+    const formData = new FormData();
+    formData.append('file', ocrScanFile);
+    formData.append('wids', "0");
 
+    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
 
-        const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
-
-	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
-
+    return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
 	}
 
 
 	createWorkflow(workflowSaveRequest :InvoiceWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
-
+    return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	saveWorkflow(workflowSaveRequest :InvoiceWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
-
+    return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	doneWorkflow(workflowSaveRequest :InvoiceWorkflowSaveRequest){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
-
+    return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	archiveWorkflow(workflowSaveRequest :InvoiceWorkflow){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
-
+    return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	processDocumentWords(message :any){
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
 
-        return this.http.post(this.getProcessDocumentWordsUrl() , message, httpOptions);
-
+    return this.http.post(this.getProcessDocumentWordsUrl() , message, httpOptions);
 	}
 
 }

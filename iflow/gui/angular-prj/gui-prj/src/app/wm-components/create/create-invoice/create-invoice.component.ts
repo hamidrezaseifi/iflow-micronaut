@@ -10,7 +10,6 @@ import { InvoiceWorkflowEditService } from '../../../services/workflow/invoice/i
 import { LoadingServiceService } from '../../../services/loading-service.service';
 import { ErrorServiceService } from '../../../services/error-service.service';
 import { InvoiceBaseComponent } from '../../invoice-base.component';
-import { GlobalSocket } from '../../../services/global-socket';
 
 import { User, Department, GeneralData, OcrWord, UploadedFile, UploadedResult } from '../../../ui-models';
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, InvoiceType, WorkflowUploadedFile }
@@ -35,16 +34,15 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 	}
 
 	constructor(
-		    protected router: Router,
+		  protected router: Router,
 			protected global: GlobalService,
 			protected translate: TranslateService,
 			public    editService :InvoiceWorkflowEditService,
 			protected loadingService: LoadingServiceService,
 			protected http: HttpClient,
 			protected errorService: ErrorServiceService,
-		  	protected formBuilder: FormBuilder,
-		  	protected dateAdapter: DateAdapter<Date>,
-		  	protected globalSocket: GlobalSocket,
+      protected formBuilder: FormBuilder,
+      protected dateAdapter: DateAdapter<Date>
 	) {
 		super(router,
 				global,
@@ -53,9 +51,8 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 				loadingService,
 				http,
 				errorService,
-			  	formBuilder,
-			  	dateAdapter,
-			  	globalSocket);
+        formBuilder,
+        dateAdapter);
 
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
@@ -113,29 +110,32 @@ export class CreateInvoiceComponent extends InvoiceBaseComponent implements OnIn
 
 	save(){
 
-		this.setFormControlValues();
+    if(this.workflowSaveRequest){
+      this.setFormControlValues();
 
-		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
+      this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
-		this.loadingService.showLoading();
+      this.loadingService.showLoading();
 
-        this.editService.createWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {
-		            console.log("Create workflow result", result);
+          this.editService.createWorkflow(this.workflowSaveRequest).subscribe(
+              (result) => {
+                  console.log("Create workflow result", result);
 
-		            this.router.navigate([this.workflowListUrl]);
-		        },
-		        response => {
-		        	console.log("Error in create workflow", response);
+                  this.router.navigate([this.workflowListUrl]);
+              },
+              response => {
+                console.log("Error in create workflow", response);
 
-		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
+                this.errorService.showErrorResponse(response);
+                this.loadingService.hideLoading();
+              },
+              () => {
 
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+                this.loadingService.hideLoading();
+              }
+          );
+
+    }
 
 	}
 
