@@ -73,14 +73,23 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 		    		this.propertyLabels[key] = res;
 		    		this.isEditing[key] = false;
 		    		this.editedValues[key] = "";
-		        });
+		      });
 	    	}
 	    }
 
 	}
 
-	@Input('editedValues') editedValues :Record<string,string> = {};
+	@Input() editedValues :Record<string,string> = {};
+	@Output() editedValuesChange = new EventEmitter<Record<string,string>>();
 
+	updateEditedValues(){
+	  this.editedValuesChange.emit(this.editedValues);
+	}
+
+	editedValuesChanged(value:string, key:string){
+	  this.editedValues[key] = value;
+	  this.updateEditedValues();
+	}
 
 	pdfZoom :any = 'page-fit';
 	showAllPages :boolean = true;

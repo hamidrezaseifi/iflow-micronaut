@@ -32,8 +32,6 @@ export class EditTestthreeTaskComponent extends EditWorkflowBaseComponent implem
 
 	workflowIdentity :string = "";
 
-	workflowEditForm: FormGroup;
-
 	workflowListUrl :string = "/workflow/list";
 
 	workflowSaveRequest :TestThreeTaskWorkflowSaveRequest = new TestThreeTaskWorkflowSaveRequest();
@@ -110,15 +108,13 @@ export class EditTestthreeTaskComponent extends EditWorkflowBaseComponent implem
       private dateAdapter: DateAdapter<Date>,
       private route: ActivatedRoute,
 	) {
-    super(global);
+    super(global, formBuilder.group({
+                  			expireDays: [10, Validators.required],
 
-		this.workflowEditForm = this.formBuilder.group({
-			expireDays: [10, Validators.required],
+                  			controllerIdentity: ['', Validators.required],
+                  			comments: [''],
 
-			controllerIdentity: ['', Validators.required],
-			comments: [''],
-
-	  });
+                  	  }));
 
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {

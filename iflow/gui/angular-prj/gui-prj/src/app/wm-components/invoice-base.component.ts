@@ -47,8 +47,6 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 
   webSocket: WebSocket | null = null;
 
-	invoiceEditForm: FormGroup;
-
 	workflowListUrl :string = "/workflow/list";
 
 	workflowSaveRequest :InvoiceWorkflowSaveRequest | null = null;
@@ -63,12 +61,12 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 	calcDiscountDate(){
 		//alert("calcDiscountDate ---");
 
-		var enterDate :Date = this.invoiceEditForm.controls["discountEnterDate"].value;
-		var deadline : number= this.invoiceEditForm.controls["discountDeadline"].value;
+		var enterDate :Date = this.workflowEditForm.controls["discountEnterDate"].value;
+		var deadline : number= this.workflowEditForm.controls["discountDeadline"].value;
 
 		if(enterDate != null && deadline != null && deadline > 0){
 			var date = new Date(enterDate.getFullYear(), enterDate.getMonth(), enterDate.getDate() + deadline);
-			this.invoiceEditForm.controls["discountDate"].setValue( formatDate(date, 'dd.mm.yyyy') );
+			this.workflowEditForm.controls["discountDate"].setValue( formatDate(date, 'dd.mm.yyyy') );
 		}
 
 	}
@@ -105,10 +103,10 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 	}
 
 	invoiceDateChanges(){
-		var enterDate :Date = this.invoiceEditForm.controls["discountEnterDate"].value;
+		var enterDate :Date = this.workflowEditForm.controls["discountEnterDate"].value;
 
-		if(enterDate === null && this.invoiceEditForm.controls["invocieDate"].value !== null){
-			this.invoiceEditForm.controls["discountEnterDate"].setValue( this.invoiceEditForm.controls["invocieDate"].value );
+		if(enterDate === null && this.workflowEditForm.controls["invocieDate"].value !== null){
+			this.workflowEditForm.controls["discountEnterDate"].setValue( this.workflowEditForm.controls["invocieDate"].value );
 		}
 	}
 
@@ -125,7 +123,7 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 	}
 
 	isPaymentInvoiceType() :boolean{
-		return this.invoiceEditForm.controls["invoiceType"].value === "PAYMENT";
+		return this.workflowEditForm.controls["invoiceType"].value === "PAYMENT";
 	}
 
 	constructor(
@@ -139,31 +137,29 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
       protected formBuilder: FormBuilder,
       protected dateAdapter: DateAdapter<Date>
 	) {
-    super(global);
+    super(global, formBuilder.group({
+                  			expireDays: [10, Validators.required],
+
+                  			comments: [''],
+
+                  			sender: ['', Validators.required],
+                  			registerNumber: ['', Validators.required],
+                  			invocieDate: [new Date(), Validators.required],
+                  			partnerCode: ['', Validators.required],
+                  			vendorNumber: ['', Validators.required],
+                  			vendorName: ['', Validators.required],
+                  			isDirectDebitPermission: [false],
+                  			invoiceType: [InvoiceType.NO_TYPE, [InvoiceTypeControlValidator]],
+
+                  			discountEnterDate: [new Date(), Validators.required],
+                  			discountDeadline: [0, Validators.required],
+                  			discountRate: [0, Validators.required],
+                  			discountDate: ["", Validators.required],
+
+                  			paymentAmount: [0, Validators.required],
+
+                      }));
 		this.dateAdapter.setLocale('de');
-
-		this.invoiceEditForm = this.formBuilder.group({
-			expireDays: [10, Validators.required],
-
-			comments: [''],
-
-			sender: ['', Validators.required],
-			registerNumber: ['', Validators.required],
-			invocieDate: [new Date(), Validators.required],
-			partnerCode: ['', Validators.required],
-			vendorNumber: ['', Validators.required],
-			vendorName: ['', Validators.required],
-			isDirectDebitPermission: [false],
-			invoiceType: [InvoiceType.NO_TYPE, [InvoiceTypeControlValidator]],
-
-			discountEnterDate: [new Date(), Validators.required],
-			discountDeadline: [0, Validators.required],
-			discountRate: [0, Validators.required],
-			discountDate: ["", Validators.required],
-
-			paymentAmount: [0, Validators.required],
-
-    });
 
 		for(var o in InvoiceType){
 			var str = o + "";
@@ -355,23 +351,23 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 				this.workflowSaveRequest.workflow.discountEnterDate = this.workflowSaveRequest.workflow.invocieDate;
 			}
 
-			this.invoiceEditForm.controls["expireDays"].setValue(this.workflowSaveRequest.expireDays);
+			this.workflowEditForm.controls["expireDays"].setValue(this.workflowSaveRequest.expireDays);
 
-			this.invoiceEditForm.controls["comments"].setValue(this.workflowSaveRequest.comments);
+			this.workflowEditForm.controls["comments"].setValue(this.workflowSaveRequest.comments);
 
-			this.invoiceEditForm.controls["sender"].setValue(this.workflowSaveRequest.workflow.sender);
-			this.invoiceEditForm.controls["registerNumber"].setValue(this.workflowSaveRequest.workflow.registerNumber);
-			this.invoiceEditForm.controls["invocieDate"].setValue(parseDate(this.workflowSaveRequest.workflow.invocieDate, 'dd.mm.yyyy'));
-			this.invoiceEditForm.controls["partnerCode"].setValue(this.workflowSaveRequest.workflow.partnerCode);
-			this.invoiceEditForm.controls["vendorNumber"].setValue(this.workflowSaveRequest.workflow.vendorNumber);
-			this.invoiceEditForm.controls["vendorName"].setValue(this.workflowSaveRequest.workflow.vendorName);
-			this.invoiceEditForm.controls["isDirectDebitPermission"].setValue(this.workflowSaveRequest.workflow.isDirectDebitPermission);
-			this.invoiceEditForm.controls["invoiceType"].setValue(this.workflowSaveRequest.workflow.invoiceType);
-			this.invoiceEditForm.controls["discountEnterDate"].setValue(parseDate(this.workflowSaveRequest.workflow.discountEnterDate, 'dd.mm.yyyy'));
-			this.invoiceEditForm.controls["discountDeadline"].setValue(this.workflowSaveRequest.workflow.discountDeadline);
-			this.invoiceEditForm.controls["discountRate"].setValue(this.workflowSaveRequest.workflow.discountRate);
-			this.invoiceEditForm.controls["discountDate"].setValue(this.workflowSaveRequest.workflow.discountDate);
-			this.invoiceEditForm.controls["paymentAmount"].setValue(this.workflowSaveRequest.workflow.paymentAmount);
+			this.workflowEditForm.controls["sender"].setValue(this.workflowSaveRequest.workflow.sender);
+			this.workflowEditForm.controls["registerNumber"].setValue(this.workflowSaveRequest.workflow.registerNumber);
+			this.workflowEditForm.controls["invocieDate"].setValue(parseDate(this.workflowSaveRequest.workflow.invocieDate, 'dd.mm.yyyy'));
+			this.workflowEditForm.controls["partnerCode"].setValue(this.workflowSaveRequest.workflow.partnerCode);
+			this.workflowEditForm.controls["vendorNumber"].setValue(this.workflowSaveRequest.workflow.vendorNumber);
+			this.workflowEditForm.controls["vendorName"].setValue(this.workflowSaveRequest.workflow.vendorName);
+			this.workflowEditForm.controls["isDirectDebitPermission"].setValue(this.workflowSaveRequest.workflow.isDirectDebitPermission);
+			this.workflowEditForm.controls["invoiceType"].setValue(this.workflowSaveRequest.workflow.invoiceType);
+			this.workflowEditForm.controls["discountEnterDate"].setValue(parseDate(this.workflowSaveRequest.workflow.discountEnterDate, 'dd.mm.yyyy'));
+			this.workflowEditForm.controls["discountDeadline"].setValue(this.workflowSaveRequest.workflow.discountDeadline);
+			this.workflowEditForm.controls["discountRate"].setValue(this.workflowSaveRequest.workflow.discountRate);
+			this.workflowEditForm.controls["discountDate"].setValue(this.workflowSaveRequest.workflow.discountDate);
+			this.workflowEditForm.controls["paymentAmount"].setValue(this.workflowSaveRequest.workflow.paymentAmount);
 
 			this.uploadedFiles = WorkflowFile.toUploadedFileList(this.workflowSaveRequest.workflow.workflow.files);
 
@@ -383,29 +379,29 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
     if(this.workflowSaveRequest){
       this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
-      this.workflowSaveRequest.expireDays = this.invoiceEditForm.controls["expireDays"].value;
+      this.workflowSaveRequest.expireDays = this.workflowEditForm.controls["expireDays"].value;
 
-      this.workflowSaveRequest.comments = this.invoiceEditForm.controls["comments"].value;
+      this.workflowSaveRequest.comments = this.workflowEditForm.controls["comments"].value;
 
-      this.workflowSaveRequest.workflow.sender = this.invoiceEditForm.controls["sender"].value;
-      this.workflowSaveRequest.workflow.registerNumber = this.invoiceEditForm.controls["registerNumber"].value;
-      this.workflowSaveRequest.workflow.invocieDate = formatDate(this.invoiceEditForm.controls["invocieDate"].value, 'dd.mm.yyyy');
-      this.workflowSaveRequest.workflow.partnerCode = this.invoiceEditForm.controls["partnerCode"].value;
-      this.workflowSaveRequest.workflow.vendorNumber = this.invoiceEditForm.controls["vendorNumber"].value;
-      this.workflowSaveRequest.workflow.vendorName = this.invoiceEditForm.controls["vendorName"].value;
-      this.workflowSaveRequest.workflow.isDirectDebitPermission = this.invoiceEditForm.controls["isDirectDebitPermission"].value;
-      this.workflowSaveRequest.workflow.invoiceType = this.invoiceEditForm.controls["invoiceType"].value;
-      this.workflowSaveRequest.workflow.discountEnterDate = formatDate(this.invoiceEditForm.controls["discountEnterDate"].value, 'dd.mm.yyyy');
-      this.workflowSaveRequest.workflow.discountDeadline = this.invoiceEditForm.controls["discountDeadline"].value;
-      this.workflowSaveRequest.workflow.discountRate = this.invoiceEditForm.controls["discountRate"].value;
-      this.workflowSaveRequest.workflow.discountDate = this.invoiceEditForm.controls["discountDate"].value;
-      this.workflowSaveRequest.workflow.paymentAmount = this.invoiceEditForm.controls["paymentAmount"].value;
+      this.workflowSaveRequest.workflow.sender = this.workflowEditForm.controls["sender"].value;
+      this.workflowSaveRequest.workflow.registerNumber = this.workflowEditForm.controls["registerNumber"].value;
+      this.workflowSaveRequest.workflow.invocieDate = formatDate(this.workflowEditForm.controls["invocieDate"].value, 'dd.mm.yyyy');
+      this.workflowSaveRequest.workflow.partnerCode = this.workflowEditForm.controls["partnerCode"].value;
+      this.workflowSaveRequest.workflow.vendorNumber = this.workflowEditForm.controls["vendorNumber"].value;
+      this.workflowSaveRequest.workflow.vendorName = this.workflowEditForm.controls["vendorName"].value;
+      this.workflowSaveRequest.workflow.isDirectDebitPermission = this.workflowEditForm.controls["isDirectDebitPermission"].value;
+      this.workflowSaveRequest.workflow.invoiceType = this.workflowEditForm.controls["invoiceType"].value;
+      this.workflowSaveRequest.workflow.discountEnterDate = formatDate(this.workflowEditForm.controls["discountEnterDate"].value, 'dd.mm.yyyy');
+      this.workflowSaveRequest.workflow.discountDeadline = this.workflowEditForm.controls["discountDeadline"].value;
+      this.workflowSaveRequest.workflow.discountRate = this.workflowEditForm.controls["discountRate"].value;
+      this.workflowSaveRequest.workflow.discountDate = this.workflowEditForm.controls["discountDate"].value;
+      this.workflowSaveRequest.workflow.paymentAmount = this.workflowEditForm.controls["paymentAmount"].value;
 
     }
 	}
 
 
-	get forms() { return this.invoiceEditForm.controls; }
+	get forms() { return this.workflowEditForm.controls; }
 
 	onUsersSelected(assigns: AssignItem[]) {
 
@@ -434,14 +430,14 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 
 		if(this.scannedSelectedValues["invoice-invoicedate"] && this.scannedSelectedValues["invoice-invoicedate"] != ""){
 
-			this.invoiceEditForm.controls["invocieDate"].setValue(parseDate(this.scannedSelectedValues["invoice-invoicedate"], 'dd.mm.yyyy'));
-			this.invoiceEditForm.controls["discountEnterDate"].setValue(parseDate(this.scannedSelectedValues["invoice-invoicedate"], 'dd.mm.yyyy'));
-			//this.invoiceEditForm.controls["discountDate"].setValue(parseDate(this.scannedSelectedValues["invoice-invoicedate"], 'dd.mm.yyyy'));
+			this.workflowEditForm.controls["invocieDate"].setValue(parseDate(this.scannedSelectedValues["invoice-invoicedate"], 'dd.mm.yyyy'));
+			this.workflowEditForm.controls["discountEnterDate"].setValue(parseDate(this.scannedSelectedValues["invoice-invoicedate"], 'dd.mm.yyyy'));
+			//this.workflowEditForm.controls["discountDate"].setValue(parseDate(this.scannedSelectedValues["invoice-invoicedate"], 'dd.mm.yyyy'));
 
 		}
 
 		if(this.scannedSelectedValues["invoice-invoicenumber"] && this.scannedSelectedValues["invoice-invoicenumber"] != ""){
-			this.invoiceEditForm.controls["registerNumber"].setValue(this.scannedSelectedValues["invoice-invoicenumber"]);
+			this.workflowEditForm.controls["registerNumber"].setValue(this.scannedSelectedValues["invoice-invoicenumber"]);
 		}
 
 		if(this.scannedSelectedValues["invoice-paymentamount"] && this.scannedSelectedValues["invoice-paymentamount"] != ""){
@@ -449,13 +445,13 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 
 			if(isNaN(Number(foundPayment)) === false){
 				var foundPaymentFloat = parseFloat(foundPayment);
-				this.invoiceEditForm.controls["paymentAmount"].setValue(foundPaymentFloat);
+				this.workflowEditForm.controls["paymentAmount"].setValue(foundPaymentFloat);
 			}
 
 		}
 
 		if(this.scannedSelectedValues["invoice-sender"] && this.scannedSelectedValues["invoice-sender"] != ""){
-			this.invoiceEditForm.controls["sender"].setValue(this.scannedSelectedValues["invoice-sender"]);
+			this.workflowEditForm.controls["sender"].setValue(this.scannedSelectedValues["invoice-sender"]);
 		}
 
 		this.showOcrDetailsDialog = false;

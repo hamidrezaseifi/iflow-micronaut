@@ -89,11 +89,17 @@ export class EditSingleTaskComponent extends EditWorkflowBaseComponent implement
 			private loadingService: LoadingServiceService,
 			private http: HttpClient,
 			private errorService: ErrorServiceService,
-      private formBuilder: FormBuilder,
+      protected formBuilder: FormBuilder,
       private dateAdapter: DateAdapter<Date>,
       private route: ActivatedRoute,
 	) {
-    super(global);
+    super(global, formBuilder.group({
+                  			expireDays: [10, Validators.required],
+
+                  			controllerId: ['', Validators.required],
+                  			comments: [''],
+
+                      }));
 
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
@@ -103,14 +109,6 @@ export class EditSingleTaskComponent extends EditWorkflowBaseComponent implement
 		});
 
 		this.dateAdapter.setLocale('de');
-
-		this.workflowEditForm = this.formBuilder.group({
-			expireDays: [10, Validators.required],
-
-			controllerId: ['', Validators.required],
-			comments: [''],
-
-    });
 
 	}
 

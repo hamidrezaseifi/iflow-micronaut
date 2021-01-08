@@ -11,7 +11,8 @@
 			<div *ngFor="let key of keys;" class="list-group-item list-group-item-action" [ngClass]="{'active': selectedKey === key}">
 				<a class="scanned-item" [ngClass]="{'active': selectedKey === key}" (click)="selectDetailItem(key)" >{{ propertyLabels[key] }}</a>
 				<div class="item-value-container" [ngClass]="{'active': selectedKey === key}">
-					<input type="text" (blur)="isEditing[key] = false;" (keyup.enter)="isEditing[key] = false;" [(ngModel)]="editedValues[key]"
+					<input type="text" (blur)="isEditing[key] = false;" (keyup.enter)="isEditing[key] = false;" [ngModel]="editedValues[key]"
+                 (ngModelChange)="editedValuesChanged($event, key)"
 						id="valueeditbox{{key}}" autofocus [readonly]="isEditing[key] === false" value="" class="item-value ">
 					<button class="inline-edit-button-edit" *ngIf="isEditing[key] === false" (click)="startEditKey(key)">
 						<i class="material-icons edit-value-icon">edit</i>

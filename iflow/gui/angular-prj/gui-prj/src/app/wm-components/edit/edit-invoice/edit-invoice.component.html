@@ -8,7 +8,7 @@
 
 			<div class="workflow-content-container" [ngClass]="{'expanded':isRecordPanelExpanded}">
 				<div class="workflow-content">
-					<form id="workflow-form" name="workflowForm" [formGroup]="invoiceEditForm">
+					<form id="workflow-form" name="workflowForm" [formGroup]="workflowEditForm">
 						<div class="panel panel-default">
 							<div class="panel-heading">{{ 'invoice-invoice' | translate }}</div>
 							<div class="panel-body">
@@ -32,7 +32,7 @@
 									<div class="item-content small-content">
 										<input required class="select-date" (change)="invoiceDateChanges()" (dateInput)="invoiceDateChanges()" matInput [matDatepicker]="invocieDatepicker" placeholder="{{ 'invoice-invoicedate-select' | translate }}" formControlName="invocieDate" >
 										<mat-datepicker-toggle matSuffix [for]="invocieDatepicker"></mat-datepicker-toggle>
-										<mat-datepicker #invocieDatepicker startView="month" [startAt]="invoiceEditForm.controls.invocieDate.value"></mat-datepicker>
+										<mat-datepicker #invocieDatepicker startView="month" [startAt]="workflowEditForm.controls.invocieDate.value"></mat-datepicker>
 									</div>
 									<div class="clear"></div>
 									<div class="clear"></div>
@@ -44,7 +44,7 @@
 									</div>
 									<div class="item-label label-required small-label">{{ 'invoice-invoicetype' | translate }}</div>
 									<div class="item-content small-content">
-										<select required name="invoiceType" formControlName="invoiceType" [ngClass]="{'ng-invalid' : invoiceEditForm.controls.invoiceType.errors}" >
+										<select required name="invoiceType" formControlName="invoiceType" [ngClass]="{'ng-invalid' : workflowEditForm.controls.invoiceType.errors}" >
 											<option *ngFor="let invoiceType of invoiceTypes;" value="{{invoiceType.value}}">{{invoiceType.title}}</option>
 										</select>
 									</div>
@@ -102,7 +102,7 @@
 										<div class="item-content">
 											<input required class="select-date" matInput (change)="calcDiscountDate()" (dateInput)="calcDiscountDate()" [matDatepicker]="discountEnterDatepicker" placeholder="{{ 'invoice-discountenterdate' | translate }}" formControlName="discountEnterDate" >
 											<mat-datepicker-toggle matSuffix [for]="discountEnterDatepicker"></mat-datepicker-toggle>
-											<mat-datepicker #discountEnterDatepicker startView="month" [startAt]="invoiceEditForm.controls.discountEnterDate.value"></mat-datepicker>
+											<mat-datepicker #discountEnterDatepicker startView="month" [startAt]="workflowEditForm.controls.discountEnterDate.value"></mat-datepicker>
 										</div>
 										<div class="clear"></div>
 									</div>
@@ -170,15 +170,15 @@
 							<div class="clear"></div>
 						</div>
 						<div class="workflow-step-button-bar">
-							<button type="button" (click)="save(false)" *ngIf="canSave" [disabled]="invoiceEditForm.invalid" class="button-bar-button step-button button-save">
+							<button type="button" (click)="save(false)" *ngIf="canSave" [disabled]="workflowEditForm.invalid" class="button-bar-button step-button button-save">
 								<span>{{ 'common.save' | translate }}</span>
 								<i class="material-icons">save</i>
 							</button>
-							<button type="button" (click)="save(true)" *ngIf="canDone" [disabled]="invoiceEditForm.invalid" class="button-bar-button step-button button-done">
+							<button type="button" (click)="save(true)" *ngIf="canDone" [disabled]="workflowEditForm.invalid" class="button-bar-button step-button button-done">
 								<span>{{ 'common.savedone' | translate }}</span>
 								<i class="material-icons">save</i>
 							</button>
-							<button type="button" (click)="archive()" *ngIf="canArchive" [disabled]="invoiceEditForm.invalid" class="button-bar-button step-button button-archive">
+							<button type="button" (click)="archive()" *ngIf="canArchive" [disabled]="workflowEditForm.invalid" class="button-bar-button step-button button-archive">
 								<span>{{ 'workflow-archive' | translate }}</span>
 								<i class="material-icons">save</i>
 							</button>

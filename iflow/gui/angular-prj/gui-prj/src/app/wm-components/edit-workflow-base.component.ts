@@ -13,7 +13,7 @@ export class EditWorkflowBaseComponent implements OnInit {
 
 	isRecordPanelExpanded: boolean = true;
 
-	workflowEditForm: FormGroup | null = null;
+	workflowEditForm: FormGroup;
 
 	workflowListUrl :string = "/workflow/list";
 
@@ -23,7 +23,7 @@ export class EditWorkflowBaseComponent implements OnInit {
 
   generalData : GeneralData = new GeneralData;
 
-  constructor(protected global: GlobalService,) {
+  constructor(protected global: GlobalService, editForm: FormGroup) {
     this.global.currentSessionDataSubject.asObservable().subscribe((res: GeneralData) => {
         if(res == null || res == undefined){
           return;
@@ -31,6 +31,8 @@ export class EditWorkflowBaseComponent implements OnInit {
         this.generalData = res;
         console.log("generalData" , this.generalData);
      });
+
+     this.workflowEditForm = editForm;
   }
 
   ngOnInit(): void {
