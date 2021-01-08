@@ -79,6 +79,20 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 		this.messagePanelShowed = true;
   };
 
+  get isWorkflowModelNotAssigned(){
+    if(this.viewWorkflowModel){
+      return this.viewWorkflowModel.notAssigned;
+    }
+    return false;
+  }
+
+  get isWorkflowModelMeAssigned(){
+    if(this.viewWorkflowModel){
+      return this.viewWorkflowModel.meAssigned;
+    }
+    return false;
+  }
+
 	constructor(protected router: Router,
 			private messageService :WorkflowMessageService,
 			private errorService: ErrorServiceService,

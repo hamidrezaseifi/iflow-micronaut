@@ -1,11 +1,12 @@
 
 div.workflow-content-container{
-	border: 1px solid lightgray;
+	  border: 1px solid lightgray;
     margin: 10px 0px;
     border-radius: 10px;
     padding: 10px;
     background-color: #f1f1f1;
     position: relative;
+    height: 502px;
 }
 
 div.workflow-content{
@@ -21,22 +22,8 @@ div.workflow-record{
     background-color: #dad9d9;
     padding: 10px;
     border-radius: 5px;
-    position: absolute;
-    bottom: 10px;
-    top: 10px;
-    right: 10px;
+    height: 480px;
 }
-
-
-.workflow-content-container.expanded div.workflow-content{
-    width: calc(100% - 310px);
-}
-
-.workflow-content-container.expanded div.workflow-record{
-	width: 300px;
-}
-
-
 
 .workflow-content-container.collapsed div.workflow-content{
     width: calc(100% - 60px);

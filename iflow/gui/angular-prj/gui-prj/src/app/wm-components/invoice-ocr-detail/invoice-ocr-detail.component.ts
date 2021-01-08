@@ -14,8 +14,8 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 
 	@ViewChild('scannedItemPreviewContainer')previewContainer: ElementRef | null = null;
 
-	private _foundWords :OcrWord[] = [];
-	propertyLabels :string[] = [];
+	private _foundWords :Record<string, OcrWord[]> = {};
+	propertyLabels :Record<string, string> = {};
 	isEditing :Record<string, boolean> = {};
 
 	selectedKey :string = "";
@@ -62,10 +62,10 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	@Input('imageSizeY') imageSizeY :number = 500;
 
 	@Input('foundWords')
-	set foundWords(foundWordsInput :OcrWord[]) {
+	set foundWords(foundWordsInput :Record<string, OcrWord[]>) {
 	    this._foundWords = foundWordsInput;
 
-	    this.propertyLabels = [];
+	    this.propertyLabels = {};
 
 	    if(this._foundWords){
 	    	for(var key in  this._foundWords){
@@ -110,7 +110,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
        withCredentials: true
 	};
 
-	get foundWords():OcrWord[] {
+	get foundWords():Record<string, OcrWord[]> {
 		    return this._foundWords;
 	}
 

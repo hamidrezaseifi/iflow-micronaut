@@ -37,7 +37,7 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 
 	scanningFileIndex :number = -1;
 	scanningFile :UploadedFile = new UploadedFile;
-  scanedWordes : OcrWord[] = [];
+  scanedWordes : Record<string, OcrWord[]> = {};
 
 	showOcrDetailsDialog :boolean = false;
 
@@ -75,7 +75,6 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 	  this.selectedOcrSettingPreset = preset;
 	  //alert(this.selectedOcrSettingPreset.presetName);
 
-	  //this.scanedWordes
 	  var message = this.ocrResultMessage;
 
 	  message.selectedPreset = this.selectedOcrSettingPreset.presetName;
@@ -202,7 +201,7 @@ export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements O
 		}
 	}
 
-	getOcrWords() :OcrWord[]{
+	getOcrWords() :Record<string, OcrWord[]>{
 	  return this.scanedWordes;
 	}
 

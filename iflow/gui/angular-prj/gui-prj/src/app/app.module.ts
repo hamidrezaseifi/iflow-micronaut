@@ -55,7 +55,7 @@ import { DepartmentsListComponent } from './company-components/departments-list/
 import { TextListComponent } from './components/text-list/text-list.component';
 import { OcrPresetsComponent } from './company-components/ocr-presets/ocr-presets.component';
 import { LoginComponent } from './login/login.component';
-
+import { AngularSplitModule } from 'angular-split';
 
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -76,6 +76,7 @@ export function createTranslateLoader(http: HttpClient) {
     FormsModule,
     NgxExtendedPdfViewerModule,
     PdfViewerModule,
+    AngularSplitModule,
     TranslateModule.forRoot({
         loader: {
             provide: TranslateLoader,

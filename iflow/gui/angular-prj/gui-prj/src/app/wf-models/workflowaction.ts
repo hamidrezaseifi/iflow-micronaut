@@ -3,13 +3,14 @@ import { User } from '../ui-models';
 import { WorkflowTypeStep } from '../wf-models';
 
 export class WorkflowAction {
-	private assignToIdentity :string = "";
-	private currentStepIdentity :string = "";
-	private comments :string = "";
-	private status :Number = 0;
-	private currentStep :WorkflowTypeStep = new WorkflowTypeStep;
-	private assignToUser :User = new User;
-	private expireDays :Number = 0;
+	assignToIdentity :string = "";
+	currentStepIdentity :string = "";
+	comments :string = "";
+	status :Number = 0;
+	currentStep :WorkflowTypeStep = new WorkflowTypeStep;
+	assignToUser :User = new User;
+	assignToUserName: string = "";
+	expireDays :Number = 0;
 
 }
 

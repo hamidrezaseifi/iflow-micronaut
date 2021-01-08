@@ -135,7 +135,8 @@
 								  <label class="custom-control-label" for="dep{{dep.id}}"></label>
 								</div>
 
-								<select #select [ngModel]="meberTypeOfDepartment(dep.id)" name="meberTypeOfDepartment" (change)="onMeberTypeOfDepartmentChange($event, dep.id, select.value)" class="dep-membertype" *ngIf="isMemberOfDepartment(dep.id)">
+								<select #select [ngModel]="meberTypeOfDepartment(dep.id)" name="meberTypeOfDepartment"
+                        (change)="onMeberTypeOfDepartmentChange($event, dep.id, select.value)" class="dep-membertype" *ngIf="isMemberOfDepartment(dep.id)">
 									<option *ngFor="let item of userDepartmentAccessType | keyvalue" value="{{item.key}}">{{ item.value }}</option>
 								</select>
 								<div class="clear"></div>
@@ -164,7 +165,7 @@
 			<div class="modal-dialog modal-dialog-centered user-delete-dialog" role="document">
 			    <div class="modal-content" >
 			      <div class="modal-header">
-			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle">{{ 'user-delete-modal-title' | translate }}</h5>
+			        <h5 class="modal-title dialog-title" id="exampleModalLongTitle1">{{ 'user-delete-modal-title' | translate }}</h5>
 			        <button class="dialog-toolbar-button close" (click)="hideDeleteUserDialog()">
 			        	<i class="material-icons">close</i>
 			        </button>
@@ -224,7 +225,7 @@
 							    <div class="datacontent">{{viewingUser.email}}</div>
 							  </div>
 							  <div class="form-group">
-							    <label for="userbirthdate">{{ 'user-birthdate' | translate }}</label>
+							    <label>{{ 'user-birthdate' | translate }}</label>
 							    <div class="datacontent">{{viewingUser.birthDate}}</div>
 							  </div>
 							  <div class="form-group">

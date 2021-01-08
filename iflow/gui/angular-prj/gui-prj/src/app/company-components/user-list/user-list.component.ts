@@ -13,7 +13,7 @@ import { ErrorServiceService } from '../../services/error-service.service';
 import { GermanDateAdapter, parseDate, formatDate } from '../../helper';
 import { UserAccessTypeControllValidator } from '../../custom-validators/user-access-type-controll-validator';
 
-import { User, UserAccessType, MenuItem, GeneralData,  UserDepartment, Department } from '../../ui-models';
+import { User, UserAccessType, MenuItem, GeneralData,  UserDepartment, Department, TitleType } from '../../ui-models';
 
 @Component({
   selector: 'app-user-list',
@@ -41,7 +41,7 @@ export class UserListComponent implements OnInit {
 
 	viewingUser :User = new User;
 	showViewModal :boolean = false;
-	viewingDepartmentMember : Object[] = [];
+	viewingDepartmentMember : TitleType[] = [];
 
 	resetPasswordMessageBase :string = "";
 	resetPasswordMessage :string = "";
@@ -290,11 +290,11 @@ export class UserListComponent implements OnInit {
 		return "0";
 	}
 
-	onMeberTypeOfDepartmentChange(event:any, id:string, value:number){
-
+	onMeberTypeOfDepartmentChange(event:any, id:string, value:string){
+    var valuenum = +value;
 		for(var index in this.editingUserDepartments){
 			if(this.editingUserDepartments[index].departmentId === id){
-				this.editingUserDepartments[index].memberType = value;
+				this.editingUserDepartments[index].memberType = valuenum;
 				return;
 			}
 		}

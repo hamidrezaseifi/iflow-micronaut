@@ -4,11 +4,10 @@
 		<span *ngIf="hasNoAssigns">{{ 'workflow-select-assign' | translate }}</span>
 		<div class="user-item-box" *ngFor="let item of assignedUsers">
 			<span>{{getAssignItemTitle(item)}} </span>
-			<button (click)="removeAssign(item.itemIdentity, item.itemType)"><i class="material-icons">close</i></button>
+			<button (click)="removeAssign(item.itemId, item.itemType)"><i class="material-icons">close</i></button>
 		</div>
 		<div class="clear"></div>
 	</div>
 
-	<app-select-user [users]="users" [departments]="departments" [showAssignModal]="showAssignModal" [selectAssign]="selectAssign" 
-		(onUsersSelected)="onUsersSelected($event)"></app-select-user>		    		 		
-						
+	<app-select-user [users]="users" [departments]="departments" [showAssignModal]="showAssignModal" [selectAssign]="selectAssign"
+		(onUsersSelected)="onUsersSelected($event)"></app-select-user>

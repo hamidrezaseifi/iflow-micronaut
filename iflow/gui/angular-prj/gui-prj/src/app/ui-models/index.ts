@@ -15,3 +15,5 @@ export * from './company-workflowtyp-eitem-ocr-setting-preset';
 export * from './company-workflowtyp-eitem-ocr-setting-preset-item';
 export * from './dashboard-cube';
 export * from './credential'
+export * from './title-type'
+
