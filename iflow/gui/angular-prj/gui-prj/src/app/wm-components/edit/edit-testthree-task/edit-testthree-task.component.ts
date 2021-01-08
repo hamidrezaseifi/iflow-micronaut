@@ -5,7 +5,6 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { Observable } from 'rxjs';
-import $ from "jquery";
 
 import { GlobalService } from '../../../services/global.service';
 import { TestthreetaskWorkflowEditService } from '../../../services/workflow/testthreetask/testthreetask-workflow-edit.service';
@@ -19,6 +18,7 @@ import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
 import { TestThreeTaskWorkflowSaveRequest } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request';
 import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
+import { EditWorkflowBaseComponent } from '../../edit-workflow-base.component';
 
 @Component({
   selector: 'app-edit-testthree-task',
@@ -26,7 +26,7 @@ import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreeta
   styleUrls: ['../wm-edit.css', './edit-testthree-task.component.css'],
   providers: [{provide: DateAdapter, useClass: GermanDateAdapter}, TestthreetaskWorkflowEditService]
 })
-export class EditTestthreeTaskComponent implements OnInit {
+export class EditTestthreeTaskComponent extends EditWorkflowBaseComponent implements OnInit {
 
 	saveMessage :string = "";
 
@@ -38,20 +38,7 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 	workflowSaveRequest :TestThreeTaskWorkflowSaveRequest = new TestThreeTaskWorkflowSaveRequest();
 
-	viewWorkflowModel :Workflow = null;
-
-	generalDataObs :Observable<GeneralData> = null;
-
 	uploadedFiles :UploadedFile[] = [];
-
-	fileTitleProgress(fileInput: any, file :FileTitle, fileIndex) {
-
-		if(fileInput.target.files && fileInput.target.files != null && file){
-			file.file = <File>fileInput.target.files[0];
-		}
-
-	    //this.preview();
-	}
 
 	get assignedUsers() : AssignItem[]{
 		if(this.workflowSaveRequest != null){
@@ -113,7 +100,7 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 	constructor(
 		  private router: Router,
-			private global: GlobalService,
+			protected global: GlobalService,
 			private translate: TranslateService,
 			public  editService :TestthreetaskWorkflowEditService,
 			private loadingService: LoadingServiceService,
@@ -123,7 +110,15 @@ export class EditTestthreeTaskComponent implements OnInit {
       private dateAdapter: DateAdapter<Date>,
       private route: ActivatedRoute,
 	) {
+    super(global);
 
+		this.workflowEditForm = this.formBuilder.group({
+			expireDays: [10, Validators.required],
+
+			controllerIdentity: ['', Validators.required],
+			comments: [''],
+
+	  });
 
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
@@ -133,20 +128,10 @@ export class EditTestthreeTaskComponent implements OnInit {
 		});
 
 		this.dateAdapter.setLocale('de');
-		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
 
 	}
 
 	ngOnInit() {
-
-		this.workflowEditForm = this.formBuilder.group({
-			expireDays: [10, Validators.required],
-
-			controllerIdentity: ['', Validators.required],
-			comments: [''],
-
-	    });
-
 
 	}
 
@@ -182,7 +167,7 @@ export class EditTestthreeTaskComponent implements OnInit {
 
 				}
 				else{
-					this.workflowSaveRequest = null;
+					this.workflowSaveRequest = new TestThreeTaskWorkflowSaveRequest();
 				}
 
 	        },
@@ -221,9 +206,6 @@ export class EditTestthreeTaskComponent implements OnInit {
 		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
 	}
-
-
-	get forms() { return this.workflowEditForm.controls; }
 
 	get hasNoAssigns() :boolean{
 		if(this.workflowSaveRequest && this.workflowSaveRequest.assigns){
@@ -344,21 +326,6 @@ export class EditTestthreeTaskComponent implements OnInit {
 			this.workflowSaveRequest.assigns.push(assign);
 		}
 
-	}
-
-	onUploadedFilesChanged(uploadedFileList: UploadedFile[]) {
-
-		this.uploadedFiles = uploadedFileList;
-	}
-
-	collapseRecordPanel() {
-		$(".workflow-content-container").removeClass("expanded").addClass("collapsed");
-		$(".workflow-inline-content-container").hide();
-	}
-
-	expandRecordPanel() {
-		$(".workflow-content-container").removeClass("collapsed").addClass("expanded");
-		$(".workflow-inline-content-container").show();
 	}
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { ResizeEvent } from 'angular-resizable-element';
-import { Observable, throwError , Subscription } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { Workflow } from '../wf-models';
@@ -10,7 +9,7 @@ import { User, MenuItem } from '../ui-models';
 
 import { WorkflowMessageService } from '../services/workflow/workflow-message.service';
 import { ErrorServiceService } from '../services/error-service.service';
-import { HttpHepler } from '../helper/http-hepler';
+import { HttpHelper } from '../helper/http-hepler';
 
 @Component({
   selector: 'app-message-bar',
@@ -21,10 +20,10 @@ import { HttpHepler } from '../helper/http-hepler';
 export class MessageBarComponent implements OnInit, OnDestroy {
 
   messages: WorkflowMessage[] = [];
-	viewWorkflowModel :Workflow;
+	viewWorkflowModel :Workflow | null = null;
 	viewWorkflow :boolean = false;
 
-	webSocket: WebSocket;
+	webSocket: WebSocket | null = null;
 
 	messageSearchInterval = 60000;
 	messageReloadTimeoutId = 0;
@@ -33,27 +32,13 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	isReloadingMessages : boolean = false;
 
-	private subscription: Subscription;
+	status = "Not Connected";
+	subscribed: boolean = false;
+	requesting : boolean = false;
 
-	public status = "Not Connected";
-	public subscribed: boolean;
-	public requesting : boolean = false;
+  messagePanelHeightStyle: string = this.messagePanelHeight + "px";
 
-	debugData() :string{
-		return (this.viewWorkflowModel && this.viewWorkflowModel != null) ? JSON.stringify(this.viewWorkflowModel) : 'no data';
-	}
-
-	closeMessages(){
-		document.getElementById("message-panel-container").style.height = "25px";
-		this.messagePanelShowed = false;
-    };
-
-	showMessages(){
-		document.getElementById("message-panel-container").style.height = this.messagePanelHeight + "px";
-		this.messagePanelShowed = true;
-    };
-
-	@Input('currentUser') currentUser: User;
+	@Input('currentUser') currentUser: User | null;
 
 	private _isLogged: boolean = false;
 
@@ -78,12 +63,27 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 		return this._isLogged;
 	}
 
+	debugData() :string{
+		return (this.viewWorkflowModel && this.viewWorkflowModel != null) ? JSON.stringify(this.viewWorkflowModel) : 'no data';
+	}
+
+	closeMessages(){
+		//document.getElementById("message-panel-container").style.height = "25px";
+		this.messagePanelHeightStyle = "25px";
+		this.messagePanelShowed = false;
+  };
+
+	showMessages(){
+		//document.getElementById("message-panel-container").style.height = this.messagePanelHeight + "px";
+		this.messagePanelHeightStyle = this.messagePanelHeight + "px";
+		this.messagePanelShowed = true;
+  };
 
 	constructor(protected router: Router,
 			private messageService :WorkflowMessageService,
 			private errorService: ErrorServiceService,
 			) {
-
+      this.currentUser = null;
 	}
 
 
@@ -105,8 +105,12 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 	}
 
 	onResizeEnd(event: ResizeEvent): void {
-		this.messagePanelHeight = event.rectangle.height;
-		document.getElementById("message-panel-container").style.height = this.messagePanelHeight + "px";
+	  if(event.rectangle && event.rectangle.height){
+	    this.messagePanelHeight = event.rectangle.height;
+	    this.showMessages();
+	  }
+
+		//document.getElementById("message-panel-container").style.height = this.messagePanelHeight + "px";
 	}
 
 	private readMessageList(reset: boolean){
@@ -116,32 +120,32 @@ export class MessageBarComponent implements OnInit, OnDestroy {
       this.messages = [];
 			this.isReloadingMessages = true;
 			this.messageService.loadMessages(reset).subscribe(
-			        (messageList: WorkflowMessage[]) => {
+        (messageList: WorkflowMessage[]) => {
 
-			        	console.log("Read message list", messageList);
+          console.log("Read message list", messageList);
 
-			        	this.messages = messageList;
-			        },
-			        response => {
+          this.messages = messageList;
+        },
+        response => {
 
-			        	console.log("Error in read message list", response);
-			        	this.messages = [];
-			        	this.isReloadingMessages = false;
-			        },
-			        () => {
+          console.log("Error in read message list", response);
+          this.messages = [];
+          this.isReloadingMessages = false;
+        },
+        () => {
 
-			        	setTimeout(()=>{
-			        		this.isReloadingMessages = false;
-			        	 }, 500);
+          setTimeout(()=>{
+            this.isReloadingMessages = false;
+           }, 500);
 
-			        }
-		    	);
+        }
+		  );
 
 		}
 
 	}
 
-	showWorkflowView(id){
+	showWorkflowView(id:string){
     console.log(id);
 		for(var index in this.messages){
 			if(this.messages[index].workflowId == id){
@@ -159,34 +163,39 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 
 	assignWorkflowMe(){
 
-		this.messageService.assignMe(this.viewWorkflowModel.id).subscribe(
-		        val => {
-		        	console.log("Workflow assigned to me");
-		        	//this.readMessageList(true);
+    if(this.viewWorkflowModel){
+      this.messageService.assignMe(this.viewWorkflowModel.id).subscribe(
+        val => {
+          console.log("Workflow assigned to me");
+          //this.readMessageList(true);
 
-		        },
-		        response => {
-		        	console.log("Error in assigning workflow", response);
-		  			this.errorService.showErrorResponse(response);
+        },
+        response => {
+          console.log("Error in assigning workflow", response);
+        this.errorService.showErrorResponse(response);
 
-		        },
-		        () => {
-		        	this.viewWorkflow = false;
-		        }
-	    	);
+        },
+        () => {
+          this.viewWorkflow = false;
+        }
+    );
 
-  	}
+      }
+    }
+
 
 	editWorkflow(){
 
-		this.viewWorkflow = false;
-		const url = '/workflow/edit/' + this.viewWorkflowModel.workflowType.identity  + '/' + this.viewWorkflowModel.id;
-		this.router.navigate([url]);
+    if(this.viewWorkflowModel){
+      this.viewWorkflow = false;
+      const url = '/workflow/edit/' + this.viewWorkflowModel.workflowType.identity  + '/' + this.viewWorkflowModel.id;
+      this.router.navigate([url]);
 
+    }
 
   }
 
-	private setConnected(subscribed) {
+	private setConnected(subscribed: boolean) {
 		this.subscribed = subscribed;
 
 		this.status = subscribed ? "Connected" : "Not Connected";
@@ -202,7 +211,11 @@ export class MessageBarComponent implements OnInit, OnDestroy {
 		    return;
 		 }
 
-     var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowmessages/" + this.currentUser.id;
+		 if(this.currentUser == null){
+		    return;
+		 }
+
+     var url = "ws://" + HttpHelper.serverPort + "/websocket/workflowmessages/" + this.currentUser.id;
      this.webSocket = new WebSocket(url);
 
      var _this = this;

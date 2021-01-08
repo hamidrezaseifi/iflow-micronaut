@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import $ from "jquery";
+import * as $ from 'jquery';
 
 import { AssignItem, AssignType } from '../../wf-models';
 import { User, Department, GeneralData, UploadedFile, UploadedResult } from '../../ui-models';
@@ -12,13 +12,13 @@ import { User, Department, GeneralData, UploadedFile, UploadedResult } from '../
 })
 export class WmAssignListComponent implements OnInit {
 
-	@Input('users') users : User[];
-	@Input('departments') departments : Department[];
+	@Input('users') users : User[] = [];
+	@Input('departments') departments : Department[] = [];
 	@Input('assignedUsers') assignedUsers : AssignItem[] = [];
 
 	@Output() onSelectedAssignChanged = new EventEmitter<AssignItem[]>();
 
-	selectAssign :boolean[][] = [];
+	selectAssign :Record<string, Record<string, boolean>> = {};
 	showAssignModal :boolean = false;
 
 	constructor(
@@ -49,13 +49,13 @@ export class WmAssignListComponent implements OnInit {
 
 	showAssignSelect(){
 
-		this.selectAssign = [];
+		this.selectAssign = {};
 
 		for(var index in this.assignedUsers){
 			var assign :AssignItem = this.assignedUsers[index];
 
 			if(this.selectAssign[assign.itemType] === undefined){
-				this.selectAssign[assign.itemType] = [];
+				this.selectAssign[assign.itemType] = {};
 			}
 			this.selectAssign[assign.itemType][assign.itemId] = true;
 		}
@@ -84,7 +84,7 @@ export class WmAssignListComponent implements OnInit {
 	}
 
 
-	getAssignItemTitle(item :AssignItem){
+	getAssignItemTitle(item :AssignItem): string{
 
 		if(item.itemType === AssignType.USER){
 			for(var index in this.users){
@@ -104,8 +104,7 @@ export class WmAssignListComponent implements OnInit {
 			return 'Unknown!';
 		}
 
-
-
+    return 'Unknown!';
 	}
 
 }

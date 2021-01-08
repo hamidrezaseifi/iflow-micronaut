@@ -4,7 +4,7 @@ import { HttpHeaders, HttpParams, HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
 import { LoadingServiceService } from '../loading-service.service';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -19,8 +19,8 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 
 	public searchInitialDataSubject: BehaviorSubject<WorkflowListInitialData> = new BehaviorSubject<WorkflowListInitialData>(new WorkflowListInitialData);
 
-	loadInitialUrl :string = HttpHepler.dataServer + "/workflow/data/general/initsearch";
-	searchUrl :string = HttpHepler.dataServer + "/workflow/data/general/search";
+	loadInitialUrl :string = HttpHelper.dataServer + "/workflow/data/general/initsearch";
+	searchUrl :string = HttpHelper.dataServer + "/workflow/data/general/search";
 	listInitialData :WorkflowListInitialData = new WorkflowListInitialData;
 
 	constructor(
@@ -39,7 +39,7 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 
     this.loadingService.showLoading();
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     this.http.post<WorkflowListInitialData>(this.loadInitialUrl, null, httpOptions).subscribe(
         (initialData :WorkflowListInitialData) => {
@@ -67,7 +67,7 @@ export class WorkflowSearchService extends HttpErrorResponseHelper {
 
 	search(searchFilter: WorkflowSearchFilter){
 
-	  const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	  const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 		return this.http.post<WorkflowSearchResult>(this.searchUrl, searchFilter, httpOptions);
 
 	};

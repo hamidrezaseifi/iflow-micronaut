@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoadingServiceService } from '../loading-service.service';
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -16,8 +16,8 @@ import { Company } from '../../ui-models';
 })
 export class CompanyEditService extends HttpErrorResponseHelper {
 
-	loadDataUrl :string = HttpHepler.dataServer + "/company/data/info";
-	updateDataUrl :string = HttpHepler.dataServer + "/company/data/update";
+	loadDataUrl :string = HttpHelper.dataServer + "/company/data/info";
+	updateDataUrl :string = HttpHelper.dataServer + "/company/data/update";
 
 	constructor(
 			protected http: HttpClient,
@@ -32,17 +32,17 @@ export class CompanyEditService extends HttpErrorResponseHelper {
 
 	listData(){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	  const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-		return this.http.get(this.loadDataUrl);
+		return this.http.get<Company>(this.loadDataUrl);
 
 	};
 
 	updateData(company: Company){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
       const headers = new HttpHeaders().set("Content-Type", "application/json;");
-	    return this.http.post(this.updateDataUrl, company, {headers});
+	    return this.http.post<Company>(this.updateDataUrl, company, {headers});
 
 	};
 

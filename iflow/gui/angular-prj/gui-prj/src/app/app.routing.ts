@@ -17,7 +17,6 @@ import { EditTestthreeTaskComponent } from './wm-components/edit/edit-testthree-
 import { UserListComponent } from './company-components/user-list/user-list.component';
 import { CompanyInfoComponent } from './company-components/company-info/company-info.component';
 import { DepartmentsListComponent } from './company-components/departments-list/departments-list.component';
-import { WorkflowtypePropertySettingComponent } from './company-components/workflowtype-property-setting/workflowtype-property-setting.component';
 import { OcrPresetsComponent } from './company-components/ocr-presets/ocr-presets.component';
 
 

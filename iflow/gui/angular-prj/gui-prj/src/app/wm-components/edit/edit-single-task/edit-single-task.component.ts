@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import $ from "jquery";
 
 import { GlobalService } from '../../../services/global.service';
 import { SingleTaskWorkflowEditService } from '../../../services/workflow/singletask/singletask-workflow-edit.service';
@@ -18,6 +17,7 @@ import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
 import { SingleTaskWorkflowSaveRequest } from '../../../wf-models/singletask/singletask-workflow-save-request';
 import { SingleTaskWorkflowSaveRequestInit } from '../../../wf-models/singletask/singletask-workflow-save-request-init';
+import { EditWorkflowBaseComponent } from '../../edit-workflow-base.component';
 
 @Component({
   selector: 'app-edit-single-task',
@@ -25,21 +25,11 @@ import { SingleTaskWorkflowSaveRequestInit } from '../../../wf-models/singletask
   styleUrls: ['../wm-edit.css' , './edit-single-task.component.css'],
   providers: [{provide: DateAdapter, useClass: GermanDateAdapter}, SingleTaskWorkflowEditService]
 })
-export class EditSingleTaskComponent implements OnInit {
-
-	saveMessage :string = "";
+export class EditSingleTaskComponent extends EditWorkflowBaseComponent implements OnInit {
 
 	workflowIdentity :string = "";
 
-	workflowEditForm: FormGroup;
-
-	workflowListUrl :string = "/workflow/list";
-
 	workflowSaveRequest :SingleTaskWorkflowSaveRequest = new SingleTaskWorkflowSaveRequest();
-
-	uploadedFiles :UploadedFile[] = [];
-
-	viewWorkflowModel :Workflow = null;
 
 	get debugData() :string{
 		var ss = formatDate(new Date(), 'dd.mm.yyyy');
@@ -92,18 +82,18 @@ export class EditSingleTaskComponent implements OnInit {
 
 
 	constructor(
-		    private router: Router,
-			private global: GlobalService,
+		  private router: Router,
+			protected global: GlobalService,
 			private translate: TranslateService,
 			public  editService :SingleTaskWorkflowEditService,
 			private loadingService: LoadingServiceService,
 			private http: HttpClient,
 			private errorService: ErrorServiceService,
-		  	private formBuilder: FormBuilder,
-		  	private dateAdapter: DateAdapter<Date>,
-		  	private route: ActivatedRoute,
+      private formBuilder: FormBuilder,
+      private dateAdapter: DateAdapter<Date>,
+      private route: ActivatedRoute,
 	) {
-
+    super(global);
 
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
@@ -114,10 +104,6 @@ export class EditSingleTaskComponent implements OnInit {
 
 		this.dateAdapter.setLocale('de');
 
-	}
-
-	ngOnInit() {
-
 		this.workflowEditForm = this.formBuilder.group({
 			expireDays: [10, Validators.required],
 
@@ -126,6 +112,10 @@ export class EditSingleTaskComponent implements OnInit {
 
     });
 
+	}
+
+	ngOnInit() {
+
 
 	}
 
@@ -133,12 +123,6 @@ export class EditSingleTaskComponent implements OnInit {
 
 		this.loadInitialData();
 
-	}
-
-	onUploadedFilesChanged(uploadedFileList: UploadedFile[]) {
-
-		this.uploadedFiles = uploadedFileList;
-		console.log("uploading data changed : ", this.uploadedFiles);
 	}
 
 	private loadInitialData(){
@@ -174,25 +158,25 @@ export class EditSingleTaskComponent implements OnInit {
 
 				}
 				else{
-					this.workflowSaveRequest = null;
+					this.workflowSaveRequest = new SingleTaskWorkflowSaveRequest();
 				}
 
-	        },
-	        response => {
-	        	console.log("Error in read edit inital data", response);
-	        	this.errorService.showErrorResponse(response);
-	        },
-	        () => {
+      },
+      response => {
+        console.log("Error in read edit inital data", response);
+        this.errorService.showErrorResponse(response);
+      },
+      () => {
 
-	        	this.loadingService.hideLoading();
-	        }
-	    );
+        this.loadingService.hideLoading();
+      }
+	  );
 
 	}
 
 
 	setToControlValues(){
-		if(this.workflowSaveRequest && this.workflowSaveRequest.workflow){
+		if(this.workflowEditForm && this.workflowSaveRequest && this.workflowSaveRequest.workflow){
 
 			this.workflowEditForm.controls["expireDays"].setValue(this.workflowSaveRequest.expireDays);
 
@@ -206,19 +190,18 @@ export class EditSingleTaskComponent implements OnInit {
 	}
 
 	setFormControlValues(){
+    if(this.workflowEditForm){
+      this.workflowSaveRequest.expireDays = this.workflowEditForm.controls["expireDays"].value;
 
-		this.workflowSaveRequest.expireDays = this.workflowEditForm.controls["expireDays"].value;
+      this.workflowSaveRequest.workflow.workflow.controllerId = this.workflowEditForm.controls["controllerId"].value;
+      this.workflowSaveRequest.comments = this.workflowEditForm.controls["comments"].value;
 
-		this.workflowSaveRequest.workflow.workflow.controllerId = this.workflowEditForm.controls["controllerId"].value;
-		this.workflowSaveRequest.comments = this.workflowEditForm.controls["comments"].value;
+      this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
-		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
+    }
 
 
 	}
-
-
-	get forms() { return this.workflowEditForm.controls; }
 
 	save(makeDone :boolean){
 
@@ -228,11 +211,11 @@ export class EditSingleTaskComponent implements OnInit {
 		this.loadingService.showLoading();
 
 		if(makeDone){
-        	this.doneWorkflowData();
-        }
-        else{
-        	this.saveWorkflowData();
-        }
+      this.doneWorkflowData();
+    }
+    else{
+      this.saveWorkflowData();
+    }
 
 	}
 
@@ -321,16 +304,6 @@ export class EditSingleTaskComponent implements OnInit {
 		        }
 		    );
 
-	}
-
-	collapseRecordPanel() {
-		$(".workflow-content-container").removeClass("expanded").addClass("collapsed");
-		$(".workflow-inline-content-container").hide();
-	}
-
-	expandRecordPanel() {
-		$(".workflow-content-container").removeClass("collapsed").addClass("expanded");
-		$(".workflow-inline-content-container").show();
 	}
 
 }

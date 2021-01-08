@@ -25,41 +25,43 @@ export class CreateTestthreetaskComponent implements OnInit {
 
 	workflowListUrl :string = "/workflow/list";
 
-	workflowSaveRequest :TestThreeTaskWorkflowSaveRequest = null;
-	generalDataObs :Observable<GeneralData> = null;
+	workflowSaveRequest :TestThreeTaskWorkflowSaveRequest | null = null;
 
 	showDebug : boolean = false;
+
+	users : User[] = [];
+	departments : Department[] = [];
 
 	uploadedFiles :UploadedFile[] = [];
 
 	get expireDays() : number{
-		if(this.workflowSaveRequest != null){
+		if(this.workflowSaveRequest){
 			return this.workflowSaveRequest.expireDays;
 		}
 		return 0;
 	}
 	set expireDays(days: number){
-		if(this.workflowSaveRequest != null){
+		if(this.workflowSaveRequest){
 			this.workflowSaveRequest.expireDays = days;
 		}
 
 	}
 
 	get assignedUsers() : AssignItem[]{
-		if(this.workflowSaveRequest != null){
+		if(this.workflowSaveRequest){
 			return this.workflowSaveRequest.assigns;
 		}
 		return [];
 	}
 
 	get comments() : string{
-		if(this.workflowSaveRequest != null){
+		if(this.workflowSaveRequest){
 			return this.workflowSaveRequest.comments;
 		}
 		return "";
 	}
 	set comments(value: string){
-		if(this.workflowSaveRequest != null){
+		if(this.workflowSaveRequest){
 			this.workflowSaveRequest.comments = value;
 		}
 
@@ -88,7 +90,18 @@ export class CreateTestthreetaskComponent implements OnInit {
 			}
 		});
 
-		this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
+    this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
+                                                                                  if(generalData != null){
+                                                                                    this.users = generalData.company.users;
+                                                                                    this.departments = generalData.company.departments;
+
+                                                                                  }
+                                                                                  else{
+                                                                                    console.log("generaldata in topbar is null");
+
+                                                                                  }
+
+                                                                              });
 	}
 
 	ngOnInit() {
@@ -133,6 +146,9 @@ export class CreateTestthreetaskComponent implements OnInit {
 
 	save(){
 
+    if(this.workflowSaveRequest == null){
+      return;
+    }
 		this.workflowSaveRequest.uploadedFiles = WorkflowUploadedFile.loadUploadedFiles(this.uploadedFiles);
 
 		this.loadingService.showLoading();
@@ -159,6 +175,9 @@ export class CreateTestthreetaskComponent implements OnInit {
 
 
 	onUsersSelected(assigns: AssignItem[]) {
+    if(this.workflowSaveRequest == null){
+      return;
+    }
 		this.workflowSaveRequest.assigns = [];
 
 		for(var item in assigns){

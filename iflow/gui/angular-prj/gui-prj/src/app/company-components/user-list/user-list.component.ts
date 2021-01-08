@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { Observable } from 'rxjs';
-import $ from "jquery";
+import * as $ from 'jquery';
 
 import { GlobalService } from '../../services/global.service';
 import { UserEditService } from '../../services/company/user-edit.service';
@@ -51,12 +51,11 @@ export class UserListComponent implements OnInit {
 	showResetPasswordModal :boolean = false;
 
 
-	generalDataObs :Observable<GeneralData> = null;
 	departments :Department[] = [];
 
 	activeTab :string = "info";
 
-	userDepartmentAccessType :{} = {
+	userDepartmentAccessType :Record<number, string> = {
 	  0 : "user-department-access-no",
 	  5 : "user-department-access-member",
 		15 : "user-department-access-deputy",
@@ -75,53 +74,50 @@ export class UserListComponent implements OnInit {
 			private dateAdapter: DateAdapter<Date>,
 
 	) {
+		this.userEditForm = this.formBuilder.group({
+			email: ['', Validators.email],
+			firstName: ['', Validators.required],
+		  lastName: ['', Validators.required],
+		  birthDate: ['', Validators.required],
+		  status: ['1', Validators.required],
+			userAccess: [UserAccessType.NONE, [UserAccessTypeControllValidator]],
+    });
+
 		this.dateAdapter.setLocale('de');
 
-        translate.get('user-delete-message').subscribe((res: string) => {
-        	this.deleteMessageBase = res;
-        });
+    translate.get('user-delete-message').subscribe((res: string) => {
+      this.deleteMessageBase = res;
+    });
 
-        translate.get('user-resetpassword-message').subscribe((res: string) => {
-        	this.resetPasswordMessageBase = res;
-        });
+    translate.get('user-resetpassword-message').subscribe((res: string) => {
+      this.resetPasswordMessageBase = res;
+    });
 
-        translate.get('user-resetpassword-result-message').subscribe((res: string) => {
-        	this.resetPasswordResultMessageBase = res;
-        });
+    translate.get('user-resetpassword-result-message').subscribe((res: string) => {
+      this.resetPasswordResultMessageBase = res;
+    });
 
 
-        this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
-                                                                                            if(generalData != null){
-                                                                                              this.departments = generalData.company.departments;
-                                                                                            }
-                                                                                        });
+    this.global.currentSessionDataSubject.asObservable().subscribe((generalData: GeneralData) => {
+                                                                                        if(generalData != null){
+                                                                                          this.departments = generalData.company.departments;
+                                                                                        }
+                                                                                    });
 
-        for(var index in this.userDepartmentAccessType){
-          const key = this.userDepartmentAccessType[index];
-          this.setUserDepartmentAccessTypeLabel(index , key, translate);
-        }
-
+    for (let [index, key] of Object.entries(this.userDepartmentAccessType)) {
+        this.setUserDepartmentAccessTypeLabel(+index , translate);
+    }
 
 	}
 
-	private setUserDepartmentAccessTypeLabel(index: string, key: string, translate:TranslateService){
-	    translate.get(key).subscribe((res: string) => {
-          this.userDepartmentAccessType[index] = res;
-      });
+	private setUserDepartmentAccessTypeLabel(index: number, translate:TranslateService){
+	  const key: string = this.userDepartmentAccessType[index];
+    translate.get(key).subscribe((res: string) => {
+        this.userDepartmentAccessType[index] = res;
+    });
 	}
 
 	ngOnInit() {
-		this.userEditForm = this.formBuilder.group({
-
-			email: ['', Validators.email],
-			firstName: ['', Validators.required],
-		    lastName: ['', Validators.required],
-		    birthDate: ['', Validators.required],
-		    status: ['1', Validators.required],
-			userAccess: [UserAccessType.NONE, [UserAccessTypeControllValidator]],
-
-
-        });
 
 		this.global.loadAllSetting();
 
@@ -202,7 +198,7 @@ export class UserListComponent implements OnInit {
 		this.showViewModal = true;
 	}
 
-	findDepartment(id: string):Department{
+	findDepartment(id: string):Department|null{
 		for(var index in this.departments){
 			if(this.departments[index].id === id){
 				return this.departments[index];
@@ -294,7 +290,7 @@ export class UserListComponent implements OnInit {
 		return "0";
 	}
 
-	onMeberTypeOfDepartmentChange(event, id:string, value:number){
+	onMeberTypeOfDepartmentChange(event:any, id:string, value:number){
 
 		for(var index in this.editingUserDepartments){
 			if(this.editingUserDepartments[index].departmentId === id){

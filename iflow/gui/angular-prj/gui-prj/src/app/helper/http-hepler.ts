@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 
 export const InterceptorUseHeader = 'X-Use-Interceptor';
 
-export class HttpHepler {
+export class HttpHelper {
 
   public static serverPort: string = "localhost:1200";
   public static dataServer: string = "http://localhost:1200";

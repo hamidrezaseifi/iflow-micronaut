@@ -16,7 +16,7 @@ import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, Wo
 	from '../../../wf-models';
 import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice/invoice-workflow-save-request';
 import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice/invoice-workflow-save-request-init';
-import { InvoiceTypeControllValidator } from '../../../custom-validators/invoice-type-controll-validator';
+import { InvoiceTypeControlValidator } from '../../../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
 @Component({

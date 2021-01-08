@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef, AfterViewInit  } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import $ from "jquery";
+import * as $ from 'jquery';
 
 import { OcrWord, OcrBox, CompanyWorkflowtypeItemOcrSettingPreset } from '../../ui-models';
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 
 @Component({
   selector: 'app-invoice-ocr-detail',
@@ -12,17 +12,19 @@ import { HttpHepler } from '../../helper/http-hepler';
 })
 export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 
-	@ViewChild('scannedItemPreviewContainer')previewContainer: ElementRef;
+	@ViewChild('scannedItemPreviewContainer')previewContainer: ElementRef | null = null;
 
 	private _foundWords :OcrWord[] = [];
 	propertyLabels :string[] = [];
-	isEditing :boolean[] = [];
+	isEditing :Record<string, boolean> = {};
 
 	selectedKey :string = "";
-	selectedWord :OcrWord = null;
+	selectedWord :OcrWord | null = null;
 	_scanedPdfPath: string = "";
 
-	selectedOcrPreset : CompanyWorkflowtypeItemOcrSettingPreset = null;
+	selectedOcrPreset : CompanyWorkflowtypeItemOcrSettingPreset | null = null;
+
+	ocrPresetList: CompanyWorkflowtypeItemOcrSettingPreset[] = [];
 
 	@Input('showOcrDetails') showOcrDetails :boolean = false;
 	//@Input('scanedPdfPath') scanedPdfPath :string = "";
@@ -30,7 +32,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
   @Input('scanedPdfPath') set setScanedPdfPath(value: string) {
       this._scanedPdfPath = value;
       this.pdfFileViewUrl = {
-                  url: HttpHepler.dataServer + '/archive/data/file/view/' + value,
+                  url: HttpHelper.dataServer + '/archive/data/file/view/' + value,
                   withCredentials: true
       };
   }
@@ -40,12 +42,10 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	@Input('fileIsPdf') fileIsPdf: boolean = true;
 	@Input('fileIsImage') fileIsImage: boolean = false;
 
-	ocrPresetList: CompanyWorkflowtypeItemOcrSettingPreset[] = [];
-
 	@Input('ocrPresetList')
-	set setOcrPresetList(_value:CompanyWorkflowtypeItemOcrSettingPreset[]) {
-	    this.ocrPresetList = _value;
-	    if(this.ocrPresetList !== null || this.ocrPresetList.length > 0){
+	set setOcrPresetList(_value: CompanyWorkflowtypeItemOcrSettingPreset[]) {
+	    this.ocrPresetList = _value != null ? _value : [];
+	    if(this.ocrPresetList !== null && this.ocrPresetList.length > 0){
 	      this.selectedOcrPreset = this.ocrPresetList[0];
 	      this.selectedOcrPresetChanged.emit(this.selectedOcrPreset);
 	    }
@@ -79,7 +79,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 
 	}
 
-	@Input('editedValues') editedValues :string[] = [];
+	@Input('editedValues') editedValues :Record<string,string> = {};
 
 
 	pdfZoom :any = 'page-fit';
@@ -97,7 +97,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	private yScale :number = 1;
 
   pdfFileViewUrl = {
-       url: HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath,
+       url: HttpHelper.dataServer + '/archive/data/file/view/' + this._scanedPdfPath,
        withCredentials: true
 	};
 
@@ -110,15 +110,15 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	}
 
 	get imageFileViewUrl():string {
-		return 'url(' + HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath + ')';
+		return 'url(' + HttpHelper.dataServer + '/archive/data/file/view/' + this._scanedPdfPath + ')';
 		//return 'url()';
 	}
 
 	get fileViewUrl1() {
-	  //return HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath;
+	  //return HttpHelper.dataServer + '/archive/data/file/view/' + this._scanedPdfPath;
 
 	  return {
-       url: HttpHepler.dataServer + '/archive/data/file/view/' + this._scanedPdfPath,
+       url: HttpHelper.dataServer + '/archive/data/file/view/' + this._scanedPdfPath,
        withCredentials: true
     };
 
@@ -131,7 +131,7 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 		return false;
 	}
 
-	get debugData():string[]{
+	get debugData():Record<string, string>{
 		return this.editedValues;
 	}
 
@@ -171,7 +171,9 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 	}
 
 	selectFoundWord(foundWord :OcrWord){
-
+    if(this.previewContainer == null){
+      return;
+    }
 		this.selectedWord = foundWord;
 		this.pdfPageIndex = foundWord.pageIndex + 1;
 
@@ -262,7 +264,11 @@ export class InvoiceOcrDetailComponent implements OnInit, AfterViewInit  {
 
 	startEditKey(key:string){
 		this.isEditing[key] = true;
-		document.getElementById("valueeditbox" + key).focus();
+		var item = document.getElementById("valueeditbox" + key);
+		if(item){
+		  item.focus();
+		}
+
 	}
 
 	useFoundWord(foundWord :OcrWord){

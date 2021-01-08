@@ -6,7 +6,7 @@
 				<button class="toolbar-button" (click)="reload();"><i class="material-icons">refresh</i></button>
 			</div>
 
-			<div class="workflow-content-container expanded">
+			<div class="workflow-content-container" [ngClass]="{'expanded':isRecordPanelExpanded}">
 				<div class="workflow-content">
 					<form id="workflow-form" name="workflowForm" [formGroup]="invoiceEditForm">
 						<div class="panel panel-default">
@@ -193,7 +193,7 @@
 						<button type="button" class="workflow-pannel-collapse-button" (click)="collapseRecordPanel()"><i class="material-icons">keyboard_arrow_right</i></button>
 						<button type="button" class="workflow-pannel-expand-button" (click)="expandRecordPanel()"><i class="material-icons">keyboard_arrow_left</i></button>
 					</div>
-					<app-workflow-inlineview [workflow]="viewWorkflowModel"></app-workflow-inlineview>
+					<app-workflow-inlineview [workflow]="viewWorkflowModel" *ngIf="isRecordPanelExpanded"></app-workflow-inlineview>
 				</div>
 				<div class="clear"></div>
 

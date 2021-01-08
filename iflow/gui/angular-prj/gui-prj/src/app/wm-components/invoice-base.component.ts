@@ -16,11 +16,15 @@ import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, Wo
 	InvoiceType, WorkflowUploadedFile, WorkflowFile } from '../wf-models';
 import { InvoiceWorkflowSaveRequest } from '../wf-models/invoice/invoice-workflow-save-request';
 import { InvoiceWorkflowSaveRequestInit } from '../wf-models/invoice/invoice-workflow-save-request-init';
-import { InvoiceTypeControllValidator } from '../custom-validators/invoice-type-controll-validator';
+import { InvoiceTypeControlValidator } from '../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../helper';
-import { HttpHepler } from '../helper/http-hepler';
+import { HttpHelper } from '../helper/http-hepler';
+import { EditWorkflowBaseComponent } from './edit-workflow-base.component';
 
-export class InvoiceBaseComponent implements OnInit, OnDestroy {
+@Component({
+  template: ''
+})
+export class InvoiceBaseComponent extends EditWorkflowBaseComponent implements OnDestroy {
 
 	pageTitle :string = "not-initialized!";
 
@@ -28,8 +32,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 	paymentamountTypePaymentTitle :string = "";
 
 	subscribed: boolean = false;
-
-	uploadedFiles :UploadedFile[] = [];
 
 	listening :boolean = false;
 
@@ -39,7 +41,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 	showOcrDetailsDialog :boolean = false;
 
-	scannedSelectedValues :{[id: string]: string} = {};
+	scannedSelectedValues :Record<string,string> = {};
 
 	ocrResultMessage : any = {};
 
@@ -53,8 +55,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
   ocrSettingPresets : CompanyWorkflowtypeItemOcrSettingPreset[] = [];
   selectedOcrSettingPreset : CompanyWorkflowtypeItemOcrSettingPreset = new CompanyWorkflowtypeItemOcrSettingPreset;
-
-  generalData : GeneralData = new GeneralData;
 
 	selectAssign : boolean[][] = [];
 
@@ -139,7 +139,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
       protected formBuilder: FormBuilder,
       protected dateAdapter: DateAdapter<Date>
 	) {
-
+    super(global);
 		this.dateAdapter.setLocale('de');
 
 		this.invoiceEditForm = this.formBuilder.group({
@@ -154,7 +154,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 			vendorNumber: ['', Validators.required],
 			vendorName: ['', Validators.required],
 			isDirectDebitPermission: [false],
-			invoiceType: [InvoiceType.NO_TYPE, [InvoiceTypeControllValidator]],
+			invoiceType: [InvoiceType.NO_TYPE, [InvoiceTypeControlValidator]],
 
 			discountEnterDate: [new Date(), Validators.required],
 			discountDeadline: [0, Validators.required],
@@ -183,19 +183,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 		this.translate.get('invoice-paymentamount-payment').subscribe((res: string) => {
         	this.paymentamountTypePaymentTitle = res;
         });
-
-		//this.generalDataObs = this.global.currentSessionDataSubject.asObservable();
-    this.global.currentSessionDataSubject.asObservable().subscribe((res: GeneralData) => {
-        if(res == null || res == undefined){
-          return;
-        }
-        this.generalData = res;
-        console.log("invoice-generalData" , this.generalData);
-     });
-
-	}
-
-	ngOnInit() {
 
 	}
 
@@ -235,12 +222,6 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 
 		}
 	}
-
-	onUploadedFilesChanged(uploadedFileList: UploadedFile[]) {
-
-		this.uploadedFiles = uploadedFileList;
-	}
-
 
 	public onRecevieResponse = (message: string) => {
 
@@ -285,7 +266,7 @@ export class InvoiceBaseComponent implements OnInit, OnDestroy {
 		  this.unsubscribe();
 		}
 
-    var url = "ws://" + HttpHepler.serverPort + "/websocket/workflowocr/" + this.generalData.companyId + "/" + this.generalData.currentUserId;
+    var url = "ws://" + HttpHelper.serverPort + "/websocket/workflowocr/" + this.generalData.companyId + "/" + this.generalData.currentUserId;
 
     var msg = uploadedFile.uploadResult;
     msg.token = this.generalData.refreshToken;

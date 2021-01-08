@@ -6,7 +6,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { WorkflowMessage } from '../../wf-models/workflowmessage';
 
 import { ErrorServiceService } from '../error-service.service';
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 
 
 @Injectable({
@@ -14,8 +14,8 @@ import { HttpHepler } from '../../helper/http-hepler';
 })
 export class WorkflowMessageService {
 
-	loadMessageUrl :string = HttpHepler.dataServer + "/users/data/workflowmessages";
-	assignWorkflowUrl :string = HttpHepler.dataServer + "/users/data/workflow/assign/";
+	loadMessageUrl :string = HttpHelper.dataServer + "/users/data/workflowmessages";
+	assignWorkflowUrl :string = HttpHelper.dataServer + "/users/data/workflow/assign/";
 
 	isReloadingMessages : boolean = false;
 
@@ -29,10 +29,10 @@ export class WorkflowMessageService {
 
 	}
 
-    public get workflowMessageList(): WorkflowMessage[] {
+  public get workflowMessageList(): WorkflowMessage[] {
 
-        return this.workflowMessageListSubject.value;
-    }
+      return this.workflowMessageListSubject.value;
+  }
 
 	loadMessages(resetCach: boolean){
 
@@ -41,7 +41,7 @@ export class WorkflowMessageService {
 
       const headers = new HttpHeaders();
 
-      return this.http.get(url);
+      return this.http.get<WorkflowMessage[]>(url);
 	}
 
 	assignMe(workflowIdentity: string){
@@ -49,7 +49,7 @@ export class WorkflowMessageService {
     	this.isReloadingMessages = true;
     	var url = this.assignWorkflowUrl + workflowIdentity;
 
-        const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+        const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     	return this.http.post(url, new HttpParams(), httpOptions);
 	}

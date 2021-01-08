@@ -1,4 +1,7 @@
 
+import { Observable } from 'rxjs';
+import { UploadedResult } from '../../ui-models';
+
 export interface WorkflowEditInterfaceService  {
 
 
@@ -20,7 +23,7 @@ export interface WorkflowEditInterfaceService  {
 	getInitEditUrl(identity :string): any;
 
 
-	uploadTempFiles(ocrScanFile : File): any;
+	uploadTempFiles(ocrScanFile : File): Observable<UploadedResult>;
 
 	loadCreateInitialData(): any;
 

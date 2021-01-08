@@ -9,13 +9,13 @@ import { User, LoginResponse, GeneralData } from '../ui-models';
 
 import { GlobalService } from '../services/global.service';
 import { LoadingServiceService } from './loading-service.service';
-import { HttpHepler } from '../helper/http-hepler';
+import { HttpHelper } from '../helper/http-hepler';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService implements CanActivate{
 
-    authenticateUrl :string = HttpHepler.dataServer + "/auth/authenticate";
-    logoutUrl :string = HttpHepler.dataServer + "/auth/logout";
+    authenticateUrl :string = HttpHelper.dataServer + "/auth/authenticate";
+    logoutUrl :string = HttpHelper.dataServer + "/auth/logout";
 
     constructor(
     		private http: HttpClient,

@@ -25,7 +25,9 @@
     "@ngx-translate/core": "^13.0.0",
     "@ngx-translate/http-loader": "^6.0.0",
     "@swimlane/ngx-datatable": "^19.0.0",
+    "@types/jquery": "^3.5.5",
     "angular-data-table": "^0.8.1",
+    "angular-resizable-element": "^3.3.4",
     "angular2-cookie": "^1.2.6",
     "bootstrap": "^4.5.3",
     "jquery": "^3.5.1",
@@ -38,6 +40,7 @@
     "popper.js": "^1.16.1",
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.6.3",
+    "save": "^2.4.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

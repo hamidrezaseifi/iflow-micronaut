@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoadingServiceService } from '../loading-service.service';
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -16,12 +16,12 @@ import { DashboardCube, User } from '../../ui-models';
 })
 export class UserEditService extends HttpErrorResponseHelper {
 
-	loadUsersUrl :string = HttpHepler.dataServer + "/users/data/list";
-	createUserUrl :string = HttpHepler.dataServer + "/users/data/create";
-	updateUserUrl :string = HttpHepler.dataServer + "/users/data/update";
-	deleteUserUrl :string = HttpHepler.dataServer + "/users/data/delete";
-	resetUserPasswordUrl :string = HttpHepler.dataServer + "/users/data/resetpassword";
-  applyDashboardLinksUrl :string = HttpHepler.dataServer + "/users/data/applydashboardlink";
+	loadUsersUrl :string = HttpHelper.dataServer + "/users/data/list";
+	createUserUrl :string = HttpHelper.dataServer + "/users/data/create";
+	updateUserUrl :string = HttpHelper.dataServer + "/users/data/update";
+	deleteUserUrl :string = HttpHelper.dataServer + "/users/data/delete";
+	resetUserPasswordUrl :string = HttpHelper.dataServer + "/users/data/resetpassword";
+  applyDashboardLinksUrl :string = HttpHelper.dataServer + "/users/data/applydashboardlink";
 
 	constructor(
 			protected http: HttpClient,
@@ -36,15 +36,15 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	listUsers(){
 
-	  const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	  const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-		return this.http.get(this.loadUsersUrl, httpOptions);
+		return this.http.get<User[]>(this.loadUsersUrl, httpOptions);
 
 	};
 
 	createUser(user: User){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
 		  return this.http.post(this.createUserUrl, user, httpOptions);
 
@@ -52,7 +52,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	updateUser(user: User){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
 		  return this.http.post(this.updateUserUrl, user, httpOptions);
 
@@ -60,7 +60,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	deleteUser(user: User){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
 		  return this.http.post(this.deleteUserUrl, user, httpOptions);
 
@@ -68,7 +68,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 	resetUserPassword(user: User){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
 		  return this.http.post(this.resetUserPasswordUrl, user, httpOptions);
 
@@ -76,7 +76,7 @@ export class UserEditService extends HttpErrorResponseHelper {
 
 
   applyDashboardLinks(cubes : DashboardCube[][]) {
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     console.log("saving cubes:" , cubes);
     return this.http.post(this.applyDashboardLinksUrl, cubes, httpOptions);

@@ -4,20 +4,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import $ from "jquery";
 
 import { GlobalService } from '../../../services/global.service';
 import { InvoiceWorkflowEditService } from '../../../services/workflow/invoice/invoice-workflow-edit.service';
 import { LoadingServiceService } from '../../../services/loading-service.service';
 import { ErrorServiceService } from '../../../services/error-service.service';
 import { InvoiceBaseComponent } from '../../invoice-base.component';
-import { GlobalSocket } from '../../../services/global-socket';
 
 import { User, Department, GeneralData } from '../../../ui-models';
 import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType, WorkflowUploadFileResult, InvoiceType } from '../../../wf-models';
 import { InvoiceWorkflowSaveRequest } from '../../../wf-models/invoice/invoice-workflow-save-request';
 import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice/invoice-workflow-save-request-init';
-import { InvoiceTypeControllValidator } from '../../../custom-validators/invoice-type-controll-validator';
+import { InvoiceTypeControlValidator } from '../../../custom-validators/invoice-type-controll-validator';
 import { GermanDateAdapter, parseDate, formatDate } from '../../../helper';
 
 @Component({
@@ -32,32 +30,34 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 
 	saveMessage : string = "";
 
+	isRecordPanelExpanded: boolean = true;
 
-	viewWorkflowModel :Workflow = null;
+
+	viewWorkflowModel :Workflow | null = null;
 
 	get canSave() :boolean{
-		if(this.workflowSaveRequest.workflow.workflow){
+		if(this.workflowSaveRequest && this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canSave;
 		}
 		return false;
 	}
 
 	get canDone() :boolean{
-		if(this.workflowSaveRequest.workflow.workflow){
+		if(this.workflowSaveRequest && this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canDone;
 		}
 		return false;
 	}
 
 	get canArchive() :boolean{
-		if(this.workflowSaveRequest.workflow.workflow){
+		if(this.workflowSaveRequest && this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canArchive;
 		}
 		return false;
 	}
 
 	get canAssign() :boolean{
-		if(this.workflowSaveRequest.workflow.workflow){
+		if(this.workflowSaveRequest && this.workflowSaveRequest.workflow.workflow){
 			return this.workflowSaveRequest.workflow.workflow.canAssign;
 		}
 		return true;
@@ -71,17 +71,16 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 
 
 	constructor(
-		    protected router: Router,
+		  protected router: Router,
 			protected global: GlobalService,
 			protected translate: TranslateService,
 			public    editService :InvoiceWorkflowEditService,
 			protected loadingService: LoadingServiceService,
 			protected http: HttpClient,
 			protected errorService: ErrorServiceService,
-		  	protected formBuilder: FormBuilder,
-		  	protected dateAdapter: DateAdapter<Date>,
-		  	protected route: ActivatedRoute,
-		  	protected globalSocket: GlobalSocket,
+      protected formBuilder: FormBuilder,
+      protected dateAdapter: DateAdapter<Date>,
+      protected route: ActivatedRoute
 	) {
 
 		super(router,
@@ -92,8 +91,7 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 				http,
 				errorService,
 			  	formBuilder,
-			  	dateAdapter,
-			  	globalSocket);
+			  	dateAdapter);
 
 		this.router.events.subscribe((evt) => {
 			if (evt instanceof NavigationEnd) {
@@ -190,83 +188,96 @@ export class EditInvoiceComponent extends InvoiceBaseComponent implements OnInit
 
 		this.saveMessage = "";
 
-        this.editService.saveWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {
-		            console.log("Create workflow result", result);
+    if(this.workflowSaveRequest == null){
+      return;
+    }
 
-		            this.translate.get('common.saved').subscribe((res: string) => {
-		            	this.saveMessage = res;
-		            });
+    this.editService.saveWorkflow(this.workflowSaveRequest).subscribe(
+        (result) => {
+            console.log("Create workflow result", result);
 
-		            this.loadWorkflowData();
+            this.translate.get('common.saved').subscribe((res: string) => {
+              this.saveMessage = res;
+            });
 
-		        },
-		        response => {
-		        	console.log("Error in create workflow", response);
+            this.loadWorkflowData();
 
-		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
+        },
+        response => {
+          console.log("Error in create workflow", response);
 
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+          this.errorService.showErrorResponse(response);
+          this.loadingService.hideLoading();
+        },
+        () => {
+
+          this.loadingService.hideLoading();
+        }
+    );
 
 	}
 
 	private doneWorkflowData(){
+    if(this.workflowSaveRequest == null){
+      return;
+    }
 
-        this.editService.doneWorkflow(this.workflowSaveRequest).subscribe(
-		        (result) => {
-		            console.log("Create workflow result", result);
+    this.editService.doneWorkflow(this.workflowSaveRequest).subscribe(
+        (result) => {
+            console.log("Create workflow result", result);
 
-		            this.router.navigate([this.workflowListUrl]);
-		        },
-		        response => {
-		        	console.log("Error in create workflow", response);
+            this.router.navigate([this.workflowListUrl]);
+        },
+        response => {
+          console.log("Error in create workflow", response);
 
-		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
+          this.errorService.showErrorResponse(response);
+          this.loadingService.hideLoading();
+        },
+        () => {
 
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+          this.loadingService.hideLoading();
+        }
+    );
 
 	}
 
 	private archiveWorkflowData(){
 
-        this.editService.archiveWorkflow(this.workflowSaveRequest.workflow).subscribe(
-		        (result) => {
-		            console.log("Create workflow result", result);
+    if(this.workflowSaveRequest == null){
+      return;
+    }
 
-		            this.router.navigate([this.workflowListUrl]);
-		        },
-		        response => {
-		        	console.log("Error in create workflow", response);
+    this.editService.archiveWorkflow(this.workflowSaveRequest.workflow).subscribe(
+        (result) => {
+            console.log("Create workflow result", result);
 
-		        	this.errorService.showErrorResponse(response);
-		        	this.loadingService.hideLoading();
-		        },
-		        () => {
+            this.router.navigate([this.workflowListUrl]);
+        },
+        response => {
+          console.log("Error in create workflow", response);
 
-		        	this.loadingService.hideLoading();
-		        }
-		    );
+          this.errorService.showErrorResponse(response);
+          this.loadingService.hideLoading();
+        },
+        () => {
+
+          this.loadingService.hideLoading();
+        }
+    );
 
 	}
 
 	collapseRecordPanel() {
-		$(".workflow-content-container").removeClass("expanded").addClass("collapsed");
-		$(".workflow-inline-content-container").hide();
+	  this.isRecordPanelExpanded = false;
+		//$(".workflow-content-container").removeClass("expanded").addClass("collapsed");
+		//$(".workflow-inline-content-container").hide();
 	}
 
 	expandRecordPanel() {
-		$(".workflow-content-container").removeClass("collapsed").addClass("expanded");
-		$(".workflow-inline-content-container").show();
+	  this.isRecordPanelExpanded = true;
+		//$(".workflow-content-container").removeClass("collapsed").addClass("expanded");
+		//$(".workflow-inline-content-container").show();
 	}
 
 

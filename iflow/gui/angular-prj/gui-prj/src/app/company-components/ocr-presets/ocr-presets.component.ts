@@ -26,7 +26,7 @@ export class OcrPresetsComponent implements OnInit {
 	ocrTypeList :any[] = [];
 
 	workflowTypes: WorkflowType[] = [];
-	workflowTypeItems: string[][] = [];
+	workflowTypeItems: Record<string, string[]> = {};
 
   selectedPreset :CompanyWorkflowtypeItemOcrSettingPreset = new CompanyWorkflowtypeItemOcrSettingPreset();
   selectedPresetItems :CompanyWorkflowtypeItemOcrSettingPresetItem[] = [];
@@ -217,7 +217,7 @@ export class OcrPresetsComponent implements OnInit {
 
 	  for(var index in workflowtypeitems){
 	  	var itemName = workflowtypeitems[index];
-	  	var item :CompanyWorkflowtypeItemOcrSettingPresetItem = this.findItemByName(preset, itemName);
+	  	var item :CompanyWorkflowtypeItemOcrSettingPresetItem | null = this.findItemByName(preset, itemName);
 	  	if(item === null){
 	  	  item = new CompanyWorkflowtypeItemOcrSettingPresetItem();
 	  	  item.propertyName = itemName;
@@ -233,7 +233,7 @@ export class OcrPresetsComponent implements OnInit {
 	}
 
 	private findItemByName(preset :CompanyWorkflowtypeItemOcrSettingPreset, propertyName: string)
-		:CompanyWorkflowtypeItemOcrSettingPresetItem{
+		:CompanyWorkflowtypeItemOcrSettingPresetItem | null{
 	  for(var index in preset.items){
 	    if(preset.items[index].propertyName === propertyName){
 	      return preset.items[index];

@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoadingServiceService } from '../../loading-service.service';
 import { ErrorServiceService } from '../../error-service.service';
-import { HttpHepler } from '../../../helper/http-hepler';
+import { HttpHelper } from '../../../helper/http-hepler';
 import { AuthenticationService } from '../../authentication.service';
 
 import { InvoiceWorkflowSaveRequestInit } from '../../../wf-models/invoice/invoice-workflow-save-request-init';
@@ -17,6 +17,7 @@ import { WorkflowProcessCommand, Workflow, AssignItem, FileTitle, AssignType } f
 
 import { WorkflowEditInterfaceService } from '../../../services';
 import { HttpErrorResponseHelper } from '../../../helper/http-error-response-helper';
+import { UploadedResult } from '../../../ui-models';
 
 
 
@@ -31,39 +32,39 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 	workflowSaveRequestInit :InvoiceWorkflowSaveRequestInit = new InvoiceWorkflowSaveRequestInit;
 
 	getInitCreateUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/initcreate";
+		return HttpHelper.dataServer + "/workflow/invoice/data/initcreate";
 	}
 
 	getInitEditUrl(id :string) :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/initedit/" + id;
+		return HttpHelper.dataServer + "/workflow/invoice/data/initedit/" + id;
 	}
 
 	getCreateWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/create";
+		return HttpHelper.dataServer + "/workflow/invoice/data/create";
 	}
 
 	getSaveWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/save";
+		return HttpHelper.dataServer + "/workflow/invoice/data/save";
 	}
 
 	getDoneWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/done";
+		return HttpHelper.dataServer + "/workflow/invoice/data/done";
 	}
 
 	getArchiveWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/archive";
+		return HttpHelper.dataServer + "/workflow/invoice/data/archive";
 	}
 
 	getUploadFileUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/createfile";
+		return HttpHelper.dataServer + "/workflow/invoice/data/createfile";
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return HttpHepler.dataServer + "/archive/data/uploadtempfile";
+		return HttpHelper.dataServer + "/archive/data/uploadtempfile";
 	}
 
 	getProcessDocumentWordsUrl() :string{
-		return HttpHepler.dataServer + "/workflow/invoice/data/processdoc";
+		return HttpHelper.dataServer + "/workflow/invoice/data/processdoc";
 	}
 
 	constructor(
@@ -81,7 +82,7 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 	loadCreateInitialData(){
     	this.loadingService.showLoading();
 
-      const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+      const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
       console.log("InitCreateUrl: " + this.getInitCreateUrl());
 
@@ -111,9 +112,9 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 
 	loadEditInitialData(id: string){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-    return this.http.post(this.getInitEditUrl(id), null, httpOptions);
+    return this.http.post<InvoiceWorkflowSaveRequestInit>(this.getInitEditUrl(id), null, httpOptions);
 
 	}
 
@@ -127,55 +128,55 @@ export class InvoiceWorkflowEditService extends HttpErrorResponseHelper implemen
 		    formData.append('wids', i + "");
 		}
 
-    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHelper.generateFileUploadHeader() };
 
     return this.http.post(this.getUploadFileUrl(), formData, httpFileUploadOptions);
 
 	}
 
-	uploadTempFiles(ocrScanFile : File){
+	uploadTempFiles(ocrScanFile : File): Observable<UploadedResult>{
 
     const formData = new FormData();
     formData.append('file', ocrScanFile);
     formData.append('wids', "0");
 
-    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHelper.generateFileUploadHeader() };
 
-    return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
+    return this.http.post<UploadedResult>(this.getUploadOcrScanFileUrl(), formData, {});
 	}
 
 
 	createWorkflow(workflowSaveRequest :InvoiceWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	saveWorkflow(workflowSaveRequest :InvoiceWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	doneWorkflow(workflowSaveRequest :InvoiceWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	archiveWorkflow(workflowSaveRequest :InvoiceWorkflow){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
 	}
 
 	processDocumentWords(message :any){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getProcessDocumentWordsUrl() , message, httpOptions);
 	}

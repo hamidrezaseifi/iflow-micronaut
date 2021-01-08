@@ -5,7 +5,7 @@
 			</div>
 			<form id="workflow-form" name="workflowForm" [formGroup]="workflowEditForm">
 
-				<div class="workflow-content-container expanded">
+				<div class="workflow-content-container" [ngClass]="{'expanded':isRecordPanelExpanded}">
 					<div class="workflow-content">
 						<div class="item-row">
 							<div class="item-label">{{ 'workflow-comments' | translate }}</div>
@@ -48,7 +48,7 @@
 							<button type="button" class="workflow-pannel-collapse-button" (click)="collapseRecordPanel()"><i class="material-icons">keyboard_arrow_right</i></button>
 							<button type="button" class="workflow-pannel-expand-button" (click)="expandRecordPanel()"><i class="material-icons">keyboard_arrow_left</i></button>
 						</div>
-						<app-workflow-inlineview [workflow]="viewWorkflowModel"></app-workflow-inlineview>
+						<app-workflow-inlineview [workflow]="viewWorkflowModel" *ngIf="isRecordPanelExpanded"></app-workflow-inlineview>
 					</div>
 					<div class="clear"></div>
 				</div>

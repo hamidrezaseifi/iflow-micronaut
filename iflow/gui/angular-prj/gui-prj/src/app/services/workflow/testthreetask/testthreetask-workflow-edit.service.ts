@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoadingServiceService } from '../../loading-service.service';
-import { HttpHepler } from '../../../helper/http-hepler';
+import { HttpHelper } from '../../../helper/http-hepler';
 import { AuthenticationService } from '../../authentication.service';
 
 
@@ -16,6 +16,7 @@ import { WorkflowProcessCommand, TestThreeTaskWorkflow, AssignItem, FileTitle, A
 
 import { TestThreeTaskWorkflowSaveRequest } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request';
 import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreetask/testthreetask-workflow-save-request-init';
+import { UploadedResult } from '../../../ui-models';
 
 
 
@@ -25,40 +26,40 @@ import { TestThreeWorkflowSaveRequestInit } from '../../../wf-models/testthreeta
 export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper implements WorkflowEditInterfaceService {
 
 	public workflowSaveRequestInitSubject: BehaviorSubject<TestThreeWorkflowSaveRequestInit> =
-	  new BehaviorSubject<TestThreeWorkflowSaveRequestInit>(TestThreeWorkflowSaveRequestInit);
+	  new BehaviorSubject<TestThreeWorkflowSaveRequestInit>(new TestThreeWorkflowSaveRequestInit);
 
 	workflowSaveRequestInit :TestThreeWorkflowSaveRequestInit = new TestThreeWorkflowSaveRequestInit;
 
 	getInitCreateUrl() :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/initcreate";
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/initcreate";
 	}
 
 	getCreateWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/create";
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/create";
 	}
 
 	getUploadFileUrl() :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/createfile";
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/createfile";
 	}
 
 	getSaveWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/save";
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/save";
 	}
 
 	getDoneWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/done";
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/done";
 	}
 
 	getArchiveWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/archive";
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/archive";
 	}
 
 	getInitEditUrl(id :string) :string{
-		return HttpHepler.dataServer + "/workflow/testthreetask/data/initedit/" + id;
+		return HttpHelper.dataServer + "/workflow/testthreetask/data/initedit/" + id;
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return HttpHepler.dataServer + "/archive/data/uploadtempfile";
+		return HttpHelper.dataServer + "/archive/data/uploadtempfile";
 	}
 
 	constructor(
@@ -72,23 +73,23 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	}
 
-	uploadTempFiles(ocrScanFile : File){
+	uploadTempFiles(ocrScanFile : File): Observable<UploadedResult>{
 
 	    const formData = new FormData();
 	    formData.append('file', ocrScanFile);
 	    formData.append('wids', "0");
 
 
-      const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+      const httpFileUploadOptions = { headers: HttpHelper.generateFileUploadHeader() };
 
-	    return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
+	    return this.http.post<UploadedResult>(this.getUploadOcrScanFileUrl(), formData, {});
 
 	}
 
 	loadCreateInitialData(){
     	this.loadingService.showLoading();
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
       this.http.post<TestThreeWorkflowSaveRequestInit>(this.getInitCreateUrl(), null, httpOptions).subscribe(
           (initialData :TestThreeWorkflowSaveRequestInit) => {
@@ -116,9 +117,9 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	loadEditInitialData(id: string){
 
-      const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+      const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-      return this.http.post(this.getInitEditUrl(id), new HttpParams(), httpOptions);
+      return this.http.post<TestThreeWorkflowSaveRequestInit>(this.getInitEditUrl(id), new HttpParams(), httpOptions);
 
 	}
 
@@ -132,7 +133,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 		    formData.append('wids', i + "");
 		}
 
-    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHelper.generateFileUploadHeader() };
 
 	  return this.http.post(this.getUploadFileUrl(), formData, httpFileUploadOptions);
 
@@ -140,7 +141,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	createWorkflow(workflowSaveRequest :TestThreeTaskWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
 
@@ -149,7 +150,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	saveWorkflow(workflowSaveRequest :TestThreeTaskWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
@@ -157,7 +158,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	doneWorkflow(workflowSaveRequest :TestThreeTaskWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
 
@@ -165,7 +166,7 @@ export class TestthreetaskWorkflowEditService extends HttpErrorResponseHelper im
 
 	archiveWorkflow(workflowSaveRequest :TestThreeTaskWorkflow){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
 

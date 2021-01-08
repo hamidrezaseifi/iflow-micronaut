@@ -1,4 +1,6 @@
-<div mwlResizable [enableGhostResize]="true" [resizeEdges]="{ bottom: false, right: false, top: true, left: false }" (resizeEnd)="onResizeEnd($event)" class="message-panel-container" id="message-panel-container" *ngIf="isAppLogged">
+<div mwlResizable [enableGhostResize]="true" [resizeEdges]="{ bottom: false, right: false, top: true, left: false }"
+     (resizeEnd)="onResizeEnd($event)" class="message-panel-container" id="message-panel-container"
+     *ngIf="isAppLogged" [ngStyle]="{'height' : messagePanelHeightStyle}">
 	<div class="message-panel-toolbar">
 		<span class="title">Meldungen</span> &nbsp; &nbsp; <span [ngStyle]="{'color':subscribed ? 'green' : 'red' }">{{status}}</span>
 		<button class="toolbar-button" *ngIf="messagePanelShowed" (click)="closeMessages();"><i class="material-icons">keyboard_arrow_down</i></button>

@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { Observable } from 'rxjs';
-import $ from "jquery";
+import * as $ from 'jquery';
 
 import { GlobalService } from '../../services/global.service';
 import { CompanyEditService } from '../../services/company/company-edit.service';
@@ -25,7 +25,7 @@ export class CompanyInfoComponent implements OnInit {
 	companyInfo: Company = new Company;
 	companyEditForm: FormGroup;
 	companyTypeList : string[] = ["CUSTOME", "EINZELUNTERNEHMEN", "GBR", "OHG", "KG", "GMBH", "UG"];
-	companyTypeTitle : {} = {};
+	companyTypeTitle : Record<string, string> = {};
 
 	isEditing :boolean= false;
 
@@ -43,6 +43,14 @@ export class CompanyInfoComponent implements OnInit {
 	) {
 		this.dateAdapter.setLocale('de');
 
+		this.companyEditForm = this.formBuilder.group({
+
+			companyName: ['', Validators.email],
+			companyType: ['', Validators.required],
+			companyTypeCustome: [''],
+		  status: ['1', Validators.required],
+    });
+
 		for(var index in this.companyTypeList){
       const key = this.companyTypeList[index];
 			translate.get('company-type-' + key).subscribe((res: string) => {
@@ -53,14 +61,6 @@ export class CompanyInfoComponent implements OnInit {
 	}
 
 	ngOnInit() {
-
-		this.companyEditForm = this.formBuilder.group({
-
-			companyName: ['', Validators.email],
-			companyType: ['', Validators.required],
-			companyTypeCustome: [''],
-		  status: ['1', Validators.required],
-     });
 
 		this.reload();
 	}
@@ -81,23 +81,23 @@ export class CompanyInfoComponent implements OnInit {
 		this.loadingService.showLoading();
 
 		this.editService.listData().subscribe(
-		        (result :Company) => {
+        (result :Company) => {
 
-		            console.log("Company Info", result);
+            console.log("Company Info", result);
 
-		            this.companyInfo = result;
+            this.companyInfo = result;
 
-		            this.isEditing = false;
-		        },
-		        response => {
-		        	console.log("Error in get company Info", response);
-		        	this.loadingService.hideLoading();
-		        	this.errorService.showErrorResponse(response);
-		        },
-		        () => {
+            this.isEditing = false;
+        },
+        response => {
+          console.log("Error in get company Info", response);
+          this.loadingService.hideLoading();
+          this.errorService.showErrorResponse(response);
+        },
+        () => {
 
-		        	this.loadingService.hideLoading();
-		        }
+          this.loadingService.hideLoading();
+        }
 			);
 	}
 
@@ -112,23 +112,23 @@ export class CompanyInfoComponent implements OnInit {
 		this.loadingService.showLoading();
 
 		this.editService.updateData(this.companyInfo).subscribe(
-		        (result :Company) => {
+        (result :Company) => {
 
-		            console.log("Save Company", result);
+            console.log("Save Company", result);
 
-		            this.companyInfo = result;
+            this.companyInfo = result;
 
-		            this.isEditing = false;
-		        },
-		        response => {
-		        	console.log("Error in saving company", response);
-		        	this.loadingService.hideLoading();
-		        	this.errorService.showErrorResponse(response);
-		        },
-		        () => {
+            this.isEditing = false;
+        },
+        response => {
+          console.log("Error in saving company", response);
+          this.loadingService.hideLoading();
+          this.errorService.showErrorResponse(response);
+        },
+        () => {
 
-		        	this.loadingService.hideLoading();
-		        }
+          this.loadingService.hideLoading();
+        }
 			);
 
 	}

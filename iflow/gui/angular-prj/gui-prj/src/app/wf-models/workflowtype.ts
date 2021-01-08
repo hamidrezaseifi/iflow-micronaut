@@ -10,6 +10,7 @@ export class WorkflowType {
 	public assignType :string = "";
 	public allowAssign: boolean = false;
 	public increaseStepAutomatic: boolean = false;
+	public controllerPreffix: string = "";
 
 	public steps: WorkflowTypeStep[] = [];
 

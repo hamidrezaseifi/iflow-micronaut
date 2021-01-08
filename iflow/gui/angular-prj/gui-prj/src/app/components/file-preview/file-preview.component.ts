@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef, AfterViewInit  } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import $ from "jquery";
-import { HttpHepler } from '../../helper/http-hepler';
+import * as $ from 'jquery';
+import { HttpHelper } from '../../helper/http-hepler';
 import { GlobalService } from '../../services/global.service';
 import { GeneralData } from '../../ui-models';
 
@@ -68,12 +68,12 @@ export class FilePreviewComponent implements OnInit {
 	}
 
 	get imageFileViewUrl():string {
-		return 'url(' + HttpHepler.dataServer + '/archive/data/file/view/' + this.fileUrl + ')';
+		return 'url(' + HttpHelper.dataServer + '/archive/data/file/view/' + this.fileUrl + ')';
 		//return 'url()';
 	}
 
 	get fileViewUrl():string {
-		return HttpHepler.dataServer + '/archive/data/file/view/' + this.fileUrl;
+		return HttpHelper.dataServer + '/archive/data/file/view/' + this.fileUrl;
 		//return 'url()';
 	}
 

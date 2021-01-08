@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoadingServiceService } from '../../loading-service.service';
-import { HttpHepler } from '../../../helper/http-hepler';
+import { HttpHelper } from '../../../helper/http-hepler';
 import { AuthenticationService } from '../../authentication.service';
 
 import { WorkflowEditInterfaceService } from '../../../services';
@@ -15,6 +15,7 @@ import { WorkflowProcessCommand, SingleTaskWorkflow, AssignItem, FileTitle, Assi
 
 import { SingleTaskWorkflowSaveRequest } from '../../../wf-models/singletask/singletask-workflow-save-request';
 import { SingleTaskWorkflowSaveRequestInit } from '../../../wf-models/singletask/singletask-workflow-save-request-init';
+import { UploadedResult } from '../../../ui-models';
 
 
 @Injectable({
@@ -28,35 +29,35 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 	workflowSaveRequestInit :SingleTaskWorkflowSaveRequestInit = new SingleTaskWorkflowSaveRequestInit;
 
 	getInitCreateUrl() :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/initcreate";
+		return HttpHelper.dataServer + "/workflow/singletask/data/initcreate";
 	}
 
 	getCreateWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/create";
+		return HttpHelper.dataServer + "/workflow/singletask/data/create";
 	}
 
 	getUploadFileUrl() :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/createfile";
+		return HttpHelper.dataServer + "/workflow/singletask/data/createfile";
 	}
 
 	getSaveWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/save";
+		return HttpHelper.dataServer + "/workflow/singletask/data/save";
 	}
 
 	getDoneWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/done";
+		return HttpHelper.dataServer + "/workflow/singletask/data/done";
 	}
 
 	getArchiveWorkflowUrl() :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/archive";
+		return HttpHelper.dataServer + "/workflow/singletask/data/archive";
 	}
 
 	getInitEditUrl(id :string) :string{
-		return HttpHepler.dataServer + "/workflow/singletask/data/initedit/" + id;
+		return HttpHelper.dataServer + "/workflow/singletask/data/initedit/" + id;
 	}
 
 	getUploadOcrScanFileUrl() :string{
-		return HttpHepler.dataServer + "/archive/data/uploadtempfile";
+		return HttpHelper.dataServer + "/archive/data/uploadtempfile";
 	}
 
 	constructor(
@@ -70,22 +71,22 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	}
 
-	uploadTempFiles(file : File){
+	uploadTempFiles(file : File): Observable<UploadedResult>{
 
     const formData = new FormData();
     formData.append('file', file);
     formData.append('wids', "0");
 
-    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHelper.generateFileUploadHeader() };
 
-	  return this.http.post(this.getUploadOcrScanFileUrl(), formData, {});
+	  return this.http.post<UploadedResult>(this.getUploadOcrScanFileUrl(), formData, {});
 
 	}
 
 	loadCreateInitialData(){
     this.loadingService.showLoading();
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     this.http.post<SingleTaskWorkflowSaveRequestInit>(this.getInitCreateUrl(), null, httpOptions).subscribe(
         (initialData :SingleTaskWorkflowSaveRequestInit) => {
@@ -108,9 +109,9 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	loadEditInitialData(id: string){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-    return this.http.post(this.getInitEditUrl(id), new HttpParams(), httpOptions);
+    return this.http.post<SingleTaskWorkflowSaveRequestInit>(this.getInitEditUrl(id), new HttpParams(), httpOptions);
 
 	}
 
@@ -124,7 +125,7 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 		    formData.append('wids', i + "");
 		}
 
-    const httpFileUploadOptions = { headers: HttpHepler.generateFileUploadHeader() };
+    const httpFileUploadOptions = { headers: HttpHelper.generateFileUploadHeader() };
 
 	  return this.http.post(this.getUploadFileUrl(), formData, httpFileUploadOptions);
 
@@ -132,7 +133,7 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	createWorkflow(workflowSaveRequest :SingleTaskWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getCreateWorkflowUrl() , workflowSaveRequest, httpOptions);
 
@@ -141,7 +142,7 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	saveWorkflow(workflowSaveRequest :SingleTaskWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getSaveWorkflowUrl() , workflowSaveRequest, httpOptions);
 
@@ -149,7 +150,7 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	doneWorkflow(workflowSaveRequest :SingleTaskWorkflowSaveRequest){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getDoneWorkflowUrl() , workflowSaveRequest, httpOptions);
 
@@ -157,7 +158,7 @@ export class SingleTaskWorkflowEditService extends HttpErrorResponseHelper imple
 
 	archiveWorkflow(workflowSaveRequest :SingleTaskWorkflow){
 
-    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
     return this.http.post(this.getArchiveWorkflowUrl() , workflowSaveRequest, httpOptions);
 

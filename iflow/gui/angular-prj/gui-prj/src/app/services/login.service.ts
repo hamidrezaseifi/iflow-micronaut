@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpHepler } from '../helper/http-hepler';
+import { HttpHelper } from '../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../helper/http-error-response-helper';
 import { Credential, GeneralData } from '../ui-models';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
@@ -10,8 +10,8 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
 })
 export class LoginService {
 
-  loginUrl :string = HttpHepler.dataServer + "/auth/login";
-  logoutUrl :string = HttpHepler.dataServer + "/auth/logout";
+  loginUrl :string = HttpHelper.dataServer + "/auth/login";
+  logoutUrl :string = HttpHelper.dataServer + "/auth/logout";
   constructor(private http:HttpClient) {
 
   }

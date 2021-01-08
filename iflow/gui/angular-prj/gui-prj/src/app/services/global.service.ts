@@ -7,12 +7,12 @@ import 'rxjs/add/operator/map';
 import { User, MenuItem, GeneralData } from '../ui-models';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { LoginService, LoadingServiceService } from '../services';
-import { HttpHepler } from '../helper/http-hepler';
+import { HttpHelper } from '../helper/http-hepler';
 
 @Injectable({ providedIn: 'root' })
 export class GlobalService {
 
-	loadGeneralDataUrl :string = HttpHepler.dataServer + "/users/data/sessiondata";
+	loadGeneralDataUrl :string = HttpHelper.dataServer + "/users/data/sessiondata";
 	public currentSessionDataSubject: BehaviorSubject<GeneralData> = new BehaviorSubject<GeneralData>(new GeneralData);
 
 	public presensSubject :BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -104,7 +104,7 @@ export class GlobalService {
 	}
 
 	loadAllSettingObserv(){
-    const httpOptions = { headers: HttpHepler.generateFormHeader() };
+    const httpOptions = { headers: HttpHelper.generateFormHeader() };
 
 		return this.http.get(this.loadGeneralDataUrl);
 	}

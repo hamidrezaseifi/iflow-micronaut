@@ -3,15 +3,15 @@
 				<div class="page-title">{{ 'workflow-editing' | translate }}</div>
 				<a class="toolbar-link" [routerLink]="['/workflow/list']"><i class="material-icons">list</i></a>
 			</div>
-			
+
 			<form id="workflow-form" name="workflowForm" [formGroup]="workflowEditForm">
 				<div class="workflow-content-container expanded">
 					<div class="workflow-content">
 						<div class="item-row" *ngIf="canAssign">
 							<div class="item-label">{{ 'workflow-assignto' | translate }}</div>
 							<div class="item-content">
-								<app-wm-assign-list [users]="(generalDataObs | async)?.company.users" 
-								[departments]="(generalDataObs | async)?.company.departments" [assignedUsers]="assignedUsers" 
+								<app-wm-assign-list [users]="generalData.company.users"
+								[departments]="generalData.company.departments" [assignedUsers]="assignedUsers"
 								(onSelectedAssignChanged)="onUsersSelected($event)">
 								</app-wm-assign-list>
 							</div>
@@ -27,14 +27,14 @@
 						<div class="item-row">
 							<div class="item-label">{{ 'common.attachments' | translate }}</div>
 							<div class="item-content">
-								<app-wm-file-upload [ocrScanningEnabled]="false" [editService]="editService" [showHeaderTitle]="false" 
-									(onUploadedFilesChanged)="onUploadedFilesChanged($event)" [uploadedFiles]="uploadedFiles" [drawBorder]="true" > 
+								<app-wm-file-upload [ocrScanningEnabled]="false" [editService]="editService" [showHeaderTitle]="false"
+									(onUploadedFilesChanged)="onUploadedFilesChanged($event)" [uploadedFiles]="uploadedFiles" [drawBorder]="true" >
 								</app-wm-file-upload>
-	
+
 							</div>
 							<div class="clear"></div>
 						</div>
-		
+
 						<div class="workflow-step-button-bar">
 							<button type="button" (click)="save(false)" *ngIf="canSave" [disabled]="workflowEditForm.invalid" class="button-bar-button step-button button-save">
 								<span>{{ 'common.save' | translate }}</span>
@@ -51,7 +51,7 @@
 							<span *ngIf="saveMessage !== ''" class="alert alert-success button-bar-alert">{{saveMessage}}</span>
 							<div class="clear"></div>
 						</div>
-						        				
+
 						<div class="item-row" [innerHTML]="debugData"></div>
 					</div>
 					<div class="workflow-record">
@@ -65,5 +65,5 @@
 				</div>
 		    </form>
 
-		    		 		
+
 		</div>

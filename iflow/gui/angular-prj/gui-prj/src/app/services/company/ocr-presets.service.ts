@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { LoadingServiceService } from '../loading-service.service';
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 import { HttpErrorResponseHelper } from '../../helper/http-error-response-helper';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -15,11 +15,11 @@ import { CompanyWorkflowtypeItemOcrSettingPreset, GeneralData } from '../../ui-m
   providedIn: 'root'
 })
 export class OcrPresetsService extends HttpErrorResponseHelper {
-  listPresetsUrl :string = HttpHepler.dataServer + "/ocrpreset/data/list";
-  updatePresetUrl :string = HttpHepler.dataServer + "/ocrpreset/data/save";
-  deletePresetUrl :string = HttpHepler.dataServer + "/ocrpreset/data/delete";
-  listPresetItemsUrl :string = HttpHepler.dataServer + "/ocrpreset/data/read/";
-	pageInitUrl :string = HttpHepler.dataServer + "/ocrpreset/data/initpage";
+  listPresetsUrl :string = HttpHelper.dataServer + "/ocrpreset/data/list";
+  updatePresetUrl :string = HttpHelper.dataServer + "/ocrpreset/data/save";
+  deletePresetUrl :string = HttpHelper.dataServer + "/ocrpreset/data/delete";
+  listPresetItemsUrl :string = HttpHelper.dataServer + "/ocrpreset/data/read/";
+	pageInitUrl :string = HttpHelper.dataServer + "/ocrpreset/data/initpage";
 
 	constructor(
 			protected http: HttpClient,
@@ -34,15 +34,15 @@ export class OcrPresetsService extends HttpErrorResponseHelper {
 
 	listPresets(){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-			return this.http.get(this.listPresetsUrl, httpOptions);
+			return this.http.get<CompanyWorkflowtypeItemOcrSettingPreset[]>(this.listPresetsUrl, httpOptions);
 
 	};
 
 	listPresetItems(presetName:string){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
 			return this.http.get(this.listPresetItemsUrl + presetName, httpOptions);
 
@@ -50,7 +50,7 @@ export class OcrPresetsService extends HttpErrorResponseHelper {
 
 	pageInitData(){
 
-	    const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+	    const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
 			return this.http.get(this.pageInitUrl, httpOptions);
 
@@ -58,17 +58,17 @@ export class OcrPresetsService extends HttpErrorResponseHelper {
 
 	updatePreset(presetToSave: CompanyWorkflowtypeItemOcrSettingPreset){
 
-			const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+			const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-			return this.http.post(this.updatePresetUrl, presetToSave, httpOptions);
+			return this.http.post<CompanyWorkflowtypeItemOcrSettingPreset[]>(this.updatePresetUrl, presetToSave, httpOptions);
 
 	};
 
 	deletePreset(presetToDelete: CompanyWorkflowtypeItemOcrSettingPreset){
 
-			const httpOptions = { headers: HttpHepler.generateJsonHeader() };
+			const httpOptions = { headers: HttpHelper.generateJsonHeader() };
 
-			return this.http.post(this.deletePresetUrl, presetToDelete, httpOptions);
+			return this.http.post<CompanyWorkflowtypeItemOcrSettingPreset[]>(this.deletePresetUrl, presetToDelete, httpOptions);
 
 	};
 

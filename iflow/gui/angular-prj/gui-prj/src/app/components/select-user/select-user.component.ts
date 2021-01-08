@@ -13,14 +13,17 @@ export class SelectUserComponent implements OnInit {
 	@Input('users') users : User[];
 	@Input('departments') departments : Department[];
 	@Input('showAssignModal') showAssignModal :boolean = false;
-	@Input('selectAssign') selectAssign : boolean[][] = [];
+	@Input('selectAssign') selectAssign : Record<string, Record<string, boolean>> = {"None" : {}, "User" : {}, "Department" : {} };
 
 	@Output() onUsersSelected = new EventEmitter<AssignItem[]>();
 
 	assignTypeUser :AssignType = AssignType.USER;
 	assignTypeDepartment :AssignType = AssignType.DEPARTMENT;
 
-	constructor() { }
+	constructor() {
+	  this.users = [];
+	  this.departments = [];
+	}
 
 
 	ngOnInit() {
@@ -30,9 +33,8 @@ export class SelectUserComponent implements OnInit {
 	applyUserSelect(){
 		var assigns :AssignItem[] = [];
 
-		for(var type in this.selectAssign){
-			for(var id in this.selectAssign[type]){
-
+    for (let [type, value] of Object.entries(this.selectAssign)) {
+      for (let [id, value2] of Object.entries(this.selectAssign[type])) {
 				if(this.selectAssign[type][id]){
 					var assign = new AssignItem;
 					assign.itemId = <string>id;
@@ -42,7 +44,7 @@ export class SelectUserComponent implements OnInit {
 
 				}
 			}
-		}
+    }
 
 		this.onUsersSelected.emit(assigns);
 	}
@@ -51,7 +53,7 @@ export class SelectUserComponent implements OnInit {
 	isItemAssigned(id :string , type: AssignType){
 
 		if(this.selectAssign[type] === undefined){
-			this.selectAssign[type] = [];
+			this.selectAssign[type] = {};
 		}
 		if(this.selectAssign[type][id] === undefined){
 			this.selectAssign[type][id] = false;
@@ -66,7 +68,7 @@ export class SelectUserComponent implements OnInit {
 
 	toggleAssign(id :string , type: AssignType, isChecked: boolean){
 		if(this.selectAssign[type] === undefined){
-			this.selectAssign[type] = [];
+			this.selectAssign[type] = {};
 		}
 		this.selectAssign[type][id] = isChecked;
 

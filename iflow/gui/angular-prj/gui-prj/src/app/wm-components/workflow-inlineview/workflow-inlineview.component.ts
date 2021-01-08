@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { WorkflowType, Workflow, WorkflowTypeStep, WorkflowFile } from '../../wf-models';
 import { User, GeneralData } from '../../ui-models';
 import { OcrWord, UploadedFile, UploadedResult } from '../../ui-models';
-import { HttpHepler } from '../../helper/http-hepler';
+import { HttpHelper } from '../../helper/http-hepler';
 
 @Component({
   selector: 'app-workflow-inlineview',
@@ -12,21 +12,22 @@ import { HttpHepler } from '../../helper/http-hepler';
 })
 export class WorkflowInlineviewComponent implements OnInit {
 
-	@Input('workflow')
-	viewWorkflowModel :Workflow;
+	@Input('workflow') viewWorkflowModel :Workflow |null;
 
 	previewFile :UploadedFile = new UploadedFile;
 	showFilePreviewDialog :boolean = false;
 
 
-	constructor() { }
+	constructor() {
+	  this.viewWorkflowModel = null;
+	}
 
 	ngOnInit() {
 
 	}
 
 	getFileServerBase():string{
-	  return HttpHepler.dataServer + "/archive/data/file";
+	  return HttpHelper.dataServer + "/archive/data/file";
 	}
 
 	showFilePreview(file :WorkflowFile){
