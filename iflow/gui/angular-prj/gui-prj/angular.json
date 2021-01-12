@@ -40,7 +40,8 @@
               }
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/assets/css/angular-resizable.css",
               "src/assets/css/app.css",
               "src/assets/css/table.css",
@@ -49,6 +50,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/moment/min/moment.min.js",
 
               "src/assets/js/sockjs.min.js",

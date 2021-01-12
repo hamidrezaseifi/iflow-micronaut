@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DashboardSessionData {
 
-    public static final int DEFAULT_TOTAL_COLUMNS = 10;
+    public static final int DEFAULT_TOTAL_COLUMNS = 4;
     public static final int DEFAULT_TOTAL_ROWS = 6;
     private int totalColumns;
     private int totalRows;

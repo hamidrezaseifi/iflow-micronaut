@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
 		isPresent : boolean = true;
 
-		totalColumns: number = 10;
+		totalColumns: number = 4;
 		totalRows: number = 6;
 
 		cubes : DashboardCube[][] = [];

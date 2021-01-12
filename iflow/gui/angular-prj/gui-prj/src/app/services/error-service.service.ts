@@ -8,7 +8,7 @@ import { ErrorDetail, ErrorResponse } from '../ui-models';
 })
 export class ErrorServiceService {
 
-	errorSubject = new BehaviorSubject<ErrorDetail>(new ErrorDetail("", ""));
+	errorSubject = new BehaviorSubject<ErrorDetail|null>(null);
 
 	constructor() {
 

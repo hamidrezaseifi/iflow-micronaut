@@ -13,36 +13,37 @@ import { ErrorDetail } from '../../ui-models';
 })
 export class ErrorDialogComponent implements OnInit {
 
-	
+
 	showErrorDetail :boolean = false;
 	showError :boolean = false;
 	errorMessage :string = "";
 	errorDetails :string = "";
-	
+
 	constructor(
 			translate: TranslateService,
 			private errorService: ErrorServiceService,
-			) {  
-		
+			) {
+
 		translate.setDefaultLang('de');
 		translate.use('de');
-		
+
 	}
-	
-	
+
+
 
 	ngOnInit() {
-		this.subscribeErrorService();		
+		this.subscribeErrorService();
 	}
-	
+
 	subscribeErrorService(){
-		this.errorService.errorSubject.subscribe((data : ErrorDetail) => {
-			if(data && data != null){
+		this.errorService.errorSubject.subscribe((data : ErrorDetail|null) => {
+
+			if(data){
 				this.errorMessage = data.errorMessage;
 				this.errorDetails = data.errorDetail;
 				this.showErrorDetail = false;
 				this.showError = true;
-				  
+
 				//alert("error coms: " + this.errorMessage + " , show: " + (this.showError === true));
 			}
 			else{
@@ -58,7 +59,7 @@ export class ErrorDialogComponent implements OnInit {
 		this.showError = false;
 		this.showErrorDetail = false;
 	}
-	
+
 	get hasErrorDetail(): boolean{
 		return this.errorDetails !== null && this.errorDetails !== "";
 	}
