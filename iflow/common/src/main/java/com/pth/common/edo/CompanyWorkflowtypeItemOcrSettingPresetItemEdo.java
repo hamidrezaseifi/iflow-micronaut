@@ -12,11 +12,11 @@ import java.util.UUID;
 public class CompanyWorkflowtypeItemOcrSettingPresetItemEdo {
 
 
-    @NotNull(message = "id must not be null")
-    protected UUID id;
+  @NotNull(message = "id must not be null")
+  protected UUID id;
 
-    @NotNull(message = "PropertyName must not be null")
-    private String propertyName;
+  @NotNull(message = "PropertyName must not be null")
+  private String propertyName;
 
   private String value;
 

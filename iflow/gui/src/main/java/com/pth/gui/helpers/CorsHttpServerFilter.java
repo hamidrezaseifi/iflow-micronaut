@@ -15,7 +15,7 @@ import org.reactivestreams.Subscription;
 import java.util.Optional;
 
 @Singleton
-@Filter(value = {"/**/data/**", "/auth/**"})
+@Filter(value = {"/**/data/**", "/auth/**", "/**"})
 public class CorsHttpServerFilter implements HttpServerFilter
 {
     @Override
