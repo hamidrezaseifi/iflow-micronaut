@@ -2,6 +2,7 @@
   <div id="app">
     <AppTopBar v-bind:isLogged="isLogged" v-bind:menus="menus" v-bind:currentUser="currentUser" />
     <div class="container">
+      <p>Translate: {{ $t('message') }}</p>
       <router-view/>
     </div>
 
