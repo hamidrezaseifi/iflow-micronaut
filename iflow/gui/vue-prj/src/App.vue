@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppTopBar />
+    <AppTopBar v-bind:isLogged="isLogged" v-bind:menus="menus" v-bind:currentUser="currentUser" />
     <div class="container">
       <router-view/>
     </div>
@@ -55,6 +55,14 @@ export default {
     AppLoadingDialog,
     AppFooter
 
+  },
+  data: function () {
+  return {
+    isLogged: false,
+    menus: [],
+    currentUser: false
+
   }
+}
 }
 </script>

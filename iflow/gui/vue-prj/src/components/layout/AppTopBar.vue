@@ -39,16 +39,16 @@
             <span>{{currentUser.fullName}}</span>
           </button>
           <div class="dropdown-menu">
-            <router-link (click)="showProfile()" class="dropdown-item" href="#">Profile</router-link>
+            <router-link @click="showProfile" class="dropdown-item" href="#">Profile</router-link>
             <div class="dropdown-divider"></div>
-            <router-link (click)="logout()" class="dropdown-item" href="#">Logout</router-link>
+            <router-link @click="logout" class="dropdown-item" href="#">Logout</router-link>
 
           </div>
         </div>
 
         <div class="navbar-item padding-top-7" v-if="isLogged" >
           <label class="iflow-switch">
-            <input type="checkbox" (change)="togglePresens()" [checked]="isPresent">
+            <input type="checkbox" v-model="isPresent">
             <span class="iflow-slider iflow-round"></span>
 
           </label>
@@ -71,8 +71,32 @@
 export default {
   name: 'AppTopBar',
   props: {
-    msg: String
-  }
+    isLogged: Boolean,
+    menus: Array,
+    currentUser: Object,
+    _isPresent: Boolean
+  },
+  computed: {
+    isPresent: {
+      get() {
+        return this._isPresent
+      },
+      set(val) {
+        this._isPresent = val
+      }
+    }
+  },
+  methods: {
+        logout () {
+
+            const { dispatch } = this.$store;
+            dispatch('authentication/logout');
+
+        },
+        showProfile(){
+
+        }
+    }
 }
 </script>
 <style>
