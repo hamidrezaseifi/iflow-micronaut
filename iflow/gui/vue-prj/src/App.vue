@@ -61,7 +61,7 @@ export default {
   return {
     isLogged: false,
     menus: [],
-    currentUser: false
+    currentUser: null
 
   }
 }

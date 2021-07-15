@@ -1,33 +1,35 @@
 <template>
-  <div class="hello">
-    <div mwlResizable [enableGhostResize]="true" [resizeEdges]="{ bottom: false, right: false, top: true, left: false }"
-         (resizeEnd)="onResizeEnd($event)" class="message-panel-container" id="message-panel-container"
-         *ngIf="isAppLogged" [ngStyle]="{'height' : messagePanelHeightStyle}">
-      <div class="message-panel-toolbar">
-        <span class="title">Meldungen</span> &nbsp; &nbsp; <span [ngStyle]="{'color':subscribed ? 'green' : 'red' }">{{status}}</span>
-        <button class="toolbar-button" *ngIf="messagePanelShowed" (click)="closeMessages();"><i class="material-icons">keyboard_arrow_down</i></button>
-        <button class="toolbar-button" *ngIf="messagePanelShowed == false" (click)="showMessages();"><i class="material-icons">keyboard_arrow_up</i></button>
-        <button class="toolbar-button" *ngIf="messagePanelShowed" (click)="reloadMessages();"><i class="material-icons">refresh</i></button>
-        <img class="toolbar-image" *ngIf="isReloadingMessages" src="assets/images/loading200.gif" />
+  <div class="message-panel-top">
+    <vue-resizable :width="100vw" :height="170" :active="['t']" @resize:end="onResizeEnd">
+      <div class="message-panel-container" id="message-panel-container" v-if="isAppLogged" v-bind:style="{'height' : messagePanelHeightStyle}">
+        <div class="message-panel-toolbar">
+          <span class="title">Meldungen</span> &nbsp; &nbsp;
+          <span v-bind:style="{'color':subscribed ? 'green' : 'red' }">{{status}}</span>
+          <button class="toolbar-button" v-if="messagePanelShowed" @click="closeMessages"><i class="material-icons">keyboard_arrow_down</i></button>
+          <button class="toolbar-button" v-if="messagePanelShowed == false" @click="showMessages"><i class="material-icons">keyboard_arrow_up</i></button>
+          <button class="toolbar-button" v-if="messagePanelShowed" @click="reloadMessages"><i class="material-icons">refresh</i></button>
+          <img class="toolbar-image" v-if="isReloadingMessages" src="assets/images/loading200.gif" />
 
-      </div>
-      <div class="message-panel-items-container">
-        <div class="message-panel-item" *ngFor="let message of messages;">
-          <a href="javascript:void(0);" (click)="showWorkflowView(message.workflowId)">
-            <div>{{message.message}} ({{message.workflow.workflowType.title}}) ({{message.createdAtString}}) ({{message.remainingDays}}) ({{message.status}})</div>
-          </a>
         </div>
+        <div class="message-panel-items-container">
+          <div class="message-panel-item" v-for="message in messages" :key="message.id">
+            <a href="javascript:void(0);" @click="showWorkflowView(message.workflowId)">
+              <div>{{message.message}} ({{message.workflow.workflowType.title}}) ({{message.createdAtString}}) ({{message.remainingDays}}) ({{message.status}})</div>
+            </a>
+          </div>
+        </div>
+
       </div>
 
-    </div>
+    </vue-resizable>
 
-    <div class="modal fade show" tabindex="-1" *ngIf="viewWorkflow" id="viewworkflowedialog" role="dialog">
+    <div class="modal fade show" tabindex="-1" v-if="viewWorkflow" id="viewworkflowedialog" role="dialog">
 
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title dialog-title" id="errorMessagedialogTitle">{{ 'common.view-workflow' | translate }}</h5>
-            <button class="dialog-toolbar-button close" (click)="hideViewModal()" aria-label="Close">
+            <button class="dialog-toolbar-button close" @click="hideViewModal" aria-label="Close">
               <i class="material-icons">close</i>
             </button>
           </div>
@@ -38,11 +40,11 @@
 
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="hideViewModal()"><i class="material-icons">close</i></button>
+            <button type="button" class="btn btn-secondary" @click="hideViewModal"><i class="material-icons">close</i></button>
 
-            <button type="button" class="btn btn-success"  *ngIf="isWorkflowModelNotAssigned" (click)="assignWorkflowMe()"><i class="material-icons">assignment_ind</i></button>
+            <button type="button" class="btn btn-success"  v-if="isWorkflowModelNotAssigned" @click="assignWorkflowMe"><i class="material-icons">assignment_ind</i></button>
 
-            <button type="button" class="btn btn-primary" *ngIf="isWorkflowModelMeAssigned" (click)="editWorkflow()" ><i class="material-icons">pageview</i></button>
+            <button type="button" class="btn btn-primary" v-if="isWorkflowModelMeAssigned" @click="editWorkflow" ><i class="material-icons">pageview</i></button>
           </div>
         </div>
       </div>
@@ -58,19 +60,90 @@
 export default {
   name: 'AppMessageBar',
   props: {
-    msg: String
+    isAppLogged: {
+      type: Boolean,
+      default: true
+    },
+    subscribed: {
+      type: Boolean,
+      default: true
+    },
+    status: {
+      type: String,
+      default: "Not Connected"
+    },
+    messages: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    messagePanelShowed: Boolean,
+    isReloadingMessages: Boolean,
+    viewWorkflow: Object,
+    messagePanelHeight: {
+      type: Number,
+      default: 170
+    },
+
+  },
+  computed: {
+    isWorkflowModelMeAssigned: function(){
+      return false
+    },
+    isWorkflowModelNotAssigned: function(){
+      return false
+    },
+    messagePanelHeightStyle: function(){
+      return this.messagePanelHeight + "px";
+    }
+  },
+  methods: {
+    showMessages(){
+      this.messagePanelHeightStyle = this.messagePanelHeight + "px";
+	  this.messagePanelShowed = true;
+    },
+    closeMessages(){
+	  this.messagePanelHeightStyle = "25px";
+	  this.messagePanelShowed = false;
+    },
+    reloadMessages(){
+
+    },
+    showWorkflowView(workflow){
+      console.log(workflow)
+    },
+    hideViewModal(){
+
+    },
+    editWorkflow(){
+
+    },
+    onResizeEnd(event) {
+	  if(event.rectangle && event.rectangle.height){
+	    this.messagePanelHeight = event.rectangle.height;
+	    this.showMessages();
+	  }
+	}
   }
 }
 </script>
 <style>
-@charset "ISO-8859-1";
+
+.message-panel-top{
+    height: 170px;
+    margin-top: 10px;
+    width: 100vw;
+    bottom: 30px;
+    position: fixed !important;
+}
 
 .message-panel-container {
-    height: 170px;
+    height: 100%;
     margin-top: 10px;
     border: 1px solid gray;
     background-color: #fbfbfb;
-    position: fixed !important;
+
     width: 100vw;
     bottom: 30px;
 }
