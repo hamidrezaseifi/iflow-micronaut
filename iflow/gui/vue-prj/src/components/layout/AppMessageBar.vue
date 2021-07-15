@@ -1,6 +1,6 @@
 <template>
   <div class="message-panel-top">
-    <vue-resizable :width="100vw" :height="170" :active="['t']" @resize:end="onResizeEnd">
+    <vue-resizable :height="170" ref="resizableComponent" :active="['t']" @resize:end="onResizeEnd" class="resizable">
       <div class="message-panel-container" id="message-panel-container" v-if="isAppLogged" v-bind:style="{'height' : messagePanelHeightStyle}">
         <div class="message-panel-toolbar">
           <span class="title">Meldungen</span> &nbsp; &nbsp;
@@ -57,8 +57,12 @@
 </template>
 
 <script>
+
+import VueResizable from 'vue-resizable'
+
 export default {
   name: 'AppMessageBar',
+  components: { VueResizable },
   props: {
     isAppLogged: {
       type: Boolean,
@@ -101,11 +105,11 @@ export default {
   methods: {
     showMessages(){
       this.messagePanelHeightStyle = this.messagePanelHeight + "px";
-	  this.messagePanelShowed = true;
+      this.messagePanelShowed = true;
     },
     closeMessages(){
-	  this.messagePanelHeightStyle = "25px";
-	  this.messagePanelShowed = false;
+      this.messagePanelHeightStyle = "25px";
+      this.messagePanelShowed = false;
     },
     reloadMessages(){
 
@@ -120,27 +124,38 @@ export default {
 
     },
     onResizeEnd(event) {
-	  if(event.rectangle && event.rectangle.height){
-	    this.messagePanelHeight = event.rectangle.height;
-	    this.showMessages();
-	  }
+      if(event.rectangle && event.rectangle.height){
+        this.messagePanelHeight = event.rectangle.height;
+        this.showMessages();
+      }
 	}
   }
 }
 </script>
 <style>
 
+.resizable {
+  background-position: top left;
+  height: 170px;
+  width: 100vw;
+  bottom: 30px;
+  position: fixed !important;
+  padding: 0;
+  border: 1px solid #003eff;
+  background: #007fff;
+  font-weight: normal;
+  color: #ffffff;
+
+}
+
 .message-panel-top{
     height: 170px;
-    margin-top: 10px;
-    width: 100vw;
-    bottom: 30px;
-    position: fixed !important;
+    width: 100%;
+
 }
 
 .message-panel-container {
     height: 100%;
-    margin-top: 10px;
     border: 1px solid gray;
     background-color: #fbfbfb;
 
