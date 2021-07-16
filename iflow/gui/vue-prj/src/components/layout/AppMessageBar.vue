@@ -1,17 +1,17 @@
 <template>
-  <div class="message-panel-top">
-    <vue-resizable :height="170" ref="resizableComponent" :active="['t']" @resize:end="onResizeEnd" class="resizable">
-      <div class="message-panel-container" id="message-panel-container" v-if="isAppLogged" v-bind:style="{'height' : messagePanelHeightStyle}">
+  <div class="message-panel-top" v-bind:style="{'height' : messagePanelHeightStyle}">
+    <vue-resizable :height="170" ref="resizableComponent" :active="['t']" @resize:end="onResizeEnd" class="resizable" >
+      <div class="message-panel-container" id="message-panel-container" v-if="isAppLogged">
         <div class="message-panel-toolbar">
           <span class="title">Meldungen</span> &nbsp; &nbsp;
-          <span v-bind:style="{'color':subscribed ? 'green' : 'red' }">{{status}}</span>
+          <span v-bind:style="{'color':subscribed ? 'green' : 'red' }">{{status}} - {{current_panel_height}}</span>
           <button class="toolbar-button" v-if="messagePanelShowed" @click="closeMessages"><i class="material-icons">keyboard_arrow_down</i></button>
           <button class="toolbar-button" v-if="messagePanelShowed == false" @click="showMessages"><i class="material-icons">keyboard_arrow_up</i></button>
           <button class="toolbar-button" v-if="messagePanelShowed" @click="reloadMessages"><i class="material-icons">refresh</i></button>
           <img class="toolbar-image" v-if="isReloadingMessages" src="assets/images/loading200.gif" />
 
         </div>
-        <div class="message-panel-items-container">
+        <div class="message-panel-items-container" v-if="messagePanelShowed">
           <div class="message-panel-item" v-for="message in messages" :key="message.id">
             <a href="javascript:void(0);" @click="showWorkflowView(message.workflowId)">
               <div>{{message.message}} ({{message.workflow.workflowType.title}}) ({{message.createdAtString}}) ({{message.remainingDays}}) ({{message.status}})</div>
@@ -82,14 +82,24 @@ export default {
         return []
       }
     },
-    messagePanelShowed: Boolean,
+    messagePanelShowed: {
+      type: Boolean,
+      default: true
+    },
     isReloadingMessages: Boolean,
     viewWorkflow: Object,
     messagePanelHeight: {
       type: Number,
       default: 170
-    },
+    }
 
+  },
+  data: function () {
+    return {
+      check_update: new Date(),
+      current_panel_height: 170,
+      last_panel_height: 170,
+    }
   },
   computed: {
     isWorkflowModelMeAssigned: function(){
@@ -99,17 +109,21 @@ export default {
       return false
     },
     messagePanelHeightStyle: function(){
-      return this.messagePanelHeight + "px";
+      this.check_update
+      return this.messagePanelShowed ? this.current_panel_height + "px" : "25px";
     }
   },
   methods: {
     showMessages(){
-      this.messagePanelHeightStyle = this.messagePanelHeight + "px";
       this.messagePanelShowed = true;
+      this.current_panel_height = this.last_panel_height
+      this.check_update = new Date()
     },
     closeMessages(){
-      this.messagePanelHeightStyle = "25px";
       this.messagePanelShowed = false;
+      this.last_panel_height = this.current_panel_height
+      this.current_panel_height = 25
+      this.check_update = new Date()
     },
     reloadMessages(){
 
@@ -124,9 +138,10 @@ export default {
 
     },
     onResizeEnd(event) {
-      if(event.rectangle && event.rectangle.height){
-        this.messagePanelHeight = event.rectangle.height;
-        this.showMessages();
+      console.log(event)
+      if(event && event.height){
+        this.current_panel_height = event.height;
+        //this.showMessages();
       }
 	}
   }
@@ -134,24 +149,24 @@ export default {
 </script>
 <style>
 
-.resizable {
-  background-position: top left;
+.message-panel-top{
   height: 170px;
   width: 100vw;
   bottom: 30px;
   position: fixed !important;
+}
+
+.resizable {
+  background-position: top left;
+  height: 170px;
+  width: 100vw;
+  position: relative;
   padding: 0;
   border: 1px solid #003eff;
   background: #007fff;
   font-weight: normal;
   color: #ffffff;
-
-}
-
-.message-panel-top{
-    height: 170px;
-    width: 100%;
-
+  top:0 !important;
 }
 
 .message-panel-container {
