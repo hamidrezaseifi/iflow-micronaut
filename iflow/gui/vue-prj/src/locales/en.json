@@ -1,8 +1,9 @@
 {
-  "message": "hello i18n !!",
+
   "common": {
     "username": "Username",
     "password": "Password",
-    "login": "Login"
+    "login": "Login",
+    "test_message": "hello i18n !!"
   }
 }

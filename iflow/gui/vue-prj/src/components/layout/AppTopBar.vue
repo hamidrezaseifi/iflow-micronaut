@@ -8,6 +8,7 @@
         <router-link class="navbar-brand" to="/">
           <img class="navbar-logo" src="@/assets/images/logo2.png">
           <span class="logo-title">Business Edition</span>
+          <span class="clear"></span>
         </router-link>
       </div>
 
@@ -101,6 +102,9 @@ export default {
 </script>
 <style>
 
+.navbar-header{
+  padding: 5px;
+}
 .navbar-item {
     float: right;
     margin-right: 30px;

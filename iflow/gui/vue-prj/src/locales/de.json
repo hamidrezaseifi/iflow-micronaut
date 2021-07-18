@@ -1,8 +1,9 @@
 {
-  "message": "Hallo Welt !!!!!!!!",
+
   "common": {
     "username": "Benutzername",
     "password": "Kennwort",
-    "login": "Anmelden"
+    "login": "Anmelden",
+    "test_message": "Hallo Welt !!!!!!!!"
   }
 }

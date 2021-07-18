@@ -2,11 +2,10 @@
   <div id="app">
     <AppTopBar v-bind:isLogged="isLogged" v-bind:menus="menus" v-bind:currentUser="currentUser" />
     <div class="container">
-      <p>Translate: {{ $t('message') }}</p>
       <router-view/>
     </div>
 
-    <AppMessageBar></AppMessageBar>
+    <AppMessageBar :isAppLogged="isAppLogged"></AppMessageBar>
 
     <AppErrorDialog />
 
@@ -23,21 +22,6 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 </style>
 <script>
@@ -64,7 +48,8 @@ export default {
   return {
     isLogged: false,
     menus: [],
-    currentUser: null
+    currentUser: null,
+    isAppLogged: false
 
   }
 }

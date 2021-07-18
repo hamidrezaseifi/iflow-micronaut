@@ -67,26 +67,6 @@ export default {
     isAppLogged: {
       type: Boolean,
       default: true
-    },
-    subscribed: {
-      type: Boolean,
-      default: true
-    },
-    status: {
-      type: String,
-      default: "Not Connected"
-    },
-    messages: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    isReloadingMessages: Boolean,
-    viewWorkflow: Object,
-    messagePanelHeight: {
-      type: Number,
-      default: 170
     }
 
   },
@@ -97,7 +77,12 @@ export default {
       last_panel_height: 170,
       resizableHandlers: ['t'],
       resizableHeight: 170,
-      messagePanelShowed: true
+      messagePanelShowed: true,
+      subscribed: false,
+      messages: [],
+      isReloadingMessages: false,
+      viewWorkflow: null,
+
     }
   },
   computed: {
@@ -110,6 +95,9 @@ export default {
     messagePanelHeightStyle: function(){
       this.check_update
       return this.messagePanelShowed ? this.current_panel_height + "px" : "25px";
+    },
+    status: function(){
+        return this.subscribed ? "Connected" : "Not Connected"
     }
   },
   methods: {

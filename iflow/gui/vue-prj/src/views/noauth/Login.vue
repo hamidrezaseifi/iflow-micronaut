@@ -8,17 +8,17 @@
           <form action="/login" method="POST" style="margin: 0;" @submit.prevent="handleSubmit">
 
             <div class="form-group">
-              <label for="username">{{ $t('common.username') }}</label>
+              <label class="username-label" for="username">{{ $t('common.username') }}</label>
               <input class="form-control" id="username"  type="text" name="username" v-model="username" >
             </div>
 
             <div class="form-group">
-              <label for="password">{{ $t('common.password') }}</label>
+              <label class="password-label" for="password">{{ $t('common.password') }}</label>
               <input class="form-control" id="password"  type="password" name="password" v-model="password">
             </div>
 
             <div class="form-group">
-              <input class="btn btn-primary" type="button" v-bind:value="$t('common.login')" @click="handleSubmit" />
+              <input class="btn btn-primary login-button" type="button" v-bind:value="$t('common.login')" @click="handleSubmit" />
             </div>
 
             <div class="" v-if="isFailed">
@@ -48,8 +48,8 @@ export default {
   name: 'Login',
   data () {
     return {
-      username: 'hamidreza.seifi',
-      password: 'BaranElec734/73',
+      username: 'admin@iflow.de',
+      password: 'admin',
       returnUrl: '',
       submitted: false,
       logginMessage: '',
@@ -146,7 +146,7 @@ footer.footer
 
 .login-container .login-photo
 {
-  background-image: url(/assets/images/login-photo.jpg);
+  background-image: url(../../assets/images/login-photo.jpg);
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: left top;
@@ -202,7 +202,25 @@ footer.footer
     border-radius: 4px;
 }
 
+.form-group label.username-label {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
 
+.form-group label.password-label {
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.form-group input {
+  margin-bottom: .5rem;
+  margin-top: 5px;
+}
+
+
+.form-group input.login-button {
+  margin-top: 20px;
+}
 
 
 </style>
