@@ -1,7 +1,7 @@
 <template>
-  <div class="message-panel-top" v-bind:style="{'height' : messagePanelHeightStyle}">
-    <vue-resizable :height="170" ref="resizableComponent" :active="['t']" @resize:end="onResizeEnd" class="resizable" >
-      <div class="message-panel-container" id="message-panel-container" v-if="isAppLogged">
+  <div class="message-panel-top" id="messagePanelTop" v-if="isAppLogged">
+    <vue-resizable :height="resizableHeight" ref="resizableComponent" :active="resizableHandlers" @resize:end="onResizeEnd" class="message-panel-resizable" >
+      <div class="message-panel-container" id="message-panel-container">
         <div class="message-panel-toolbar">
           <span class="title">Meldungen</span> &nbsp; &nbsp;
           <span v-bind:style="{'color':subscribed ? 'green' : 'red' }">{{status}} - {{current_panel_height}}</span>
@@ -57,8 +57,8 @@
 </template>
 
 <script>
-
 import VueResizable from 'vue-resizable'
+//import Vue from 'vue'
 
 export default {
   name: 'AppMessageBar',
@@ -82,10 +82,6 @@ export default {
         return []
       }
     },
-    messagePanelShowed: {
-      type: Boolean,
-      default: true
-    },
     isReloadingMessages: Boolean,
     viewWorkflow: Object,
     messagePanelHeight: {
@@ -99,6 +95,9 @@ export default {
       check_update: new Date(),
       current_panel_height: 170,
       last_panel_height: 170,
+      resizableHandlers: ['t'],
+      resizableHeight: 170,
+      messagePanelShowed: true
     }
   },
   computed: {
@@ -117,12 +116,16 @@ export default {
     showMessages(){
       this.messagePanelShowed = true;
       this.current_panel_height = this.last_panel_height
+      this.resizableHeight = this.last_panel_height
+      this.resizableHandlers = ['t']
       this.check_update = new Date()
     },
     closeMessages(){
       this.messagePanelShowed = false;
       this.last_panel_height = this.current_panel_height
       this.current_panel_height = 25
+      this.resizableHeight = 30
+      this.resizableHandlers = []
       this.check_update = new Date()
     },
     reloadMessages(){
@@ -138,10 +141,10 @@ export default {
 
     },
     onResizeEnd(event) {
-      console.log(event)
+      //console.log(event)
       if(event && event.height){
         this.current_panel_height = event.height;
-        //this.showMessages();
+
       }
 	}
   }
@@ -150,23 +153,24 @@ export default {
 <style>
 
 .message-panel-top{
+
+}
+
+.message-panel-resizable {
+  background-position: top left;
+  height: 170px;
+  width: 100vw;
   height: 170px;
   width: 100vw;
   bottom: 30px;
   position: fixed !important;
-}
 
-.resizable {
-  background-position: top left;
-  height: 170px;
-  width: 100vw;
-  position: relative;
   padding: 0;
   border: 1px solid #003eff;
   background: #007fff;
   font-weight: normal;
   color: #ffffff;
-  top:0 !important;
+  top:inherit !important;
 }
 
 .message-panel-container {
